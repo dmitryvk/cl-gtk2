@@ -1,0 +1,30 @@
+(in-package :glib)
+
+(define-foreign-type gstrv-type ()
+  ((free-from-foreign :initarg :free-from-foreign :initform t :reader gstrv-type-fff)
+   (free-to-foreign :initarg :free-to-foreign :initform t :reader gstrv-type-ftf))
+  (:actual-type :pointer))
+
+(define-parse-method gstrv (&key (free-from-foreign t) (free-to-foreign t))
+  (make-instance 'gstrv-type :free-from-foreign free-from-foreign :free-to-foreign free-to-foreign))
+
+(defmethod translate-from-foreign (value (type gstrv-type))
+  (unless (null-pointer-p value)
+    (prog1
+        (iter (for i from 0)
+              (for str-ptr = (mem-aref value :pointer i))
+              (until (null-pointer-p str-ptr))
+              (collect (convert-from-foreign str-ptr '(:string :free-from-foreign nil)))
+              (when (gstrv-type-fff type)
+                (g-free str-ptr)))
+      (when (gstrv-type-fff type)
+        (g-free value)))))
+
+(defmethod translate-to-foreign (str-list (type gstrv-type))
+  (let* ((n (length str-list))
+         (result (g-malloc (* (1+ n) (foreign-type-size :pointer)))))
+    (iter (for i from 0)
+          (for str in str-list)
+          (setf (mem-aref result :pointer i) (g-strdup str)))
+    (setf (mem-aref result :pointer n) (null-pointer))
+    result))

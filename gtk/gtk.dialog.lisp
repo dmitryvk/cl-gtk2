@@ -1,0 +1,92 @@
+(in-package :gtk)
+
+(define-g-enum "GtkResponseType" response-type ()
+  (:none -1)
+  (:reject -2)
+  (:accept -3)
+  (:delete-event -4)
+  (:ok -5)
+  (:cancel -6)
+  (:close -7)
+  (:yes -8)
+  (:no -9)
+  (:apply -10)
+  (:help -11))
+
+(defcfun (dialog-run "gtk_dialog_run") response-type
+  (dialog (g-object dialog)))
+
+(export 'dialog-run)
+
+(defcfun (dialog-respose "gtk_dialog_response") :void
+  (dialog (g-object dialog))
+  (response response-type))
+
+(export 'dialog-response)
+
+(defcfun (dialog-add-button "gtk_dialog_add_button") (g-object widget)
+  (dialog (g-object dialog))
+  (button-text :string)
+  (response response-type))
+
+(export 'dialog-add-button)
+
+(defcfun (dialog-add-action-widget "gtk_dialog_add_action_widget") :void
+  (dialog (g-object dialog))
+  (child (g-object widget))
+  (response response-type))
+
+(export 'dialog-add-action-widget)
+
+(defcfun (dialog-set-default-response "gtk_dialog_set_default_response") :void
+  (dialog (g-object dialog))
+  (response response-type))
+
+(defun (setf dialog-default-response) (response dialog)
+  (dialog-set-default-response dialog response)
+  response)
+
+(export 'dialog-default-response)
+
+(defcfun (dialog-set-response-sensitive "gtk_dialog_set_response_sensitive") :void
+  (dialog (g-object dialog))
+  (response response-type)
+  (setting :boolean))
+
+(defcfun (dialog-response-for-widget "gtk_dialog_get_response_for_widget") :int
+  (dialog (g-object dialog))
+  (widget (g-object widget)))
+
+(export 'dialog-response-for-widget)
+
+(defcfun (dialog-action-area "gtk_dialog_get_action_area") (g-object widget)
+  (dialog (g-object dialog)))
+
+(export 'dialog-action-area)
+
+(defcfun (dialog-content-area "gtk_dialog_get_content_area") (g-object widget)
+  (dialog (g-object dialog)))
+
+(export 'dialog-content-area)
+
+(defcfun (dialog-alternative-button-order-on-screen "gtk_alternative_dialog_button_order") :boolean
+  (screen (g-object screen)))
+
+(export 'dialog-alternative-button-order-on-screen)
+
+(defcfun (dialog-set-alternative-button-order-from-array "gtk_dialog_set_alternative_button_order_from_array") :void
+  (dialog (g-object dialog))
+  (n-params :int)
+  (new-order (:pointer response-type)))
+
+(defun (setf dialog-alternative-button-order) (response-list dialog)
+  (with-foreign-object (new-order 'response-type (length response-list))
+    (loop
+       for i from 0
+       for response in response-list
+       do (setf (mem-aref new-order 'response-type i) response))
+    (dialog-set-alternative-button-order-from-array dialog (length response-list) new-order))
+  response-list)
+
+(export 'dialog-alternative-button-order)
+
