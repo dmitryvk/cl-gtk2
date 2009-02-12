@@ -26,7 +26,7 @@
   (unless (slot-boundp obj 'pointer)
     (error "Pointer slot is not initialized for ~A" obj))
   (let* ((pointer (pointer obj))
-         (s (format nil obj)))
+         (s (format nil "~A" obj)))
     (finalize obj
               (lambda ()
                 (handler-case
