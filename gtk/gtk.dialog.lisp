@@ -90,3 +90,16 @@
 
 (export 'dialog-alternative-button-order)
 
+(defmacro with-gtk-message-error-handler (&body body)
+  (let ((dialog (gensym))
+        (e (gensym)))
+    `(handler-case
+         (progn ,@body)
+       (error (,e) (using* ((,dialog (make-instance 'message-dialog 
+                                                    :message-type :error :buttons :ok
+                                                    :text (format nil "Error~%~A~%during execution of~%~A" ,e '(progn ,@body)))))
+                           (dialog-run ,dialog)
+                           (object-destroy ,dialog)
+                           nil)))))
+
+(export 'with-gtk-message-error-handler)
