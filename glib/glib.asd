@@ -24,4 +24,4 @@
                (:file "gobject.gobject-query")
                (:file "gobject.generating")
                (:file "gobject.object-defs"))
-  :depends-on (:cffi :trivial-garbage :metabang-bind :iterate :anaphora))
+  :depends-on (:cffi :trivial-garbage :metabang-bind :iterate :anaphora :bordeaux-threads))

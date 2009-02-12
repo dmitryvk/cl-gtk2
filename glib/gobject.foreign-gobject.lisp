@@ -25,20 +25,64 @@
 (defmethod initialize-instance :after ((obj g-object) &key &allow-other-keys)
   (unless (slot-boundp obj 'pointer)
     (error "Pointer slot is not initialized for ~A" obj))
-  (let ((pointer (pointer obj)))
-    #+ (or) (finalize obj
+  (let* ((pointer (pointer obj))
+         (s (format nil obj)))
+    (finalize obj
               (lambda ()
-                (g-object-dispose pointer))))
-  (register-g-object obj))
+                (handler-case
+                    (g-object-dispose-carefully pointer)
+                  (error (e) (format t "Error in finalizer for ~A: ~A~%" s e))))))
+  (register-g-object obj)
+  (activate-gc-hooks))
+
+(defvar *gobject-gc-hooks-lock* (make-recursive-lock "gobject-gc-hooks-lock"))
+(defvar *gobject-gc-hooks* nil);;pointers to objects to be freed
+
+(defun activate-gc-hooks ()
+  (with-recursive-lock-held (*gobject-gc-hooks-lock*)
+    (when *gobject-gc-hooks*
+      (debugf "activating gc hooks for objects: ~A~%" *gobject-gc-hooks*)
+      (loop
+         for pointer in *gobject-gc-hooks*
+         do (g-object-unref pointer))
+      (setf *gobject-gc-hooks* nil))))
+
+(defcallback g-idle-gc-hook :boolean ((data :pointer))
+  (declare (ignore data))
+  (activate-gc-hooks)
+  nil)
+
+(defun register-gobject-for-gc (pointer)
+  (with-recursive-lock-held (*gobject-gc-hooks-lock*)
+    (let ((locks-were-present (not (null *gobject-gc-hooks*))))
+      (push pointer *gobject-gc-hooks*)
+      (unless locks-were-present
+        (debugf "adding idle-gc-hook to main loop~%")
+        (glib::g-idle-add (callback g-idle-gc-hook) (null-pointer))))))
+
+(defun g-object-dispose-carefully (pointer)
+  (handler-case
+      (register-gobject-for-gc pointer)
+    (error (e) (format t "Error in dispose: ~A~%" e))))
 
 (defcallback weak-notify-print :void ((data :pointer) (object-pointer :pointer))
-  (debugf "g-object has disposed ~A ~A~%" (g-type-name (g-type-from-object object-pointer)) object-pointer))
+  (declare (ignore data))
+  (debugf "g-object has finalized ~A ~A~%" (g-type-name (g-type-from-object object-pointer)) object-pointer))
+
+(defun should-ref-sink-at-creation (object)
+;;If object was not created from lisp-side, we should ref it
+;;If an object is regular g-object, we should not ref-sink it
+;;If an object is GInitiallyUnowned, then it is created with a floating reference, we should ref-sink it
+;;A special case is GtkWindow: we should ref-sink it anyway
+  (if (g-object-has-reference object)
+      (let ((object-type (g-type-from-object (pointer object)))
+            (initially-unowned-type (g-type-from-name "GInitiallyUnowned")))
+        (g-type-is-a object-type initially-unowned-type))
+      t))
 
 (defun register-g-object (obj)
-  (debugf "registered GObject ~A with ref-count ~A~%" (pointer obj) (ref-count obj))
-  (when (or t ;; Do not understand
-            (not (g-object-has-reference obj))
-            (g-object-is-floating (pointer obj)))
+  (debugf "registered GObject ~A with ref-count ~A ~A~%" (pointer obj) (ref-count obj) (if (g-object-is-floating (pointer obj)) "(floating)" ""))
+  (when (should-ref-sink-at-creation obj)
     (debugf "g_object_ref_sink(~A)~%" (pointer obj))
     (g-object-ref-sink (pointer obj)))
   (g-object-weak-ref (pointer obj) (callback weak-notify-print) (null-pointer))
@@ -48,6 +92,9 @@
   (setf (gethash (pointer-address (pointer obj)) *foreign-gobjects-ref-count*) 1))
 
 (defun g-object-dispose (pointer)
+  (unless (gethash (pointer-address pointer) *foreign-gobjects-ref-count*)
+    (format t "GObject ~A is already disposed, signalling error~%" pointer)
+    (error "GObject ~A is already disposed" pointer))
   (debugf "g_object_unref(~A) (of type ~A, lisp-value ~A) (lisp ref-count ~A, gobject ref-count ~A)~%"
           pointer
           (g-type-name (g-type-from-object pointer))
@@ -67,7 +114,8 @@
     (error "Object ~A already disposed of from lisp side" object))
   (decf (gethash (pointer-address (pointer object)) *foreign-gobjects-ref-count*))
   (when (zerop (gethash (pointer-address (pointer object)) *foreign-gobjects-ref-count*))
-    (g-object-dispose (pointer object))))
+    (g-object-dispose (pointer object)))
+  (activate-gc-hooks))
 
 (defvar *registered-object-types* (make-hash-table :test 'equal))
 (defun register-object-type (name type)

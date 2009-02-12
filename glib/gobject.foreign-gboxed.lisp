@@ -209,6 +209,8 @@
   (debugf "disposing g-boxed-ref ~A~%" pointer)
   (unless (gethash (pointer-address pointer) *boxed-ref-count*)
     (error "g-boxed-ref ~A is already disposed from lisp-side" pointer))
+  ;;This actually turned out to be wrong
+  #+(or)
   (unless (zerop (gethash (pointer-address pointer) *boxed-ref-count*))
     (error "g-boxed-ref ~A is being disposed too early, it has still ~A references from lisp-side"
            (pointer-address pointer)
@@ -224,9 +226,12 @@
   (setf (gethash (pointer-address (pointer object)) *boxed-ref-count*) 1)
   (debugf "setting g-boxed-ref-count of ~A to 1~%" (pointer object))
   (let ((p (pointer object))
-        (type (type-of object)))
-    (tg:finalize object (lambda ()
-                          (dispose-boxed-ref type p)))))
+        (type (type-of object))
+        (s (format nil "~A" object)))
+    (tg:finalize object (lambda ()                          
+                          (handler-case
+                              (dispose-boxed-ref type p)
+                            (error (e) (format t "Error ~A for ~A~%" e s)))))))
 
 (defmethod release ((object g-boxed-ref))
   (debugf "releasing g-boxed-ref ~A~%" (pointer object))
