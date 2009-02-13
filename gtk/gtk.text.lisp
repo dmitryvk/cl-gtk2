@@ -376,11 +376,11 @@
   (assert (typep position '(or text-iter (member :cursor))))
   (if interactive
       (if (eq position :cursor)
-          (gtk-text-buffer-insert-interactive-at-cursor buffer text (length text) default-editable)
-          (gtk-text-buffer-insert-interactive buffer position text (length text) default-editable))
+          (gtk-text-buffer-insert-interactive-at-cursor buffer text -1 default-editable)
+          (gtk-text-buffer-insert-interactive buffer position text -1 default-editable))
       (progn (if (eq position :cursor)
-                 (gtk-text-buffer-insert-at-cursor buffer text (length text))
-                 (gtk-text-buffer-insert buffer position text (length text)))
+                 (gtk-text-buffer-insert-at-cursor buffer text -1)
+                 (gtk-text-buffer-insert buffer position text -1))
              t)))
 
 (export 'text-buffer-insert)
