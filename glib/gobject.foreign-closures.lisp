@@ -9,6 +9,11 @@
   (declare (ignore data))
   (finalize-lisp-closure closure))
 
+(defun call-with-restarts (fn args)
+  (restart-case
+      (apply fn args)
+    (return-from-g-closure (&optional v) :report "Return value from closure" v)))
+
 (defcallback lisp-closure-marshal :void ((closure (:pointer lisp-closure))
                                          (return-value (:pointer g-value))
                                          (count-of-args :uint)
@@ -21,7 +26,7 @@
          (return-type (and (not (null-pointer-p return-value))
                            (gvalue-type return-value)))
          (fn (get-stable-pointer-value function-id))
-         (fn-result (apply fn args)))
+         (fn-result (call-with-restarts fn args)))
     (when return-type
       (set-g-value return-value fn-result return-type))))
 
