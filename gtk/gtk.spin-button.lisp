@@ -1,6 +1,6 @@
 (in-package :gtk)
 
-(define-g-enum "GtkSpinType" spin-type (t)
+(define-g-enum "GtkSpinType" spin-type ()
   (:step-forward 0)
   (:step-backward 1) (:page-forward 2) (:page-backward 3)
   (:home 4) (:end 5) (:user-defined 6))

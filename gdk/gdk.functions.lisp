@@ -39,7 +39,7 @@
     (gdk-drawable-get-size drawable x y)
     (values (mem-ref x :int) (mem-ref y :int))))
 
-(define-g-object-class "PangoLayout" pango-layout () ())
+(define-g-object-class "PangoLayout" pango-layout (:type-initializer "pango_layout_get_type") ())
 
 (defcfun gdk-draw-layout :void
   (drawable (g-object drawable))

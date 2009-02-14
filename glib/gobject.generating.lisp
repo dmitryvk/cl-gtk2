@@ -58,13 +58,24 @@
     (string (or (gethash interface *known-interfaces*)
                 (error "Unknown interface ~A" interface)))))
 
-(defmacro define-g-object-class (g-type-name name (&optional (superclass 'g-object) (export t)) (&rest interfaces)
-                                 &body properties)
+(defun type-initializer-call (type-initializer)
+  (etypecase type-initializer
+    (string `(foreign-funcall ,type-initializer g-type))
+    (symbol `(funcall ',type-initializer))))
+
+(defmacro define-g-object-class (g-type-name name
+                                 (&key (superclass 'g-object)
+                                       (export t)
+                                       interfaces
+                                       type-initializer)
+                                 (&rest properties))
   (let* ((superclass-properties (get superclass 'properties))
          (combined-properties (append superclass-properties properties)))
     `(progn
        (defclass ,name (,superclass ,@(mapcar #'interface->lisp-class-name interfaces)) ())
        (register-object-type ,g-type-name ',name)
+       ,@(when type-initializer
+               (list (type-initializer-call type-initializer)))
        ,@(when export
                (list `(export ',name (find-package ,(package-name (symbol-package name)))))) 
        (defmethod initialize-instance :before 
@@ -89,11 +100,13 @@
          (setf (get ',name 'superclass) ',superclass
                (get ',name 'properties) ',combined-properties)))))
 
-(defmacro define-g-interface (g-name name (&optional (export t)) &body properties)
+(defmacro define-g-interface (g-name name (&key (export t) type-initializer) &body properties)
   `(progn
      (defclass ,name () ())
      ,@(when export
              (list `(export ',name (find-package ,(package-name (symbol-package name))))))
+     ,@(when type-initializer
+             (list (type-initializer-call type-initializer)))
      ,@(loop
           for property in properties
           append (property->accessors property export))
@@ -130,6 +143,18 @@
                        (not (g-class-property-definition-constructor-only property)))))
     `(,name ,accessor-name ,g-name ,type ,readable ,writable)))
 
+(defun probable-type-init-name (type-name)
+  (with-output-to-string (stream)
+    (iter (for c in-string type-name)
+          (for prev-c previous c)
+          (when (and (not (first-iteration-p))
+                     (upper-case-p c)
+                     (not (upper-case-p prev-c))
+                     (not (char= prev-c #\_)))
+            (write-char #\_ stream))
+          (write-char (char-downcase c) stream))
+    (write-string "_get_type" stream)))
+
 (defun get-g-class-definition (type)
   (let* ((g-type (ensure-g-type type))
          (g-name (g-type-name g-type))
@@ -138,22 +163,34 @@
          (superclass-name (g-name->name (g-type-name superclass-g-type)))
          (interfaces (g-type-interfaces g-type))
          (properties (class-properties g-type))
+         (type-init-name (probable-type-init-name g-name))
          (own-properties
           (remove-if-not (lambda (property)
                            (= g-type
                               (g-class-property-definition-owner-type property)))
                          properties)))
-    `(define-g-object-class ,g-name ,name (,superclass-name t) (,@(mapcar #'g-type-name interfaces))
-       ,@(mapcar (lambda (property)
-                   (property->property-definition name property))
-                 own-properties))))
+    `(define-g-object-class ,g-name ,name 
+         (:superclass ,superclass-name
+                      :export t
+                      :interfaces (,@(mapcar #'g-type-name interfaces))
+                      ,@(when (and (foreign-symbol-pointer type-init-name)
+                                   (not (null-pointer-p (foreign-symbol-pointer type-init-name))))
+                              `(:type-initializer ,type-init-name)))
+       (,@(mapcar (lambda (property)
+                    (property->property-definition name property))
+                  own-properties))
+       )))
 
 (defun get-g-interface-definition (interface)
   (let* ((type (ensure-g-type interface))
          (g-name (g-type-name type))
          (name (g-name->name g-name))
-         (properties (interface-properties type)))
-    `(define-g-interface ,g-name ,name (t)
+         (properties (interface-properties type))
+         (probable-type-initializer (probable-type-init-name g-name)))
+    `(define-g-interface ,g-name ,name
+         (:export t
+                  ,@(when (foreign-symbol-pointer probable-type-initializer)
+                          `(:type-initializer ,probable-type-initializer)))
        ,@(mapcar (lambda (property)
                    (property->property-definition name property))
                  properties))))
@@ -213,12 +250,14 @@
      (equal (g-type-fundamental (ensure-g-type type)) fund-type))
    types))
 
-(defmacro define-g-enum (g-name name (&optional (export t)) &body values)
+(defmacro define-g-enum (g-name name (&key (export t) type-initializer)  &body values)
   `(progn
      (defcenum ,name ,@values)
      (register-enum-type ,g-name ',name)
      ,@(when export
-             (list `(export ',name (find-package ,(package-name (symbol-package name))))))))
+             (list `(export ',name (find-package ,(package-name (symbol-package name))))))
+     ,@(when type-initializer
+             (list (type-initializer-call type-initializer)))))
 
 (defun enum-value->definition (enum-value)
   (let ((value-name (intern (lispify-name (enum-item-nick enum-value))
@@ -230,15 +269,23 @@
   (let* ((g-type (ensure-g-type type))
          (g-name (g-type-name g-type))
          (name (g-name->name g-name))
-         (items (get-enum-items g-type)))
-    `(define-g-enum ,g-name ,name (t) ,@(mapcar #'enum-value->definition items))))
+         (items (get-enum-items g-type))
+         (probable-type-initializer (probable-type-init-name g-name)))
+    `(define-g-enum ,g-name ,name
+         (:export t
+                  ,@(when (foreign-symbol-pointer probable-type-initializer)
+                          (list :type-initializer
+                                probable-type-initializer)))
+       ,@(mapcar #'enum-value->definition items))))
 
-(defmacro define-g-flags (g-name name (&optional (export t)) &body values)
+(defmacro define-g-flags (g-name name (&key (export t) type-initializer) &body values)
   `(progn
      (defbitfield ,name ,@values)
      (register-enum-type ,g-name ',name)
      ,@(when export
-             (list `(export ',name (find-package ,(package-name (symbol-package name))))))))
+             (list `(export ',name (find-package ,(package-name (symbol-package name))))))
+     ,@(when type-initializer
+             (list (type-initializer-call type-initializer)))))
 
 (defun flags-value->definition (flags-value)
   (let ((value-name (intern (lispify-name (flags-item-nick flags-value))
@@ -250,8 +297,14 @@
   (let* ((g-type (ensure-g-type type))
          (g-name (g-type-name g-type))
          (name (g-name->name g-name))
-         (items (get-flags-items g-type)))
-    `(define-g-flags ,g-name ,name (t) ,@(mapcar #'flags-value->definition items))))
+         (items (get-flags-items g-type))
+         (probable-type-initializer (probable-type-init-name g-name)))
+    `(define-g-flags ,g-name ,name
+         (:export t
+                  ,@(when (foreign-symbol-pointer probable-type-initializer)
+                          (list :type-initializer
+                                probable-type-initializer)))
+       ,@(mapcar #'flags-value->definition items))))
 
 (defun generate-types-hierarchy-to-file (file root-type &key include-referenced prefix package exceptions prologue interfaces enums flags objects exclusions)
   (if (not (streamp file))

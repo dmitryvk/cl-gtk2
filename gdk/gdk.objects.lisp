@@ -1,27 +1,27 @@
 (in-package :gdk)
 
-(define-g-enum "GdkGrabStatus" grab-status (t) :success :already-grabbed :invalid-time :not-viewable :frozen)
+(define-g-enum "GdkGrabStatus" grab-status () :success :already-grabbed :invalid-time :not-viewable :frozen)
 
 (define-g-object-class "GdkDisplay" display () ())
 
-(define-g-object-class "GdkDisplayManager" display-manager () ()
-  (default-display display-manager-default-display "default-display" "GdkDisplay" t t))
+(define-g-object-class "GdkDisplayManager" display-manager ()
+  ((default-display display-manager-default-display "default-display" "GdkDisplay" t t)))
 
-(define-g-object-class "GdkScreen" screen () ()
-  (font-options screen-font-options "font-options" "gpointer" t t)
-  (resolution screen-resolution "resolution" "gdouble" t t))
+(define-g-object-class "GdkScreen" screen ()
+  ((font-options screen-font-options "font-options" "gpointer" t t)
+   (resolution screen-resolution "resolution" "gdouble" t t)))
 
 (define-g-object-class "GdkGC" graphics-context () ())
 
 (define-g-object-class "GdkDrawable" drawable () ())
 
-(define-g-object-class "GdkPixmap" pixmap (drawable) ())
+(define-g-object-class "GdkPixmap" pixmap (:superclass drawable) ())
 
-(define-g-object-class "GdkWindow" gdk-window (drawable) ())
+(define-g-object-class "GdkWindow" gdk-window (:superclass drawable) ())
 
 (define-g-object-class "GdkKeymap" keymap () ())
 
-(define-g-enum "GdkEventType" event-type (t)
+(define-g-enum "GdkEventType" event-type ()
   (:nothing -1) (:delete 0)
   (:destroy 1) (:expose 2) (:motion-notify 3)
   (:button-press 4) (:2button-press 5) (:3button-press 6)
@@ -37,7 +37,7 @@
   (:window-state 32) (:setting 33) (:owner-change 34)
   (:grab-broken 35) (:damage 36)) 
 
-(gobject::define-g-flags "GdkModifierType" modifier-type (t)
+(gobject::define-g-flags "GdkModifierType" modifier-type ()
   (:shift-mask 1) (:lock-mask 2) (:control-mask 4)
   (:mod1-mask 8) (:mod2-mask 16) (:mod3-mask 32)
   (:mod4-mask 64) (:mod5-mask 128)
@@ -48,31 +48,31 @@
   (:release-mask 1073741824)
   (:modifier-mask 1543512063))
 
-(define-g-enum "GdkScrollDirection" scroll-direction (t)
+(define-g-enum "GdkScrollDirection" scroll-direction ()
   (:up 0) (:down 1)
   (:left 2) (:right 3))
 
-(define-g-enum "GdkVisibilityState" visibility-state (t)
+(define-g-enum "GdkVisibilityState" visibility-state ()
   (:unobscured 0)
   (:partial 1) (:fully-obscured 2))
 
-(define-g-enum "GdkPropertyState" property-state (t)
+(define-g-enum "GdkPropertyState" property-state ()
   :new-value :delete)
 
-(define-g-flags "GdkWindowState" window-state (t)
+(define-g-flags "GdkWindowState" window-state ()
   (:withdrawn 1)
   (:iconified 2) (:maximized 4) (:sticky 8) (:fullscreen 16)
   (:above 32) (:below 64))
 
-(define-g-enum "GdkSettingAction" setting-action (t)
+(define-g-enum "GdkSettingAction" setting-action ()
   (:new 0) (:changed 1)
   (:deleted 2))
 
-(define-g-enum "GdkOwnerChange" owner-change (t)
+(define-g-enum "GdkOwnerChange" owner-change ()
   (:new-owner 0)
   (:destroy 1) (:close 2))
 
-(define-g-flags "GdkEventMask" event-mask (t)
+(define-g-flags "GdkEventMask" event-mask ()
   (:exposure-mask 2)
   (:pointer-motion-mask 4) (:pointer-motion-hint-mask 8)
   (:button-motion-mask 16) (:button1-motion-mask 32)
@@ -291,19 +291,19 @@
   :pos :min-size :max-size :base-size :aspect
   :resize-inc :win-gravity :user-pos :user-size)
 
-(define-g-enum "GdkWindowEdge" window-edge (t)
+(define-g-enum "GdkWindowEdge" window-edge ()
   (:north-west 0) (:north 1) (:north-east 2) (:west 3)
   (:east 4) (:south-west 5) (:south 6) (:south-east 7))
 
-(define-g-object-class "GdkPixbuf" pixbuf (g-object t) nil
-  (colorspace pixbuf-colorspace "colorspace" "GdkColorspace" t nil)
-  (n-channels pixbuf-n-channels "n-channels" "gint" t nil)
-  (has-alpha pixbuf-has-alpha "has-alpha" "gboolean" t nil)
-  (bits-per-sample pixbuf-bits-per-sample "bits-per-sample" "gint" t nil)
-  (width pixbuf-width "width" "gint" t nil)
-  (height pixbuf-height "height" "gint" t nil)
-  (rowstride pixbuf-rowstride "rowstride" "gint" t nil)
-  (pixels pixbuf-pixels "pixels" "gpointer" t nil))
+(define-g-object-class "GdkPixbuf" pixbuf ()
+    ((colorspace pixbuf-colorspace "colorspace" "GdkColorspace" t nil)
+     (n-channels pixbuf-n-channels "n-channels" "gint" t nil)
+     (has-alpha pixbuf-has-alpha "has-alpha" "gboolean" t nil)
+     (bits-per-sample pixbuf-bits-per-sample "bits-per-sample" "gint" t nil)
+     (width pixbuf-width "width" "gint" t nil)
+     (height pixbuf-height "height" "gint" t nil)
+     (rowstride pixbuf-rowstride "rowstride" "gint" t nil)
+     (pixels pixbuf-pixels "pixels" "gpointer" t nil)))
 
-(define-g-object-class "GdkPixbufAnimation" pixbuf-animation (g-object t)
+(define-g-object-class "GdkPixbufAnimation" pixbuf-animation ()
     nil) 
