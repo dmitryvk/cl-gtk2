@@ -15,15 +15,18 @@
 
 (defun instance-init (instance class)
   (format t "Initializing instance ~A for type ~A (creating ~A)~%" instance (g-type-name (foreign-slot-value class 'g-type-class 'type)) *current-creating-object*)
-  (setf (gethash (pointer-address instance) *lisp-objects-references*)
-        (or *current-creating-object*
-            (let* ((g-type (foreign-slot-value class 'g-type-class 'type))
-                   (type-name (g-type-name g-type))
-                   (lisp-type-info (gethash type-name *registered-types*))
-                   (lisp-class (object-type-class lisp-type-info)))
-              (make-instance lisp-class :pointer instance))))
-  (g-object-add-toggle-ref instance (callback c-object-toggle-pointer) (null-pointer))
-  (g-object-unref instance))
+  (unless (gethash (pointer-address instance) *lisp-objects-pointers*)
+    (format t "  Proceeding with initialization...")
+    (setf (gethash (pointer-address instance) *lisp-objects-pointers*) t
+          (gethash (pointer-address instance) *lisp-objects-references*)
+          (or *current-creating-object*
+              (let* ((g-type (foreign-slot-value class 'g-type-class 'type))
+                     (type-name (g-type-name g-type))
+                     (lisp-type-info (gethash type-name *registered-types*))
+                     (lisp-class (object-type-class lisp-type-info)))
+                (make-instance lisp-class :pointer instance))))
+    (g-object-add-toggle-ref instance (callback c-object-toggle-pointer) (null-pointer))
+    (g-object-unref instance)))
 
 (defcallback c-object-toggle-pointer :void ((data :pointer) (object :pointer) (is-last-ref :boolean))
   (object-toggle-pointer data object is-last-ref))

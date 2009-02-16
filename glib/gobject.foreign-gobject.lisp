@@ -13,6 +13,7 @@
 
 (defvar *foreign-gobjects* (make-weak-hash-table :test 'equal :weakness :value))
 (defvar *foreign-gobjects-ref-count* (make-hash-table :test 'equal))
+(defvar *lisp-objects-pointers* (make-hash-table :test 'equal))
 (defvar *current-creating-object* nil)
 
 (defcstruct g-object-struct
@@ -74,6 +75,13 @@
   (declare (ignore data))
   (debugf "g-object has finalized ~A ~A~%" (g-type-name (g-type-from-object object-pointer)) object-pointer))
 
+(defun erase-pointer (data object-pointer)
+  (declare (ignore data))
+  (remhash (pointer-address object-pointer) *lisp-objects-pointers*))
+
+(defcallback weak-notify-erase-pointer :void ((data :pointer) (object-pointer :pointer))
+  (erase-pointer data object-pointer))
+
 (defun should-ref-sink-at-creation (object)
 ;;If object was not created from lisp-side, we should ref it
 ;;If an object is regular g-object, we should not ref-sink it
@@ -91,6 +99,7 @@
     (debugf "g_object_ref_sink(~A)~%" (pointer obj))
     (g-object-ref-sink (pointer obj)))
   (g-object-weak-ref (pointer obj) (callback weak-notify-print) (null-pointer))
+  (g-object-weak-ref (pointer obj) (callback weak-notify-erase-pointer) (null-pointer))
   (setf (g-object-has-reference obj) t)
   (setf (gethash (pointer-address (pointer obj)) *foreign-gobjects*)
         obj)
