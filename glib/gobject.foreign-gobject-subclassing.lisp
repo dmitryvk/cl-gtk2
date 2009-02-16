@@ -8,15 +8,15 @@
 
 (defun object-toggle-pointer (data object is-last-ref)
   (declare (ignore data))
-  (format t "Toggling pointer on ~a (~A) to being ~A~%" object (gethash (pointer-address object) *lisp-objects-references*) (if is-last-ref "last ref" "not last ref"))
+  (debugf "Toggling pointer on ~a (~A) to being ~A~%" object (gethash (pointer-address object) *lisp-objects-references*) (if is-last-ref "last ref" "not last ref"))
   (if is-last-ref
       (remhash (pointer-address object) *lisp-objects-references*)
       (setf (gethash (pointer-address object) *lisp-objects-references*) (gethash (pointer-address object) *foreign-gobjects*))))
 
 (defun instance-init (instance class)
-  (format t "Initializing instance ~A for type ~A (creating ~A)~%" instance (g-type-name (foreign-slot-value class 'g-type-class 'type)) *current-creating-object*)
+  (debugf "Initializing instance ~A for type ~A (creating ~A)~%" instance (g-type-name (foreign-slot-value class 'g-type-class 'type)) *current-creating-object*)
   (unless (gethash (pointer-address instance) *lisp-objects-pointers*)
-    (format t "  Proceeding with initialization...")
+    (debugf "  Proceeding with initialization...")
     (setf (gethash (pointer-address instance) *lisp-objects-pointers*) t
           (gethash (pointer-address instance) *lisp-objects-references*)
           (or *current-creating-object*
@@ -78,7 +78,7 @@
 
 (defun class-init (class data)
   (declare (ignore data))
-  (format t "class-init for ~A~%" (g-type-name (g-type-from-class class)))
+  (debugf "class-init for ~A~%" (g-type-name (g-type-from-class class)))
   (setf (foreign-slot-value class 'g-object-class 'get-property)
         (callback c-object-property-get)
         (foreign-slot-value class 'g-object-class 'set-property)
@@ -88,7 +88,7 @@
     (iter (for property in (object-type-properties lisp-type-info))
           (for param-spec = (property->param-spec property))
           (for property-id from 123)
-          (format t "installing property ~A~%" property)
+          (debugf "installing property ~A~%" property)
           (g-object-class-install-property class property-id param-spec)))
   )
 
@@ -101,10 +101,10 @@
          (lisp-type-info (gethash type-name *registered-types*))
          (property-info (find property-name (object-type-properties lisp-type-info) :test 'string= :key 'first))
          (property-get-fn (third property-info)))
-    (format t "get(~A,'~A')~%" lisp-object property-name)
+    (debugf "get(~A,'~A')~%" lisp-object property-name)
     (let ((value (restart-case
                      (funcall property-get-fn lisp-object)
-                   (return-from-property-getter (value) :interactive (lambda () (format t "Enter new value: ") (list (eval (read)))) value))))
+                   (return-from-property-getter (value) :interactive (lambda () (debugf "Enter new value: ") (list (eval (read)))) value))))
       (set-g-value g-value value property-type))))
 
 (defcallback c-object-property-get :void ((object :pointer) (property-id :uint) (value :pointer) (pspec :pointer))
@@ -119,13 +119,13 @@
          (property-info (find property-name (object-type-properties lisp-type-info) :test 'string= :key 'first))
          (property-set-fn (fourth property-info))
          (new-value (parse-gvalue value)))
-    (format t "set(~A,'~A',~A)~%" lisp-object property-name new-value)
+    (debugf "set(~A,'~A',~A)~%" lisp-object property-name new-value)
     (restart-case
         (funcall property-set-fn new-value lisp-object)
       (return-without-error-from-property-setter () nil))))
 
 (defcallback c-object-property-set :void ((object :pointer) (property-id :uint) (value :pointer) (pspec :pointer))
-  (format t "c-setter")
+  (debugf "c-setter")
   (object-property-set object property-id value pspec))
 
 (defmacro register-object-type-implementation (name class parent interfaces properties)

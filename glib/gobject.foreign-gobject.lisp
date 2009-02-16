@@ -107,7 +107,7 @@
 
 (defun g-object-dispose (pointer)
   (unless (gethash (pointer-address pointer) *foreign-gobjects-ref-count*)
-    (format t "GObject ~A is already disposed, signalling error~%" pointer)
+    (debugf "GObject ~A is already disposed, signalling error~%" pointer)
     (error "GObject ~A is already disposed" pointer))
   (debugf "g_object_unref(~A) (of type ~A, lisp-value ~A) (lisp ref-count ~A, gobject ref-count ~A)~%"
           pointer
