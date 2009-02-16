@@ -24,6 +24,12 @@
   (instance-init-fn :pointer)
   (value-table :pointer))
 
+(defcstruct g-type-query
+  (type g-type)
+  (type-name (:string :free-from-foreign nil))
+  (class-size :uint)
+  (instance-size :uint))
+
 (defbitfield g-type-fundamental-flags
   :classed
   :instantiatable
@@ -85,6 +91,7 @@
 
 (defcstruct g-object-class
   (type-class g-type-class)
+  (construct-properties :pointer)
   (constructor :pointer)
   (set-property :pointer)
   (get-property :pointer)
@@ -92,7 +99,8 @@
   (finalize :pointer)
   (dispatch-properties-changed :pointer)
   (notify :pointer)
-  (constructed :pointer))
+  (constructed :pointer)
+  (pdummy :pointer :count 7))
 
 (defbitfield g-param-flags
   :readable

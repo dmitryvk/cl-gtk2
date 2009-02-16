@@ -13,6 +13,7 @@
 
 (defvar *foreign-gobjects* (make-weak-hash-table :test 'equal :weakness :value))
 (defvar *foreign-gobjects-ref-count* (make-hash-table :test 'equal))
+(defvar *current-creating-object* nil)
 
 (defcstruct g-object-struct
   (type-instance g-type-instance)
@@ -21,6 +22,10 @@
 
 (defun ref-count (pointer)
   (foreign-slot-value (if (pointerp pointer) pointer (pointer pointer)) 'g-object-struct 'ref-count))
+
+(defmethod initialize-instance :around ((obj g-object) &key)
+  (let ((*current-creating-object* obj))
+    (call-next-method)))
 
 (defmethod initialize-instance :after ((obj g-object) &key &allow-other-keys)
   (unless (slot-boundp obj 'pointer)
@@ -81,7 +86,7 @@
       t))
 
 (defun register-g-object (obj)
-  (debugf "registered GObject ~A with ref-count ~A ~A~%" (pointer obj) (ref-count obj) (if (g-object-is-floating (pointer obj)) "(floating)" ""))
+  (debugf "registered GObject ~A with gobject ref-count ~A ~A~%" (pointer obj) (ref-count obj) (if (g-object-is-floating (pointer obj)) "(floating)" ""))
   (when (should-ref-sink-at-creation obj)
     (debugf "g_object_ref_sink(~A)~%" (pointer obj))
     (g-object-ref-sink (pointer obj)))

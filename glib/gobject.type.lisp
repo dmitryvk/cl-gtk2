@@ -89,6 +89,15 @@
   (info (:pointer g-type-info))
   (flags g-type-flags))
 
+(defcfun g-type-register-static-simple g-type
+  (parent-type g-type)
+  (type-name :string)
+  (class-size :uint)
+  (class-init :pointer)
+  (instance-size :uint)
+  (instance-init :pointer)
+  (flags g-type-flags))
+
 (defcfun g-type-add-interface-static :void
   (instance-type g-type)
   (interface-type g-type)
@@ -117,3 +126,7 @@
 (defcfun g-closure-get-type g-type)
 
 (g-closure-get-type)
+
+(defcfun g-type-query :void
+  (type g-type)
+  (query (:pointer g-type-query)))
