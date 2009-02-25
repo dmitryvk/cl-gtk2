@@ -30,7 +30,17 @@
            #:get-stable-pointer-value
            #:with-stable-pointer
            #:release*
-           #:disown-boxed-ref))
+           #:disown-boxed-ref
+           #:pointer
+           #:g-type-interface
+           #:g-value
+           #:register-object-type-implementation
+           #:ensure-g-type
+           #:define-vtable
+           #:g-type
+           #:set-g-value
+           #:parse-gvalue
+           #:emit-signal))
 
 (in-package :gobject)
 
