@@ -14,7 +14,8 @@
            #:g-malloc
            #:g-strdup
            #:g-string
-           #:gslist))
+           #:gslist
+           #:g-quark))
 
 (in-package :glib)
 

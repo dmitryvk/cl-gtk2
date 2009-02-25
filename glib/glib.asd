@@ -6,6 +6,7 @@
                (:file "glib.glist")
                (:file "glib.gstrv")
                (:file "glib.string")
+               (:file "glib.quark")
                (:file "gobject.package")
                (:file "gobject.structs")
                (:file "gobject.type")
