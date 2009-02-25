@@ -48,7 +48,8 @@
       (1- (ash 1 (* 8 (foreign-type-size type))))))
 
 (defun property->param-spec (property)
-  (destructuring-bind (property-name property-type property-get-fn property-set-fn) property
+  (destructuring-bind (property-name property-type accessor property-get-fn property-set-fn) property
+    (declare (ignore accessor))
     (let ((property-g-type (ensure-g-type property-type))
           (flags (append (when property-get-fn (list :readable))
                          (when property-set-fn (list :writable)))))
@@ -76,6 +77,77 @@
                                         ;(+g-type-interface+ )
         (t (error "Unknown type: ~A (~A)" property-g-type (g-type-name property-g-type)))))))
 
+(defun install-properties (class)
+  (let* ((name (g-type-name (foreign-slot-value class 'g-type-class 'type)))
+         (lisp-type-info (gethash name *registered-types*)))
+    (iter (for property in (object-type-properties lisp-type-info))
+          (for param-spec = (property->param-spec property))
+          (for property-id from 123)
+          (debugf "installing property ~A~%" property)
+          (g-object-class-install-property class property-id param-spec))))
+
+(defun vtable-item->cstruct-item (item)
+  (if (eq :skip (first item))
+      (rest item)
+      (list (first item) :pointer)))
+
+(defstruct vtable-method-info name return-type args callback-name)
+
+(defmethod make-load-form ((object vtable-method-info) &optional environment)
+  (declare (ignore environment))
+  `(make-vtable-method-info :name ',(vtable-method-info-name object)
+                            :return-type ',(vtable-method-info-return-type object)
+                            :args ',(vtable-method-info-args object)
+                            :callback-name ',(vtable-method-info-callback-name object)))
+
+(defun vtable-methods (items)
+  (iter (for item in items)
+        (when (eq :skip (first item)) (next-iteration))
+        (destructuring-bind (name callback-name return-type &rest args) item
+          (collect (make-vtable-method-info :name name :return-type return-type :args args :callback-name callback-name)))))
+
+(defvar *vtables* (make-hash-table :test 'equal))
+
+(defstruct vtable-description type-name cstruct-name methods)
+
+(defmacro define-vtable ((type-name cstruct-name) &body items)
+  `(progn
+     (defcstruct ,cstruct-name ,@(mapcar #'vtable-item->cstruct-item items))
+     (setf (gethash ,type-name *vtables*)
+           (make-vtable-description :type-name ,type-name :cstruct-name ',cstruct-name :methods (list ,@(mapcar #'make-load-form (vtable-methods items)))))
+     ,@(iter (for method in (vtable-methods items))
+             (collect `(defgeneric ,(vtable-method-info-name method) (,@(mapcar #'first (vtable-method-info-args method)))))
+             (collect `(defcallback ,(vtable-method-info-callback-name method) ,(vtable-method-info-return-type method)
+                           (,@(vtable-method-info-args method))
+                         (restart-case 
+                             (,(vtable-method-info-name method) ,@(mapcar #'first (vtable-method-info-args method)))
+                           (return-from-interface-method-implementation (v) :interactive (lambda () (list (eval (read)))) v)))))))
+
+(defun interface-init (iface data)
+  (bind (((class-name interface-name) (prog1 (get-stable-pointer-value data) (free-stable-pointer data)))
+         (vtable (gethash interface-name *vtables*))
+         (vtable-cstruct (vtable-description-cstruct-name vtable)))
+    (debugf "interface-init for class ~A and interface ~A~%" class-name interface-name)
+    (iter (for method in (vtable-description-methods vtable))
+          (setf (foreign-slot-value iface vtable-cstruct (vtable-method-info-name method)) (get-callback (vtable-method-info-callback-name method))))))
+
+(defcallback c-interface-init :void ((iface :pointer) (data :pointer))
+  (interface-init iface data))
+
+(defun add-interface (name interface)
+  (let* ((interface-info (list name interface))
+         (interface-info-ptr (allocate-stable-pointer interface-info)))
+    (with-foreign-object (info 'g-interface-info)
+      (setf (foreign-slot-value info 'g-interface-info 'interface-init) (callback c-interface-init)
+            (foreign-slot-value info 'g-interface-info 'interface-data) interface-info-ptr)
+      (g-type-add-interface-static (g-type-from-name name) (ensure-g-type interface) info))))
+
+(defun add-interfaces (name)
+  (let* ((lisp-type-info (gethash name *registered-types*))
+         (interfaces (object-type-interfaces lisp-type-info)))
+    (iter (for interface in interfaces)
+          (add-interface name interface))))
+
 (defun class-init (class data)
   (declare (ignore data))
   (debugf "class-init for ~A~%" (g-type-name (g-type-from-class class)))
@@ -83,14 +155,8 @@
         (callback c-object-property-get)
         (foreign-slot-value class 'g-object-class 'set-property)
         (callback c-object-property-set))
-  (let* ((name (g-type-name (foreign-slot-value class 'g-type-class 'type)))
-         (lisp-type-info (gethash name *registered-types*)))
-    (iter (for property in (object-type-properties lisp-type-info))
-          (for param-spec = (property->param-spec property))
-          (for property-id from 123)
-          (debugf "installing property ~A~%" property)
-          (g-object-class-install-property class property-id param-spec)))
-  )
+  
+  (install-properties class))
 
 (defun object-property-get (object property-id g-value pspec)
   (declare (ignore property-id))
@@ -100,7 +166,7 @@
          (type-name (g-type-name (foreign-slot-value pspec 'g-param-spec 'owner-type)))
          (lisp-type-info (gethash type-name *registered-types*))
          (property-info (find property-name (object-type-properties lisp-type-info) :test 'string= :key 'first))
-         (property-get-fn (third property-info)))
+         (property-get-fn (fourth property-info)))
     (debugf "get(~A,'~A')~%" lisp-object property-name)
     (let ((value (restart-case
                      (funcall property-get-fn lisp-object)
@@ -117,7 +183,7 @@
          (type-name (g-type-name (foreign-slot-value pspec 'g-param-spec 'owner-type)))
          (lisp-type-info (gethash type-name *registered-types*))
          (property-info (find property-name (object-type-properties lisp-type-info) :test 'string= :key 'first))
-         (property-set-fn (fourth property-info))
+         (property-set-fn (fifth property-info))
          (new-value (parse-gvalue value)))
     (debugf "set(~A,'~A',~A)~%" lisp-object property-name new-value)
     (restart-case
@@ -125,20 +191,27 @@
       (return-without-error-from-property-setter () nil))))
 
 (defcallback c-object-property-set :void ((object :pointer) (property-id :uint) (value :pointer) (pspec :pointer))
-  (debugf "c-setter")
   (object-property-set object property-id value pspec))
 
 (defmacro register-object-type-implementation (name class parent interfaces properties)
   (unless (stringp parent)
     (setf parent (g-type-name (ensure-g-type parent))))
   `(progn
-     (setf (gethash ,name *registered-types*) (make-object-type :name ,name :class ',class :parent ,parent :interfaces ,interfaces :properties ,properties))
+     (setf (gethash ,name *registered-types*) (make-object-type :name ,name :class ',class :parent ,parent :interfaces ',interfaces :properties ',properties))
      (with-foreign-object (query 'g-type-query)
        (g-type-query (g-type-from-name ,parent) query)
        (with-foreign-slots ((class-size instance-size) query g-type-query)
          (g-type-register-static-simple (g-type-from-name ,parent) ,name class-size (callback c-class-init) instance-size (callback c-instance-init) nil)))
+     (add-interfaces ,name)
      (defmethod initialize-instance :before ((object ,class) &key pointer)
        (unless (or pointer (and (slot-boundp object 'gobject::pointer)
                                 (gobject::pointer object)))
          (setf (gobject::pointer object) (gobject::g-object-call-constructor ,name nil nil)
-               (gobject::g-object-has-reference object) t)))))
+               (gobject::g-object-has-reference object) t)))
+     (progn
+       ,@(iter (for (prop-name prop-type prop-accessor prop-reader prop-writer) in properties)
+               (when prop-reader
+                 (collect `(defun ,prop-accessor (object) (g-object-call-get-property object ,prop-name))))
+               (when prop-writer
+                 (collect `(defun (setf ,prop-accessor) (new-value object) (g-object-call-set-property object ,prop-name new-value))))))
+     ,name))

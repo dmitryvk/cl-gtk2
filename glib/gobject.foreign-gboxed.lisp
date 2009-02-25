@@ -326,8 +326,11 @@
   (gethash name *registered-boxed-types*))
 
 (defun set-gvalue-boxed (gvalue value)
-  (declare (ignore gvalue value))
-  (error "Can not set GBoxed!"))
+  (if value
+      (progn
+        (unless (typep value 'g-boxed-ref) (error "Can only set g-boxed-ref!"))
+        (g-value-set-boxed gvalue (pointer value)))
+      (g-value-set-boxed gvalue (null-pointer))))
 
 (defun parse-gvalue-boxed (gvalue)
   (let* ((g-type (gvalue-type gvalue))
