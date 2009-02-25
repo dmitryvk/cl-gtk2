@@ -289,14 +289,14 @@
       (setf (gethash (pointer-address value) *boxed-ref-owner*) owner))))
 
 (defun g-boxed-ref-slot->methods (class slot)
-  (bind (((slot-name &key reader writer type) slot))
+  (bind (((slot-name &key reader writer type (accessor slot-name)) slot))
     `(progn ,@(when reader
-                    (list `(defmethod ,slot-name ((object ,class))
+                    (list `(defmethod ,accessor ((object ,class))
                              ,(if (stringp reader)
                                   `(foreign-funcall ,reader :pointer (pointer object) ,type)
                                   `(,reader object)))))
             ,@(when writer
-                    (list `(defmethod (setf ,slot-name) (new-value (object ,class))
+                    (list `(defmethod (setf ,accessor) (new-value (object ,class))
                              ,(if (stringp writer)
                                   `(foreign-funcall ,writer :pointer (pointer object) ,type new-value)
                                   `(,writer new-value object))))))))
