@@ -7,17 +7,17 @@
   (user-data-2 :pointer)
   (user-data-3 :pointer))
 
-(defun tree-iter-stamp (i) (cffi:foreign-slot-value (gobject::pointer i) 'tree-iter 'stamp))
+(defun tree-iter-get-stamp (i) (cffi:foreign-slot-value (gobject::pointer i) 'tree-iter 'stamp))
 (defun tree-iter-set-stamp (value i) (setf (cffi:foreign-slot-value (gobject::pointer i) 'tree-iter 'stamp) value))
-(defun tree-iter-user-data (i) (cffi:pointer-address (cffi:foreign-slot-value (gobject::pointer i) 'tree-iter 'user-data)))
+(defun tree-iter-get-user-data (i) (cffi:pointer-address (cffi:foreign-slot-value (gobject::pointer i) 'tree-iter 'user-data)))
 (defun tree-iter-set-user-data (value i) (setf (cffi:foreign-slot-value (gobject::pointer i) 'tree-iter 'user-data) (cffi:make-pointer value)))
 
 (defun tree-iter-alloc () (glib::g-malloc (cffi:foreign-type-size 'tree-iter)))
 (defun tree-iter-free (v) (glib::g-free v))
 
-(gobject::define-g-boxed-ref "GtkTreeIter" tree-iter
-  (:slots (stamp :reader tree-iter-stamp :writer tree-iter-set-stamp)
-          (user-data :reader tree-iter-user-data :writer tree-iter-set-user-data))
+(gobject:define-g-boxed-ref "GtkTreeIter" tree-iter
+  (:slots (stamp :reader tree-iter-get-stamp :writer tree-iter-set-stamp :accessor tree-iter-stamp)
+          (user-data :reader tree-iter-get-user-data :writer tree-iter-set-user-data :accessor tree-iter-user-data))
   (:alloc-function tree-iter-alloc)
   (:free-function tree-iter-free))
 
@@ -33,13 +33,6 @@
 (cffi:defcfun (%gtk-tree-path-append-index "gtk_tree_path_append_index") :void
   (path :pointer)
   (index :int))
-
-(defun tree-path-indices (path)
-  (let ((n (%gtk-tree-path-get-depth path))
-        (indices (%gtk-tree-path-get-indices path)))
-    (loop
-       for i from 0 below n
-       collect (cffi:mem-aref indices :int i))))
 
 (defun tree-path-get-indices (path)
   (setf path (gobject::pointer path))
@@ -64,7 +57,7 @@
 (gobject::define-g-boxed-ref "GtkTreePath" tree-path
   (:alloc-function gtk-tree-path-new)
   (:free-function gtk-tree-path-free)
-  (:slots (indices :reader tree-path-get-indices :writer tree-path-set-indices)))
+  (:slots (indices :reader tree-path-get-indices :writer tree-path-set-indices :accessor tree-path-indices)))
 
 (gobject::define-vtable ("GtkTreeModel" c-gtk-tree-model)
   (:skip parent-instance gobject::g-type-interface)
@@ -75,20 +68,20 @@
   (:skip tree-model-row-deleted :pointer)
   (:skip tree-model-rows-reordered :pointer)
   ;;methods
-  (tree-model-get-flags tree-model-get-flags-cb tree-model-flags (tree-model gobject:g-object))
-  (tree-model-get-n-columns tree-model-get-n-columns-cb :int (tree-model gobject:g-object))
-  (tree-model-get-column-type tree-model-get-column-type-cb gobject::g-type (tree-model gobject:g-object) (index :int))
-  (tree-model-get-iter tree-model-get-iter-cb :boolean (tree-model gobject:g-object) (iter (gobject:g-boxed-ref tree-iter)) (path (gobject:g-boxed-ref tree-path)))
-  (tree-model-get-path tree-model-get-path-cb (gobject:g-boxed-ref tree-path) (tree-model gobject:g-object) (iter (gobject:g-boxed-ref tree-iter)))
-  (tree-model-get-value tree-model-get-value-cb :void (tree-model gobject:g-object) (iter (gobject:g-boxed-ref tree-iter)) (n :int) (value (:pointer gobject::g-value)))
-  (tree-model-iter-next tree-model-iter-next-cb :boolean (tree-model gobject:g-object) (iter (gobject:g-boxed-ref tree-iter)))
-  (tree-model-iter-children tree-model-iter-children-cb :boolean (tree-model gobject:g-object) (iter (gobject:g-boxed-ref tree-iter)) (parent (gobject:g-boxed-ref tree-iter)))
-  (tree-model-iter-has-child tree-model-iter-has-child-cb :boolean (tree-model gobject:g-object) (iter (gobject:g-boxed-ref tree-iter)))
-  (tree-model-iter-n-children tree-model-iter-n-children-cb :int (tree-model gobject:g-object) (iter (gobject:g-boxed-ref tree-iter)))
-  (tree-model-iter-nth-child tree-model-iter-nth-child-cb :boolean (tree-model gobject:g-object) (iter (gobject:g-boxed-ref tree-iter)) (parent (gobject:g-boxed-ref tree-iter)) (n :int))
-  (tree-model-iter-parent tree-model-iter-parent-cb :boolean (tree-model gobject:g-object) (iter (gobject:g-boxed-ref tree-iter)) (child (gobject:g-boxed-ref tree-iter)))
-  (tree-model-ref-node tree-model-ref-node-cb :void (tree-model gobject:g-object) (iter (gobject:g-boxed-ref tree-iter)))
-  (tree-model-unref-node tree-model-unref-node-cb :void (tree-model gobject:g-object) (iter (gobject:g-boxed-ref tree-iter))))
+  (tree-model-get-flags-impl tree-model-get-flags-cb tree-model-flags (tree-model gobject:g-object))
+  (tree-model-get-n-columns-impl tree-model-get-n-columns-cb :int (tree-model gobject:g-object))
+  (tree-model-get-column-type-impl tree-model-get-column-type-cb gobject::g-type (tree-model gobject:g-object) (index :int))
+  (tree-model-get-iter-impl tree-model-get-iter-cb :boolean (tree-model gobject:g-object) (iter (gobject:g-boxed-ref tree-iter)) (path (gobject:g-boxed-ref tree-path)))
+  (tree-model-get-path-impl tree-model-get-path-cb (gobject:g-boxed-ref tree-path) (tree-model gobject:g-object) (iter (gobject:g-boxed-ref tree-iter)))
+  (tree-model-get-value-impl tree-model-get-value-cb :void (tree-model gobject:g-object) (iter (gobject:g-boxed-ref tree-iter)) (n :int) (value (:pointer gobject::g-value)))
+  (tree-model-iter-next-impl tree-model-iter-next-cb :boolean (tree-model gobject:g-object) (iter (gobject:g-boxed-ref tree-iter)))
+  (tree-model-iter-children-impl tree-model-iter-children-cb :boolean (tree-model gobject:g-object) (iter (gobject:g-boxed-ref tree-iter)) (parent (gobject:g-boxed-ref tree-iter)))
+  (tree-model-iter-has-child-impl tree-model-iter-has-child-cb :boolean (tree-model gobject:g-object) (iter (gobject:g-boxed-ref tree-iter)))
+  (tree-model-iter-n-children-impl tree-model-iter-n-children-cb :int (tree-model gobject:g-object) (iter (gobject:g-boxed-ref tree-iter)))
+  (tree-model-iter-nth-child-impl tree-model-iter-nth-child-cb :boolean (tree-model gobject:g-object) (iter (gobject:g-boxed-ref tree-iter)) (parent (gobject:g-boxed-ref tree-iter)) (n :int))
+  (tree-model-iter-parent-impl tree-model-iter-parent-cb :boolean (tree-model gobject:g-object) (iter (gobject:g-boxed-ref tree-iter)) (child (gobject:g-boxed-ref tree-iter)))
+  (tree-model-ref-node-impl tree-model-ref-node-cb :void (tree-model gobject:g-object) (iter (gobject:g-boxed-ref tree-iter)))
+  (tree-model-unref-node-impl tree-model-unref-node-cb :void (tree-model gobject:g-object) (iter (gobject:g-boxed-ref tree-iter))))
 
 (defclass array-list-store (gobject:g-object gtk:tree-model)
   ((items :initform (make-array 0 :adjustable t :fill-pointer t) :reader store-items)
@@ -101,8 +94,8 @@
   (vector-push-extend item (store-items store))
   (gobject:using* ((path (make-instance 'tree-path))
                    (iter (make-instance 'tree-iter)))
-    (setf (indices path) (list (1- (length (store-items store)))))
-    (setf (stamp iter) 0 (user-data iter) (1- (length (store-items store))))
+    (setf (tree-path-indices path) (list (1- (length (store-items store)))))
+    (setf (tree-iter-stamp iter) 0 (tree-iter-user-data iter) (1- (length (store-items store))))
     (gobject::emit-signal store "row-inserted" path iter)))
 
 (defun store-add-column (store type getter)
@@ -110,56 +103,56 @@
   (vector-push-extend getter (store-getters store))
   (1- (length (store-types store))))
 
-(defmethod tree-model-get-flags ((model array-list-store))
+(defmethod tree-model-get-flags-impl ((model array-list-store))
   '(:list-only))
 
-(defmethod tree-model-get-n-columns ((model array-list-store))
+(defmethod tree-model-get-n-columns-impl ((model array-list-store))
   (length (store-types model)))
 
-(defmethod tree-model-get-column-type ((tree-model array-list-store) index)
+(defmethod tree-model-get-column-type-impl ((tree-model array-list-store) index)
   (aref (store-types tree-model) index))
 
-(defmethod tree-model-get-iter ((model array-list-store) iter path)
+(defmethod tree-model-get-iter-impl ((model array-list-store) iter path)
   (gobject:using* (iter path)
-    (let ((indices (indices path)))
+    (let ((indices (tree-path-indices path)))
       (when (= 1 (length indices))
-        (setf (stamp iter) 0 (user-data iter) (first indices))
+        (setf (tree-iter-stamp iter) 0 (tree-iter-user-data iter) (first indices))
         t))))
 
-(defmethod tree-model-ref-node ((model array-list-store) iter) (gobject:release iter))
-(defmethod tree-model-unref-node ((model array-list-store) iter) (gobject:release iter))
+(defmethod tree-model-ref-node-impl ((model array-list-store) iter) (gobject:release iter))
+(defmethod tree-model-unref-node-impl ((model array-list-store) iter) (gobject:release iter))
 
-(defmethod tree-model-iter-next ((model array-list-store) iter)
+(defmethod tree-model-iter-next-impl ((model array-list-store) iter)
   (gobject:using* (iter)
-    (let ((n (user-data iter)))
+    (let ((n (tree-iter-user-data iter)))
       (when (< n (1- (length (store-items model))))
-        (setf (user-data iter) (1+ n))
+        (setf (tree-iter-user-data iter) (1+ n))
         t))))
 
-(defmethod tree-model-iter-nth-child ((model array-list-store) iter parent n)
+(defmethod tree-model-iter-nth-child-impl ((model array-list-store) iter parent n)
   (gobject:using* (iter parent)
-    (setf (stamp iter) 0
-          (user-data iter) n)
+    (setf (tree-iter-stamp iter) 0
+          (tree-iter-user-data iter) n)
     t))
 
-(defmethod tree-model-iter-n-children ((model array-list-store) iter)
+(defmethod tree-model-iter-n-children-impl ((model array-list-store) iter)
   (if (cffi:null-pointer-p iter)
       (length (store-items model))
       0))
 
-(defmethod tree-model-get-path ((model array-list-store) iter)
+(defmethod tree-model-get-path-impl ((model array-list-store) iter)
   (gobject:using* (iter)
     (anaphora:aprog1 (make-instance 'tree-path)
-      (setf (indices anaphora:it) (list (user-data iter)))
+      (setf (tree-path-indices anaphora:it) (list (tree-iter-user-data iter)))
       (gobject:disown-boxed-ref anaphora:it))))
 
-(defmethod tree-model-iter-has-child ((model array-list-store) iter)
+(defmethod tree-model-iter-has-child-impl ((model array-list-store) iter)
   (gobject:release iter)
   nil)
 
-(defmethod tree-model-get-value ((model array-list-store) iter n value)
+(defmethod tree-model-get-value-impl ((model array-list-store) iter n value)
   (gobject:using (iter)
-    (let ((n-row (user-data iter)))
+    (let ((n-row (tree-iter-user-data iter)))
       (gobject::set-g-value value
                             (funcall (aref (store-getters model) n) 
                                      (aref (store-items model) n-row))
