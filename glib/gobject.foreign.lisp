@@ -2,13 +2,15 @@
 
 (defgeneric release (object))
 
+(defmethod release ((object null)))
+
 (defun release* (&rest objects)
   (declare (dynamic-extent objects))
   (loop
      for object in objects
      do (release object)))
 
-(defmacro using ((var expr) &body body)
+(defmacro using ((var &optional (expr var)) &body body)
   `(let ((,var ,expr))
      (unwind-protect
           (progn ,@body)
@@ -16,7 +18,7 @@
 
 (defun using-expand (bindings body)
   (if bindings
-      (destructuring-bind (var expr) (first bindings)
+      (destructuring-bind (var &optional (expr var)) (ensure-list (first bindings))
        `(let ((,var ,expr))
           (unwind-protect
                ,(using-expand (rest bindings) body)
