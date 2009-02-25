@@ -40,7 +40,9 @@
            #:g-type
            #:set-g-value
            #:parse-gvalue
-           #:emit-signal))
+           #:emit-signal
+           #:g-value-unset
+           #:g-value-zero))
 
 (in-package :gobject)
 
