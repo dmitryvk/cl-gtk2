@@ -274,6 +274,7 @@
     (with-recursive-lock-held (*g-boxed-gc-lock*)
      (or (aprog1 (gethash (pointer-address pointer) *known-boxed-refs*)
            (when it (debugf "Boxed-ref for ~A is found (~A)~%" pointer it))
+           (when it (incf (gethash (pointer-address pointer) *boxed-ref-count*)))
            it)
          (aprog1 (make-instance name :pointer pointer)
            (setf (gethash (pointer-address pointer) *boxed-ref-owner*) (g-boxed-ref-owner type))
