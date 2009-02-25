@@ -99,8 +99,8 @@
 
 (defun store-add-item (store item)
   (vector-push-extend item (store-items store))
-  (gobject:using* ((path (make-instance 'tree-path))
-                   (iter (make-instance 'tree-iter)))
+  (let ((path (make-instance 'tree-path))
+        (iter (make-instance 'tree-iter)))
     (setf (indices path) (list (1- (length (store-items store)))))
     (setf (stamp iter) 0 (user-data iter) (1- (length (store-items store))))
     (gobject::emit-signal store "row-inserted" path iter)))

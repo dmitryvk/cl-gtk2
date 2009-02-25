@@ -198,6 +198,7 @@
 
 (defclass g-boxed-ref () ((pointer :accessor pointer :initarg :pointer)))
 
+(defvar *g-boxed-gc-lock* (make-recursive-lock "g-boxed-gc-lock"))
 (defvar *known-boxed-refs* (tg:make-weak-hash-table :test 'equal :weakness :value))
 (defvar *boxed-ref-count* (make-hash-table :test 'equal))
 (defvar *boxed-ref-owner* (make-hash-table :test 'equal))
@@ -211,36 +212,39 @@
 
 (defun dispose-boxed-ref (type pointer)
   (debugf "disposing g-boxed-ref ~A~%" pointer)
+  
   (unless (gethash (pointer-address pointer) *boxed-ref-count*)
     (error "g-boxed-ref ~A is already disposed from lisp-side" pointer))
-  ;;This actually turned out to be wrong
-  #+(or)
-  (unless (zerop (gethash (pointer-address pointer) *boxed-ref-count*))
-    (error "g-boxed-ref ~A is being disposed too early, it has still ~A references from lisp-side"
-           (pointer-address pointer)
-           (gethash (pointer-address pointer) *boxed-ref-count*)))
-  (aif (gethash (pointer-address pointer) *known-boxed-refs*)
-       (tg:cancel-finalization it))
-  (when (eq :lisp (gethash (pointer-address pointer) *boxed-ref-owner*))
-    (funcall (boxed-ref-free-function type) pointer))
-  (remhash (pointer-address pointer) *known-boxed-refs*)
-  (remhash (pointer-address pointer) *boxed-ref-count*)
-  (remhash (pointer-address pointer) *boxed-ref-owner*))
+  (with-recursive-lock-held (*g-boxed-gc-lock*)
+    (awhen (gethash (pointer-address pointer) *known-boxed-refs*)
+      (debugf "Removing finalization from ~A for pointer ~A~%" it pointer)
+      (tg:cancel-finalization it))
+    (when (eq :lisp (gethash (pointer-address pointer) *boxed-ref-owner*))
+      (funcall (boxed-ref-free-function type) pointer))
+    (remhash (pointer-address pointer) *known-boxed-refs*)
+    (remhash (pointer-address pointer) *boxed-ref-count*)
+    (remhash (pointer-address pointer) *boxed-ref-owner*)
+    (debugf "Disposed of g-boxed-ref ~A (object ~A)~%"
+            pointer
+            (gethash (pointer-address pointer) *known-boxed-refs*))))
 
 (defmethod initialize-instance :after ((object g-boxed-ref) &key)
-  (let ((address (pointer-address (pointer object))))
-    (setf (gethash address *known-boxed-refs*) object)
-    (setf (gethash address *boxed-ref-count*) 1)
-    (setf (gethash address *boxed-ref-owner*)
-          (gethash address *boxed-ref-owner* :foreign)))
-  (debugf "setting g-boxed-ref-count of ~A to 1~%" (pointer object))
-  (let ((p (pointer object))
-        (type (type-of object))
-        (s (format nil "~A" object)))
-    (tg:finalize object (lambda ()                          
-                          (handler-case
-                              (dispose-boxed-ref type p)
-                            (error (e) (format t "Error ~A for ~A~%" e s)))))))
+  (with-recursive-lock-held (*g-boxed-gc-lock*)
+    (let ((address (pointer-address (pointer object))))
+      (awhen (gethash address *known-boxed-refs*)
+        (tg:cancel-finalization it))
+      (setf (gethash address *known-boxed-refs*) object)
+      (setf (gethash address *boxed-ref-count*) 1)
+      (setf (gethash address *boxed-ref-owner*)
+            (gethash address *boxed-ref-owner* :foreign)))
+    (debugf "setting g-boxed-ref-count of ~A (for ptr ~A) to 1~%" object (pointer object))
+    (let ((p (pointer object))
+          (type (type-of object))
+          (s (format nil "~A" object)))
+      (tg:finalize object (lambda ()                          
+                            (handler-case
+                                (dispose-boxed-ref type p)
+                              (error (e) (format t "Error ~A for ~A~%" e s))))))))
 
 (defmethod release ((object g-boxed-ref))
   (debugf "releasing g-boxed-ref ~A~%" (pointer object))
@@ -267,9 +271,15 @@
 
 (defun convert-g-boxed-ref-from-pointer (pointer name type)
   (unless (null-pointer-p pointer)
-    (or (gethash (pointer-address pointer) *known-boxed-refs*)
-        (prog1 (make-instance name :pointer pointer)
-          (setf (gethash (pointer-address pointer) *boxed-ref-owner*) (g-boxed-ref-owner type))))))
+    (with-recursive-lock-held (*g-boxed-gc-lock*)
+     (or (aprog1 (gethash (pointer-address pointer) *known-boxed-refs*)
+           (when it (debugf "Boxed-ref for ~A is found (~A)~%" pointer it))
+           it)
+         (aprog1 (make-instance name :pointer pointer)
+           (setf (gethash (pointer-address pointer) *boxed-ref-owner*) (g-boxed-ref-owner type))
+           (debugf "Boxed-ref for ~A is created (~A) with owner ~A~%" pointer it
+                   (gethash (pointer-address pointer) *boxed-ref-owner*))
+           it)))))
 
 (defmethod translate-from-foreign (value (type g-boxed-ref-type))
   (let ((owner (or (gethash (pointer-address value) *boxed-ref-owner*) (g-boxed-ref-owner type)))) ;;This is needed to prevent changing ownership of already created
