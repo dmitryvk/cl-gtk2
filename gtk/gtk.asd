@@ -18,6 +18,7 @@
                (:file "gtk.entry")
                (:file "gtk.spin-button")
                (:file "gtk.text")
+               (:file "gtk.tree-model")
                
                (:file "gtk.dialog.example")
                
