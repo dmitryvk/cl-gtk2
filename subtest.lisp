@@ -79,7 +79,7 @@
   (tree-model-get-n-columns tree-model-get-n-columns-cb :int (tree-model gobject:g-object))
   (tree-model-get-column-type tree-model-get-column-type-cb gobject::g-type (tree-model gobject:g-object) (index :int))
   (tree-model-get-iter tree-model-get-iter-cb :boolean (tree-model gobject:g-object) (iter (gobject:g-boxed-ref tree-iter)) (path (gobject:g-boxed-ref tree-path)))
-  (tree-model-get-path tree-model-get-path-cb tree-path (tree-model gobject:g-object) (iter (:pointer tree-iter)))
+  (tree-model-get-path tree-model-get-path-cb (gobject:g-boxed-ref tree-path) (tree-model gobject:g-object) (iter (gobject:g-boxed-ref tree-iter)))
   (tree-model-get-value tree-model-get-value-cb :void (tree-model gobject:g-object) (iter (:pointer tree-iter)) (n :int) (value (:pointer gobject::g-value)))
   (tree-model-iter-next tree-model-iter-next-cb :boolean (tree-model gobject:g-object) (iter (:pointer tree-iter)))
   (tree-model-iter-children tree-model-iter-children-cb :boolean (tree-model gobject:g-object) (iter (:pointer tree-iter)) (parent (:pointer tree-iter)))
@@ -99,8 +99,8 @@
 
 (defun store-add-item (store item)
   (vector-push-extend item (store-items store))
-  (let ((path (make-instance 'tree-path))
-        (iter (make-instance 'tree-iter)))
+  (gobject:using* ((path (make-instance 'tree-path))
+                   (iter (make-instance 'tree-iter)))
     (setf (indices path) (list (1- (length (store-items store)))))
     (setf (stamp iter) 0 (user-data iter) (1- (length (store-items store))))
     (gobject::emit-signal store "row-inserted" path iter)))
@@ -123,6 +123,8 @@
   (let ((indices (indices path)))
     (when (= 1 (length indices))
       (setf (stamp iter) 0 (user-data iter) (first indices))
+      (gobject:release iter)
+      (gobject:release path)
       t)))
 
 (defmethod tree-model-ref-node ((model array-list-store) iter))
@@ -146,9 +148,10 @@
       0))
 
 (defmethod tree-model-get-path ((model array-list-store) iter)
-  (let ((path (%gtk-tree-path-new)))
-    (%gtk-tree-path-append-index path (cffi:pointer-address (cffi:foreign-slot-value iter 'tree-iter 'user-data)))
-    path))
+  (anaphora:aprog1 (make-instance 'tree-path)
+    (setf (indices anaphora:it) (list (user-data iter)))
+    (gobject:disown-boxed-ref anaphora:it)
+    (gobject:release iter)))
 
 (defmethod tree-model-iter-has-child ((model array-list-store) iter)
   nil)
