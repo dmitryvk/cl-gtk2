@@ -29,7 +29,8 @@
            #:free-stable-pointer
            #:get-stable-pointer-value
            #:with-stable-pointer
-           #:release*))
+           #:release*
+           #:disown-boxed-ref))
 
 (in-package :gobject)
 

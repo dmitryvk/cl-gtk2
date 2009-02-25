@@ -206,6 +206,9 @@
   (or (get name 'free-function)
       (error "g-boxed-ref class ~A has no free-function" name)))
 
+(defun disown-boxed-ref (object)
+  (setf (gethash (pointer-address (pointer object)) *boxed-ref-owner*) :foreign))
+
 (defun dispose-boxed-ref (type pointer)
   (debugf "disposing g-boxed-ref ~A~%" pointer)
   (unless (gethash (pointer-address pointer) *boxed-ref-count*)
@@ -252,7 +255,7 @@
    (owner :reader g-boxed-ref-owner :initarg :owner :initform nil))
   (:actual-type :pointer))
 
-(define-parse-method g-boxed-ref (class-name &key (owner :lisp))
+(define-parse-method g-boxed-ref (class-name &key (owner :foreign))
   (unless (get class-name 'is-g-boxed-ref)
     (error "~A is not a subtype of G-BOXED-REF (~A: ~S)" class-name class-name (symbol-plist class-name)))
   (make-instance 'g-boxed-ref-type :class-name class-name :owner owner))
@@ -269,7 +272,10 @@
           (setf (gethash (pointer-address pointer) *boxed-ref-owner*) (g-boxed-ref-owner type))))))
 
 (defmethod translate-from-foreign (value (type g-boxed-ref-type))
-  (convert-g-boxed-ref-from-pointer value (g-boxed-ref-class-name type) type))
+  (let ((owner (or (gethash (pointer-address value) *boxed-ref-owner*) (g-boxed-ref-owner type)))) ;;This is needed to prevent changing ownership of already created
+    (prog1
+        (convert-g-boxed-ref-from-pointer value (g-boxed-ref-class-name type) type)
+      (setf (gethash (pointer-address value) *boxed-ref-owner*) owner))))
 
 (defun g-boxed-ref-slot->methods (class slot)
   (bind (((slot-name &key reader writer type) slot))
@@ -341,5 +347,5 @@
       (return-from parse-gvalue-boxed nil))
     (unless (null-pointer-p (g-value-get-boxed gvalue))
       (cond
-        ((subtypep boxed-type 'g-boxed-ref) (convert-g-boxed-ref-from-pointer (g-value-get-boxed gvalue) boxed-type (make-instance 'g-boxed-ref-type :class-name boxed-type)))
+        ((subtypep boxed-type 'g-boxed-ref) (convert-g-boxed-ref-from-pointer (g-value-get-boxed gvalue) boxed-type (make-instance 'g-boxed-ref-type :class-name boxed-type :owner :foreign)))
         (t (parse-g-boxed (g-value-get-boxed gvalue) boxed-type))))))

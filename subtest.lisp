@@ -21,6 +21,7 @@
   (:alloc-function tree-iter-alloc)
   (:free-function tree-iter-free))
 
+(cffi:defctype tree-path :pointer)
 (cffi:defcfun (%gtk-tree-path-get-depth "gtk_tree_path_get_depth") :int
   (path tree-path))
 
@@ -65,8 +66,6 @@
   (:free-function gtk-tree-path-free)
   (:slots (indices :reader tree-path-get-indices :writer tree-path-set-indices)))
 
-(cffi:defctype tree-path :pointer)
-
 (gobject::define-vtable ("GtkTreeModel" c-gtk-tree-model)
   (:skip parent-instance gobject::g-type-interface)
   ;;some signals
@@ -79,7 +78,7 @@
   (tree-model-get-flags tree-model-get-flags-cb tree-model-flags (tree-model gobject:g-object))
   (tree-model-get-n-columns tree-model-get-n-columns-cb :int (tree-model gobject:g-object))
   (tree-model-get-column-type tree-model-get-column-type-cb gobject::g-type (tree-model gobject:g-object) (index :int))
-  (tree-model-get-iter tree-model-get-iter-cb :boolean (tree-model gobject:g-object) (iter (:pointer tree-iter)) (path tree-path))
+  (tree-model-get-iter tree-model-get-iter-cb :boolean (tree-model gobject:g-object) (iter (gobject:g-boxed-ref tree-iter)) (path (gobject:g-boxed-ref tree-path)))
   (tree-model-get-path tree-model-get-path-cb tree-path (tree-model gobject:g-object) (iter (:pointer tree-iter)))
   (tree-model-get-value tree-model-get-value-cb :void (tree-model gobject:g-object) (iter (:pointer tree-iter)) (n :int) (value (:pointer gobject::g-value)))
   (tree-model-iter-next tree-model-iter-next-cb :boolean (tree-model gobject:g-object) (iter (:pointer tree-iter)))
@@ -121,10 +120,9 @@
   (aref (store-types tree-model) index))
 
 (defmethod tree-model-get-iter ((model array-list-store) iter path)
-  (let ((indices (tree-path-indices path)))
+  (let ((indices (indices path)))
     (when (= 1 (length indices))
-      (cffi:with-foreign-slots ((stamp user-data user-data-2 user-data-3) iter tree-iter)
-        (setf stamp 0 user-data (cffi:make-pointer (first indices)) user-data-2 (cffi:null-pointer) user-data-3 (cffi:null-pointer)))
+      (setf (stamp iter) 0 (user-data iter) (first indices))
       t)))
 
 (defmethod tree-model-ref-node ((model array-list-store) iter))

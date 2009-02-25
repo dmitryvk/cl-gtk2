@@ -44,10 +44,10 @@
            (+g-type-interface+ (parse-gvalue-object gvalue))
            (t (error "Unknown type: ~A (~A)" type (g-type-name type))))))))
 
-(defun set-g-value (gvalue value type &key zero-g-value)
-  (if zero-g-value
-    (g-value-zero gvalue)
-    (g-value-unset gvalue))
+(defun set-g-value (gvalue value type &key zero-g-value unset-g-value)
+  (cond
+    (zero-g-value (g-value-zero gvalue))
+    (unset-g-value (g-value-unset gvalue)))
   (g-value-init gvalue type)
   (let ((fundamental-type (g-type-fundamental type)))
     (cond
