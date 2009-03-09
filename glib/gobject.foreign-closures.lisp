@@ -28,7 +28,7 @@
          (fn (get-stable-pointer-value function-id))
          (fn-result (call-with-restarts fn args)))
     (when return-type
-      (set-g-value return-value fn-result return-type))))
+      (set-g-value return-value fn-result return-type :g-value-init nil))))
 
 (defun parse-closure-arguments (count-of-args args)
   (loop
