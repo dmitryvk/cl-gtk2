@@ -39,7 +39,8 @@
   (setf (aref *registered-stable-pointers* (pointer-address stable-pointer)) nil))
 
 (defun get-stable-pointer-value (stable-pointer)
-  (aref *registered-stable-pointers* (pointer-address stable-pointer)))
+  (when (<= 0 (pointer-address stable-pointer) (length *registered-stable-pointers*))
+    (aref *registered-stable-pointers* (pointer-address stable-pointer))))
 
 (defun find-fresh-id ()
   (or (position nil *registered-stable-pointers*)
