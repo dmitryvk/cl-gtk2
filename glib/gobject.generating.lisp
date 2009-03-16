@@ -5,35 +5,117 @@
 (defvar *lisp-name-exceptions* nil)
 (defvar *generation-exclusions* nil)
 (defvar *known-interfaces* (make-hash-table :test 'equal))
+(defvar *additional-properties* nil)
 
 (defun name->supplied-p (name)
   (intern (format nil "~A-SUPPLIED-P" (symbol-name name))
           *lisp-name-package*))
 
-(defun property->method-arg (property)
-  (destructuring-bind (name accessor-name g-name type readable writable) property
-    (declare (ignore accessor-name g-name type readable writable))
-    `(,name nil ,(name->supplied-p name))))
+(defstruct property name accessor-name readable writable)
 
-(defun property->arg-push (property)
-  (destructuring-bind (name accessor-name g-name type readable writable) property
-    (declare (ignore accessor-name readable writable))
+(defstruct (gobject-property (:include property)) gname type)
+
+(defstruct (cffi-property (:include property)) type reader writer)
+
+(defmethod make-load-form ((object gobject-property) &optional env)
+  (declare (ignore env))
+  `(make-gobject-property :name ',(property-name object)
+                          :accessor-name ',(property-accessor-name object)
+                          :readable ',(property-readable object)
+                          :writable ',(property-writable object)
+                          :gname ',(gobject-property-gname object)
+                          :type ',(gobject-property-type object)))
+
+(defmethod make-load-form ((object cffi-property) &optional env)
+  (declare (ignore env))
+  `(make-cffi-property :name ',(property-name object)
+                       :accessor-name ',(property-accessor-name object)
+                       :readable ',(property-readable object)
+                       :writable ',(property-writable object)
+                       :type ',(cffi-property-type object)
+                       :reader ',(cffi-property-reader object)
+                       :writer ',(cffi-property-writer object)))
+
+(defun parse-accessor (spec)
+  (ecase (first spec)
+    (:cffi (destructuring-bind (&key reader writer) (rest spec)
+             (make-cffi-property-accessor :reader reader :writer writer)))
+    (:gobject (destructuring-bind (property-name) (rest spec)
+                (make-gobject-property-accessor :property-name property-name)))))
+
+(defun parse-gobject-property (spec)
+  (destructuring-bind (name accessor-name gname type readable writable) spec
+      (make-gobject-property :name name
+                             :accessor-name accessor-name
+                             :gname gname
+                             :type type
+                             :readable readable
+                             :writable writable)))
+
+(defun parse-cffi-property (spec)
+  (destructuring-bind (name accessor-name type reader writer) spec
+    (make-cffi-property :name name
+                        :accessor-name accessor-name
+                        :type type
+                        :reader reader
+                        :writer writer
+                        :readable (not (null reader))
+                        :writable (not (null writer)))))
+
+(defun parse-property (spec)
+  (cond
+    ((eq (first spec) :cffi) (parse-cffi-property (rest spec)))
+    (t (parse-gobject-property spec))))
+
+(defun property->method-arg (property)
+  (when (or (gobject-property-p property)
+            (and (cffi-property-p property)
+                 (property-writable property)))
+    (let ((name (property-name property)))
+      `(,name nil ,(name->supplied-p name)))))
+
+(defun gobject-property->arg-push (property)
+  (assert (typep property 'gobject-property))
+  (with-slots (name type gname) property
     `(when ,(name->supplied-p name)
-       (push ,g-name arg-names)
+       (push ,gname arg-names)
        (push ,type arg-types)
        (push ,name arg-values))))
+
+(defun cffi-property->initarg (property)
+  (assert (typep property 'cffi-property))
+  (when (property-writable property)
+    (with-slots (accessor-name name type writer) property
+      `(when ,(name->supplied-p name)
+         (setf (,accessor-name object) ,name)))))
 
 (defun accessor-name (class-name property-name)
   (intern (format nil "~A-~A" (symbol-name class-name)
                   (lispify-name property-name))
           *lisp-name-package*))
 
-(defun property->reader (property)
-  (let ((name (nth 1 property))
-        (prop-name (nth 2 property))
-        (prop-type (nth 3 property)))
-    `(defun ,name (object)
-       (g-object-call-get-property object ,prop-name ,prop-type))))
+(defgeneric property->reader (property))
+(defgeneric property->writer (property))
+
+(defmethod property->reader ((property gobject-property))
+  (with-slots (accessor-name type gname) property
+   `(defun ,accessor-name (object)
+      (g-object-call-get-property object ,gname ,type))))
+
+(defmethod property->reader ((property cffi-property))
+  (with-slots (accessor-name type reader) property
+    `(defun ,accessor-name (object)
+       (foreign-funcall ,reader g-object object ,type))))
+
+(defmethod property->writer ((property gobject-property))
+  (with-slots (accessor-name type gname) property
+    `(defun (setf ,accessor-name) (new-value object)
+       (g-object-call-set-property object ,gname new-value ,type))))
+
+(defmethod property->writer ((property cffi-property))
+  (with-slots (accessor-name type writer) property
+    `(defun (setf ,accessor-name) (new-value object)
+       (foreign-funcall ,writer g-object object ,type new-value :void))))
 
 (defun property->writer (property)
   (let ((name (nth 1 property))
@@ -44,13 +126,13 @@
        new-value)))
 
 (defun property->accessors (property export)
-  (append (when (nth 4 property)
+  (append (when (property-readable property)
             (list (property->reader property)))
-          (when (nth 5 property)
+          (when (property-writable property)
             (list (property->writer property)))
           (when export
-            (list `(export ',(nth 1 property)
-                           (find-package ,(package-name (symbol-package (nth 1 property)))))))))
+            (list `(export ',(property-accessor-name property)
+                           (find-package ,(package-name (symbol-package (property-accessor-name property)))))))))
 
 (defun interface->lisp-class-name (interface)
   (etypecase interface
@@ -69,6 +151,7 @@
                                        interfaces
                                        type-initializer)
                                  (&rest properties))
+  (setf properties (mapcar #'parse-property properties))
   (let* ((superclass-properties (get superclass 'properties))
          (combined-properties (append superclass-properties properties)))
     `(progn
@@ -80,18 +163,19 @@
                (list `(export ',name (find-package ,(package-name (symbol-package name)))))) 
        (defmethod initialize-instance :before 
            ((object ,name) &key pointer
-            ,@(mapcar #'property->method-arg
-                      combined-properties))
+            ,@(remove nil (mapcar #'property->method-arg
+                                  combined-properties)))
          (unless (or pointer (and (slot-boundp object 'pointer)
                                   (not (null-pointer-p (pointer object)))))
            (let (arg-names arg-values arg-types)
-             ,@(mapcar #'property->arg-push combined-properties)
+             ,@(mapcar #'gobject-property->arg-push (remove-if-not #'gobject-property-p combined-properties))
              (setf (pointer object)
                    (g-object-call-constructor ,g-type-name
                                               arg-names
                                               arg-values
                                               arg-types)
-                   (g-object-has-reference object) t))))
+                   (g-object-has-reference object) t)
+             ,@(mapcar #'cffi-property->initarg (remove-if-not #'cffi-property-p combined-properties)))))
        ,@(loop
             for property in properties
             append (property->accessors property export))
@@ -101,6 +185,7 @@
                (get ',name 'properties) ',combined-properties)))))
 
 (defmacro define-g-interface (g-name name (&key (export t) type-initializer) &body properties)
+  (setf properties (mapcar #'parse-property properties))
   `(progn
      (defclass ,name () ())
      ,@(when export
@@ -178,8 +263,8 @@
                               `(:type-initializer ,type-init-name)))
        (,@(mapcar (lambda (property)
                     (property->property-definition name property))
-                  own-properties))
-       )))
+                  own-properties)
+          ,@(cdr (find g-name *additional-properties* :key 'car :test 'string=))))))
 
 (defun get-g-interface-definition (interface)
   (let* ((type (ensure-g-type interface))
@@ -306,7 +391,7 @@
                                 probable-type-initializer)))
        ,@(mapcar #'flags-value->definition items))))
 
-(defun generate-types-hierarchy-to-file (file root-type &key include-referenced prefix package exceptions prologue interfaces enums flags objects exclusions)
+(defun generate-types-hierarchy-to-file (file root-type &key include-referenced prefix package exceptions prologue interfaces enums flags objects exclusions additional-properties)
   (if (not (streamp file))
       (with-open-file (stream file :direction :output :if-exists :supersede)
         (generate-types-hierarchy-to-file stream root-type
@@ -319,13 +404,15 @@
                                           :enums enums
                                           :flags flags
                                           :objects objects
-                                          :exclusions exclusions))
+                                          :exclusions exclusions
+                                          :additional-properties additional-properties))
       (let* ((*generation-exclusions* (mapcar #'ensure-g-type exclusions))
              (*lisp-name-package* (or package *package*))
              (*package* *lisp-name-package*)
              (*strip-prefix* (or prefix ""))
              (*lisp-name-exceptions* exceptions)
              (*print-case* :downcase)
+             (*additional-properties* additional-properties)
              (referenced-types (and include-referenced
                                     (filter-types-by-prefix
                                      (get-referenced-types root-type)
