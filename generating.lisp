@@ -1,5 +1,5 @@
 (defpackage :gtk-generation
-  (:use :cl :gobject :cffi)
+  (:use :cl :gobject :cffi :glib)
   (:export #:gtk-generate))
 
 (in-package :gtk-generation)
@@ -66,4 +66,9 @@
                 "GtkTreeSelection" "GtkTreeStore" "GtkUIManager" "GtkWindowGroup")
      :flags '("GtkTextSearchFlags")
      :enums '("GtkTextBufferTargetInfo")
-     :exclusions '("PangoStretch" "PangoVariant" "PangoStyle" "PangoUnderline"))))
+     :exclusions '("PangoStretch" "PangoVariant" "PangoStyle" "PangoUnderline")
+     :additional-properties
+     '(("GtkTreeViewColumn"
+        (:cffi gtk::tree-view gtk::tree-view-column-tree-view g-object "gtk_tree_view_column_get_tree_view" nil)
+        (:cffi gtk::sort-column-id gtk::tree-view-column-sort-column-id :int "gtk_tree_view_column_get_sort_column_id" "gtk_tree_view_column_set_sort_column_id")
+        (:cffi gtk::cell-renderers gtk::tree-view-column-cell-renderers (glist g-object  :free-from-foreign t) "gtk_tree_view_column_get_cell_renderers" nil))))))
