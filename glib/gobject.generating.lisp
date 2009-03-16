@@ -104,26 +104,27 @@
 
 (defmethod property->reader ((property cffi-property))
   (with-slots (accessor-name type reader) property
-    `(defun ,accessor-name (object)
-       (foreign-funcall ,reader g-object object ,type))))
+    (etypecase reader
+      (string `(defun ,accessor-name (object)
+                 (foreign-funcall ,reader g-object object ,type)))
+      (symbol `(defun ,accessor-name (object)
+                 (funcall ',reader object))))))
 
 (defmethod property->writer ((property gobject-property))
   (with-slots (accessor-name type gname) property
     `(defun (setf ,accessor-name) (new-value object)
-       (g-object-call-set-property object ,gname new-value ,type))))
+       (g-object-call-set-property object ,gname new-value ,type)
+       new-value)))
 
 (defmethod property->writer ((property cffi-property))
   (with-slots (accessor-name type writer) property
-    `(defun (setf ,accessor-name) (new-value object)
-       (foreign-funcall ,writer g-object object ,type new-value :void))))
-
-(defun property->writer (property)
-  (let ((name (nth 1 property))
-        (prop-name (nth 2 property))
-        (prop-type (nth 3 property)))
-    `(defun (setf ,name) (new-value object)
-       (g-object-call-set-property object ,prop-name new-value ,prop-type)
-       new-value)))
+    (etypecase writer
+      (string `(defun (setf ,accessor-name) (new-value object)
+                 (foreign-funcall ,writer g-object object ,type new-value :void)
+                 new-value))
+      (symbol `(defun (setf ,accessor-name) (new-value object)
+                 (funcall ',writer object new-value)
+                 new-value)))))
 
 (defun property->accessors (property export)
   (append (when (property-readable property)
@@ -257,7 +258,7 @@
     `(define-g-object-class ,g-name ,name 
          (:superclass ,superclass-name
                       :export t
-                      :interfaces (,@(mapcar #'g-type-name interfaces))
+                      :interfaces (,@(sort (mapcar #'g-type-name interfaces) 'string<))
                       ,@(when (and (foreign-symbol-pointer type-init-name)
                                    (not (null-pointer-p (foreign-symbol-pointer type-init-name))))
                               `(:type-initializer ,type-init-name)))
