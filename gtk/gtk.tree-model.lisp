@@ -1,68 +1,5 @@
 (in-package :gtk)
 
-(define-g-flags "GtkTreeModelFlags" tree-model-flags (:type-initializer "gtk_tree_model_flags_get_type")
-  (:iters-persist 1) (:list-only 2))
-
-(export 'tree-model-flags)
-
-(defcstruct tree-iter
-  (stamp :int)
-  (user-data :pointer)
-  (user-data-2 :pointer)
-  (user-data-3 :pointer))
-
-(defun tree-iter-get-stamp (i) (foreign-slot-value (pointer i) 'tree-iter 'stamp))
-(defun tree-iter-set-stamp (value i) (setf (foreign-slot-value (pointer i) 'tree-iter 'stamp) value))
-(defun tree-iter-get-user-data (i) (pointer-address (foreign-slot-value (pointer i) 'tree-iter 'user-data)))
-(defun tree-iter-set-user-data (value i) (setf (foreign-slot-value (pointer i) 'tree-iter 'user-data) (make-pointer value)))
-
-(defun tree-iter-alloc () (glib::g-malloc (foreign-type-size 'tree-iter)))
-(defun tree-iter-free (v) (glib::g-free v))
-
-(define-g-boxed-ref "GtkTreeIter" tree-iter
-  (:slots (stamp :reader tree-iter-get-stamp :writer tree-iter-set-stamp :accessor tree-iter-stamp)
-          (user-data :reader tree-iter-get-user-data :writer tree-iter-set-user-data :accessor tree-iter-user-data))
-  (:alloc-function tree-iter-alloc)
-  (:free-function tree-iter-free))
-
-(defctype tree-path :pointer)
-(defcfun (%gtk-tree-path-get-depth "gtk_tree_path_get_depth") :int
-  (path tree-path))
-
-(defcfun (%gtk-tree-path-get-indices "gtk_tree_path_get_indices") (:pointer :int)
-  (path tree-path))
-
-(defcfun (%gtk-tree-path-new "gtk_tree_path_new") :pointer)
-
-(defcfun (%gtk-tree-path-append-index "gtk_tree_path_append_index") :void
-  (path :pointer)
-  (index :int))
-
-(defun tree-path-get-indices (path)
-  (setf path (pointer path))
-  (let ((n (%gtk-tree-path-get-depth path))
-        (indices (%gtk-tree-path-get-indices path)))
-    (loop
-       for i from 0 below n
-       collect (mem-aref indices :int i))))
-
-(defun tree-path-set-indices (indices path)
-  (setf path (pointer path))
-  (loop 
-     repeat (%gtk-tree-path-get-depth path)
-     do (foreign-funcall "gtk_tree_path_up" :pointer path :boolean))
-  (loop
-     for index in indices
-     do(foreign-funcall "gtk_tree_path_append_index" :pointer path :int index :void)))
-
-(defcfun gtk-tree-path-new :pointer)
-(defcfun gtk-tree-path-free :void (path :pointer))
-
-(define-g-boxed-ref "GtkTreePath" tree-path
-  (:alloc-function gtk-tree-path-new)
-  (:free-function gtk-tree-path-free)
-  (:slots (indices :reader tree-path-get-indices :writer tree-path-set-indices :accessor tree-path-indices)))
-
 (define-vtable ("GtkTreeModel" c-gtk-tree-model)
   (:skip parent-instance g-type-interface)
   ;;some signals
@@ -87,7 +24,13 @@
   (tree-model-ref-node-impl tree-model-ref-node-cb :void (tree-model g-object) (iter (g-boxed-ref tree-iter)))
   (tree-model-unref-node-impl tree-model-unref-node-cb :void (tree-model g-object) (iter (g-boxed-ref tree-iter))))
 
-(defclass array-list-store (g-object gtk:tree-model)
+; TODO: GtkTreeSortable
+
+; TODO: GtkTreeModelSort
+
+; TODO: GtkTreeModelFilter
+
+(defclass array-list-store (g-object tree-model)
   ((items :initform (make-array 0 :adjustable t :fill-pointer t) :reader store-items)
    (columns-getters :initform (make-array 0 :adjustable t :fill-pointer t) :reader store-getters)
    (columns-types :initform (make-array 0 :adjustable t :fill-pointer t) :reader store-types)))
@@ -125,7 +68,8 @@
 (defmethod tree-model-get-iter-impl ((model array-list-store) iter path)
   (using* (iter path)
     (let ((indices (tree-path-indices path)))
-      (when (= 1 (length indices))
+      (when (and (= 1 (length indices))
+                 (< (first indices) (length (store-items model))))
         (setf (tree-iter-stamp iter) 0 (tree-iter-user-data iter) (first indices))
         t))))
 
@@ -160,6 +104,18 @@
   (release iter)
   nil)
 
+(defgeneric tree-model-item (model iter-or-path))
+
+(defmethod tree-model-item ((model array-list-store) (iter tree-iter))
+  (let ((n-row (tree-iter-user-data iter)))
+    (aref (store-items model) n-row)))
+
+(defmethod tree-model-item ((model array-list-store) (path tree-path))
+  (let ((n-row (first (tree-path-indices path))))
+    (aref (store-items model) n-row)))
+
+(export 'tree-model-item)
+
 (defmethod tree-model-get-value-impl ((model array-list-store) iter n value)
   (using (iter)
     (let ((n-row (tree-iter-user-data iter)))
@@ -168,26 +124,21 @@
                             (aref (store-items model) n-row))
                    (aref (store-types model) n)))))
 
-(defcfun (tree-view-append-column "gtk_tree_view_append_column") :int
-  (tree-view (g-object gtk:tree-view))
-  (column (g-object gtk:tree-view-column)))
+(defstruct tree-node
+  store
+  (columns-values (make-array 0 :adjustable t :fill-pointer t) :type vector)
+  (children (make-array 0 :adjustable t :fill-pointer t) :type (vector tree-node)))
 
-(export 'tree-view-append-column)
+(export 'tree-node)
 
-(defcfun (tree-view-column-pack-start "gtk_tree_view_column_pack_start") :void
-  (tree-column (g-object gtk:tree-view-column))
-  (cell (g-object gtk:cell-renderer))
-  (expand :boolean))
+(defclass tree-store (g-object tree-model)
+  ((root :reader tree-store-root)
+   (columns-types :initform (make-array 0 :adjustable t :fill-pointer t) :reader tree-store-types)
+   (columns-getters :initform (make-array 0 :adjustable t :fill-pointer t) :reader tree-store-getters)))
 
-(export 'tree-view-column-pack-start)
+(export 'tree-store)
 
-(defcfun (tree-view-column-add-attribute "gtk_tree_view_column_add_attribute") :void
-  (tree-column (g-object gtk:tree-view-column))
-  (cell-renderer (g-object gtk:cell-renderer))
-  (attribute :string)
-  (column-number :int))
-
-(export 'tree-view-column-add-attribute)
+(register-object-type-implementation "LispTreeStore" tree-store "GObject" ("GtkTreeModel") nil)
 
 (defcfun (tree-model-flags "gtk_tree_model_get_flags") tree-model-flags
   (tree-model g-object))
@@ -199,7 +150,7 @@
 
 (export 'tree-model-flags)
 
-(defcfun (tree-model-column-type "gtk_tree_model_column_get_type") g-type
+(defcfun (tree-model-column-type "gtk_tree_model_get_column_type") g-type
   (tree-model g-object)
   (index :int))
 
@@ -283,11 +234,11 @@
 
 (export 'tree-model-iter-first-child)
 
-(defcfun (tree-model-has-children "gtk_tree_model_has_child") :boolean
+(defcfun (tree-model-iter-has-child "gtk_tree_model_iter_has_child") :boolean
   (tree-model g-object)
   (iter (g-boxed-ref tree-iter)))
 
-(export 'tree-model-has-children)
+(export 'tree-model-iter-has-child)
 
 (defcfun (tree-model-iter-n-children "gtk_tree_model_iter_n_children") :int
   (tree-model g-object)

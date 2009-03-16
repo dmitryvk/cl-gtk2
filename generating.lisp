@@ -64,11 +64,56 @@
                 "GtkTextBuffer" "GtkTextChildAnchor" "GtkTextMark" "GtkTextTag"
                 "GtkTextTagTable" "GtkTreeModelFilter" "GtkTreeModelSort"
                 "GtkTreeSelection" "GtkTreeStore" "GtkUIManager" "GtkWindowGroup")
-     :flags '("GtkTextSearchFlags")
-     :enums '("GtkTextBufferTargetInfo")
+     :flags '("GtkTextSearchFlags" "GtkAccelFlags" "GtkArgFlags" "GtkAttachOptions"
+              "GtkButtonAction" "GtkCalendarDisplayOptions" "GtkCellRendererState"
+              "GtkDebugFlag" "GtkDestDefaults" "GtkDialogFlags" "GtkFileFilterFlags"
+              "GtkIconLookupFlags" "GtkObjectFlags" "GtkPrivateFlags" "GtkRcFlags"
+              "GtkRecentFilterFlags" "GtkSignalRunType" "GtkTargetFlags"
+              "GtkTreeModelFlags" "GtkUIManagerItemType" "GtkWidgetFlags")
+     :enums '("GtkTextDirection" "GtkSizeGroupMode" "GtkUnit" "GtkPrintStatus"
+              "GtkRecentSortType" "GtkFileChooserAction" "GtkCellRendererAccelMode"
+              "GtkCellRendererMode" "GtkTreeViewColumnSizing"
+              "GtkProgressBarOrientation" "GtkProgressBarStyle" "GtkUpdateType"
+              "GtkMetricType" "GtkSpinButtonUpdatePolicy" "GtkCurveType" "GtkImageType"
+              "GtkArrowType" "GtkSortType" "GtkToolbarStyle" "GtkWrapMode"
+              "GtkJustification" "GtkButtonBoxStyle" "GtkSelectionMode"
+              "GtkTreeViewGridLines" "GtkPackDirection" "GtkPolicyType" "GtkCornerType"
+              "GtkSensitivityType" "GtkShadowType" "GtkIconSize" "GtkOrientation"
+              "GtkPositionType" "GtkReliefStyle" "GtkMessageType" "GtkButtonsType"
+              "GtkWindowType" "GtkWindowPosition" "GtkResizeMode"
+              "GtkTextBufferTargetInfo" "GtkStateType" "GtkDirectionType"
+              "GtkDragResult" "GtkWidgetHelpType" "GtkPackType" "GtkNotebookTab"
+              "GtkMovementStep" "GtkAnchorType" "GtkAssistantPageType"
+              "GtkBuilderError" "GtkCellType" "GtkCListDragPos" "GtkCTreeExpanderStyle"
+              "GtkCTreeExpansionType" "GtkCTreeLineStyle" "GtkCTreePos" "GtkDeleteType"
+              "GtkExpanderStyle" "GtkFileChooserConfirmation" "GtkFileChooserError"
+              "GtkIconThemeError" "GtkIconViewDropPosition" "GtkIMPreeditStyle"
+              "GtkIMStatusStyle" "GtkMatchType" "GtkMenuDirectionType"
+              "GtkNumberUpLayout" "GtkPageOrientation" "GtkPageSet"
+              "GtkPathPriorityType" "GtkPathType" "GtkPreviewType" "GtkPrintDuplex"
+              "GtkPrintError" "GtkPrintOperationAction" "GtkPrintOperationResult"
+              "GtkPrintPages" "GtkPrintQuality" "GtkRcTokenType"
+              "GtkRecentChooserError" "GtkRecentManagerError" "GtkResponseType"
+              "GtkScrollStep" "GtkScrollType" "GtkSideType" "GtkSpinType"
+              "GtkSubmenuDirection" "GtkSubmenuPlacement" "GtkTextWindowType"
+              "GtkToolbarChildType" "GtkToolbarSpaceStyle" "GtkTreeViewDropPosition"
+              "GtkTreeViewMode" "GtkVisibility")
      :exclusions '("PangoStretch" "PangoVariant" "PangoStyle" "PangoUnderline")
      :additional-properties
      '(("GtkTreeViewColumn"
         (:cffi gtk::tree-view gtk::tree-view-column-tree-view g-object "gtk_tree_view_column_get_tree_view" nil)
         (:cffi gtk::sort-column-id gtk::tree-view-column-sort-column-id :int "gtk_tree_view_column_get_sort_column_id" "gtk_tree_view_column_set_sort_column_id")
-        (:cffi gtk::cell-renderers gtk::tree-view-column-cell-renderers (glist g-object  :free-from-foreign t) "gtk_tree_view_column_get_cell_renderers" nil))))))
+        (:cffi gtk::cell-renderers gtk::tree-view-column-cell-renderers (glist g-object  :free-from-foreign t) "gtk_tree_view_column_get_cell_renderers" nil))
+       ("GtkTreeSelection"
+        (:cffi gtk::mode gtk::tree-selection-mode gtk::tree-selection-mode "gtk_tree_selection_get_mode" "gtk_tree_selection_set_mode")
+        (:cffi gtk::select-function gtk::tree-selection-select-function nil gtk::tree-selection-get-selection-function gtk::tree-selection-set-select-function))
+       ("GtkTreeView"
+        (:cffi gtk::selection gtk::tree-view-selection g-object "gtk_tree_view_get_selection" nil)
+        (:cffi gtk::column-drag-function gtk::tree-view-column-drag-function nil nil gtk::tree-view-set-column-drag-function)
+        (:cffi gtk::bin-window gtk::tree-view-bin-window g-object "gtk_tree_view_get_bin_window" nil)
+        (:cffi gtk::search-equal-func gtk::tree-view-search-equal-func nil nil gtk::tree-view-set-search-equal-func)
+        (:cffi gtk::search-entry gtk::tree-view-search-entry g-object "gtk_tree_view_get_search_entry" "gtk_tree_view_set_search_entry")
+        (:cffi gtk::search-position-func gtk::tree-view-search-position-func nil nil gtk::tree-view-set-search-position-func)
+        (:cffi gtk::row-separator-func gtk::tree-view-row-separator-func nil nil gtk::tree-view-set-row-separartor-func))
+       ("GtkCellView"
+        (:cffi gtk::displayed-row gtk::cell-view-displayed-row (g-boxed-ref gtk::tree-path) "gtk_cell_view_get_displayed_row" "gtk_cell_view_set_displayed_row"))))))

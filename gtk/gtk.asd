@@ -2,8 +2,9 @@
   :name "gtk"
   :serial t
   :components ((:file "gtk.package")
-               (:file "gtk.generated-classes")
+               (:file "gtk.misc")
                (:file "gtk.objects")
+               (:file "gtk.generated-classes")
                (:file "gtk.main_loop_events")
                (:file "gtk.functions")
                (:file "gtk.base-classes")
@@ -19,6 +20,12 @@
                (:file "gtk.spin-button")
                (:file "gtk.text")
                (:file "gtk.tree-model")
+               (:file "gtk.tree-view-column")
+               (:file "gtk.tree-selection")
+               (:file "gtk.tree-view")
+               (:file "gtk.icon-view")
+               (:file "gtk.cell-layout")
+               (:file "gtk.cell-renderer")
                
                (:file "gtk.dialog.example")
                
