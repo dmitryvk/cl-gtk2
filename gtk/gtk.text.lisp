@@ -343,11 +343,6 @@
 
 (export 'text-buffer)
 
-(defcfun (text-buffer-tag-table "gtk_text_buffer_get_tag_table") (g-object text-tag-table)
-  (buffer (g-object text-buffer)))
-
-(export 'text-buffer-tag-table)
-
 (defcfun gtk-text-buffer-insert :void
   (buffer (g-object text-buffer))
   (iter (g-boxed-ref text-iter))
