@@ -40,7 +40,9 @@
      :exceptions `(("GObject" gobject:g-object)
                    ("GtkObject" ,(intern "GTK-OBJECT" (find-package :gtk)))
                    ("GInitiallyUnowned" gobject::g-initially-unowned)
-                   ("GtkWindow" ,(intern "GTK-WINDOW" (find-package :gtk))))
+                   ("GtkWindow" ,(intern "GTK-WINDOW" (find-package :gtk)))
+                   ("GtkUIManager" ,(intern "UI-MANAGER" (find-package :gtk)))
+                   ("GtkUIManagerItemType" ,(intern "UI-MANAGER-ITEM-TYPE" (find-package :gtk))))
      :prologue (format nil "(in-package :gtk)")
      :interfaces '("GtkBuildable"
                    "GtkCellEditable"
@@ -63,7 +65,8 @@
                 "GtkPrintSettings" "GtkRecentManager" "GtkSizeGroup" "GtkStatusIcon"
                 "GtkTextBuffer" "GtkTextChildAnchor" "GtkTextMark" "GtkTextTag"
                 "GtkTextTagTable" "GtkTreeModelFilter" "GtkTreeModelSort"
-                "GtkTreeSelection" "GtkTreeStore" "GtkUIManager" "GtkWindowGroup")
+                "GtkTreeSelection" "GtkTreeStore" "GtkUIManager" "GtkWindowGroup"
+                "GtkToggleAction" "GtkRecentAction" "GtkRadioAction")
      :flags '("GtkTextSearchFlags" "GtkAccelFlags" "GtkArgFlags" "GtkAttachOptions"
               "GtkButtonAction" "GtkCalendarDisplayOptions" "GtkCellRendererState"
               "GtkDebugFlag" "GtkDestDefaults" "GtkDialogFlags" "GtkFileFilterFlags"
@@ -131,4 +134,12 @@
         (:cffi gtk::relief-style gtk::tool-item-relief-style gtk::relief-style "gtk_tool_item_get_relief_style" nil))
        ("GtkMenuToolButton"
         (:cffi gtk::arrow-tooltip-text gtk::menu-tool-button-arrow-tooltip-text :string nil "gtk_menu_tool_button_set_arrow_tooltip_text")
-        (:cffi gtk::arrow-tooltip-markup gtk::menu-tool-button-arrow-tooltip-markup :string nil "gtk_menu_tool_button_set_arrow_tooltip_markup"))))))
+        (:cffi gtk::arrow-tooltip-markup gtk::menu-tool-button-arrow-tooltip-markup :string nil "gtk_menu_tool_button_set_arrow_tooltip_markup"))
+       ("GtkUIManager"
+        (:cffi gtk::accel-group gtk::ui-manager-accel-group g-object "gtk_ui_manager_get_accel_group" nil))
+       ("GtkActionGroup"
+        (:cffi gtk::translate-function gtk::action-group-translate-function nil nil gtk::action-group-set-translate-func)
+        (:cffi gtk::translation-domain gtk::action-group-translation-domain nil nil gtk::gtk-action-group-set-translation-domain))
+       ("GtkAction"
+        (:cffi gtk::accel-path gtk::action-accel-path (:string :free-from-foreign nil :free-to-foreign t) "gtk_action_get_accel_path" "gtk_action_set_accel_path")
+        (:cffi gtk::accel-group gtk::action-accel-group g-object nil "gtk_action_set_accel_group"))))))

@@ -7,14 +7,14 @@
                (:export t :type-initializer "gtk_size_group_mode_get_type")
                (:none 0) (:horizontal 1) (:vertical 2) (:both 3))
 
+(define-g-enum "GtkUnit" unit (:export t :type-initializer "gtk_unit_get_type")
+               (:pixel 0) (:points 1) (:inch 2) (:mm 3))
+
 (define-g-enum "GtkPrintStatus" print-status
                (:export t :type-initializer "gtk_print_status_get_type")
                (:initial 0) (:preparing 1) (:generating-data 2)
                (:sending-data 3) (:pending 4) (:pending-issue 5) (:printing 6)
                (:finished 7) (:finished-aborted 8))
-
-(define-g-enum "GtkUnit" unit (:export t :type-initializer "gtk_unit_get_type")
-               (:pixel 0) (:points 1) (:inch 2) (:mm 3))
 
 (define-g-enum "GtkRecentSortType" recent-sort-type
                (:export t :type-initializer "gtk_recent_sort_type_get_type")
@@ -38,15 +38,15 @@
                 "gtk_tree_view_column_sizing_get_type")
                (:grow-only 0) (:autosize 1) (:fixed 2))
 
-(define-g-enum "GtkProgressBarStyle" progress-bar-style
-               (:export t :type-initializer "gtk_progress_bar_style_get_type")
-               (:continuous 0) (:discrete 1))
-
 (define-g-enum "GtkProgressBarOrientation" progress-bar-orientation
                (:export t :type-initializer
                 "gtk_progress_bar_orientation_get_type")
                (:left-to-right 0) (:right-to-left 1) (:bottom-to-top 2)
                (:top-to-bottom 3))
+
+(define-g-enum "GtkProgressBarStyle" progress-bar-style
+               (:export t :type-initializer "gtk_progress_bar_style_get_type")
+               (:continuous 0) (:discrete 1))
 
 (define-g-enum "GtkUpdateType" update-type
                (:export t :type-initializer "gtk_update_type_get_type")
@@ -82,13 +82,13 @@
                (:export t :type-initializer "gtk_toolbar_style_get_type")
                (:icons 0) (:text 1) (:both 2) (:both-horiz 3))
 
-(define-g-enum "GtkJustification" justification
-               (:export t :type-initializer "gtk_justification_get_type")
-               (:left 0) (:right 1) (:center 2) (:fill 3))
-
 (define-g-enum "GtkWrapMode" wrap-mode
                (:export t :type-initializer "gtk_wrap_mode_get_type") (:none 0)
                (:char 1) (:word 2) (:word-char 3))
+
+(define-g-enum "GtkJustification" justification
+               (:export t :type-initializer "gtk_justification_get_type")
+               (:left 0) (:right 1) (:center 2) (:fill 3))
 
 (define-g-enum "GtkButtonBoxStyle" button-box-style
                (:export t :type-initializer "gtk_button_box_style_get_type")
@@ -108,13 +108,13 @@
                (:export t :type-initializer "gtk_pack_direction_get_type")
                (:ltr 0) (:rtl 1) (:ttb 2) (:btt 3))
 
-(define-g-enum "GtkPolicyType" policy-type
-               (:export t :type-initializer "gtk_policy_type_get_type")
-               (:always 0) (:automatic 1) (:never 2))
-
 (define-g-enum "GtkCornerType" corner-type
                (:export t :type-initializer "gtk_corner_type_get_type")
                (:top-left 0) (:bottom-left 1) (:top-right 2) (:bottom-right 3))
+
+(define-g-enum "GtkPolicyType" policy-type
+               (:export t :type-initializer "gtk_policy_type_get_type")
+               (:always 0) (:automatic 1) (:never 2))
 
 (define-g-enum "GtkSensitivityType" sensitivity-type
                (:export t :type-initializer "gtk_sensitivity_type_get_type")
@@ -533,7 +533,7 @@
                 (:export t :type-initializer "gtk_tree_model_flags_get_type")
                 (:iters-persist 1) (:list-only 2))
 
-(define-g-flags "GtkUIManagerItemType" u-i-manager-item-type (:export t)
+(define-g-flags "GtkUIManagerItemType" ui-manager-item-type (:export t)
                 (:auto 0) (:menubar 1) (:menu 2) (:toolbar 4) (:placeholder 8)
                 (:popup 16) (:menuitem 32) (:toolitem 64) (:separator 128)
                 (:accelerator 256))
@@ -562,13 +562,6 @@
 
 (define-g-interface "GtkFileChooser" file-chooser
                     (:export t :type-initializer "gtk_file_chooser_get_type")
-                    (local-only file-chooser-local-only "local-only" "gboolean"
-                     t t)
-                    (preview-widget-active file-chooser-preview-widget-active
-                     "preview-widget-active" "gboolean" t t)
-                    (use-preview-label file-chooser-use-preview-label
-                     "use-preview-label" "gboolean" t t)
-                    (filter file-chooser-filter "filter" "GtkFileFilter" t t)
                     (show-hidden file-chooser-show-hidden "show-hidden"
                      "gboolean" t t)
                     (select-multiple file-chooser-select-multiple
@@ -579,6 +572,13 @@
                      "preview-widget" "GtkWidget" t t)
                     (file-system-backend file-chooser-file-system-backend
                      "file-system-backend" "gchararray" nil nil)
+                    (use-preview-label file-chooser-use-preview-label
+                     "use-preview-label" "gboolean" t t)
+                    (filter file-chooser-filter "filter" "GtkFileFilter" t t)
+                    (preview-widget-active file-chooser-preview-widget-active
+                     "preview-widget-active" "gboolean" t t)
+                    (local-only file-chooser-local-only "local-only" "gboolean"
+                     t t)
                     (extra-widget file-chooser-extra-widget "extra-widget"
                      "GtkWidget" t t)
                     (do-overwrite-confirmation
@@ -606,23 +606,23 @@
 
 (define-g-interface "GtkRecentChooser" recent-chooser
                     (:export t :type-initializer "gtk_recent_chooser_get_type")
+                    (limit recent-chooser-limit "limit" "gint" t t)
                     (recent-manager recent-chooser-recent-manager
                      "recent-manager" "GtkRecentManager" nil nil)
-                    (show-tips recent-chooser-show-tips "show-tips" "gboolean"
-                     t t)
-                    (sort-type recent-chooser-sort-type "sort-type"
-                     "GtkRecentSortType" t t)
-                    (limit recent-chooser-limit "limit" "gint" t t)
                     (show-not-found recent-chooser-show-not-found
                      "show-not-found" "gboolean" t t)
-                    (filter recent-chooser-filter "filter" "GtkRecentFilter" t
-                     t)
-                    (show-private recent-chooser-show-private "show-private"
-                     "gboolean" t t)
                     (show-icons recent-chooser-show-icons "show-icons"
                      "gboolean" t t)
                     (local-only recent-chooser-local-only "local-only"
                      "gboolean" t t)
+                    (show-tips recent-chooser-show-tips "show-tips" "gboolean"
+                     t t)
+                    (show-private recent-chooser-show-private "show-private"
+                     "gboolean" t t)
+                    (filter recent-chooser-filter "filter" "GtkRecentFilter" t
+                     t)
+                    (sort-type recent-chooser-sort-type "sort-type"
+                     "GtkRecentSortType" t t)
                     (select-multiple recent-chooser-select-multiple
                      "select-multiple" "gboolean" t t))
 
@@ -2471,7 +2471,13 @@
                         (sensitive action-sensitive "sensitive" "gboolean" t t)
                         (visible action-visible "visible" "gboolean" t t)
                         (action-group action-action-group "action-group"
-                         "GtkActionGroup" t t)))
+                         "GtkActionGroup" t t)
+                        (:cffi accel-path action-accel-path
+                         (:string :free-from-foreign nil :free-to-foreign t)
+                         "gtk_action_get_accel_path"
+                         "gtk_action_set_accel_path")
+                        (:cffi accel-group action-accel-group g-object nil
+                         "gtk_action_set_accel_group")))
 
 (define-g-object-class "GtkActionGroup" action-group
                        (:superclass g-object :export t :interfaces
@@ -2480,8 +2486,13 @@
                        ((name action-group-name "name" "gchararray" t nil)
                         (sensitive action-group-sensitive "sensitive"
                          "gboolean" t t)
-                        (visible action-group-visible "visible" "gboolean" t
-                         t)))
+                        (visible action-group-visible "visible" "gboolean" t t)
+                        (:cffi translate-function
+                         action-group-translate-function nil nil
+                         action-group-set-translate-func)
+                        (:cffi translation-domain
+                         action-group-translation-domain nil nil
+                         gtk-action-group-set-translation-domain)))
 
 (define-g-object-class "GtkBuilder" builder
                        (:superclass g-object :export t :interfaces nil
@@ -2805,15 +2816,42 @@
                         :type-initializer "gtk_tree_store_get_type")
                        nil)
 
-(define-g-object-class "GtkUIManager" u-i-manager
+(define-g-object-class "GtkUIManager" ui-manager
                        (:superclass g-object :export t :interfaces
                         ("GtkBuildable"))
-                       ((add-tearoffs u-i-manager-add-tearoffs "add-tearoffs"
+                       ((add-tearoffs ui-manager-add-tearoffs "add-tearoffs"
                          "gboolean" t t)
-                        (ui u-i-manager-ui "ui" "gchararray" t nil)))
+                        (ui ui-manager-ui "ui" "gchararray" t nil)
+                        (:cffi accel-group ui-manager-accel-group g-object
+                         "gtk_ui_manager_get_accel_group" nil)))
 
 (define-g-object-class "GtkWindowGroup" window-group
                        (:superclass g-object :export t :interfaces nil
                         :type-initializer "gtk_window_group_get_type")
                        nil)
+
+(define-g-object-class "GtkToggleAction" toggle-action
+                       (:superclass action :export t :interfaces
+                        ("GtkBuildable") :type-initializer
+                        "gtk_toggle_action_get_type")
+                       ((draw-as-radio toggle-action-draw-as-radio
+                         "draw-as-radio" "gboolean" t t)
+                        (active toggle-action-active "active" "gboolean" t t)))
+
+(define-g-object-class "GtkRecentAction" recent-action
+                       (:superclass action :export t :interfaces
+                        ("GtkBuildable" "GtkRecentChooser") :type-initializer
+                        "gtk_recent_action_get_type")
+                       ((show-numbers recent-action-show-numbers "show-numbers"
+                         "gboolean" t t)))
+
+(define-g-object-class "GtkRadioAction" radio-action
+                       (:superclass toggle-action :export t :interfaces
+                        ("GtkBuildable") :type-initializer
+                        "gtk_radio_action_get_type")
+                       ((value radio-action-value "value" "gint" t t)
+                        (group radio-action-group "group" "GtkRadioAction" nil
+                         t)
+                        (current-value radio-action-current-value
+                         "current-value" "gint" t t)))
 

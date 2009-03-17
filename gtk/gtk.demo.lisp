@@ -1,5 +1,5 @@
 (defpackage :gtk-demo
-  (:use :cl :gtk :gdk :gobject)
+  (:use :cl :gtk :gdk :gobject :anaphora :iter)
   (:export #:test
            #:test-entry
            #:table-packing
@@ -12,7 +12,9 @@
            #:demo-code-editor
            #:test-treeview-list
            #:test-combobox
-           #:test-toolbar))
+           #:test-toolbar
+           #:test-color-button
+           #:test-ui-manager))
 
 (in-package :gtk-demo)
 
@@ -318,5 +320,51 @@
     (toolbar-insert toolbar (make-instance 'separator-tool-item) -1)
     (toolbar-insert toolbar (make-instance 'tool-button :stock-id "gtk-undo" :sensitive nil) -1)
     (toolbar-insert toolbar (make-instance 'tool-button :stock-id "gtk-redo") -1)
+    (gtk-widget-show-all window)
+    (gtk-main)))
+
+(defun test-color-button ()
+  (let* ((window (make-instance 'gtk-window :type :toplevel :title "Color button" :width-request 200 :height-request 100 :window-position :center))
+         (button (make-instance 'color-button :label "Choose your color" :use-alpha t)))
+    (gobject:g-signal-connect window "destroy" (lambda (w) (gobject:release w) (gtk-main-quit)))
+    (container-add window button)
+    (setf (color-button-color button)
+          (make-color :red (random 65536) :green (random 65536) :blue (random 65536)))
+    (gtk-widget-show-all window)
+    (gtk-main)))
+
+(defun test-ui-manager ()
+  (let* ((window (make-instance 'gtk-window :type :toplevel :title "UI Manager" :default-width 200 :default-height 100 :window-position :center))
+         (ui-manager (make-instance 'ui-manager))
+         (print-confirmation t))
+    (ui-manager-add-ui-from-string ui-manager
+                                   "
+<ui>
+  <toolbar action='toolbar1'>
+      <separator/>
+      <toolitem name='Left' action='justify-left'/>
+      <toolitem name='Center' action='justify-center'/>
+      <toolitem name='Right' action='justify-right'/>
+      <toolitem name='Zoom in' action='zoom-in' />
+      <toolitem name='print-confirm' action='print-confirm' />
+      <separator/>
+  </toolbar>
+</ui>")
+    (gobject:g-signal-connect window "destroy" (lambda (w) (gobject:release w) (gtk-main-quit)))
+    (iter (with fn = (lambda (action) (when print-confirmation (format t "Action ~A with name ~A activated~%" action (action-name action)))))
+          (with action-group = (make-instance 'action-group :name "Actions"))
+          (finally (let ((a (make-instance 'toggle-action :name "print-confirm" :label "Print" :stock-id "gtk-print-report" :active t)))
+                     (g-signal-connect a "toggled" (lambda (action) (setf print-confirmation (toggle-action-active action))))
+                     (action-group-add-action action-group a))
+                   (ui-manager-insert-action-group ui-manager action-group 0))
+          (for (name stock-id) in '(("justify-left" "gtk-justify-left")
+                                    ("justify-center" "gtk-justify-center")
+                                    ("justify-right" "gtk-justify-right")
+                                    ("zoom-in" "gtk-zoom-in")))
+          (for action = (make-instance 'action :name name :stock-id stock-id))
+          (g-signal-connect action "activate" fn)
+          (action-group-add-action action-group action))
+    (awhen (ui-manager-widget ui-manager "/toolbar1")
+      (container-add window it))
     (gtk-widget-show-all window)
     (gtk-main)))
