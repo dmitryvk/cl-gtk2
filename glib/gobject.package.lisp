@@ -42,7 +42,8 @@
            #:parse-gvalue
            #:emit-signal
            #:g-value-unset
-           #:g-value-zero))
+           #:g-value-zero
+           #:g-value-take-boxed))
 
 (in-package :gobject)
 

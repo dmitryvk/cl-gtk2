@@ -243,6 +243,10 @@
   (g-value (:pointer g-value))
   (new-value :pointer))
 
+(defcfun g-value-take-boxed :void
+  (g-value (:pointer g-value))
+  (new-value :pointer))
+
 (defcfun g-value-get-boxed :pointer
   (g-value (:pointer g-value)))
 

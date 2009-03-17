@@ -85,8 +85,15 @@
     (real-parse-g-boxed pointer object)
     object))
 
-(defun g-boxed->cstruct (object)
-  (let ((pointer (foreign-alloc (type-of object))))
+(defun boxed-alloc (type alloc-type)
+  (ecase alloc-type
+    (:cffi (foreign-alloc type))
+    (:boxed (let ((pointer (foreign-alloc type)))
+              (prog1 (g-boxed-copy (g-type-from-name (boxed-type-gname type)) pointer)
+                (foreign-free pointer))))))
+
+(defun g-boxed->cstruct (object &key (alloc-type :cffi))
+  (let ((pointer (boxed-alloc (type-of object) alloc-type)))
     (real-unparse-g-boxed pointer object)
     pointer))
 
@@ -337,16 +344,23 @@
       result)))
 
 (defvar *registered-boxed-types* (make-hash-table :test 'equal))
+(defvar *registered-boxed-names* (make-hash-table))
 (defun register-boxed-type (name type)
-  (setf (gethash name *registered-boxed-types*) type))
+  (setf (gethash name *registered-boxed-types*) type
+        (gethash type *registered-boxed-names*) name))
 (defun get-registered-boxed-type (name)
   (gethash name *registered-boxed-types*))
+
+(defun boxed-type-gname (type)
+  (gethash type *registered-boxed-names*))
 
 (defun set-gvalue-boxed (gvalue value)
   (if value
       (progn
-        (unless (typep value 'g-boxed-ref) (error "Can only set g-boxed-ref!"))
-        (g-value-set-boxed gvalue (pointer value)))
+        (cond
+          ((typep value 'g-boxed-ref)
+           (g-value-set-boxed gvalue (pointer value)))
+          (t (g-value-take-boxed gvalue (g-boxed->cstruct value :alloc-type :boxed)))))
       (g-value-set-boxed gvalue (null-pointer))))
 
 (defun parse-gvalue-boxed (gvalue)
