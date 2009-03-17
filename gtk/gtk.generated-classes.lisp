@@ -7,14 +7,14 @@
                (:export t :type-initializer "gtk_size_group_mode_get_type")
                (:none 0) (:horizontal 1) (:vertical 2) (:both 3))
 
-(define-g-enum "GtkUnit" unit (:export t :type-initializer "gtk_unit_get_type")
-               (:pixel 0) (:points 1) (:inch 2) (:mm 3))
-
 (define-g-enum "GtkPrintStatus" print-status
                (:export t :type-initializer "gtk_print_status_get_type")
                (:initial 0) (:preparing 1) (:generating-data 2)
                (:sending-data 3) (:pending 4) (:pending-issue 5) (:printing 6)
                (:finished 7) (:finished-aborted 8))
+
+(define-g-enum "GtkUnit" unit (:export t :type-initializer "gtk_unit_get_type")
+               (:pixel 0) (:points 1) (:inch 2) (:mm 3))
 
 (define-g-enum "GtkRecentSortType" recent-sort-type
                (:export t :type-initializer "gtk_recent_sort_type_get_type")
@@ -38,15 +38,15 @@
                 "gtk_tree_view_column_sizing_get_type")
                (:grow-only 0) (:autosize 1) (:fixed 2))
 
+(define-g-enum "GtkProgressBarStyle" progress-bar-style
+               (:export t :type-initializer "gtk_progress_bar_style_get_type")
+               (:continuous 0) (:discrete 1))
+
 (define-g-enum "GtkProgressBarOrientation" progress-bar-orientation
                (:export t :type-initializer
                 "gtk_progress_bar_orientation_get_type")
                (:left-to-right 0) (:right-to-left 1) (:bottom-to-top 2)
                (:top-to-bottom 3))
-
-(define-g-enum "GtkProgressBarStyle" progress-bar-style
-               (:export t :type-initializer "gtk_progress_bar_style_get_type")
-               (:continuous 0) (:discrete 1))
 
 (define-g-enum "GtkUpdateType" update-type
                (:export t :type-initializer "gtk_update_type_get_type")
@@ -82,13 +82,13 @@
                (:export t :type-initializer "gtk_toolbar_style_get_type")
                (:icons 0) (:text 1) (:both 2) (:both-horiz 3))
 
-(define-g-enum "GtkWrapMode" wrap-mode
-               (:export t :type-initializer "gtk_wrap_mode_get_type") (:none 0)
-               (:char 1) (:word 2) (:word-char 3))
-
 (define-g-enum "GtkJustification" justification
                (:export t :type-initializer "gtk_justification_get_type")
                (:left 0) (:right 1) (:center 2) (:fill 3))
+
+(define-g-enum "GtkWrapMode" wrap-mode
+               (:export t :type-initializer "gtk_wrap_mode_get_type") (:none 0)
+               (:char 1) (:word 2) (:word-char 3))
 
 (define-g-enum "GtkButtonBoxStyle" button-box-style
                (:export t :type-initializer "gtk_button_box_style_get_type")
@@ -108,13 +108,13 @@
                (:export t :type-initializer "gtk_pack_direction_get_type")
                (:ltr 0) (:rtl 1) (:ttb 2) (:btt 3))
 
-(define-g-enum "GtkCornerType" corner-type
-               (:export t :type-initializer "gtk_corner_type_get_type")
-               (:top-left 0) (:bottom-left 1) (:top-right 2) (:bottom-right 3))
-
 (define-g-enum "GtkPolicyType" policy-type
                (:export t :type-initializer "gtk_policy_type_get_type")
                (:always 0) (:automatic 1) (:never 2))
+
+(define-g-enum "GtkCornerType" corner-type
+               (:export t :type-initializer "gtk_corner_type_get_type")
+               (:top-left 0) (:bottom-left 1) (:top-right 2) (:bottom-right 3))
 
 (define-g-enum "GtkSensitivityType" sensitivity-type
                (:export t :type-initializer "gtk_sensitivity_type_get_type")
@@ -562,28 +562,52 @@
 
 (define-g-interface "GtkFileChooser" file-chooser
                     (:export t :type-initializer "gtk_file_chooser_get_type")
-                    (show-hidden file-chooser-show-hidden "show-hidden"
-                     "gboolean" t t)
-                    (select-multiple file-chooser-select-multiple
-                     "select-multiple" "gboolean" t t)
-                    (action file-chooser-action "action" "GtkFileChooserAction"
+                    (local-only file-chooser-local-only "local-only" "gboolean"
                      t t)
-                    (preview-widget file-chooser-preview-widget
-                     "preview-widget" "GtkWidget" t t)
-                    (file-system-backend file-chooser-file-system-backend
-                     "file-system-backend" "gchararray" nil nil)
+                    (do-overwrite-confirmation
+                     file-chooser-do-overwrite-confirmation
+                     "do-overwrite-confirmation" "gboolean" t t)
                     (use-preview-label file-chooser-use-preview-label
                      "use-preview-label" "gboolean" t t)
-                    (filter file-chooser-filter "filter" "GtkFileFilter" t t)
                     (preview-widget-active file-chooser-preview-widget-active
                      "preview-widget-active" "gboolean" t t)
-                    (local-only file-chooser-local-only "local-only" "gboolean"
+                    (show-hidden file-chooser-show-hidden "show-hidden"
+                     "gboolean" t t)
+                    (action file-chooser-action "action" "GtkFileChooserAction"
                      t t)
                     (extra-widget file-chooser-extra-widget "extra-widget"
                      "GtkWidget" t t)
-                    (do-overwrite-confirmation
-                     file-chooser-do-overwrite-confirmation
-                     "do-overwrite-confirmation" "gboolean" t t))
+                    (file-system-backend file-chooser-file-system-backend
+                     "file-system-backend" "gchararray" nil nil)
+                    (preview-widget file-chooser-preview-widget
+                     "preview-widget" "GtkWidget" t t)
+                    (filter file-chooser-filter "filter" "GtkFileFilter" t t)
+                    (select-multiple file-chooser-select-multiple
+                     "select-multiple" "gboolean" t t)
+                    (:cffi current-name file-chooser-current-name
+                     (:string :free-to-foreign t :encoding :utf-8) nil
+                     "gtk_file_chooser_set_current_name")
+                    (:cffi filename file-chooser-filename
+                     (g-string :free-from-foreign t :free-to-foreign t)
+                     "gtk_file_chooser_get_filename"
+                     "gtk_file_chooser_set_filename")
+                    (:cffi current-folder file-chooser-current-folder
+                     (g-string :free-from-foreign t :free-to-foreign t)
+                     "gtk_file_chooser_get_current_folder"
+                     "gtk_file_chooser_set_current_folder")
+                    (:cffi uri file-chooser-uri
+                     (g-string :free-from-foreign t :free-to-foreign t)
+                     "gtk_file_chooser_get_uri" "gtk_file_chooser_set_uri")
+                    (:cffi current-folder-uri file-chooser-current-folder-uri
+                     (g-string :free-from-foreign t :free-to-foreign t)
+                     "gtk_file_chooser_get_current_folder_uri"
+                     "gtk_file_chooser_set_current_folder_uri")
+                    (:cffi preview-filename file-chooser-preview-filename
+                     (g-string :free-from-foreign t :free-to-foreign t)
+                     "gtk_file_chooser_get_preview_filename" nil)
+                    (:cffi preview-uri file-chooser-preview-uri
+                     (g-string :free-from-foreign t :free-to-foreign t)
+                     "gtk_file_chooser_get_preview_uri" nil))
 
 (define-g-interface "GtkFileChooserEmbed" file-chooser-embed (:export t))
 
@@ -606,25 +630,25 @@
 
 (define-g-interface "GtkRecentChooser" recent-chooser
                     (:export t :type-initializer "gtk_recent_chooser_get_type")
-                    (limit recent-chooser-limit "limit" "gint" t t)
-                    (recent-manager recent-chooser-recent-manager
-                     "recent-manager" "GtkRecentManager" nil nil)
-                    (show-not-found recent-chooser-show-not-found
-                     "show-not-found" "gboolean" t t)
                     (show-icons recent-chooser-show-icons "show-icons"
                      "gboolean" t t)
                     (local-only recent-chooser-local-only "local-only"
                      "gboolean" t t)
-                    (show-tips recent-chooser-show-tips "show-tips" "gboolean"
-                     t t)
-                    (show-private recent-chooser-show-private "show-private"
-                     "gboolean" t t)
                     (filter recent-chooser-filter "filter" "GtkRecentFilter" t
                      t)
+                    (show-tips recent-chooser-show-tips "show-tips" "gboolean"
+                     t t)
+                    (limit recent-chooser-limit "limit" "gint" t t)
+                    (select-multiple recent-chooser-select-multiple
+                     "select-multiple" "gboolean" t t)
                     (sort-type recent-chooser-sort-type "sort-type"
                      "GtkRecentSortType" t t)
-                    (select-multiple recent-chooser-select-multiple
-                     "select-multiple" "gboolean" t t))
+                    (recent-manager recent-chooser-recent-manager
+                     "recent-manager" "GtkRecentManager" nil nil)
+                    (show-not-found recent-chooser-show-not-found
+                     "show-not-found" "gboolean" t t)
+                    (show-private recent-chooser-show-private "show-private"
+                     "gboolean" t t))
 
 (define-g-interface "GtkToolShell" tool-shell
                     (:export t :type-initializer "gtk_tool_shell_get_type"))
@@ -698,9 +722,9 @@
                         :type-initializer "gtk_window_get_type")
                        ((type gtk-window-type "type" "GtkWindowType" t nil)
                         (title gtk-window-title "title" "gchararray" t t)
+                        (role gtk-window-role "role" "gchararray" t t)
                         (startup-id gtk-window-startup-id "startup-id"
                          "gchararray" nil t)
-                        (role gtk-window-role "role" "gchararray" t t)
                         (allow-shrink gtk-window-allow-shrink "allow-shrink"
                          "gboolean" t t)
                         (allow-grow gtk-window-allow-grow "allow-grow"
@@ -806,7 +830,22 @@
                        (:superclass dialog :export t :interfaces
                         ("AtkImplementorIface" "GtkBuildable")
                         :type-initializer "gtk_font_selection_dialog_get_type")
-                       nil)
+                       ((:cffi font-name font-selection-dialog-font-name
+                         (g-string :free-from-foreign t :free-to-foreign t)
+                         "gtk_font_selection_dialog_get_font_name"
+                         "gtk_font_selection_dialog_set_font_name")
+                        (:cffi preview-text font-selection-dialog-preview-text
+                         :string "gtk_font_selection_dialog_get_preview_text"
+                         "gtk_font_selection_dialog_set_preview_text")
+                        (:cffi apply-button font-selection-dialog-apply-button
+                         g-object "gtk_font_selection_dialog_get_apply_button"
+                         nil)
+                        (:cffi cancel-button
+                         font-selection-dialog-cancel-button g-object
+                         "gtk_font_selection_dialog_get_cancel_button" nil)
+                        (:cffi ok-button font-selection-dialog-ok-button
+                         g-object "gtk_font_selection_dialog_get_ok_button"
+                         nil)))
 
 (define-g-object-class "GtkInputDialog" input-dialog
                        (:superclass dialog :export t :interfaces
@@ -2253,7 +2292,9 @@
 (define-g-object-class "GtkFileFilter" file-filter
                        (:superclass gtk-object :export t :interfaces nil
                         :type-initializer "gtk_file_filter_get_type")
-                       nil)
+                       ((:cffi name file-filter-name :string
+                         "gtk_file_filter_get_name"
+                         "gtk_file_filter_set_name")))
 
 (define-g-object-class "GtkRecentFilter" recent-filter
                        (:superclass gtk-object :export t :interfaces nil
@@ -2388,22 +2429,6 @@
                          "gtk-enable-tooltips" "gboolean" t t)
                         (gtk-button-images settings-gtk-button-images
                          "gtk-button-images" "gboolean" t t)
-                        (gtk-menu-images settings-gtk-menu-images
-                         "gtk-menu-images" "gboolean" t t)
-                        (gtk-scrolled-window-placement
-                         settings-gtk-scrolled-window-placement
-                         "gtk-scrolled-window-placement" "GtkCornerType" t t)
-                        (gtk-can-change-accels settings-gtk-can-change-accels
-                         "gtk-can-change-accels" "gboolean" t t)
-                        (gtk-menu-popup-delay settings-gtk-menu-popup-delay
-                         "gtk-menu-popup-delay" "gint" t t)
-                        (gtk-menu-popdown-delay settings-gtk-menu-popdown-delay
-                         "gtk-menu-popdown-delay" "gint" t t)
-                        (gtk-menu-bar-popup-delay
-                         settings-gtk-menu-bar-popup-delay
-                         "gtk-menu-bar-popup-delay" "gint" t t)
-                        (gtk-color-palette settings-gtk-color-palette
-                         "gtk-color-palette" "gchararray" t t)
                         (gtk-toolbar-style settings-gtk-toolbar-style
                          "gtk-toolbar-style" "GtkToolbarStyle" t t)
                         (gtk-toolbar-icon-size settings-gtk-toolbar-icon-size
@@ -2411,12 +2436,28 @@
                         (gtk-label-select-on-focus
                          settings-gtk-label-select-on-focus
                          "gtk-label-select-on-focus" "gboolean" t t)
+                        (gtk-menu-images settings-gtk-menu-images
+                         "gtk-menu-images" "gboolean" t t)
+                        (gtk-can-change-accels settings-gtk-can-change-accels
+                         "gtk-can-change-accels" "gboolean" t t)
+                        (gtk-menu-popup-delay settings-gtk-menu-popup-delay
+                         "gtk-menu-popup-delay" "gint" t t)
+                        (gtk-menu-popdown-delay settings-gtk-menu-popdown-delay
+                         "gtk-menu-popdown-delay" "gint" t t)
+                        (gtk-color-palette settings-gtk-color-palette
+                         "gtk-color-palette" "gchararray" t t)
                         (gtk-entry-select-on-focus
                          settings-gtk-entry-select-on-focus
                          "gtk-entry-select-on-focus" "gboolean" t t)
                         (gtk-entry-password-hint-timeout
                          settings-gtk-entry-password-hint-timeout
-                         "gtk-entry-password-hint-timeout" "guint" t t)))
+                         "gtk-entry-password-hint-timeout" "guint" t t)
+                        (gtk-scrolled-window-placement
+                         settings-gtk-scrolled-window-placement
+                         "gtk-scrolled-window-placement" "GtkCornerType" t t)
+                        (gtk-menu-bar-popup-delay
+                         settings-gtk-menu-bar-popup-delay
+                         "gtk-menu-bar-popup-delay" "gint" t t)))
 
 (define-g-object-class "GtkRcStyle" rc-style
                        (:superclass g-object :export t :interfaces nil

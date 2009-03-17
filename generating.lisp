@@ -142,4 +142,20 @@
         (:cffi gtk::translation-domain gtk::action-group-translation-domain nil nil gtk::gtk-action-group-set-translation-domain))
        ("GtkAction"
         (:cffi gtk::accel-path gtk::action-accel-path (:string :free-from-foreign nil :free-to-foreign t) "gtk_action_get_accel_path" "gtk_action_set_accel_path")
-        (:cffi gtk::accel-group gtk::action-accel-group g-object nil "gtk_action_set_accel_group"))))))
+        (:cffi gtk::accel-group gtk::action-accel-group g-object nil "gtk_action_set_accel_group"))
+       ("GtkFileChooser"
+        (:cffi gtk::current-name gtk::file-chooser-current-name (:string :free-to-foreign t :encoding :utf-8) nil "gtk_file_chooser_set_current_name")
+        (:cffi gtk::filename gtk::file-chooser-filename (glib:g-string :free-from-foreign t :free-to-foreign t) "gtk_file_chooser_get_filename" "gtk_file_chooser_set_filename")
+        (:cffi gtk::current-folder gtk::file-chooser-current-folder (glib:g-string :free-from-foreign t :free-to-foreign t) "gtk_file_chooser_get_current_folder" "gtk_file_chooser_set_current_folder")
+        (:cffi gtk::uri gtk::file-chooser-uri (glib:g-string :free-from-foreign t :free-to-foreign t) "gtk_file_chooser_get_uri" "gtk_file_chooser_set_uri")
+        (:cffi gtk::current-folder-uri gtk::file-chooser-current-folder-uri (glib:g-string :free-from-foreign t :free-to-foreign t) "gtk_file_chooser_get_current_folder_uri" "gtk_file_chooser_set_current_folder_uri")
+        (:cffi gtk::preview-filename gtk::file-chooser-preview-filename (glib:g-string :free-from-foreign t :free-to-foreign t) "gtk_file_chooser_get_preview_filename" nil)
+        (:cffi gtk::preview-uri gtk::file-chooser-preview-uri (glib:g-string :free-from-foreign t :free-to-foreign t) "gtk_file_chooser_get_preview_uri" nil))
+       ("GtkFileFilter"
+        (:cffi gtk::name gtk::file-filter-name :string "gtk_file_filter_get_name" "gtk_file_filter_set_name"))
+       ("GtkFontSelectionDialog"
+        (:cffi gtk::font-name gtk::font-selection-dialog-font-name (glib:g-string :free-from-foreign t :free-to-foreign t) "gtk_font_selection_dialog_get_font_name" "gtk_font_selection_dialog_set_font_name")
+        (:cffi gtk::preview-text gtk::font-selection-dialog-preview-text :string "gtk_font_selection_dialog_get_preview_text" "gtk_font_selection_dialog_set_preview_text")
+        (:cffi gtk::apply-button gtk::font-selection-dialog-apply-button g-object "gtk_font_selection_dialog_get_apply_button" nil)
+        (:cffi gtk::cancel-button gtk::font-selection-dialog-cancel-button g-object "gtk_font_selection_dialog_get_cancel_button" nil)
+        (:cffi gtk::ok-button gtk::font-selection-dialog-ok-button g-object "gtk_font_selection_dialog_get_ok_button" nil))))))

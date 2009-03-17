@@ -14,7 +14,11 @@
            #:test-combobox
            #:test-toolbar
            #:test-color-button
-           #:test-ui-manager))
+           #:test-ui-manager
+           #:test-color-button
+           #:test-color-selection
+           #:test-file-chooser
+           #:test-font-chooser))
 
 (in-package :gtk-demo)
 
@@ -366,5 +370,55 @@
           (action-group-add-action action-group action))
     (awhen (ui-manager-widget ui-manager "/toolbar1")
       (container-add window it))
+    (gtk-widget-show-all window)
+    (gtk-main)))
+
+(defun test-color-button ()
+  (let ((window (make-instance 'gtk-window :title "Color button" :type :toplevel :window-position :center :width-request 100 :height-request 100))
+        (button (make-instance 'color-button :title "Color button")))
+    (g-signal-connect window "destroy" (lambda (w) (release w) (gtk-main-quit)))
+    (g-signal-connect button "color-set" (lambda (b) (release b) (format t "Chose color ~A~%" (color-button-color button))))
+    (container-add window button)
+    (gtk-widget-show-all window)
+    (gtk-main)))
+
+(defun test-color-selection ()
+  (let ((window (make-instance 'gtk-window :title "Color selection" :type :toplevel :window-position :center))
+        (selection (make-instance 'color-selection :has-opacity-control t)))
+    (g-signal-connect window "destroy" (lambda (w) (declare (ignore w)) (gtk-main-quit)))
+    (g-signal-connect selection "color-changed" (lambda (s) (declare (ignore s)) (unless (color-selection-adjusting-p selection) (format t "color: ~A~%" (color-selection-current-color selection)))))
+    (container-add window selection)
+    (gtk-widget-show-all window)
+    (gtk-main)))
+
+(defun test-file-chooser ()
+  (let ((window (make-instance 'gtk-window :title "file chooser" :type :toplevel :window-position :center :default-width 100 :default-height 100))
+        (v-box (make-instance 'v-box))
+        (button (make-instance 'file-chooser-button :action :open))
+        (b (make-instance 'button :label "Choose for save" :stock-id "gtk-save")))
+    (g-signal-connect window "destroy" (lambda (w) (declare (ignore w)) (gtk-main-quit)))
+    (g-signal-connect button "file-set" (lambda (b) (declare (ignore b)) (format t "File set: ~A~%" (file-chooser-filename button))))
+    (g-signal-connect b "clicked" (lambda (b)
+                                    (declare (ignore b))
+                                    (let ((d (make-instance 'file-chooser-dialog :action :save :title "Choose file to save")))
+                                      (dialog-add-button d "gtk-save" :accept)
+                                      (dialog-add-button d "gtk-cancel" :cancel)
+                                      (when (eq (dialog-run d) :accept)
+                                        (format t "saved to file ~A~%" (file-chooser-filename d)))
+                                      (object-destroy d))))
+    (container-add window v-box)
+    (box-pack-start v-box button)
+    (box-pack-start v-box b)
+    (gtk-widget-show-all window)
+    (gtk-main)))
+
+(defun test-font-chooser ()
+  (let ((window (make-instance 'gtk-window :title "fonts" :type :toplevel :window-position :center :default-width 100 :default-height 100))
+        (v-box (make-instance 'v-box))
+        (button (make-instance 'font-button :title "Choose font" :font-name "Sans 10")))
+    (g-signal-connect window "destroy" (lambda (w) (declare (ignore w)) (gtk-main-quit)))
+    (g-signal-connect button "font-set" (lambda (b) (declare (ignore b)) (format t "Chose font ~A~%" (font-button-font-name button))))
+    (container-add window v-box)
+    (box-pack-start v-box button)
     (gtk-widget-show-all window)
     (gtk-main)))

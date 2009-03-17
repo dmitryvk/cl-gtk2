@@ -29,6 +29,7 @@
                (:file "gtk.combo-box")
                (:file "gtk.menu")
                (:file "gtk.ui-manager")
+               (:file "gtk.selectors")
                
                (:file "gtk.dialog.example")
                
