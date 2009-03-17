@@ -90,7 +90,7 @@
     t))
 
 (defmethod tree-model-iter-n-children-impl ((model array-list-store) iter)
-  (if (null-pointer-p iter)
+  (if (null iter)
       (length (store-items model))
       0))
 
