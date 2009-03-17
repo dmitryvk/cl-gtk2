@@ -36,13 +36,6 @@
                        :reader ',(cffi-property-reader object)
                        :writer ',(cffi-property-writer object)))
 
-(defun parse-accessor (spec)
-  (ecase (first spec)
-    (:cffi (destructuring-bind (&key reader writer) (rest spec)
-             (make-cffi-property-accessor :reader reader :writer writer)))
-    (:gobject (destructuring-bind (property-name) (rest spec)
-                (make-gobject-property-accessor :property-name property-name)))))
-
 (defun parse-gobject-property (spec)
   (destructuring-bind (name accessor-name gname type readable writable) spec
       (make-gobject-property :name name
@@ -94,43 +87,43 @@
                   (lispify-name property-name))
           *lisp-name-package*))
 
-(defgeneric property->reader (property))
-(defgeneric property->writer (property))
+(defgeneric property->reader (class property))
+(defgeneric property->writer (class property))
 
-(defmethod property->reader ((property gobject-property))
+(defmethod property->reader (class (property gobject-property))
   (with-slots (accessor-name type gname) property
-   `(defun ,accessor-name (object)
+   `(defmethod ,accessor-name ((object ,class))
       (g-object-call-get-property object ,gname ,type))))
 
-(defmethod property->reader ((property cffi-property))
+(defmethod property->reader (class (property cffi-property))
   (with-slots (accessor-name type reader) property
     (etypecase reader
-      (string `(defun ,accessor-name (object)
+      (string `(defmethod ,accessor-name ((object ,class))
                  (foreign-funcall ,reader g-object object ,type)))
-      (symbol `(defun ,accessor-name (object)
+      (symbol `(defmethod ,accessor-name ((object ,class))
                  (funcall ',reader object))))))
 
-(defmethod property->writer ((property gobject-property))
+(defmethod property->writer (class (property gobject-property))
   (with-slots (accessor-name type gname) property
-    `(defun (setf ,accessor-name) (new-value object)
+    `(defmethod (setf ,accessor-name) (new-value (object ,class))
        (g-object-call-set-property object ,gname new-value ,type)
        new-value)))
 
-(defmethod property->writer ((property cffi-property))
+(defmethod property->writer (class (property cffi-property))
   (with-slots (accessor-name type writer) property
     (etypecase writer
-      (string `(defun (setf ,accessor-name) (new-value object)
+      (string `(defmethod (setf ,accessor-name) (new-value (object ,class))
                  (foreign-funcall ,writer g-object object ,type new-value :void)
                  new-value))
-      (symbol `(defun (setf ,accessor-name) (new-value object)
+      (symbol `(defmethod (setf ,accessor-name) (new-value (object ,class))
                  (funcall ',writer object new-value)
                  new-value)))))
 
-(defun property->accessors (property export)
+(defun property->accessors (class property export)
   (append (when (property-readable property)
-            (list (property->reader property)))
+            (list (property->reader class property)))
           (when (property-writable property)
-            (list (property->writer property)))
+            (list (property->writer class property)))
           (when export
             (list `(export ',(property-accessor-name property)
                            (find-package ,(package-name (symbol-package (property-accessor-name property)))))))))
@@ -179,7 +172,7 @@
              ,@(mapcar #'cffi-property->initarg (remove-if-not #'cffi-property-p combined-properties)))))
        ,@(loop
             for property in properties
-            append (property->accessors property export))
+            append (property->accessors name property export))
        
        (eval-when (:compile-toplevel :load-toplevel :execute)
          (setf (get ',name 'superclass) ',superclass
@@ -195,7 +188,7 @@
              (list (type-initializer-call type-initializer)))
      ,@(loop
           for property in properties
-          append (property->accessors property export))
+          append (property->accessors name property export))
      (eval-when (:compile-toplevel :load-toplevel :execute)
        (setf (get ',name 'properties) ',properties)
        (setf (gethash ,g-name *known-interfaces*) ',name))))
