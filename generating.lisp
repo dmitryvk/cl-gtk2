@@ -116,4 +116,19 @@
         (:cffi gtk::search-position-func gtk::tree-view-search-position-func nil nil gtk::tree-view-set-search-position-func)
         (:cffi gtk::row-separator-func gtk::tree-view-row-separator-func nil nil gtk::tree-view-set-row-separartor-func))
        ("GtkCellView"
-        (:cffi gtk::displayed-row gtk::cell-view-displayed-row (g-boxed-ref gtk::tree-path) "gtk_cell_view_get_displayed_row" "gtk_cell_view_set_displayed_row"))))))
+        (:cffi gtk::displayed-row gtk::cell-view-displayed-row (g-boxed-ref gtk::tree-path) "gtk_cell_view_get_displayed_row" "gtk_cell_view_set_displayed_row"))
+       ("GtkComboBox"
+        (:cffi gtk::active-iter gtk::combo-box-active-iter (g-boxed-ref gtk::tree-iter) gtk::combo-box-get-active-iter "gtk_combo_box_set_active_iter")
+        (:cffi gtk::row-separator-func gtk::combo-box-separator-func nil nil gtk::combo-box-set-separator-func))
+       ("GtkMenu"
+        (:cffi gtk::screen gtk::menu-screen g-object nil "gtk_menu_set_screen"))
+       ("GtkToolItem"
+        (:cffi gtk::expand gtk::tool-item-expand :boolean "gtk_tool_item_get_expand" "gtk_tool_item_set_expand")
+        (:cffi gtk::use-drag-window gtk::tool-item-use-drag-window :boolean "gtk_tool_item_get_use_drag_window" "gtk_tool_item_set_use_drag_window")
+        (:cffi gtk::icon-size gtk::tool-item-icon-size gtk::icon-size "gtk_tool_item_get_icon_size" nil)
+        (:cffi gtk::orientation gtk::tool-item-orientation gtk::orientation "gtk_tool_item_get_orientation" nil)
+        (:cffi gtk::toolbar-style gtk::tool-item-toolbar-style gtk::toolbar-style "gtk_tool_item_get_toolbar_style" nil)
+        (:cffi gtk::relief-style gtk::tool-item-relief-style gtk::relief-style "gtk_tool_item_get_relief_style" nil))
+       ("GtkMenuToolButton"
+        (:cffi gtk::arrow-tooltip-text gtk::menu-tool-button-arrow-tooltip-text :string nil "gtk_menu_tool_button_set_arrow_tooltip_text")
+        (:cffi gtk::arrow-tooltip-markup gtk::menu-tool-button-arrow-tooltip-markup :string nil "gtk_menu_tool_button_set_arrow_tooltip_markup"))))))

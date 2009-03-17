@@ -26,6 +26,8 @@
                (:file "gtk.icon-view")
                (:file "gtk.cell-layout")
                (:file "gtk.cell-renderer")
+               (:file "gtk.combo-box")
+               (:file "gtk.menu")
                
                (:file "gtk.dialog.example")
                

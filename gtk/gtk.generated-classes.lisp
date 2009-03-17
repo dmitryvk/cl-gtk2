@@ -562,28 +562,28 @@
 
 (define-g-interface "GtkFileChooser" file-chooser
                     (:export t :type-initializer "gtk_file_chooser_get_type")
+                    (local-only file-chooser-local-only "local-only" "gboolean"
+                     t t)
+                    (preview-widget-active file-chooser-preview-widget-active
+                     "preview-widget-active" "gboolean" t t)
                     (use-preview-label file-chooser-use-preview-label
                      "use-preview-label" "gboolean" t t)
-                    (extra-widget file-chooser-extra-widget "extra-widget"
-                     "GtkWidget" t t)
-                    (do-overwrite-confirmation
-                     file-chooser-do-overwrite-confirmation
-                     "do-overwrite-confirmation" "gboolean" t t)
                     (filter file-chooser-filter "filter" "GtkFileFilter" t t)
+                    (show-hidden file-chooser-show-hidden "show-hidden"
+                     "gboolean" t t)
                     (select-multiple file-chooser-select-multiple
                      "select-multiple" "gboolean" t t)
                     (action file-chooser-action "action" "GtkFileChooserAction"
                      t t)
-                    (file-system-backend file-chooser-file-system-backend
-                     "file-system-backend" "gchararray" nil nil)
                     (preview-widget file-chooser-preview-widget
                      "preview-widget" "GtkWidget" t t)
-                    (preview-widget-active file-chooser-preview-widget-active
-                     "preview-widget-active" "gboolean" t t)
-                    (show-hidden file-chooser-show-hidden "show-hidden"
-                     "gboolean" t t)
-                    (local-only file-chooser-local-only "local-only" "gboolean"
-                     t t))
+                    (file-system-backend file-chooser-file-system-backend
+                     "file-system-backend" "gchararray" nil nil)
+                    (extra-widget file-chooser-extra-widget "extra-widget"
+                     "GtkWidget" t t)
+                    (do-overwrite-confirmation
+                     file-chooser-do-overwrite-confirmation
+                     "do-overwrite-confirmation" "gboolean" t t))
 
 (define-g-interface "GtkFileChooserEmbed" file-chooser-embed (:export t))
 
@@ -606,25 +606,25 @@
 
 (define-g-interface "GtkRecentChooser" recent-chooser
                     (:export t :type-initializer "gtk_recent_chooser_get_type")
-                    (select-multiple recent-chooser-select-multiple
-                     "select-multiple" "gboolean" t t)
-                    (limit recent-chooser-limit "limit" "gint" t t)
-                    (show-tips recent-chooser-show-tips "show-tips" "gboolean"
-                     t t)
                     (recent-manager recent-chooser-recent-manager
                      "recent-manager" "GtkRecentManager" nil nil)
-                    (show-private recent-chooser-show-private "show-private"
-                     "gboolean" t t)
-                    (show-not-found recent-chooser-show-not-found
-                     "show-not-found" "gboolean" t t)
+                    (show-tips recent-chooser-show-tips "show-tips" "gboolean"
+                     t t)
                     (sort-type recent-chooser-sort-type "sort-type"
                      "GtkRecentSortType" t t)
-                    (show-icons recent-chooser-show-icons "show-icons"
-                     "gboolean" t t)
+                    (limit recent-chooser-limit "limit" "gint" t t)
+                    (show-not-found recent-chooser-show-not-found
+                     "show-not-found" "gboolean" t t)
                     (filter recent-chooser-filter "filter" "GtkRecentFilter" t
                      t)
+                    (show-private recent-chooser-show-private "show-private"
+                     "gboolean" t t)
+                    (show-icons recent-chooser-show-icons "show-icons"
+                     "gboolean" t t)
                     (local-only recent-chooser-local-only "local-only"
-                     "gboolean" t t))
+                     "gboolean" t t)
+                    (select-multiple recent-chooser-select-multiple
+                     "select-multiple" "gboolean" t t))
 
 (define-g-interface "GtkToolShell" tool-shell
                     (:export t :type-initializer "gtk_tool_shell_get_type"))
@@ -698,9 +698,9 @@
                         :type-initializer "gtk_window_get_type")
                        ((type gtk-window-type "type" "GtkWindowType" t nil)
                         (title gtk-window-title "title" "gchararray" t t)
-                        (role gtk-window-role "role" "gchararray" t t)
                         (startup-id gtk-window-startup-id "startup-id"
                          "gchararray" nil t)
+                        (role gtk-window-role "role" "gchararray" t t)
                         (allow-shrink gtk-window-allow-shrink "allow-shrink"
                          "gboolean" t t)
                         (allow-grow gtk-window-allow-grow "allow-grow"
@@ -1067,7 +1067,12 @@
                         (popup-shown combo-box-popup-shown "popup-shown"
                          "gboolean" t nil)
                         (button-sensitivity combo-box-button-sensitivity
-                         "button-sensitivity" "GtkSensitivityType" t t)))
+                         "button-sensitivity" "GtkSensitivityType" t t)
+                        (:cffi active-iter combo-box-active-iter
+                         (g-boxed-ref tree-iter) combo-box-get-active-iter
+                         "gtk_combo_box_set_active_iter")
+                        (:cffi row-separator-func combo-box-separator-func nil
+                         nil combo-box-set-separator-func)))
 
 (define-g-object-class "GtkComboBoxEntry" combo-box-entry
                        (:superclass combo-box :export t :interfaces
@@ -1125,7 +1130,20 @@
                         (visible-vertical tool-item-visible-vertical
                          "visible-vertical" "gboolean" t t)
                         (is-important tool-item-is-important "is-important"
-                         "gboolean" t t)))
+                         "gboolean" t t)
+                        (:cffi expand tool-item-expand :boolean
+                         "gtk_tool_item_get_expand" "gtk_tool_item_set_expand")
+                        (:cffi use-drag-window tool-item-use-drag-window
+                         :boolean "gtk_tool_item_get_use_drag_window"
+                         "gtk_tool_item_set_use_drag_window")
+                        (:cffi icon-size tool-item-icon-size icon-size
+                         "gtk_tool_item_get_icon_size" nil)
+                        (:cffi orientation tool-item-orientation orientation
+                         "gtk_tool_item_get_orientation" nil)
+                        (:cffi toolbar-style tool-item-toolbar-style
+                         toolbar-style "gtk_tool_item_get_toolbar_style" nil)
+                        (:cffi relief-style tool-item-relief-style relief-style
+                         "gtk_tool_item_get_relief_style" nil)))
 
 (define-g-object-class "GtkToolButton" tool-button
                        (:superclass tool-item :export t :interfaces
@@ -1147,7 +1165,13 @@
                        (:superclass tool-button :export t :interfaces
                         ("AtkImplementorIface" "GtkBuildable")
                         :type-initializer "gtk_menu_tool_button_get_type")
-                       ((menu menu-tool-button-menu "menu" "GtkMenu" t t)))
+                       ((menu menu-tool-button-menu "menu" "GtkMenu" t t)
+                        (:cffi arrow-tooltip-text
+                         menu-tool-button-arrow-tooltip-text :string nil
+                         "gtk_menu_tool_button_set_arrow_tooltip_text")
+                        (:cffi arrow-tooltip-markup
+                         menu-tool-button-arrow-tooltip-markup :string nil
+                         "gtk_menu_tool_button_set_arrow_tooltip_markup")))
 
 (define-g-object-class "GtkToggleToolButton" toggle-tool-button
                        (:superclass tool-button :export t :interfaces
@@ -1222,7 +1246,9 @@
                          "gboolean" t t)
                         (tearoff-title menu-tearoff-title "tearoff-title"
                          "gchararray" t t)
-                        (monitor menu-monitor "monitor" "gint" t t)))
+                        (monitor menu-monitor "monitor" "gint" t t)
+                        (:cffi screen menu-screen g-object nil
+                         "gtk_menu_set_screen")))
 
 (define-g-object-class "GtkRecentChooserMenu" recent-chooser-menu
                        (:superclass menu :export t :interfaces
