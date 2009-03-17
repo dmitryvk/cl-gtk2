@@ -30,6 +30,7 @@
                (:file "gtk.menu")
                (:file "gtk.ui-manager")
                (:file "gtk.selectors")
+               (:file "gtk.layout-containers")
                
                (:file "gtk.dialog.example")
                

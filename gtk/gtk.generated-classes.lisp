@@ -1497,6 +1497,12 @@
                         :type-initializer "gtk_recent_chooser_widget_get_type")
                        nil)
 
+(define-g-object-class "GtkFileChooserDefault" file-chooser-default
+                       (:superclass v-box :export t :interfaces
+                        ("AtkImplementorIface" "GtkBuildable" "GtkFileChooser"
+                         "GtkFileChooserEmbed"))
+                       nil)
+
 (define-g-object-class "GtkHBox" h-box
                        (:superclass box :export t :interfaces
                         ("AtkImplementorIface" "GtkBuildable")
@@ -1542,7 +1548,9 @@
                        (:superclass container :export t :interfaces
                         ("AtkImplementorIface" "GtkBuildable")
                         :type-initializer "gtk_fixed_get_type")
-                       nil)
+                       ((:cffi has-window fixed-has-window :boolean
+                         "gtk_fixed_get_has_window"
+                         "gtk_gixed_set_has_window")))
 
 (define-g-object-class "GtkPaned" paned
                        (:superclass container :export t :interfaces
@@ -1577,7 +1585,9 @@
                         (vadjustment layout-vadjustment "vadjustment"
                          "GtkAdjustment" t t)
                         (width layout-width "width" "guint" t t)
-                        (height layout-height "height" "guint" t t)))
+                        (height layout-height "height" "guint" t t)
+                        (:cffi bin-window layout-bin-window g-object
+                         "gtk_layout_get_bin_window" nil)))
 
 (define-g-object-class "GtkSocket" socket
                        (:superclass container :export t :interfaces
@@ -1667,6 +1677,12 @@
                          "gboolean" t t)
                         (sort-type c-list-sort-type "sort-type" "GtkSortType" t
                          t)))
+
+(define-g-object-class "GtkPathBar" path-bar
+                       (:superclass container :export t :interfaces
+                        ("AtkImplementorIface" "GtkBuildable")
+                        :type-initializer "gtk_path_bar_get_type")
+                       nil)
 
 (define-g-object-class "GtkMisc" misc
                        (:superclass widget :export t :interfaces
@@ -1860,6 +1876,12 @@
                         (update-policy spin-button-update-policy
                          "update-policy" "GtkSpinButtonUpdatePolicy" t t)
                         (value spin-button-value "value" "gdouble" t t)))
+
+(define-g-object-class "GtkFileChooserEntry" file-chooser-entry
+                       (:superclass entry :export t :interfaces
+                        ("AtkImplementorIface" "GtkBuildable" "GtkCellEditable"
+                         "GtkEditable"))
+                       nil)
 
 (define-g-object-class "GtkRuler" ruler
                        (:superclass widget :export t :interfaces

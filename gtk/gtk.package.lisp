@@ -10,8 +10,7 @@
            #:container-add
            #:dialog-run
            #:object-destroy
-           #:text-buffer-insert
-           #:table-attach))
+           #:text-buffer-insert))
 
 (defpackage :gtk-examples
   (:use :cl :gtk :gdk :gobject)

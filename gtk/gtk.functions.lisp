@@ -36,20 +36,3 @@
 (defun text-buffer-insert (buffer iter text)
   (declare (ignore iter))
   (gtk-text-buffer-insert buffer (null-pointer) text (length text)))
-
-(define-g-flags "GtkAttachOptions" attach-options () :expand :shrink :fill)
-
-(defcfun gtk-table-attach :void
-  (table (g-object table))
-  (child (g-object widget))
-  (left-attach :uint)
-  (right-attach :uint)
-  (top-attach :uint)
-  (bottom-attach :uint)
-  (x-options attach-options)
-  (y-options attach-options)
-  (x-padding :uint)
-  (y-padding :uint))
-
-(defun table-attach (table widget left right top bottom &key (x-options '(:expand :fill)) (y-options '(:expand :fill)) (x-padding 0) (y-padding 0))
-  (gtk-table-attach table widget left right top bottom x-options y-options x-padding y-padding))

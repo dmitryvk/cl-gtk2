@@ -18,7 +18,8 @@
            #:test-color-button
            #:test-color-selection
            #:test-file-chooser
-           #:test-font-chooser))
+           #:test-font-chooser
+           #:test-notebook))
 
 (in-package :gtk-demo)
 
@@ -420,5 +421,24 @@
     (g-signal-connect button "font-set" (lambda (b) (declare (ignore b)) (format t "Chose font ~A~%" (font-button-font-name button))))
     (container-add window v-box)
     (box-pack-start v-box button)
+    (gtk-widget-show-all window)
+    (gtk-main)))
+
+(defun test-notebook ()
+  (let ((window (make-instance 'gtk-window :title "Notebook" :type :toplevel :window-position :center :default-width 100 :default-height 100))
+        (expander (make-instance 'expander :expanded t :label "notebook"))
+        (notebook (make-instance 'notebook :enable-popup t)))
+    (g-signal-connect window "destroy" (lambda (w) (declare (ignore w)) (gtk-main-quit)))
+    (iter (for i from 0 to 5)
+          (for page = (make-instance 'label :label (format nil "Label for page ~A" i)))
+          (for tab-label = (make-instance 'label :label (format nil "Tab ~A" i)))
+          (for tab-button = (make-instance 'button :use-stock t :label "gtk-close" :relief :none))
+          (for tab-hbox = (make-instance 'h-box))
+          (box-pack-start tab-hbox tab-label)
+          (box-pack-start tab-hbox tab-button)
+          (gtk-widget-show-all tab-hbox)
+          (notebook-add-page notebook page tab-hbox))
+    (container-add window expander)
+    (container-add expander notebook)
     (gtk-widget-show-all window)
     (gtk-main)))

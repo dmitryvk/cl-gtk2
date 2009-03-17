@@ -158,4 +158,8 @@
         (:cffi gtk::preview-text gtk::font-selection-dialog-preview-text :string "gtk_font_selection_dialog_get_preview_text" "gtk_font_selection_dialog_set_preview_text")
         (:cffi gtk::apply-button gtk::font-selection-dialog-apply-button g-object "gtk_font_selection_dialog_get_apply_button" nil)
         (:cffi gtk::cancel-button gtk::font-selection-dialog-cancel-button g-object "gtk_font_selection_dialog_get_cancel_button" nil)
-        (:cffi gtk::ok-button gtk::font-selection-dialog-ok-button g-object "gtk_font_selection_dialog_get_ok_button" nil))))))
+        (:cffi gtk::ok-button gtk::font-selection-dialog-ok-button g-object "gtk_font_selection_dialog_get_ok_button" nil))
+       ("GtkFixed"
+        (:cffi gtk::has-window gtk::fixed-has-window :boolean "gtk_fixed_get_has_window" "gtk_gixed_set_has_window"))
+       ("GtkLayout"
+        (:cffi gtk::bin-window gtk::layout-bin-window g-object "gtk_layout_get_bin_window" nil))))))
