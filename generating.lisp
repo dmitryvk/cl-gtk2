@@ -105,7 +105,7 @@
         (:cffi gtk::sort-column-id gtk::tree-view-column-sort-column-id :int "gtk_tree_view_column_get_sort_column_id" "gtk_tree_view_column_set_sort_column_id")
         (:cffi gtk::cell-renderers gtk::tree-view-column-cell-renderers (glist g-object  :free-from-foreign t) "gtk_tree_view_column_get_cell_renderers" nil))
        ("GtkTreeSelection"
-        (:cffi gtk::mode gtk::tree-selection-mode gtk::tree-selection-mode "gtk_tree_selection_get_mode" "gtk_tree_selection_set_mode")
+        (:cffi gtk::mode gtk::tree-selection-mode gtk::selection-mode "gtk_tree_selection_get_mode" "gtk_tree_selection_set_mode")
         (:cffi gtk::select-function gtk::tree-selection-select-function nil gtk::tree-selection-get-selection-function gtk::tree-selection-set-select-function))
        ("GtkTreeView"
         (:cffi gtk::selection gtk::tree-view-selection g-object "gtk_tree_view_get_selection" nil)

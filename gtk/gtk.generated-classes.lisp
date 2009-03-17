@@ -2765,7 +2765,7 @@
 (define-g-object-class "GtkTreeSelection" tree-selection
                        (:superclass g-object :export t :interfaces nil
                         :type-initializer "gtk_tree_selection_get_type")
-                       ((:cffi mode tree-selection-mode tree-selection-mode
+                       ((:cffi mode tree-selection-mode selection-mode
                          "gtk_tree_selection_get_mode"
                          "gtk_tree_selection_set_mode")
                         (:cffi select-function tree-selection-select-function
