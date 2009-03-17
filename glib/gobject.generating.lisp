@@ -147,7 +147,10 @@
                                  (&rest properties))
   (setf properties (mapcar #'parse-property properties))
   (let* ((superclass-properties (get superclass 'properties))
-         (combined-properties (append superclass-properties properties)))
+         (interface-properties (map-append (lambda (iface-name)
+                                             (get (gethash iface-name *known-interfaces*) 'properties))
+                                           interfaces))
+         (combined-properties (append superclass-properties properties interface-properties)))
     `(progn
        (defclass ,name (,superclass ,@(mapcar #'interface->lisp-class-name interfaces)) ())
        (register-object-type ,g-type-name ',name)
@@ -270,9 +273,10 @@
          (:export t
                   ,@(when (foreign-symbol-pointer probable-type-initializer)
                           `(:type-initializer ,probable-type-initializer)))
-       ,@(mapcar (lambda (property)
-                   (property->property-definition name property))
-                 properties))))
+       ,@(append (mapcar (lambda (property)
+                           (property->property-definition name property))
+                         properties)
+                 (cdr (find g-name *additional-properties* :key 'car :test 'string=))))))
 
 (defun get-g-class-definitions-for-root-1 (type)
   (unless (member (ensure-g-type type) *generation-exclusions* :test '=)
