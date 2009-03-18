@@ -40,6 +40,8 @@
                (:file "gtk.container")
                (:file "gtk.paned")
                (:file "gtk.child-properties")
+
+               (:file "gtk.generated-child-properties")
                
                (:file "gtk.dialog.example")
                

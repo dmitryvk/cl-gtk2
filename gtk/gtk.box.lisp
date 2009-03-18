@@ -30,9 +30,3 @@
   (position :int))
 
 (export 'box-reorder-child)
-
-(define-child-property "GtkBox" box-child-expand "expand" "gboolean" t t t)
-(define-child-property "GtkBox" box-child-fill "fill" "gboolean" t t t)
-(define-child-property "GtkBox" box-child-pack-type "pack-type" "GtkPackType" t t t)
-(define-child-property "GtkBox" box-child-padding "padding" "guint" t t t)
-(define-child-property "GtkBox" box-child-position "position" "gint" t t t)
