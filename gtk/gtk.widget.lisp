@@ -386,9 +386,9 @@
   (x :int)
   (y :int)
   (width :int)
-  (height :int)
+  (height :int))
 
-(export 'widget-queue-draw-area))
+(export 'widget-queue-draw-area)
 
 (defcfun (widget-reset-shapes "gtk_widget_reset_shapes") :void
   (widget g-object))
@@ -406,15 +406,61 @@
 
 ; TOOD: gtk_widget_class_install_style_property_parser
 
-; TODO: gtk_widget_class_find_style_property
-
 ; TODO: gtk_widget_class_list_style_properties
 
 ; TODO: gtk_widget_region_intersect
 
 ; TODO: gtk_widget_send_expose
 
-; TODO: gtk_widget_style_get_property
+(defcfun gtk-widget-style-get-property :void
+  (widget g-object)
+  (property-name :string)
+  (value (:pointer g-value)))
+
+(defcfun gtk-widget-class-find-style-property (:pointer g-param-spec)
+  (class :pointer)
+  (property-name :string))
+
+(defcfun gtk-widget-class-list-style-properties (:pointer (:pointer g-param-spec))
+  (class :pointer)
+  (n-properties (:pointer :int)))
+
+(defun widget-class-get-style-properties (type)
+  (setf type (ensure-g-type type))
+  (let ((class (g-type-class-ref type)))
+    (unwind-protect
+         (with-foreign-object (np :int)
+           (let ((specs (gtk-widget-class-list-style-properties class np)))
+             (unwind-protect
+                  (loop
+                     repeat (mem-ref np :int)
+                     for i from 0
+                     for spec = (mem-aref specs :pointer i)
+                     collect (parse-g-param-spec spec))
+               (g-free specs))))
+      (g-type-class-unref class))))
+
+(export 'widget-class-get-style-properties)
+
+(defun widget-child-property-type (widget property-name)
+  (let* ((type (g-type-from-object widget))
+         (class (g-type-class-ref type)))
+    (unwind-protect
+         (let ((g-param-spec (gtk-widget-class-find-style-property class property-name)))
+           (unless g-param-spec (error "Widget ~A has no style-property named '~A'" widget property-name))
+           (foreign-slot-value g-param-spec 'gobject::g-param-spec 'gobject::value-type))
+      (g-type-class-unref class))))
+
+(defun widget-child-property-value (widget property-name &optional property-type)
+  (unless property-type (setf property-type (widget-child-property-type widget property-name)))
+  (setf property-type (ensure-g-type property-type))
+  (with-foreign-object (gvalue 'g-value)
+    (g-value-zero gvalue)
+    (g-value-init gvalue property-type)
+    (prog1 (gtk-widget-style-get-property widget property-name gvalue)
+      (g-value-unset gvalue))))
+
+(export 'widget-child-property-value)
 
 (defcfun (widget-child-focus "gtk_widget_child_focus") :boolean
   (widget g-object)

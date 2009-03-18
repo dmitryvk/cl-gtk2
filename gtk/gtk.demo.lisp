@@ -34,7 +34,7 @@
                                                      (release widget)
                                                      (setf x (event-motion-x event)
                                                            y (event-motion-y event))
-                                                     (gtk-widget-queue-draw window)))
+                                                     (widget-queue-draw window)))
     (g-signal-connect window "expose-event"
                       (lambda (widget event)
                         (declare (ignore event))
@@ -42,7 +42,7 @@
                         ;(print event)
                         (using* ((gdk-window (widget-window window))
                                  (gc (gdk-gc-new gdk-window))
-                                 (layout (gtk-widget-create-pango-layout window (format nil "X: ~F~%Y: ~F" x y))))
+                                 (layout (widget-create-pango-layout window (format nil "X: ~F~%Y: ~F" x y))))
                           (gdk-draw-layout gdk-window gc 0 0 layout)
                           (gdk-gc-set-rgb-fg-color gc (make-color :red 65535 :green 0 :blue 0))
                           (multiple-value-bind (x y) (drawable-get-size gdk-window)
@@ -51,8 +51,8 @@
                       (lambda (widget event)
                         (declare (ignore event))
                         (release widget)
-                        (gtk-widget-queue-draw window)))
-    (gtk-widget-show-all window)
+                        (widget-queue-draw window)))
+    (widget-show window)
     (push :pointer-motion-mask (gdk-window-events (widget-window window)))
     (gtk-main)
     (release window)))
@@ -91,7 +91,7 @@
                                                (editable-select-region entry 5 10)))
     (g-signal-connect button-insert "clicked" (lambda (button) (release button)
                                                       (editable-insert-text entry "hello" 2)))
-    (gtk-widget-show-all window)
+    (widget-show window)
     (gtk-main)))
 
 (defun table-packing ()
@@ -106,7 +106,7 @@
     (table-attach table button-q 0 2 1 2)
     (g-signal-connect window "destroy" (lambda (w) (release w) (gtk-main-quit)))
     (g-signal-connect button-q "clicked" (lambda (b) (release b) (object-destroy window)))
-    (gtk-widget-show-all window)
+    (widget-show window)
     (gtk-main)))
 
 (defun test-pixbuf ()
@@ -121,7 +121,7 @@
     (container-add eventbox vbox-1)
     (box-pack-start vbox-1 (make-instance 'label :text "This is the eventbox"))
     (box-pack-start vbox-1 (make-instance 'label :text "The green ball is the bg"))
-    (gtk-widget-show-all window)
+    (widget-show window)
     (gtk-main)))
 
 (defun test-image ()
@@ -129,7 +129,7 @@
           (image (make-instance 'image :icon-name "applications-development" :icon-size 6)))
     (container-add window image)
     (g-signal-connect window "destroy" (lambda (w) (release w) (gtk-main-quit)))
-    (gtk-widget-show-all window)
+    (widget-show window)
     (gtk-main)))
 
 (defun test-progress-bar ()
@@ -149,7 +149,7 @@
     (g-signal-connect button-set "clicked" (lambda (w) (release w)
                                                    (setf (progress-bar-fraction p-bar)
                                                          (coerce (read-from-string (entry-text entry)) 'real))))
-    (gtk-widget-show-all window)
+    (widget-show window)
     (gtk-main)))
 
 (defun test-status-bar ()
@@ -179,7 +179,7 @@
     (box-pack-start h-box button-pop :expand nil)
     (box-pack-start v-box label)
     (box-pack-start v-box status-bar :expand nil)
-    (gtk-widget-show-all window)
+    (widget-show window)
     (setf (status-icon-screen icon) (gtk-window-screen window))
     (gtk-main)))
 
@@ -188,7 +188,7 @@
            (button (make-instance 'scale-button :icons (list "media-seek-backward" "media-seek-forward" "media-playback-stop" "media-playback-start") :adjustment (make-instance 'adjustment :lower -40 :upper 50 :value 20))))
     (g-signal-connect window "destroy" (lambda (w) (release w) (gtk-main-quit)))
     (container-add window button)
-    (gtk-widget-show-all window)
+    (widget-show window)
     (gtk-main)))
 
 (defun test-text-view ()
@@ -235,7 +235,7 @@
     (box-pack-start box button :expand nil)
     (box-pack-start box bold-btn :expand nil)
     (box-pack-start box scrolled)
-    (gtk-widget-show-all window)
+    (widget-show window)
     (gtk-main)))
 
 (defun demo-code-editor ()
@@ -246,7 +246,7 @@
     (g-signal-connect window "destroy" (lambda (w) (release w) (gtk-main-quit)))
     (container-add window scrolled)
     (container-add scrolled view)
-    (gtk-widget-show-all window)
+    (widget-show window)
     (g-signal-connect buffer "insert-text" (lambda (buffer location text len)
                                              (using* ((buffer buffer) (location location))
                                                (format t "~A~%" (list buffer location text len)))))
@@ -304,7 +304,7 @@
       (tree-view-append-column tv column)
       (print (tree-view-column-tree-view column))
       (print (tree-view-column-cell-renderers column)))
-    (gtk-widget-show-all window)
+    (widget-show window)
     (gtk-main)))
 
 (defun test-combo-box ()
@@ -346,7 +346,7 @@
     (let ((renderer (make-instance 'cell-renderer-text :text "A number")))
       (cell-layout-pack-start combo-box renderer :expand nil)
       (cell-layout-add-attribute combo-box renderer "text" 1))
-    (gtk-widget-show-all window)
+    (widget-show window)
     (gtk-main)))
 
 (defun test-ui-manager ()
@@ -382,7 +382,7 @@
           (action-group-add-action action-group action))
     (awhen (ui-manager-widget ui-manager "/toolbar1")
       (container-add window it))
-    (gtk-widget-show-all window)
+    (widget-show window)
     (gtk-main)))
 
 (defun test-color-button ()
@@ -391,7 +391,7 @@
     (g-signal-connect window "destroy" (lambda (w) (release w) (gtk-main-quit)))
     (g-signal-connect button "color-set" (lambda (b) (release b) (format t "Chose color ~A~%" (color-button-color button))))
     (container-add window button)
-    (gtk-widget-show-all window)
+    (widget-show window)
     (gtk-main)))
 
 (defun test-color-selection ()
@@ -400,7 +400,7 @@
     (g-signal-connect window "destroy" (lambda (w) (declare (ignore w)) (gtk-main-quit)))
     (g-signal-connect selection "color-changed" (lambda (s) (declare (ignore s)) (unless (color-selection-adjusting-p selection) (format t "color: ~A~%" (color-selection-current-color selection)))))
     (container-add window selection)
-    (gtk-widget-show-all window)
+    (widget-show window)
     (gtk-main)))
 
 (defun test-file-chooser ()
@@ -421,7 +421,7 @@
     (container-add window v-box)
     (box-pack-start v-box button)
     (box-pack-start v-box b)
-    (gtk-widget-show-all window)
+    (widget-show window)
     (gtk-main)))
 
 (defun test-font-chooser ()
@@ -432,7 +432,7 @@
     (g-signal-connect button "font-set" (lambda (b) (declare (ignore b)) (format t "Chose font ~A~%" (font-button-font-name button))))
     (container-add window v-box)
     (box-pack-start v-box button)
-    (gtk-widget-show-all window)
+    (widget-show window)
     (gtk-main)))
 
 (defun test-notebook ()
@@ -447,11 +447,11 @@
           (for tab-hbox = (make-instance 'h-box))
           (box-pack-start tab-hbox tab-label)
           (box-pack-start tab-hbox tab-button)
-          (gtk-widget-show-all tab-hbox)
+          (widget-show tab-hbox)
           (notebook-add-page notebook page tab-hbox))
     (container-add window expander)
     (container-add expander notebook)
-    (gtk-widget-show-all window)
+    (widget-show window)
     (gtk-main)))
 
 (defun calendar-detail (calendar year month day)
@@ -468,7 +468,7 @@
                                                                                        (calendar-month calendar)
                                                                                        (calendar-day calendar))))
     (container-add window calendar)
-    (gtk-widget-show-all window)
+    (widget-show window)
     (gtk-main)))
 
 (defun test-box-child-property ()
@@ -479,5 +479,5 @@
     (g-signal-connect button "toggled" (lambda (b) (declare (ignore b)) (setf (box-child-expand box button) (toggle-button-active button))))
     (container-add window box)
     (box-pack-start box button)
-    (gtk-widget-show-all window)
+    (widget-show window)
     (gtk-main)))

@@ -41,6 +41,9 @@
                (:file "gtk.container")
                (:file "gtk.paned")
                (:file "gtk.child-properties")
+               (:file "gtk.widget")
+               (:file "gtk.builder")
+               
 
                (:file "gtk.generated-child-properties")
                
