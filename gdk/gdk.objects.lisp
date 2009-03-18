@@ -109,7 +109,7 @@
   (axes (fixed-array :double 2))
   (state :uint)
   (button :uint)
-  (deviced (g-object device))
+  (device (g-object device))
   (x-root :double)
   (y-root :double))
 
