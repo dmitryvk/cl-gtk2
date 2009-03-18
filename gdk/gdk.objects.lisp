@@ -167,6 +167,17 @@
 
 (defctype gdk-atom :pointer)
 
+(define-foreign-type gdk-atom-as-string-type ()
+  ()
+  (:actual-type :pointer)
+  (:simple-parser gdk-atom-as-string))
+
+(defmethod translate-from-foreign (value (type gdk-atom-as-string-type))
+  (gdk-atom-name value))
+
+(defmethod translate-to-foreign (value (type gdk-atom-as-string-type))
+  (gdk-atom-intern value nil))
+
 (define-g-boxed-class nil event-property ((event type :property-notify))
   (atom gdk-atom)
   (time :uint32)

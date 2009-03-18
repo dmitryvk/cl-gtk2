@@ -7,7 +7,7 @@
            #:gdk-gc-new
            #:drawable-get-size
            #:gdk-draw-layout
-           ))
+           #:gdk-atom-as-string))
 
 (in-package :gdk)
 

@@ -47,3 +47,10 @@
   (x :int)
   (y :int)
   (layout (g-object pango-layout)))
+
+(defcfun gdk-atom-name (glib:g-string :free-from-foreign t)
+  (atom gdk-atom))
+
+(defcfun gdk-atom-intern gdk-atom
+  (name :string)
+  (only-if-exists :boolean))
