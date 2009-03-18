@@ -20,9 +20,12 @@
            #:test-font-chooser
            #:test-notebook
            #:test-calendar
-           #:test-box-child-property))
+           #:test-box-child-property
+           #:test-builder))
 
 (in-package :gtk-demo)
+
+(defparameter *src-location* (asdf:component-pathname (asdf:find-system :gtk)))
 
 (defun test ()
   (let ((window (make-instance 'gtk-window :type :toplevel :app-paintable t))
@@ -480,4 +483,35 @@
     (container-add window box)
     (box-pack-start box button)
     (widget-show window)
+    (gtk-main)))
+
+(defun test-builder ()
+  (let ((builder (make-instance 'builder)))
+    (builder-add-from-file builder (namestring (merge-pathnames "demo/demo1.ui" *src-location*)))
+    (let ((text-view (builder-get-object builder "textview1"))
+          (c 0))
+      (builder-connect-signals-simple builder `(("toolbutton1_clicked_cb" ,(lambda (b)
+                                                                                   (declare (ignore b))
+                                                                                   (setf (text-buffer-text (text-view-buffer text-view))
+                                                                                         (format nil "Clicked ~A times~%" (incf c)))
+                                                                                   (status-bar-pop (builder-get-object builder "statusbar1")
+                                                                                                   "times")
+                                                                                   (status-bar-push (builder-get-object builder "statusbar1")
+                                                                                                    "times"
+                                                                                                    (format nil "~A times" c))))
+                                                ("quit_cb" ,(lambda (&rest args)
+                                                                    (print args)
+                                                                    (object-destroy (builder-get-object builder "window1"))))
+                                                ("about_cb" ,(lambda (&rest args)
+                                                                     (print args)
+                                                                     (let ((d (make-instance 'about-dialog
+                                                                                             :program-name "GtkBuilder text"
+                                                                                             :version "0.00001"
+                                                                                             :authors '("Dmitry Kalyanov")
+                                                                                             :logo-icon-name "gtk-apply")))
+                                                                       (dialog-run d)
+                                                                       (object-destroy d)))))))
+    (g-signal-connect (builder-get-object builder "window1") "destroy" (lambda (w) (declare (ignore w)) (gtk-main-quit)))
+    (status-bar-push (builder-get-object builder "statusbar1") "times" "0 times")
+    (widget-show (builder-get-object builder "window1"))
     (gtk-main)))
