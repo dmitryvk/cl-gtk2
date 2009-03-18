@@ -169,7 +169,13 @@
        ("GtkContainer"
         (:cffi gtk::focus-child gtk::container-focus-child g-object "gtk_container_get_focus_child" "gtk_container_set_focus_child")
         (:cffi gtk::vadjustment-child gtk::container-vadjustment-child g-object "gtk_container_get_vadjustment_child" "gtk_container_set_vadjustment_child")
-        (:cffi gtk::hadjustment-child gtk::container-hadjustment-child g-object "gtk_container_get_hadjustment_child" "gtk_container_set_hadjustment_child"))))))
+        (:cffi gtk::hadjustment-child gtk::container-hadjustment-child g-object "gtk_container_get_hadjustment_child" "gtk_container_set_hadjustment_child"))
+       ("GtkWidget"
+        (:cffi gtk::direction gtk::widget-direction gtk::text-direction "gtk_widget_get_direction" "gtk_widget_set_direction")
+        (:cffi gtk::composite-name gtk::widget-composite-name (glib:g-string :free-from-foreign t :free-to-foreign t) "gtk_widget_get_composite_name" "gtk_widget_set_composite_name")
+        (:cffi gtk::redraw-on-allocate gtk::widget-redraw-on-allocate :boolean nil "gtk_widget_set_redraw_on_allocate")
+        (:cffi gtk::accessible gtk::widget-accessible g-object "gtk_widget_get_accessible" nil)
+        (:cffi gtk::tooltip-window gtk::widget-tooltip-window g-object "gtk_widget_get_tooltip_window" "gtk_window_set_tooltip_window"))))))
 
 (defun gtk-generate-child-properties (filename)
   (with-open-file (stream filename :direction :output :if-exists :supersede)
