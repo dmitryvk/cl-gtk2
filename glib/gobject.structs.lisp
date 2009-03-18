@@ -89,6 +89,8 @@
   (ref-count :uint)
   (data :pointer))
 
+(defctype %g-initially-unowned %g-object)
+
 (defcstruct g-object-class
   (type-class g-type-class)
   (construct-properties :pointer)

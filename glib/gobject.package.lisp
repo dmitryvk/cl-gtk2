@@ -60,7 +60,8 @@
            #:parse-g-param-spec
            #:g-type-class-unref
            #:registered-object-type-by-name
-           #:g-type-children))
+           #:g-type-children
+           #:g-signal-lookup))
 
 (in-package :gobject)
 
