@@ -91,7 +91,7 @@
 
 (export 'icon-view-unselect-path)
 
-(defcfun (icon-view-path-selected-p "gtk_icon_view_is_path_selected") :boolean
+(defcfun (icon-view-path-selected-p "gtk_icon_view_path_is_selected") :boolean
   (icon-view g-object)
   (path (g-boxed-ref tree-path)))
 

@@ -129,7 +129,7 @@
 
 (export 'notebook-tab-label-widget)
 
-(defcfun gtk-notebook-set-menu-label-widget :void
+(defcfun (gtk-notebook-set-menu-label-widget "gtk_notebook_set_menu_label") :void
   (notebook g-object)
   (child g-object)
   (menu-label g-object))
@@ -138,7 +138,7 @@
   (gtk-notebook-set-menu-label-widget notebook child new-value)
   new-value)
 
-(defcfun gtk-notebook-set-tab-label-widget :void
+(defcfun (gtk-notebook-set-tab-label-widget "gtk_notebook_set_tab_label") :void
   (notebook g-object)
   (child g-object)
   (tab-label g-object))

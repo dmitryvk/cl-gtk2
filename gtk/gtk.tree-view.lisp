@@ -30,7 +30,7 @@
 
 (export 'tree-view-get-column)
 
-(defcfun (tree-view-columns "gtk_tree_view_columns") (glist g-object)
+(defcfun (tree-view-columns "gtk_tree_view_get_columns") (glist g-object)
   (tree-view g-object))
 
 (export 'tree-view-columns)
@@ -407,7 +407,7 @@
                                             (callback stable-pointer-free-destroy-notify-callback))
       (gtk-tree-view-set-row-separator-func tree-view (null-pointer) (null-pointer) (null-pointer))))
 
-(defcfun (tree-view-rubber-banding-active "gtk_tree_view_get_rubber_banding_active") :boolean
+(defcfun (tree-view-rubber-banding-active "gtk_tree_view_is_rubber_banding_active") :boolean
   (tree-view g-object))
 
 (export 'tree-view-rubber-banding-active)

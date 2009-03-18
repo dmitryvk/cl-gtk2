@@ -12,7 +12,7 @@
 
 (export 'size-group-remove-widget)
 
-(defcfun (size-group-widgets "gtk_size_group_widgets") (gslist g-object :free-from-foreign nil)
+(defcfun (size-group-widgets "gtk_size_group_get_widgets") (gslist g-object :free-from-foreign nil)
   (size-group g-object))
 
 (export 'size-group-widgets)

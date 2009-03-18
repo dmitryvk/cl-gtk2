@@ -27,14 +27,14 @@
     (unless (null-pointer-p ptr)
       (get-stable-pointer-value ptr))))
 
-(defcfun gtk-tree-selection-selected :boolean
+(defcfun gtk-tree-selection-get-selected :boolean
   (selection g-object)
   (model :pointer)
   (iter (g-boxed-ref tree-iter)))
 
 (defun tree-selection-selected (tree-selection)
   (let ((iter (make-instance 'tree-iter)))
-    (if (gtk-tree-selection-selected tree-selection (null-pointer) iter)
+    (if (gtk-tree-selection-get-selected tree-selection (null-pointer) iter)
         iter
         (release iter))))
 
@@ -56,12 +56,12 @@
 
 (export 'map-tree-selection-rows)
 
-(defcfun gtk-tree-selection-selected-rows (glist (g-boxed-ref tree-path) :free-from-foreign t)
+(defcfun gtk-tree-selection-get-selected-rows (glist (g-boxed-ref tree-path) :free-from-foreign t)
   (selection g-object)
   (model :pointer))
 
 (defun tree-selection-selected-rows (tree-selection)
-  (gtk-tree-selection-selected-rows tree-selection (null-pointer)))
+  (gtk-tree-selection-get-selected-rows tree-selection (null-pointer)))
 
 (export 'tree-selection-selected-rows)
 

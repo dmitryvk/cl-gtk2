@@ -1,12 +1,12 @@
 (in-package :gtk)
 
-(defcfun gtk-combobox-get-active-iter :boolean
+(defcfun gtk-combo-box-get-active-iter :boolean
   (combo-box g-object)
   (iter (g-boxed-ref tree-iter)))
 
-(defun combobox-get-active-iter (combo-box)
+(defun combo-box-get-active-iter (combo-box)
   (let ((i (make-instance 'tree-iter)))
-    (if (gtk-combobox-get-active-iter combo-box i)
+    (if (gtk-combo-box-get-active-iter combo-box i)
         i
         (release i))))
 

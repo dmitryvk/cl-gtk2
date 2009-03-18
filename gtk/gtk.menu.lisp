@@ -134,7 +134,7 @@
 
 (export 'toolbar-insert)
 
-(defcfun (toolbar-item-index "gtk_toolbar_item_index") :int
+(defcfun (toolbar-item-index "gtk_toolbar_get_item_index") :int
   (toolbar g-object)
   (item g-object))
 

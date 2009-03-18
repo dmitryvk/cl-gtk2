@@ -1,24 +1,24 @@
 (in-package :gtk)
 
-(defcfun gtk-paned-pack-1 :void
+(defcfun gtk-paned-pack1 :void
   (paned g-object)
   (child g-object)
   (resize :boolean)
   (shrink :boolean))
 
 (defun paned-pack-1 (paned child &key (resize nil) (shrink t))
-  (gtk-paned-pack-1 paned child resize shrink))
+  (gtk-paned-pack1 paned child resize shrink))
 
-(export 'panged-pack-1)
+(export 'paned-pack-1)
 
-(defcfun gtk-paned-pack-2 :void
+(defcfun gtk-paned-pack2 :void
   (paned g-object)
   (child g-object)
   (resize :boolean)
   (shrink :boolean))
 
 (defun paned-pack-2 (paned child &key (resize t) (shrink t))
-  (gtk-paned-pack-2 paned child resize shrink))
+  (gtk-paned-pack2 paned child resize shrink))
 
 (export 'paned-pack-2)
 

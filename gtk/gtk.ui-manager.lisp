@@ -92,7 +92,7 @@
 
 (export 'action-group-action)
 
-(defcfun (action-group-actions "gtk_action_group_actions") (glist g-object :free-from-foreign t)
+(defcfun (action-group-actions "gtk_action_group_list_actions") (glist g-object :free-from-foreign t)
   (action-group g-object))
 
 (export 'action-group-actions)
@@ -107,11 +107,11 @@
 
 (export 'action-group-add-action)
 
-(defcfun (action-remove-action "gtk_action_remove_action") :void
+(defcfun (action-group-remove-action "gtk_action_group_remove_action") :void
   (action-group g-object)
   (action g-object))
 
-(export 'action-remove-action)
+(export 'action-group-remove-action)
 
 (defcallback gtk-translate-func-callback (:string :free-to-foreign nil :free-from-foreign nil)
     ((path (:string :free-from-foreign nil)) (data :pointer))
@@ -158,12 +158,12 @@
 
 (export 'action-create-icon)
 
-(defcfun (action-create-menu-item "gtk_action_create_menu-item") g-object
+(defcfun (action-create-menu-item "gtk_action_create_menu_item") g-object
   (action g-object))
 
 (export 'action-create-menu-item)
 
-(defcfun (action-create-tool-item "gtk_action_create_tool-item") g-object
+(defcfun (action-create-tool-item "gtk_action_create_tool_item") g-object
   (action g-object))
 
 (export 'action-create-tool-item)
