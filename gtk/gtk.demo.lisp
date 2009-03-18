@@ -492,6 +492,7 @@
           (c 0))
       (builder-connect-signals-simple builder `(("toolbutton1_clicked_cb" ,(lambda (b)
                                                                                    (declare (ignore b))
+                                                                                   #+nil(print (current-event))
                                                                                    (setf (text-buffer-text (text-view-buffer text-view))
                                                                                          (format nil "Clicked ~A times~%" (incf c)))
                                                                                    (status-bar-pop (builder-get-object builder "statusbar1")

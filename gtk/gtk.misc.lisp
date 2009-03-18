@@ -2,5 +2,3 @@
 
 (defcallback stable-pointer-free-destroy-notify-callback :void ((data :pointer))
   (free-stable-pointer data))
-
-(defcfun gtk-get-current-event-time :uint32)

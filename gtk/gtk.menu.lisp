@@ -38,7 +38,7 @@
                           (mem-ref y :int) 0
                           (mem-ref push-in :boolean) nil))))
 
-(defun menu-popup (menu &key parent-menu-shell parent-menu-item position-func (button 0) (activate-time (gtk-get-current-event-time)))
+(defun menu-popup (menu &key parent-menu-shell parent-menu-item position-func (button 0) (activate-time (current-event-time)))
   (if position-func
       (with-stable-pointer (ptr position-func)
         (gtk-menu-popup menu parent-menu-shell parent-menu-item

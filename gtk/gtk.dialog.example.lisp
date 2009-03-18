@@ -28,5 +28,5 @@
                                                    (format t "Response was: ~S~%" (dialog-run dialog))
                                                    (object-destroy dialog)))))
 
-    (gtk-widget-show-all window)
+    (widget-show window)
     (gtk-main)))
