@@ -3,9 +3,6 @@
   (:export #:register-object-type
            #:gtk-main
            #:gtk-main-quit
-           #:gtk-widget-queue-draw
-           #:gtk-widget-show-all
-           #:gtk-widget-create-pango-layout
            #:dialog-run
            #:object-destroy
            #:text-buffer-insert

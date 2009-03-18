@@ -3,6 +3,7 @@
   :serial t
   :components ((:file "gtk.package")
                (:file "gtk.misc")
+               (:file "gtk.object")
                (:file "gtk.objects")
                (:file "gtk.generated-classes")
                (:file "gtk.main_loop_events")
