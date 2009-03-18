@@ -6,11 +6,12 @@
            #:gtk-widget-queue-draw
            #:gtk-widget-show-all
            #:gtk-widget-create-pango-layout
-           #:box-pack-start
-           #:container-add
            #:dialog-run
            #:object-destroy
-           #:text-buffer-insert))
+           #:text-buffer-insert
+           #:define-child-property
+           #:container-class-child-properties
+           #:generate-child-properties))
 
 (defpackage :gtk-examples
   (:use :cl :gtk :gdk :gobject)

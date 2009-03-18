@@ -1789,7 +1789,9 @@
                         (detail-width-chars calendar-detail-width-chars
                          "detail-width-chars" "gint" t t)
                         (detail-height-rows calendar-detail-height-rows
-                         "detail-height-rows" "gint" t t)))
+                         "detail-height-rows" "gint" t t)
+                        (:cffi detail-function calendar-detail-function nil nil
+                         calendar-set-detail-function)))
 
 (define-g-object-class "GtkCellView" cell-view
                        (:superclass widget :export t :interfaces

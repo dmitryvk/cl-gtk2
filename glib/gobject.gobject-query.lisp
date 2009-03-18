@@ -9,6 +9,20 @@
   constructor-only
   owner-type)
 
+(defun parse-g-param-spec (param)
+  (let ((flags (foreign-slot-value param 'g-param-spec 'flags)))
+    (make-g-class-property-definition
+     :name (foreign-slot-value param 'g-param-spec
+                               'name)
+     :type (foreign-slot-value param 'g-param-spec
+                               'value-type)
+     :readable (not (null (member :readable flags)))
+     :writable (not (null (member :writable flags)))
+     :constructor (not (null (member :construct flags)))
+     :constructor-only (not (null (member :construct-only flags)))
+     :owner-type (foreign-slot-value param 'g-param-spec
+                                     'owner-type))))
+
 (defun class-properties (g-type)
   (setf g-type (ensure-g-type g-type))
   (let ((g-class (g-type-class-ref g-type)))
@@ -19,18 +33,7 @@
                   (loop
                      for i from 0 below (mem-ref n-properties :uint)
                      for param = (mem-aref params :pointer i)
-                     for flags = (foreign-slot-value param 'g-param-spec 'flags)
-                     collect (make-g-class-property-definition
-                              :name (foreign-slot-value param 'g-param-spec
-                                                        'name)
-                              :type (foreign-slot-value param 'g-param-spec
-                                                        'value-type)
-                              :readable (not (null (member :readable flags)))
-                              :writable (not (null (member :writable flags)))
-                              :constructor (not (null (member :construct flags)))
-                              :constructor-only (not (null (member :construct-only flags)))
-                              :owner-type (foreign-slot-value param 'g-param-spec
-                                                              'owner-type)))
+                     collect (parse-g-param-spec param))
                (g-free params))))
       (g-type-class-unref g-class))))
 

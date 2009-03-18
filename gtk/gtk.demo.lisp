@@ -13,13 +13,14 @@
            #:test-treeview-list
            #:test-combobox
            #:test-toolbar
-           #:test-color-button
            #:test-ui-manager
            #:test-color-button
            #:test-color-selection
            #:test-file-chooser
            #:test-font-chooser
-           #:test-notebook))
+           #:test-notebook
+           #:test-calendar
+           #:test-box-child-property))
 
 (in-package :gtk-demo)
 
@@ -328,16 +329,6 @@
     (gtk-widget-show-all window)
     (gtk-main)))
 
-(defun test-color-button ()
-  (let* ((window (make-instance 'gtk-window :type :toplevel :title "Color button" :width-request 200 :height-request 100 :window-position :center))
-         (button (make-instance 'color-button :label "Choose your color" :use-alpha t)))
-    (gobject:g-signal-connect window "destroy" (lambda (w) (gobject:release w) (gtk-main-quit)))
-    (container-add window button)
-    (setf (color-button-color button)
-          (make-color :red (random 65536) :green (random 65536) :blue (random 65536)))
-    (gtk-widget-show-all window)
-    (gtk-main)))
-
 (defun test-ui-manager ()
   (let* ((window (make-instance 'gtk-window :type :toplevel :title "UI Manager" :default-width 200 :default-height 100 :window-position :center))
          (ui-manager (make-instance 'ui-manager))
@@ -440,5 +431,33 @@
           (notebook-add-page notebook page tab-hbox))
     (container-add window expander)
     (container-add expander notebook)
+    (gtk-widget-show-all window)
+    (gtk-main)))
+
+(defun calendar-detail (calendar year month day)
+  (declare (ignore calendar year month))
+  (when (= day 23)
+    "!"))
+
+(defun test-calendar ()
+  (let ((window (make-instance 'gtk-window :title "Calendar" :type :toplevel :window-position :center :default-width 100 :default-height 100))
+        (calendar (make-instance 'calendar :detail-function #'calendar-detail)))
+    (g-signal-connect window "destroy" (lambda (w) (declare (ignore w)) (gtk-main-quit)))
+    (g-signal-connect calendar "day-selected" (lambda (c) (declare (ignore c)) (format t "selected: year ~A month ~A day ~A~%"
+                                                                                       (calendar-year calendar)
+                                                                                       (calendar-month calendar)
+                                                                                       (calendar-day calendar))))
+    (container-add window calendar)
+    (gtk-widget-show-all window)
+    (gtk-main)))
+
+(defun test-box-child-property ()
+  (let ((window (make-instance 'gtk-window :title "Text box child property" :type :toplevel :window-position :center :width-request 200 :height-request 200))
+        (box (make-instance 'h-box))
+        (button (make-instance 'toggle-button :active t :label "Expand")))
+    (g-signal-connect window "destroy" (lambda (w) (declare (ignore w)) (gtk-main-quit)))
+    (g-signal-connect button "toggled" (lambda (b) (declare (ignore b)) (setf (box-child-expand box button) (toggle-button-active button))))
+    (container-add window box)
+    (box-pack-start box button)
     (gtk-widget-show-all window)
     (gtk-main)))

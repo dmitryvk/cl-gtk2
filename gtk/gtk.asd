@@ -31,6 +31,15 @@
                (:file "gtk.ui-manager")
                (:file "gtk.selectors")
                (:file "gtk.layout-containers")
+               (:file "gtk.scrolling")
+               (:file "gtk.calendar")
+               (:file "gtk.size-group")
+               (:file "gtk.tooltip")
+               (:file "gtk.bin")
+               (:file "gtk.box")
+               (:file "gtk.container")
+               (:file "gtk.paned")
+               (:file "gtk.child-properties")
                
                (:file "gtk.dialog.example")
                

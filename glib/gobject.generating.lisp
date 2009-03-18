@@ -178,6 +178,7 @@
             append (property->accessors name property export))
        
        (eval-when (:compile-toplevel :load-toplevel :execute)
+         (register-object-type ,g-type-name ',name)
          (setf (get ',name 'superclass) ',superclass
                (get ',name 'properties) ',combined-properties)))))
 

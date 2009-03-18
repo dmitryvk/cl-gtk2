@@ -1,6 +1,7 @@
 (defpackage :gtk-generation
   (:use :cl :gobject :cffi :glib)
-  (:export #:gtk-generate))
+  (:export #:gtk-generate
+           #:gtk-generate-child-properties))
 
 (in-package :gtk-generation)
 
@@ -162,4 +163,18 @@
        ("GtkFixed"
         (:cffi gtk::has-window gtk::fixed-has-window :boolean "gtk_fixed_get_has_window" "gtk_gixed_set_has_window"))
        ("GtkLayout"
-        (:cffi gtk::bin-window gtk::layout-bin-window g-object "gtk_layout_get_bin_window" nil))))))
+        (:cffi gtk::bin-window gtk::layout-bin-window g-object "gtk_layout_get_bin_window" nil))
+       ("GtkCalendar"
+        (:cffi gtk::detail-function gtk::calendar-detail-function nil nil gtk::calendar-set-detail-function))
+       ("GtkContainer"
+        (:cffi gtk::focus-child gtk::container-focus-child g-object "gtk_container_get_focus_child" "gtk_container_set_focus_child")
+        (:cffi gtk::vadjustment-child gtk::container-vadjustment-child g-object "gtk_container_get_vadjustment_child" "gtk_container_set_vadjustment_child")
+        (:cffi gtk::hadjustment-child gtk::container-hadjustment-child g-object "gtk_container_get_hadjustment_child" "gtk_container_set_hadjustment_child"))))))
+
+(defun gtk-generate-child-properties (filename)
+  (with-open-file (stream filename :direction :output :if-exists :supersede)
+    (let ((*package* (find-package :gtk))
+          (*print-case* :downcase))
+     (write-string "(in-package :gtk)" stream)
+     (terpri stream)
+     (format stream "~{~S~%~%~}" (gtk:generate-child-properties)))))

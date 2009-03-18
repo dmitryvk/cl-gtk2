@@ -48,6 +48,7 @@
   (n-children (:pointer :uint)))
 
 (defun g-type-children (g-type)
+  (setf g-type (ensure-g-type g-type))
   (with-foreign-object (n-children :uint)
     (let ((g-types-ptr (%g-type-children g-type n-children)))
       (prog1

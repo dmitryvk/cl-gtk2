@@ -134,6 +134,8 @@
 (defvar *registered-object-types* (make-hash-table :test 'equal))
 (defun register-object-type (name type)
   (setf (gethash name *registered-object-types*) type))
+(defun registered-object-type-by-name (name)
+  (gethash name *registered-object-types*))
 (defun get-g-object-lisp-type (g-type)
   (loop
      while (not (zerop g-type))
@@ -193,33 +195,35 @@
       (etypecase object
         (g-object (pointer object)))))
 
+(defun g-param-spec-property-type (param-spec property-name object-type assert-readable assert-writable)
+  (when (null-pointer-p param-spec)
+           (error "Property ~A on type ~A is not found"
+                  property-name
+                  (g-type-name object-type)))
+  (when (and assert-readable
+             (not (member :readable
+                          (foreign-slot-value param-spec
+                                              'g-param-spec
+                                              'flags))))
+    (error "Property ~A on type ~A is not readable"
+           property-name
+           (g-type-name object-type)))
+  (when (and assert-writable
+             (not (member :writable
+                          (foreign-slot-value param-spec
+                                              'g-param-spec
+                                              'flags))))
+    (error "Property ~A on type ~A is not writable"
+           property-name
+           (g-type-name object-type)))
+  (foreign-slot-value param-spec 'g-param-spec 'value-type))
+
 (defun g-object-type-property-type (object-type property-name
                                     &key assert-readable assert-writable)
   (let* ((object-class (g-type-class-ref object-type))
          (param-spec (g-object-class-find-property object-class property-name)))
     (unwind-protect
-         (progn
-           (when (null-pointer-p param-spec)
-             (error "Property ~A on type ~A is not found"
-                    property-name
-                    (g-type-name object-type)))
-           (when (and assert-readable
-                      (not (member :readable
-                                   (foreign-slot-value param-spec
-                                                       'g-param-spec
-                                                       'flags))))
-             (error "Property ~A on type ~A is not readable"
-                    property-name
-                    (g-type-name object-type)))
-           (when (and assert-writable
-                      (not (member :writable
-                                   (foreign-slot-value param-spec
-                                                       'g-param-spec
-                                                       'flags))))
-             (error "Property ~A on type ~A is not writable"
-                    property-name
-                    (g-type-name object-type)))
-           (foreign-slot-value param-spec 'g-param-spec 'value-type))
+         (g-param-spec-property-type param-spec property-name object-type assert-readable assert-writable)
       (g-type-class-unref object-class))))
 
 (defun g-object-property-type (object property-name

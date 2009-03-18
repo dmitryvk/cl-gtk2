@@ -43,7 +43,24 @@
            #:emit-signal
            #:g-value-unset
            #:g-value-zero
-           #:g-value-take-boxed))
+           #:g-value-take-boxed
+           #:g-value-init
+           #:g-class-property-definition
+           #:g-class-property-definition-name
+           #:g-class-property-definition-type
+           #:g-class-property-definition-readable
+           #:g-class-property-definition-writable
+           #:g-class-property-definition-constructor
+           #:g-class-property-definition-constructor-only
+           #:g-class-property-definition-owner-type
+           #:g-type-class-ref
+           #:g-object-class
+           #:g-param-spec
+           #:type-instance
+           #:parse-g-param-spec
+           #:g-type-class-unref
+           #:registered-object-type-by-name
+           #:g-type-children))
 
 (in-package :gobject)
 
