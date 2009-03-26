@@ -175,7 +175,9 @@
         (:cffi gtk::composite-name gtk::widget-composite-name (glib:g-string :free-from-foreign t :free-to-foreign t) "gtk_widget_get_composite_name" "gtk_widget_set_composite_name")
         (:cffi gtk::redraw-on-allocate gtk::widget-redraw-on-allocate :boolean nil "gtk_widget_set_redraw_on_allocate")
         (:cffi gtk::accessible gtk::widget-accessible g-object "gtk_widget_get_accessible" nil)
-        (:cffi gtk::tooltip-window gtk::widget-tooltip-window g-object "gtk_widget_get_tooltip_window" "gtk_window_set_tooltip_window"))))))
+        (:cffi gtk::tooltip-window gtk::widget-tooltip-window g-object "gtk_widget_get_tooltip_window" "gtk_window_set_tooltip_window"))
+       ("GtkTextTag"
+        (:cffi gtk::priority gtk::text-tag-priority :int "gtk_text_tag_get_priority" "gtk_text_tag_set_priority"))))))
 
 (defun gtk-generate-child-properties (filename)
   (with-open-file (stream filename :direction :output :if-exists :supersede)

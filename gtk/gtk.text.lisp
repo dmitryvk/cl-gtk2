@@ -675,7 +675,8 @@
 (defun text-buffer-get-bounds (buffer)
   (let ((start (make-instance 'text-iter))
         (end (make-instance 'text-iter)))
-    (gtk-text-buffer-get-bounds buffer start end)))
+    (gtk-text-buffer-get-bounds buffer start end)
+    (values start end)))
 
 (export 'text-buffer-get-bounds)
 
@@ -829,18 +830,6 @@
 ;;                                                          GdkAtom format);
 
 ;; text tag
-
-(defcfun (text-tag-priority "gtk_text_tag_get_priority") :int
-  (tag (g-object text-tag)))
-
-(defcfun gtk-text-tag-set-priority :void
-  (tag (g-object text-tag))
-  (priority :int))
-
-(defun (setf text-tag-priority) (new-value tag)
-  (gtk-text-tag-set-priority tag new-value))
-
-(export 'text-tag-priority)
 
 ;; text tag table
 
