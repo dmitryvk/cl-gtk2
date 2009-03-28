@@ -15,7 +15,13 @@
            #:g-strdup
            #:g-string
            #:gslist
-           #:g-quark))
+           #:g-quark
+           #:+g-priority-high+
+           #:+g-priority-default+
+           #:+g-priority-high-idle+
+           #:+g-priority-default-idle+
+           #:+g-priority-low+
+           #:g-idle-add-full))
 
 (in-package :glib)
 
@@ -342,7 +348,11 @@
 (defcfun (g-thread-init "g_thread_init") :void
   (vtable :pointer))
 
-(g-thread-init (null-pointer))
+(defvar *threads-initialized-p* nil)
+
+(unless *threads-initialized-p*
+  (g-thread-init (null-pointer))
+  (setf *threads-initialized-p* t))
 
 (defcenum g-thread-priority
   :g-thread-priority-low
