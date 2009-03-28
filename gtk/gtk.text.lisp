@@ -991,6 +991,14 @@
 ;; void                gtk_text_view_add_child_at_anchor   (GtkTextView *text_view,
 ;;                                                          GtkWidget *child,
 ;;                                                          GtkTextChildAnchor *anchor);
+
+(defcfun (text-view-add-child-at-anchor "gtk_text_view_add_child_at_anchor") :void
+  (text-view g-object)
+  (child g-object)
+  (anchor g-object))
+
+(export 'text-view-add-child-at-anchor)
+
 ;;                     GtkTextChildAnchor;
 ;; GtkTextChildAnchor* gtk_text_child_anchor_new           (void);
 ;; GList*              gtk_text_child_anchor_get_widgets   (GtkTextChildAnchor *anchor);
