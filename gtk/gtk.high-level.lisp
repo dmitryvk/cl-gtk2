@@ -74,6 +74,14 @@
   (let ((root (progress-display-root bar)))
     (within-main-loop-and-wait (container-remove (progress-window-box root) (progress-display-bar bar)))))
 
+(defun format-duration (stream seconds colon-modifier-p at-sign-modifier-p)
+  (declare (ignore colon-modifier-p at-sign-modifier-p))
+  (let ((seconds (mod (truncate seconds) 60))
+        (minutes (mod (truncate seconds 60) 60))
+        (hours (truncate seconds 3600))
+        (milliseconds (truncate (mod (* seconds 1000) 1000))))
+    (format stream "~2,'0D:~2,'0D:~2,'0D.~3,'0D" hours minutes seconds milliseconds)))
+
 (defun update-progress-bar-text (bar &optional (lower-frac 0.0))
   (let* ((elapsed (coerce (/ (- (get-internal-real-time)
                                 (progress-display-time-started bar))
@@ -82,7 +90,7 @@
          (process-rate (coerce (/ elapsed (+ lower-frac (progress-display-current bar))) 'double-float))
          (total-time (coerce (* (progress-display-count bar) process-rate) 'double-float)))
     (setf (progress-bar-text (progress-display-bar bar))
-          (format nil "~A (~$ of ETA ~$)" (progress-display-name bar) elapsed total-time))))
+          (format nil "~A (~/gtk::format-duration/; ETA ~/gtk::format-duration/)" (progress-display-name bar) elapsed total-time))))
 
 (defun update-progress-bar-texts (bar &optional (lower-frac 0.0))
   (when bar
@@ -118,9 +126,9 @@
 (export 'with-progress-bar-action)
 
 (defun test-progress ()
-  (with-progress-bar ("Snowball" 4)
+  (with-progress-bar ("Snowball" 10)
     (loop
-       repeat 4
+       repeat 10
        do (with-progress-bar-action
             (with-progress-bar ("Texts" 10)
               (loop
