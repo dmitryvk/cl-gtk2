@@ -27,6 +27,26 @@
 
 (defcfun gtk-main :void)
 
+#+thread-support
+(defun ensure-gtk-main ()
+  (unless (find "gtk main thread" (bt:all-threads) :test 'string= :key 'bt:thread-name)
+    (bt:make-thread (lambda () (gtk:gtk-main)) :name "gtk main thread")))
+
+#-thread-support
+(defun ensure-gtk-main ()
+  (gtk-main))
+
+(export 'ensure-gtk-main)
+
+#+thread-support
+(defun leave-gtk-main ()) ;noop on multithreading
+
+#-thread-support
+(defun leave-gtk-main ()
+  (gtk-main-quit))
+
+(export 'leave-gtk-main)
+
 (defcfun gtk-main-level :uint)
 
 (defcfun gtk-main-quit :void)

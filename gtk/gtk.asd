@@ -54,4 +54,4 @@
                (:file "gtk.dialog.example")
                
                (:file "gtk.demo"))
-  :depends-on (:glib :cffi :gdk :anaphora))
+  :depends-on (:glib :cffi :gdk :anaphora :bordeaux-threads))

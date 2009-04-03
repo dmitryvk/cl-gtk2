@@ -119,8 +119,10 @@
 
 (defun test-progress ()
   (with-progress-bar ("Snowball" 4)
-    (iter (repeat 4)
-          (with-progress-bar-action
+    (loop
+       repeat 4
+       do (with-progress-bar-action
             (with-progress-bar ("Texts" 10)
-              (iter (repeat 10)
-                    (with-progress-bar-action (sleep 1))))))))
+              (loop
+                 repeat 10
+                 do (with-progress-bar-action (sleep 1))))))))

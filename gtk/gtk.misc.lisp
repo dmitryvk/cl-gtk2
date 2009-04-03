@@ -19,7 +19,8 @@
   (g-idle-add-full priority
                    (callback call-from-main-loop-callback)
                    (allocate-stable-pointer function)
-                   (callback stable-pointer-free-destroy-notify-callback)))
+                   (callback stable-pointer-free-destroy-notify-callback))
+  (ensure-gtk-main))
 
 (export 'call-from-gtk-main-loop)
 
@@ -27,3 +28,17 @@
   `(call-from-gtk-main-loop (lambda () ,@body)))
 
 (export 'within-main-loop)
+
+#+thread-support
+(defmacro with-main-loop (&body body)
+  `(progn
+     (ensure-gtk-main)
+     (within-main-loop ,@body)))
+
+#-thread-support
+(defmacro with-main-loop (&body body)
+  `(progn
+     ,@body
+     (gtk-main)))
+
+(export 'with-main-loop)

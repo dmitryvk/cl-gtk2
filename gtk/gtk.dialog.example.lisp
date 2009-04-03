@@ -3,9 +3,8 @@
 (defun test-dialog ()
   (let ((window (make-instance 'gtk-window :type :toplevel :title "Testing dialogs"))
         (v-box (make-instance 'v-box)))
-    (g-signal-connect window "destroy" (lambda (w) (declare (ignore w)) (gtk-main-quit)))
+    (g-signal-connect window "destroy" (lambda (w) (declare (ignore w)) (leave-gtk-main)))
     (container-add window v-box)
-
     (let ((button (make-instance 'button :label "Dialog 1")))
       (box-pack-start v-box button)
       (g-signal-connect button "clicked" (lambda (b) (declare (ignore b))
@@ -29,4 +28,4 @@
                                                    (object-destroy dialog)))))
 
     (widget-show window)
-    (gtk-main)))
+    (ensure-gtk-main)))
