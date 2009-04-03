@@ -149,6 +149,7 @@
     (unless lisp-type
       (error "Type ~A is not registered with REGISTER-OBJECT-TYPE"
              (g-type-name g-type)))
+    (g-object-ref pointer)
     (make-instance lisp-type :pointer pointer)))
 
 (define-foreign-type foreign-g-object-type ()
@@ -160,6 +161,8 @@
 
 (defmethod translate-to-foreign (object (type foreign-g-object-type))
   (cond
+    ((null object)
+     (null-pointer))
     ((null (pointer object))
      (error "Object ~A has been disposed" object))
     ((typep object 'g-object)
