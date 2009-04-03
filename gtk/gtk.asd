@@ -49,6 +49,8 @@
 
                (:file "gtk.generated-child-properties")
                
+               (:file "gtk.high-level")
+
                (:file "gtk.dialog.example")
                
                (:file "gtk.demo"))
