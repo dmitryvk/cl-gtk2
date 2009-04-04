@@ -78,9 +78,8 @@
   (declare (ignore colon-modifier-p at-sign-modifier-p))
   (let ((seconds (mod (truncate seconds) 60))
         (minutes (mod (truncate seconds 60) 60))
-        (hours (truncate seconds 3600))
-        (milliseconds (truncate (mod (* seconds 1000) 1000))))
-    (format stream "~2,'0D:~2,'0D:~2,'0D.~3,'0D" hours minutes seconds milliseconds)))
+        (hours (truncate seconds 3600)))
+    (format stream "~2,'0D:~2,'0D:~2,'0D" hours minutes seconds)))
 
 (defun update-progress-bar-text (bar &optional (lower-frac 0.0))
   (let* ((elapsed (coerce (/ (- (get-internal-real-time)
