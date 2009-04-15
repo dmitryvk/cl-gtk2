@@ -1,5 +1,5 @@
 (defpackage :gobject
-  (:use :cl :glib :cffi :tg :bind :anaphora :bordeaux-threads :iter)
+  (:use :cl :glib :cffi :tg :bind :anaphora :bordeaux-threads :iter :closer-mop)
   (:export #:g-object
            #:register-object-type
            #:g-object-call-constructor

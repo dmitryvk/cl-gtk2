@@ -8,8 +8,7 @@
 (defvar *additional-properties* nil)
 
 (defun name->supplied-p (name)
-  (intern (format nil "~A-SUPPLIED-P" (symbol-name name))
-          *lisp-name-package*))
+  (make-symbol (format nil "~A-SUPPLIED-P" (symbol-name name))))
 
 (defstruct property name accessor-name readable writable)
 
@@ -139,6 +138,17 @@
     (string `(foreign-funcall ,type-initializer g-type))
     (symbol `(funcall ',type-initializer))))
 
+(defun meta-property->slot (class-name property)
+  `(,(property-name property)
+     :allocation ,(if (gobject-property-p property) :gobject-property :gobject-fn)
+     :g-property-type ,(if (gobject-property-p property) (gobject-property-type property) (cffi-property-type property))
+     :accessor ,(intern (format nil "~A-~A" (symbol-name class-name) (property-name property)) (symbol-package class-name))
+     :initarg ,(intern (string-upcase (property-name property)) (find-package :keyword))
+     ,@(if (gobject-property-p property)
+           `(:g-property-name ,(gobject-property-gname property))
+           `(:g-getter ,(cffi-property-reader property)
+                                :g-setter ,(cffi-property-writer property)))))
+
 (defmacro define-g-object-class (g-type-name name
                                  (&key (superclass 'g-object)
                                        (export t)
@@ -146,56 +156,38 @@
                                        type-initializer)
                                  (&rest properties))
   (setf properties (mapcar #'parse-property properties))
-  (let* ((superclass-properties (get superclass 'properties))
-         (interface-properties (map-append (lambda (iface-name)
-                                             (get (gethash iface-name *known-interfaces*) 'properties))
-                                           interfaces))
-         (combined-properties (append superclass-properties properties interface-properties)))
-    `(progn
-       (defclass ,name (,superclass ,@(mapcar #'interface->lisp-class-name interfaces)) ())
-       (register-object-type ,g-type-name ',name)
+  `(progn
+     (defclass ,name (,superclass ,@(mapcar #'interface->lisp-class-name interfaces))
+       (,@(mapcar (lambda (property) (meta-property->slot name property)) properties))
+       (:metaclass gobject-class)
+       (:g-type-name . ,g-type-name)
        ,@(when type-initializer
-               (list (type-initializer-call type-initializer)))
-       ,@(when export
-               (list `(export ',name (find-package ,(package-name (symbol-package name)))))) 
-       (defmethod initialize-instance :before 
-           ((object ,name) &key pointer
-            ,@(remove nil (mapcar #'property->method-arg
-                                  combined-properties)))
-         (unless (or pointer (and (slot-boundp object 'pointer)
-                                  (not (null-pointer-p (pointer object)))))
-           (let (arg-names arg-values arg-types)
-             ,@(mapcar #'gobject-property->arg-push (remove-if-not #'gobject-property-p combined-properties))
-             (setf (pointer object)
-                   (g-object-call-constructor ,g-type-name
-                                              arg-names
-                                              arg-values
-                                              arg-types)
-                   (g-object-has-reference object) t)
-             ,@(mapcar #'cffi-property->initarg (remove-if-not #'cffi-property-p combined-properties)))))
-       ,@(loop
-            for property in properties
-            append (property->accessors name property export))
-       
-       (eval-when (:compile-toplevel :load-toplevel :execute)
-         (register-object-type ,g-type-name ',name)
-         (setf (get ',name 'superclass) ',superclass
-               (get ',name 'properties) ',combined-properties)))))
+               (list `(:g-type-initializer . ,type-initializer))))
+     ,@(when export
+             (cons `(export ',name (find-package ,(package-name (symbol-package name))))
+                   (mapcar (lambda (property)
+                             `(export ',(intern (format nil "~A-~A" (symbol-name name) (property-name property)) (symbol-package name))
+                                      (find-package ,(package-name (symbol-package name)))))
+                           properties)))))
 
-(defmacro define-g-interface (g-name name (&key (export t) type-initializer) &body properties)
+(defmacro define-g-interface (g-type-name name (&key (export t) type-initializer) &body properties)
   (setf properties (mapcar #'parse-property properties))
   `(progn
-     (defclass ,name () ())
+     (defclass ,name ()
+       (,@(mapcar (lambda (property) (meta-property->slot name property)) properties))
+       (:metaclass gobject-class)
+       (:g-type-name . ,g-type-name)
+       (:g-interface-p . t)
+       ,@(when type-initializer
+               (list `(:g-type-initializer . ,type-initializer))))
      ,@(when export
-             (list `(export ',name (find-package ,(package-name (symbol-package name))))))
-     ,@(when type-initializer
-             (list (type-initializer-call type-initializer)))
-     ,@(loop
-          for property in properties
-          append (property->accessors name property export))
+             (cons `(export ',name (find-package ,(package-name (symbol-package name))))
+                   (mapcar (lambda (property)
+                             `(export ',(intern (format nil "~A-~A" (symbol-name name) (property-name property)) (symbol-package name))
+                                      (find-package ,(package-name (symbol-package name)))))
+                           properties)))
      (eval-when (:compile-toplevel :load-toplevel :execute)
-       (setf (get ',name 'properties) ',properties)
-       (setf (gethash ,g-name *known-interfaces*) ',name))))
+       (setf (gethash ,g-type-name *known-interfaces*) ',name))))
 
 (defun starts-with (name prefix)
   (and prefix (> (length name) (length prefix)) (string= (subseq name 0 (length prefix)) prefix)))
