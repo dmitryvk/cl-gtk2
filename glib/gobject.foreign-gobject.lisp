@@ -251,7 +251,7 @@
          for arg-name in args-names
          for arg-value in args-values
          for arg-type in args-types
-         for arg-g-type = (ensure-g-type arg-type)
+         for arg-g-type = (if arg-type (ensure-g-type arg-type) (g-object-type-property-type object-type arg-name))
          for parameter = (mem-aref parameters 'g-parameter i)
          do (setf (foreign-slot-value parameter 'g-parameter 'name) arg-name)
          do (set-g-value (foreign-slot-value parameter 'g-parameter 'value)
