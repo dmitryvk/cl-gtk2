@@ -30,6 +30,7 @@
 
 ; TODO: GtkTreeModelFilter
 
+
 (defclass array-list-store (g-object tree-model)
   ((items :initform (make-array 0 :adjustable t :fill-pointer t) :reader store-items)
    (columns-getters :initform (make-array 0 :adjustable t :fill-pointer t) :reader store-getters)
@@ -123,22 +124,6 @@
                    (funcall (aref (store-getters model) n) 
                             (aref (store-items model) n-row))
                    (aref (store-types model) n)))))
-
-(defstruct tree-node
-  store
-  (columns-values (make-array 0 :adjustable t :fill-pointer t) :type vector)
-  (children (make-array 0 :adjustable t :fill-pointer t) :type (vector tree-node)))
-
-(export 'tree-node)
-
-(defclass tree-store (g-object tree-model)
-  ((root :reader tree-store-root)
-   (columns-types :initform (make-array 0 :adjustable t :fill-pointer t) :reader tree-store-types)
-   (columns-getters :initform (make-array 0 :adjustable t :fill-pointer t) :reader tree-store-getters)))
-
-(export 'tree-store)
-
-(register-object-type-implementation "LispTreeStore" tree-store "GObject" ("GtkTreeModel") nil)
 
 (defcfun (tree-model-flags "gtk_tree_model_get_flags") tree-model-flags
   (tree-model g-object))
