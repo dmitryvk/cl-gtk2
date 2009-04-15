@@ -163,6 +163,7 @@
   (cond
     ((null object)
      (null-pointer))
+    ((pointerp object) object)
     ((null (pointer object))
      (error "Object ~A has been disposed" object))
     ((typep object 'g-object)
@@ -170,7 +171,6 @@
              nil
              "Object ~A is not a subtype of ~A" object (sub-type type))
      (pointer object))
-    ((pointerp object) object)
     (t (error "Object ~A is not translatable as GObject*" object))))
 
 (defun get-g-object-for-pointer (pointer)
