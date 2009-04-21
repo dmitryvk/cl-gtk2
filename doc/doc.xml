@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<book>
+  <bookinfo>
+    <title>CL-GTK2 - a Gtk+ binding for Common Lisp</title>
+    <author>
+      <personname>
+        <firstname>Dmitry</firstname>
+        <surname>Kalyanov</surname>
+      </personname>
+    </author>
+  </bookinfo>
+  <chapter>
+    <title>TODO</title>
+    <para>Installation and requirements</para>
+    <para>*Introduction</para>
+    <para>Goals</para>
+    <para>Development History</para>
+    <para>Features</para>
+    <para>*Examples</para>
+    <para>*GObject binding: using objects, handling memory</para>
+    <para>*Using Gtk+ in Lisp: Gtk+, Widgets, main loop, threading</para>
+    <para>*Advanced GObject: defining objects, creating custom gobject classes, overriding and implementing methods and properties</para>
+    <para>*Internals: how gobject binding is implemented</para>
+  </chapter>
+  <chapter>
+    <title>Introduction</title>
+    <para>CL-GTK2 package is a Common Lisp binding for Gtk+ and related libraries. This package enables Lisp developers to develop Gtk+-based GUI applications.</para>
+  </chapter>
+  <chapter>
+    <title>Goals</title>
+    <para>The goal of CL-GTK2 is to provide portable (modulo threading, metaobject protocol, FFI), extensible and feature-complete binding for Gtk+ and set of related libraries (GLib, GObject, Gdk, Pango, Cairo, GdkPixbuf, GtkSourceView, etc.)</para>
+    <para>Gtk+ is writtent in C and uses object-oriented style of programming with support of GObject library. GObject provides classes, objects, memory management via reference counters, classes introspection, signals, properties. Goal includes "lispy" interface to GObject-based libraries. This means that GObject classes should map into CLOS classes, GObject instance into CLOS instances, properties should match to slots, it should be possible to attach closures as signal handlers. It should be possible to define GObject classes, implement properties, methods, signals, interfaces from lisp.</para>
+    <para>All memory management (object instances, closures, signal handlers, etc.) should be automatic. When applicable, optional support for manual management (using refcounts) should be provided for perfomance reasons.</para>
+    <para>All Gtk+ classes should be mapped, and the rest of the API should be mapped in lispy way. Support for NIH features should not be provided (e.g., do not expose GSList, GList, GHashtable, GUri but rather transparently convert to/from them).</para>
+    <para>Error handling should be provided; GObject/Gtk warnings and errors should be exposed as conditions. It should not be possible to bring Gtk+ into incostistent state when error in lisp code called from Gtk occurs (e.g., error in signal handler should not cause fatal errors but rather should be handleable).</para>
+    <para>CL-GTK2 should be threadsafe: it should be possible to make actions under the Gdk lock, and make actions from withing the GUI thread.</para>
+    <para>Ease of extending and updating to reflect progress of Gtk+ is also important.</para>
+    <para>CL-GTK2 should run main-loop threadedly; it should be possible to interactively modify the code while the GUI program is running.</para>
+  </chapter>
+  <chapter>
+    <title>Development history</title>
+    <para>This project was started by Kalyanov Dmitry in 2008. It was a hobby project to address the (perceived or real) lack of good portable GUI libraries for Common Lisp and to be able to use it for writing diploma (or is it called "graduate"?) project during final course of the university.</para>
+    <para>Initial intent was to use SWIG<footnote><para><ulink url="http://www.swig.org/">Simplified Wrapper and Interface Generator</ulink>; a program that automatically parses C and C++ header files and generates the binding code for many languages, including Common Lisp (targetting CFFI).</para></footnote> in order to be able to generate all of the code. After some experimenting, it was found out that use of SWIG would not help to achieve the goals. First of all, in order to create "lispy" bindings, a lot of integration should be done: object systems, memory management, passing closure and values, type mapping (G(S)List to list, GCallback/GCLosure to functions, etc.). SWIG is not of much help here.</para>
+    <para>So, it was decided to use CFFI and manually map all of the API. First, base infrastructure was created (definition of basic types, maps for basic types, integration with GObject object system and memory management, introspection of GObject types). Then large chunks of API were mapped with automatic generation of classes definitions. Then missing properties were added and functions were mapped.</para>
+    <para>In order to map GtkTreeModel, preliminary support for subclassing and implementing GObjects was introduced. With its help, lispy ArrayListStore (analog for GtkListStore) was implemented.</para>
+    <para>At the moment, next version of GObject binding using the CLOS MOP is being developed. It pretty much obsoletes class generation macroses and is neede in order to be able to make lispy maps of GObject methods into CLOS generic functions and to subclass GObject classes.</para>
+    <para>For future development, using GObjectIntrospection seems the definite way.</para>
+  </chapter>
+  <chapter>
+    <title>Features</title>
+    <para>Short summary of features provided by CL-GTK2:</para>
+    <itemizedlist>
+      <listitem><para>Mapping from GObject to CLOS with (partial) support for creating subclasses, overriding methods</para></listitem>
+      <listitem><para>Automatic memory management (with optional support for manual reference counting)</para></listitem>
+      <listitem><para>Lispy interface to related libraries (currently only to GLib, GObject, Gdk, Gtk)</para></listitem>
+      <listitem><para>Lispy mapping of Gtk+ API</para></listitem>
+      <listitem><para>Custom ListStore (TreeStore to be done) for GtkTreeModel</para></listitem>
+      <listitem><para>Partial error management (closures are invoked with restarts making it possible to cancel signal handling without crashing Gtk+)</para></listitem>
+      <listitem><para>Some high-level features based on Gtk+ API: with-progress-bar, with-message-error-handler</para></listitem>
+    </itemizedlist>
+  </chapter>
+  <chapter>
+    <title>GObject binding</title>
+    <para>At the base of Gtk+ is the GObject library. This library provides basic object-oriented system and various services. </para>
+  </chapter>
+</book>
