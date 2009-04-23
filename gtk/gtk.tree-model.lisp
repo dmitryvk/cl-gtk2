@@ -40,15 +40,36 @@
 
 (register-object-type-implementation "LispArrayListStore" array-list-store "GObject" ("GtkTreeModel") nil)
 
+(defun store-items-count (store)
+  (length (store-items store)))
+
+(export 'store-items-count)
+
+(defun store-item (store index)
+  (aref (store-items store) index))
+
+(export 'store-item)
+
 (defun store-add-item (store item)
   (vector-push-extend item (store-items store))
   (using* ((path (make-instance 'tree-path))
-                   (iter (make-instance 'tree-iter)))
+           (iter (make-instance 'tree-iter)))
     (setf (tree-path-indices path) (list (1- (length (store-items store)))))
     (setf (tree-iter-stamp iter) 0 (tree-iter-user-data iter) (1- (length (store-items store))))
     (emit-signal store "row-inserted" path iter)))
 
 (export 'store-add-item)
+
+(defun store-remove-item (store item &key (test 'eq))
+  (with-slots (items) store
+    (let ((index (position item items :test test)))
+      (unless index (error "No such item~%~A~%in list-store~%~A" item store))
+      (setf items (delete item items :test test))
+      (using (path (make-instance 'tree-path))
+             (setf (tree-path-indices path) (list index))
+             (emit-signal store "row-deleted" path)))))
+
+(export 'store-remove-item)
 
 (defun store-add-column (store type getter)
   (vector-push-extend (ensure-g-type type) (store-types store))
