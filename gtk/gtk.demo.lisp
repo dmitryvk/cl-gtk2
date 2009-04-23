@@ -22,7 +22,8 @@
            #:test-calendar
            #:test-box-child-property
            #:test-builder
-           #:demo-text-editor))
+           #:demo-text-editor
+           #:demo-class-browser))
 
 (in-package :gtk-demo)
 
@@ -629,3 +630,52 @@
         (g-signal-connect window "destroy" (lambda (w) (declare (ignore w)) (leave-gtk-main)))
         (g-signal-connect (text-view-buffer text-view) "changed" (lambda (b) (declare (ignore b)) (setf modified-p t) (set-properties)))
         (widget-show window)))))
+
+(defun demo-class-browser ()
+  (let ((output *standard-output*))
+    (with-main-loop
+        (let* ((window (make-instance 'gtk-window
+                                      :window-position :center
+                                      :title "Class Browser"
+                                      :default-width 400
+                                      :default-height 600))
+               (search-entry (make-instance 'entry))
+               (search-button (make-instance 'button :label "Search"))
+               (scroll (make-instance 'scrolled-window
+                                      :hscrollbar-policy :automatic
+                                      :vscrollbar-policy :automatic))
+               (slots-model (make-instance 'array-list-store))
+               (slots-list (make-instance 'tree-view :model slots-model)))
+          (let ((v-box (make-instance 'v-box))
+                (search-box (make-instance 'h-box)))
+            (container-add window v-box)
+            (box-pack-start v-box search-box :expand nil)
+            (box-pack-start search-box search-entry)
+            (box-pack-start search-box search-button :expand nil)
+            (box-pack-start v-box scroll)
+            (container-add scroll slots-list))
+          (store-add-column slots-model "gchararray"
+                            (lambda (slot)
+                              (format nil "~S" (closer-mop:slot-definition-name slot))))
+          (let ((col (make-instance 'tree-view-column :title "Slot name"))
+                (cr (make-instance 'cell-renderer-text)))
+            (tree-view-column-pack-start col cr)
+            (tree-view-column-add-attribute col cr "text" 0)
+            (tree-view-append-column slots-list col))
+          (labels ((display-class-slots (class)
+                     (format output "Displaying ~A~%" class)
+                     (loop
+                        repeat (store-items-count slots-model)
+                        do (store-remove-item slots-model (store-item slots-model 0)))
+                     (closer-mop:finalize-inheritance class)
+                     (loop
+                        for slot in (closer-mop:class-slots class)
+                        do (store-add-item slots-model slot)))
+                   (on-search-clicked (button)
+                     (declare (ignore button))
+                     (with-gtk-message-error-handler
+                         (let* ((class-name (read-from-string (entry-text search-entry)))
+                                (class (find-class class-name)))
+                           (display-class-slots class)))))
+            (g-signal-connect search-button "clicked" #'on-search-clicked))
+          (widget-show window)))))
