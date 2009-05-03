@@ -27,12 +27,17 @@
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
   (define-foreign-library glib
-    (:unix "libglib-2.0.so")
-    (t "glib-2.0")))
+    (:unix (:or "libglib-2.0.so.0" "libglib-2.0.so"))
+    (t "libglib-2.0")))
 
 (use-foreign-library glib)
 
-(load-foreign-library "libgthread-2.0.so")
+(eval-when (:compile-toplevel :load-toplevel :execute)
+  (define-foreign-library gthread
+    (:unix (:or "libgthread-2.0.so.0"  "libgthread-2.0.so"))
+    (t "libgthread-2.0")))
+
+(use-foreign-library gthread)
 
 ;;
 ;; Glib Fundamentals
@@ -45,9 +50,10 @@
 
 ;; TODO: not sure about these: for amd64 they are ok
 (eval-when (:compile-toplevel :load-toplevel :execute)
-  (if (cffi-features:cffi-feature-p :x86-64)
-      (defctype gsize :uint64)
-      (error "Unknown type 'gsize'")))
+  (cond
+    ((cffi-features:cffi-feature-p :x86-64) (defctype gsize :uint64))
+    ((cffi-features:cffi-feature-p :x86) (defctype gsize :ulong))
+    (t (error "Can not define 'gsize', unknown CPU architecture (known are x86 and x86-64)"))))
 
 (defctype gssize :long)
 

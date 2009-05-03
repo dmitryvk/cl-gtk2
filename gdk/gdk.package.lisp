@@ -11,4 +11,9 @@
 
 (in-package :gdk)
 
-(load-foreign-library "libgdk-x11-2.0.so")
+(eval-when (:compile-toplevel :load-toplevel :execute)
+  (define-foreign-library gdk
+    (:unix (:or "libgdk-x11-2.0.so.0" "libgdk-x11-2.0.so"))
+    (t "libgdk-2.0")))
+
+(use-foreign-library gdk)
