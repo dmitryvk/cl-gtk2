@@ -58,6 +58,8 @@
                    "GtkPrintOperationPreview"
                    "GtkRecentChooser"
                    "GtkToolShell"
+                   "GtkOrientable"
+                   "GtkActivatable"
                    "AtkImplementorIface")
      :objects '("GtkSettings" "GtkRcStyle" "GtkStyle" "GtkTooltip" "GtkAccelGroup"
                 "GtkAccelMap" "GtkAction" "GtkActionGroup" "GtkBuilder" "GtkClipboard"
@@ -161,21 +163,21 @@
         (:cffi gtk::cancel-button gtk::font-selection-dialog-cancel-button g-object "gtk_font_selection_dialog_get_cancel_button" nil)
         (:cffi gtk::ok-button gtk::font-selection-dialog-ok-button g-object "gtk_font_selection_dialog_get_ok_button" nil))
        ("GtkFixed"
-        (:cffi gtk::has-window gtk::fixed-has-window :boolean "gtk_fixed_get_has_window" "gtk_gixed_set_has_window"))
+        (:cffi gtk::has-window gtk::fixed-has-window :boolean "gtk_fixed_get_has_window" "gtk_fixed_set_has_window"))
        ("GtkLayout"
         (:cffi gtk::bin-window gtk::layout-bin-window g-object "gtk_layout_get_bin_window" nil))
        ("GtkCalendar"
         (:cffi gtk::detail-function gtk::calendar-detail-function nil nil gtk::calendar-set-detail-function))
        ("GtkContainer"
         (:cffi gtk::focus-child gtk::container-focus-child g-object "gtk_container_get_focus_child" "gtk_container_set_focus_child")
-        (:cffi gtk::vadjustment-child gtk::container-vadjustment-child g-object "gtk_container_get_vadjustment_child" "gtk_container_set_vadjustment_child")
-        (:cffi gtk::hadjustment-child gtk::container-hadjustment-child g-object "gtk_container_get_hadjustment_child" "gtk_container_set_hadjustment_child"))
+        (:cffi gtk::focus-vadjustment gtk::container-focus-vadjustment g-object "gtk_container_get_focus_vadjustment" "gtk_container_set_focus_vadjustment")
+        (:cffi gtk::focus-hadjustment gtk::container-focus-hadjustment g-object "gtk_container_get_focus_hadjustment" "gtk_container_set_focus_hadjustment"))
        ("GtkWidget"
         (:cffi gtk::direction gtk::widget-direction gtk::text-direction "gtk_widget_get_direction" "gtk_widget_set_direction")
         (:cffi gtk::composite-name gtk::widget-composite-name (glib:g-string :free-from-foreign t :free-to-foreign t) "gtk_widget_get_composite_name" "gtk_widget_set_composite_name")
         (:cffi gtk::redraw-on-allocate gtk::widget-redraw-on-allocate :boolean nil "gtk_widget_set_redraw_on_allocate")
         (:cffi gtk::accessible gtk::widget-accessible g-object "gtk_widget_get_accessible" nil)
-        (:cffi gtk::tooltip-window gtk::widget-tooltip-window g-object "gtk_widget_get_tooltip_window" "gtk_window_set_tooltip_window"))
+        (:cffi gtk::tooltip-window gtk::widget-tooltip-window g-object "gtk_widget_get_tooltip_window" "gtk_widget_set_tooltip_window"))
        ("GtkTextTag"
         (:cffi gtk::priority gtk::text-tag-priority :int "gtk_text_tag_get_priority" "gtk_text_tag_set_priority"))))))
 
