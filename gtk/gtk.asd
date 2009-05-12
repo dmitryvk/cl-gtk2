@@ -3,10 +3,10 @@
   :serial t
   :components ((:file "gtk.package")
                (:file "gtk.misc")
+               (:file "gtk.main_loop_events")
                (:file "gtk.object")
                (:file "gtk.objects")
-               (:file "gtk.generated-classes")
-               (:file "gtk.main_loop_events")
+               (:file "gtk.generated-classes")               
                (:file "gtk.functions")
                (:file "gtk.base-classes")
                (:file "gtk.dialog")
