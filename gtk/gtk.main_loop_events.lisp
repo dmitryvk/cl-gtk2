@@ -51,11 +51,6 @@
 
 (defcfun gtk-main-quit :void)
 
-(defcfun gtk-main-iteration :boolean)
-
-(defcfun gtk-main-iteration-do :boolean
-  (blocking :boolean))
-
 (defcfun gtk-grab-add :void
   (widget g-object))
 

@@ -45,7 +45,7 @@
 
 (export 'current-event)
 
-(defcfun (current-event-time gtk-get-current-event-time) :uint32)
+(defcfun (current-event-time "gtk_get_current_event_time") :uint32)
 
 (export 'current-event-time)
 
