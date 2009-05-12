@@ -377,38 +377,40 @@
   (thread (:pointer g-thread))
   (priority g-thread-priority))
 
-(defcfun (g-mutex-new "g_mutex_new" :library glib) (:pointer g-mutex))
+;;;; TODO: Commented g_mutex_*, g_cond* because they are not functions, but called through dispatch table
 
-(defcfun (g-mutex-lock "g_mutex_lock" :library glib) :void
-  (mutex (:pointer g-mutex)))
+;; (defcfun (g-mutex-new "g_mutex_new" :library glib) (:pointer g-mutex))
 
-(defcfun (g-mutex-try-lock "g_mutex_trylock" :library glib) :boolean
-  (mutex (:pointer g-mutex)))
+;; (defcfun (g-mutex-lock "g_mutex_lock" :library glib) :void
+;;   (mutex (:pointer g-mutex)))
 
-(defcfun (g-mutex-free "g_mutex_free" :library glib) :void
-  (mutex (:pointer g-mutex)))
+;; (defcfun (g-mutex-try-lock "g_mutex_trylock" :library glib) :boolean
+;;   (mutex (:pointer g-mutex)))
+
+;; (defcfun (g-mutex-free "g_mutex_free" :library glib) :void
+;;   (mutex (:pointer g-mutex)))
 
 ;omitted: GStaticMutex, GStaticRWLock stuff
 
-(defcfun (g-cond-new "g_cond_new" :library glib) (:pointer g-cond))
+;; (defcfun (g-cond-new "g_cond_new" :library glib) (:pointer g-cond))
 
-(defcfun (g-cond-signal "g_cond_signal" :library glib) :void
-  (cond (:pointer g-cond)))
+;; (defcfun (g-cond-signal "g_cond_signal" :library glib) :void
+;;   (cond (:pointer g-cond)))
 
-(defcfun (g-cond-broadcast "g_cond_broadcast" :library glib) :void
-  (cond (:pointer g-cond)))
+;; (defcfun (g-cond-broadcast "g_cond_broadcast" :library glib) :void
+;;   (cond (:pointer g-cond)))
 
-(defcfun (g-cond-wait "g_cond_wait" :library glib) :void
-  (cond (:pointer g-cond))
-  (mutex (:pointer g-mutex)))
+;; (defcfun (g-cond-wait "g_cond_wait" :library glib) :void
+;;   (cond (:pointer g-cond))
+;;   (mutex (:pointer g-mutex)))
 
-(defcfun (g-cond-timed-wait "g_cond_timed_wait" :library glib) :boolean
-  (cond (:pointer g-cond))
-  (mutex (:pointer g-mutex))
-  (abs-time (:pointer g-time-val)))
+;; (defcfun (g-cond-timed-wait "g_cond_timed_wait" :library glib) :boolean
+;;   (cond (:pointer g-cond))
+;;   (mutex (:pointer g-mutex))
+;;   (abs-time (:pointer g-time-val)))
 
-(defcfun (g-cond-free "g_cond_free" :library glib) :void
-  (cond (:pointer g-cond)))
+;; (defcfun (g-cond-free "g_cond_free" :library glib) :void
+;;   (cond (:pointer g-cond)))
 
 ;omitted: GPrivate, GOnce stuff
 

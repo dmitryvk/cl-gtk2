@@ -284,7 +284,7 @@
   (element-spec (:pointer g-param-spec))
   (flags g-param-flags))
 
-(defcfun g-param-spec-g-type (:pointer g-param-spec-g-type)
+(defcfun (g-param-spec-g-type "g_param_spec_gtype") (:pointer g-param-spec-g-type)
   (name :string)
   (nick :string)
   (blurb :string)
