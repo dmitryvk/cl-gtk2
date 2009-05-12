@@ -124,12 +124,12 @@
                            (return-from-interface-method-implementation (v) :interactive (lambda () (list (eval (read)))) v)))))))
 
 (defun interface-init (iface data)
-  (bind (((class-name interface-name) (prog1 (get-stable-pointer-value data) (free-stable-pointer data)))
-         (vtable (gethash interface-name *vtables*))
-         (vtable-cstruct (vtable-description-cstruct-name vtable)))
-    (debugf "interface-init for class ~A and interface ~A~%" class-name interface-name)
-    (iter (for method in (vtable-description-methods vtable))
-          (setf (foreign-slot-value iface vtable-cstruct (vtable-method-info-name method)) (get-callback (vtable-method-info-callback-name method))))))
+  (destructuring-bind (class-name interface-name) (prog1 (get-stable-pointer-value data) (free-stable-pointer data))
+    (let* ((vtable (gethash interface-name *vtables*))
+           (vtable-cstruct (vtable-description-cstruct-name vtable)))
+      (debugf "interface-init for class ~A and interface ~A~%" class-name interface-name)
+      (iter (for method in (vtable-description-methods vtable))
+            (setf (foreign-slot-value iface vtable-cstruct (vtable-method-info-name method)) (get-callback (vtable-method-info-callback-name method)))))))
 
 (defcallback c-interface-init :void ((iface :pointer) (data :pointer))
   (interface-init iface data))

@@ -596,8 +596,9 @@
   (char-offset :int))
 
 (defun text-buffer-get-iter-at-line-offset (buffer line-number char-offset)
-  (aprog1 (make-instance 'text-iter)
-    (gtk-text-buffer-get-iter-at-line-offset buffer it line-number char-offset)))
+  (let ((iter (make-instance 'text-iter)))
+    (gtk-text-buffer-get-iter-at-line-offset buffer iter line-number char-offset)
+    iter))
 
 (export 'text-buffer-get-iter-at-line-offset)
 
@@ -607,8 +608,9 @@
   (char-offset :int))
 
 (defun text-buffer-get-iter-at-offset (buffer offset)
-  (aprog1 (make-instance 'text-iter)
-    (gtk-text-buffer-get-iter-at-offset buffer it offset)))
+  (let ((iter (make-instance 'text-iter)))
+    (gtk-text-buffer-get-iter-at-offset buffer iter offset)
+    iter))
 
 (export 'text-buffer-get-iter-at-offset)
 
@@ -618,8 +620,9 @@
   (line-number :int))
 
 (defun text-buffer-get-iter-at-line (buffer line-number)
-  (aprog1 (make-instance 'text-iter)
-    (gtk-text-buffer-get-iter-at-line buffer it line-number)))
+  (let ((iter (make-instance 'text-iter)))
+    (gtk-text-buffer-get-iter-at-line buffer iter line-number)
+    iter))
 
 (export 'text-buffet-get-iter-at-line)
 
@@ -631,8 +634,9 @@
 (defun text-buffer-get-iter-at-mark (buffer mark)
   (when (stringp mark)
     (setf mark (text-buffer-get-mark buffer mark)))
-  (aprog1 (make-instance 'text-iter)
-    (gtk-text-buffer-get-iter-at-mark buffer it mark)))
+  (let ((iter (make-instance 'text-iter)))
+    (gtk-text-buffer-get-iter-at-mark buffer iter mark)
+    iter))
 
 (export 'text-buffer-get-iter-at-mark)
 
@@ -642,8 +646,9 @@
   (anchor (g-object text-child-anchor)))
 
 (defun text-buffer-get-iter-at-child-anchor (buffer anchor)
-  (aprog1 (make-instance 'text-iter)
-    (gtk-text-buffer-get-iter-at-child-anchor buffer it anchor)))
+  (let ((iter (make-instance 'text-iter)))
+    (gtk-text-buffer-get-iter-at-child-anchor buffer iter anchor)
+    iter))
 
 (export 'text-buffer-get-iter-at-child-anchor)
 
@@ -652,8 +657,9 @@
   (iter (g-boxed-ref text-iter)))
 
 (defun text-buffer-get-start-iter (buffer)
-  (aprog1 (make-instance 'text-iter)
-    (gtk-text-buffer-get-start-iter buffer it)))
+  (let ((iter (make-instance 'text-iter)))
+    (gtk-text-buffer-get-start-iter buffer iter)
+    iter))
 
 (export 'text-buffer-get-start-iter)
 
@@ -662,8 +668,9 @@
   (iter (g-boxed-ref text-iter)))
 
 (defun text-buffer-get-end-iter (buffer)
-  (aprog1 (make-instance 'text-iter)
-    (gtk-text-buffer-get-end-iter buffer it)))
+  (let ((iter (make-instance 'text-iter)))
+    (gtk-text-buffer-get-end-iter buffer iter)
+    iter))
 
 (export 'text-buffer-get-end-iter)
 
@@ -914,8 +921,9 @@
   (visible-rect (g-boxed-ptr rectangle :in-out)))
 
 (defun text-view-visible-rect (text-view)
-  (aprog1 (make-rectangle :x 0 :y 0 :width 0 :height 0)
-    (gtk-text-view-get-visible-rect text-view it)))
+  (let ((rect (make-rectangle :x 0 :y 0 :width 0 :height 0)))
+    (gtk-text-view-get-visible-rect text-view rect)
+    rect))
 
 (export 'text-view-visible-rect)
 
@@ -925,8 +933,9 @@
   (location (g-boxed-ptr rectangle :in-out)))
 
 (defun text-view-iter-location (text-view iter)
-  (aprog1 (make-rectangle :x 0 :y 0 :width 0 :height 0)
-    (gtk-text-view-get-iter-location text-view iter it)))
+  (let ((rect (make-rectangle :x 0 :y 0 :width 0 :height 0)))
+    (gtk-text-view-get-iter-location text-view iter rect)
+    rect))
 
 (export 'text-view-iter-location)
 

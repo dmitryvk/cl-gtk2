@@ -1,5 +1,5 @@
 (defpackage :gtk-demo
-  (:use :cl :gtk :gdk :gobject :anaphora :iter)
+  (:use :cl :gtk :gdk :gobject :iter)
   (:export #:test
            #:test-entry
            #:table-packing
@@ -12,7 +12,6 @@
            #:demo-code-editor
            #:test-treeview-list
            #:test-combo-box
-           #:test-toolbar
            #:test-ui-manager
            #:test-color-button
            #:test-color-selection
@@ -393,8 +392,9 @@
             (for action = (make-instance 'action :name name :stock-id stock-id))
             (g-signal-connect action "activate" fn)
             (action-group-add-action action-group action))
-      (awhen (ui-manager-widget ui-manager "/toolbar1")
-        (container-add window it))
+      (let ((widget (ui-manager-widget ui-manager "/toolbar1")))
+        (when widget
+          (container-add window widget)))
       (widget-show window))))
 
 (defun test-color-button ()
@@ -545,8 +545,9 @@
 
 (defun demo-text-editor ()
   (within-main-loop
-    (let* ((builder (aprog1 (make-instance 'builder)
-                      (builder-add-from-file it (namestring (merge-pathnames "demo/text-editor.ui" *src-location*)))))
+    (let* ((builder (let ((builder (make-instance 'builder)))
+                      (builder-add-from-file builder (namestring (merge-pathnames "demo/text-editor.ui" *src-location*)))
+                      builder))
            (window (builder-get-object builder "window1"))
            (text-view (builder-get-object builder "textview1"))
            (status-bar (builder-get-object builder "statusbar1"))

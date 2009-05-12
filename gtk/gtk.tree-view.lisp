@@ -191,8 +191,9 @@
   (rectangle (g-boxed-ptr rectangle)))
 
 (defun tree-view-get-cell-area (tree-view path column)
-  (aprog1 (make-rectangle :x 0 :y 0 :width 0 :height 0)
-    (gtk-tree-view-get-cell-area tree-view path column it)))
+  (let ((rect (make-rectangle :x 0 :y 0 :width 0 :height 0)))
+    (gtk-tree-view-get-cell-area tree-view path column rect)
+    rect))
 
 (export 'tree-view-get-cell-area)
 
@@ -203,8 +204,9 @@
   (rectangle (g-boxed-ptr rectangle)))
 
 (defun tree-view-get-background-area (tree-view path column)
-  (aprog1 (make-rectangle :x 0 :y 0 :width 0 :height 0)
-    (gtk-tree-view-get-background-area tree-view path column it)))
+  (let ((rect (make-rectangle :x 0 :y 0 :width 0 :height 0)))
+    (gtk-tree-view-get-background-area tree-view path column rect)
+    rect))
 
 (export 'tree-view-get-background-area)
 
@@ -213,8 +215,9 @@
   (rectangle (g-boxed-ptr rectangle)))
 
 (defun tree-view-get-visible-rect (tree-view)
-  (aprog1 (make-rectangle :x 0 :y 0 :width 0 :height 0)
-    (gtk-tree-view-get-visible-rect tree-view it)))
+  (let ((rect (make-rectangle :x 0 :y 0 :width 0 :height 0)))
+    (gtk-tree-view-get-visible-rect tree-view rect)
+    rect))
 
 (export 'tree-view-get-visible-rect)
 

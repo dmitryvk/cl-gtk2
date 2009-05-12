@@ -106,7 +106,7 @@
       name))
 
 (defun slot->slot-parser (class-name pointer-var slot)
-  (bind (((slot-name slot-type &key parser &allow-other-keys) slot))
+  (destructuring-bind (slot-name slot-type &key parser &allow-other-keys) slot
     (cond
       (parser
        `(setf ,slot-name (funcall ,parser ',class-name ,pointer-var)))
@@ -122,7 +122,7 @@
          ,@(mapcar (lambda (slot) (slot->slot-parser name 'pointer slot)) slots)))))
 
 (defun slot->slot-unparser (class-name pointer-var slot object)
-  (bind (((slot-name slot-type &key unparser &allow-other-keys) slot))
+  (destructuring-bind (slot-name slot-type &key unparser &allow-other-keys) slot
     (cond
       (unparser
        `(funcall ,unparser ',class-name ,pointer-var ,object))
@@ -148,7 +148,7 @@
   (intern (format nil "MAKE-~A" (symbol-name name)) (symbol-package name)))
 
 (defun get-g-boxed-direct-subclasses (name)
-  (mapcar (lambda (spec) (bind (((name slot values) spec))
+  (mapcar (lambda (spec) (destructuring-bind (name slot values) spec
                            (declare (ignore slot values))
                            name))
           (get name 'boxed-dispatch)))
@@ -176,29 +176,30 @@
     (get-g-boxed-completed-c-definition (g-boxed-root name) (get name 'c-name))))
 
 (defmacro define-g-boxed-class (g-name-and-c-name name (&optional superclass-and-dispatch (export t)) &body slots)
-  (bind (((&optional g-name c-name) (ensure-list g-name-and-c-name))
-         ((&optional superclass dispatch-slot dispatch-values) superclass-and-dispatch)
-         (superclass-slots (get superclass 'boxed-combined-slots))
-         (combined-slots (append superclass-slots slots)))
-    (setf c-name (or c-name (gensym "C-UNION-")))
-    `(progn ,(cstruct-definition name combined-slots)
-            ,(struct-definition name superclass slots)
-            ,(parse-method-definition name combined-slots)
-            ,(unparse-method-definition name combined-slots)
-            (eval-when (:load-toplevel :compile-toplevel :execute)
-              (setf (get ',name 'boxed-slots) ',slots
-                    (get ',name 'boxed-combined-slots) ',combined-slots
-                    (get ',name 'superclass) ',superclass
-                    (get ',name 'c-name) (or (get ',name 'c-name) ',c-name))
-              ,@(when superclass
-                      (list `(pushnew '(,name ,dispatch-slot ,(ensure-list dispatch-values)) (get ',superclass 'boxed-dispatch) :test 'equalp))))
-            (update-g-boxed-root-c-class ,name)
-            ,@(when g-name
-                    (list `(register-boxed-type ,g-name ',name)))
-            ,@(when export
-                    (append (list `(export ',name (symbol-package ',name))
-                                  `(export ',(struct-constructor-name name) (symbol-package ',(struct-constructor-name name))))
-                            (mapcar (lambda (slot) (slot->export-accessor name slot)) slots))))))
+  (destructuring-bind (&optional g-name c-name) (ensure-list g-name-and-c-name)
+    (destructuring-bind (&optional superclass dispatch-slot dispatch-values) superclass-and-dispatch
+      (let* ((superclass-slots (get superclass 'boxed-combined-slots))
+             (combined-slots (append superclass-slots slots)))
+        
+        (setf c-name (or c-name (gensym "C-UNION-")))
+        `(progn ,(cstruct-definition name combined-slots)
+                ,(struct-definition name superclass slots)
+                ,(parse-method-definition name combined-slots)
+                ,(unparse-method-definition name combined-slots)
+                (eval-when (:load-toplevel :compile-toplevel :execute)
+                  (setf (get ',name 'boxed-slots) ',slots
+                        (get ',name 'boxed-combined-slots) ',combined-slots
+                        (get ',name 'superclass) ',superclass
+                        (get ',name 'c-name) (or (get ',name 'c-name) ',c-name))
+                  ,@(when superclass
+                          (list `(pushnew '(,name ,dispatch-slot ,(ensure-list dispatch-values)) (get ',superclass 'boxed-dispatch) :test 'equalp))))
+                (update-g-boxed-root-c-class ,name)
+                ,@(when g-name
+                        (list `(register-boxed-type ,g-name ',name)))
+                ,@(when export
+                        (append (list `(export ',name (symbol-package ',name))
+                                      `(export ',(struct-constructor-name name) (symbol-package ',(struct-constructor-name name))))
+                                (mapcar (lambda (slot) (slot->export-accessor name slot)) slots))))))))
 
 (defun boxed-c-structure-name (name)
   (get (g-boxed-root name) 'c-name))
@@ -223,9 +224,10 @@
   (unless (gethash (pointer-address pointer) *boxed-ref-count*)
     (error "g-boxed-ref ~A is already disposed from lisp-side" pointer))
   (with-recursive-lock-held (*g-boxed-gc-lock*)
-    (awhen (gethash (pointer-address pointer) *known-boxed-refs*)
-      (debugf "Removing finalization from ~A for pointer ~A~%" it pointer)
-      (tg:cancel-finalization it))
+    (let ((object (gethash (pointer-address pointer) *known-boxed-refs*)))
+      (when object
+        (debugf "Removing finalization from ~A for pointer ~A~%" object pointer)
+        (tg:cancel-finalization object)))
     (when (eq :lisp (gethash (pointer-address pointer) *boxed-ref-owner*))
       (funcall (boxed-ref-free-function type) pointer))
     (remhash (pointer-address pointer) *known-boxed-refs*)
@@ -238,8 +240,9 @@
 (defmethod initialize-instance :after ((object g-boxed-ref) &key)
   (with-recursive-lock-held (*g-boxed-gc-lock*)
     (let ((address (pointer-address (pointer object))))
-      (awhen (gethash address *known-boxed-refs*)
-        (tg:cancel-finalization it))
+      (let ((object (gethash address *known-boxed-refs*)))
+        (when object
+          (tg:cancel-finalization object)))
       (setf (gethash address *known-boxed-refs*) object)
       (setf (gethash address *boxed-ref-count*) 1)
       (setf (gethash address *boxed-ref-owner*)
@@ -279,15 +282,15 @@
 (defun convert-g-boxed-ref-from-pointer (pointer name type)
   (unless (null-pointer-p pointer)
     (with-recursive-lock-held (*g-boxed-gc-lock*)
-     (or (aprog1 (gethash (pointer-address pointer) *known-boxed-refs*)
-           (when it (debugf "Boxed-ref for ~A is found (~A)~%" pointer it))
-           (when it (incf (gethash (pointer-address pointer) *boxed-ref-count*)))
-           it)
-         (aprog1 (make-instance name :pointer pointer)
-           (setf (gethash (pointer-address pointer) *boxed-ref-owner*) (g-boxed-ref-owner type))
-           (debugf "Boxed-ref for ~A is created (~A) with owner ~A~%" pointer it
-                   (gethash (pointer-address pointer) *boxed-ref-owner*))
-           it)))))
+      (or (let ((object (gethash (pointer-address pointer) *known-boxed-refs*)))
+            (when object (debugf "Boxed-ref for ~A is found (~A)~%" pointer object))
+            (when object (incf (gethash (pointer-address pointer) *boxed-ref-count*)))
+            object)
+          (let ((object (make-instance name :pointer pointer)))
+            (setf (gethash (pointer-address pointer) *boxed-ref-owner*) (g-boxed-ref-owner type))
+            (debugf "Boxed-ref for ~A is created (~A) with owner ~A~%" pointer object
+                    (gethash (pointer-address pointer) *boxed-ref-owner*))
+            object)))))
 
 (defmethod translate-from-foreign (value (type g-boxed-ref-type))
   (let ((owner (or (gethash (pointer-address value) *boxed-ref-owner*) (g-boxed-ref-owner type)))) ;;This is needed to prevent changing ownership of already created
@@ -296,7 +299,7 @@
       (setf (gethash (pointer-address value) *boxed-ref-owner*) owner))))
 
 (defun g-boxed-ref-slot->methods (class slot)
-  (bind (((slot-name &key reader writer type (accessor slot-name)) slot))
+  (destructuring-bind (slot-name &key reader writer type (accessor slot-name)) slot
     `(progn ,@(when reader
                     (list `(defmethod ,accessor ((object ,class))
                              ,(if (stringp reader)

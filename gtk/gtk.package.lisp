@@ -1,5 +1,5 @@
 (defpackage :gtk
-  (:use :cl :cffi :gobject :gdk :glib :metabang-bind :anaphora)
+  (:use :cl :cffi :gobject :gdk :glib)
   (:export #:register-object-type
            #:gtk-main
            #:gtk-main-quit

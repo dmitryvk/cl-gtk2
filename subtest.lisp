@@ -142,9 +142,10 @@
 
 (defmethod tree-model-get-path-impl ((model array-list-store) iter)
   (gobject:using* (iter)
-    (anaphora:aprog1 (make-instance 'tree-path)
-      (setf (tree-path-indices anaphora:it) (list (tree-iter-user-data iter)))
-      (gobject:disown-boxed-ref anaphora:it))))
+    (let ((path (make-instance 'tree-path)))
+      (setf (tree-path-indices path) (list (tree-iter-user-data iter)))
+      (gobject:disown-boxed-ref path)
+      path)))
 
 (defmethod tree-model-iter-has-child-impl ((model array-list-store) iter)
   (gobject:release iter)

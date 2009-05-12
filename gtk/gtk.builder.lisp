@@ -101,8 +101,9 @@
 (defun builder-connect-signals-simple (builder handlers-list)
   (flet ((connect-func (builder object signal-name handler-name connect-object flags)
            (declare (ignore builder connect-object))
-           (awhen (find handler-name handlers-list :key 'first :test 'string=)
-      (g-signal-connect object signal-name (second it) :after (member :after flags)))))
+           (let ((handler (find handler-name handlers-list :key 'first :test 'string=)))
+             (when handler
+               (g-signal-connect object signal-name (second handler) :after (member :after flags))))))
     (builder-connect-signals-full builder #'connect-func)))
 
 (export 'builder-connect-signals-simple)

@@ -115,9 +115,10 @@
           (gethash (pointer-address pointer) *foreign-gobjects*)
           (gethash (pointer-address pointer) *foreign-gobjects-ref-count*)
           (ref-count pointer))
-  (awhen (gethash (pointer-address pointer) *foreign-gobjects*)
-    (setf (pointer it) nil)
-    (cancel-finalization it))
+  (let ((object (gethash (pointer-address pointer) *foreign-gobjects*)))
+    (when object
+      (setf (pointer object) nil)
+      (cancel-finalization object)))
   (remhash (pointer-address pointer) *foreign-gobjects*)
   (remhash (pointer-address pointer) *foreign-gobjects-ref-count*)
   (g-object-unref pointer))
@@ -175,11 +176,12 @@
 
 (defun get-g-object-for-pointer (pointer)
   (unless (null-pointer-p pointer)
-    (aif (gethash (pointer-address pointer) *foreign-gobjects*)
-         (prog1 it
-           (incf (gethash (pointer-address pointer) *foreign-gobjects-ref-count*))
-           (debugf "increfering object ~A~%" pointer))
-         (make-g-object-from-pointer pointer))))
+    (let ((object (gethash (pointer-address pointer) *foreign-gobjects*)))
+      (if object
+          (prog1 object
+            (incf (gethash (pointer-address pointer) *foreign-gobjects-ref-count*))
+            (debugf "increfering object ~A~%" pointer))
+          (make-g-object-from-pointer pointer)))))
 
 (defmethod translate-from-foreign (pointer (type foreign-g-object-type))
   (get-g-object-for-pointer pointer))

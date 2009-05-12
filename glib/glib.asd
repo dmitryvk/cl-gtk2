@@ -27,4 +27,4 @@
                (:file "gobject.generating")
                (:file "gobject.object-defs")
                (:file "gobject.foreign-gobject-subclassing"))
-  :depends-on (:cffi :trivial-garbage :metabang-bind :iterate :anaphora :bordeaux-threads :iterate :closer-mop))
+  :depends-on (:cffi :trivial-garbage :iterate :bordeaux-threads :iterate :closer-mop))
