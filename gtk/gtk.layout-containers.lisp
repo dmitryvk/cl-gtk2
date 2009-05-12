@@ -83,9 +83,20 @@
 
 (export 'notebook-add-page)
 
-(defcfun (notebook-remove-page "gtk_notebook_remove_page") :void
+(defcfun (notebook-page-num "gtk_notebook_page_num") :int
   (notebook g-object)
   (child g-object))
+
+(export 'notebook-page-num)
+
+(defcfun gtk-notebook-remove-page :void
+  (notebook g-object)
+  (page-num :int))
+
+(defun notebook-remove-page (notebook page-or-number)
+  (gtk-notebook-remove-page notebook (etypecase page-or-number
+                                       (integer page-or-number)
+                                       (widget (notebook-page-num notebook page-or-number)))))
 
 (export 'notebook-remove-page)
 
