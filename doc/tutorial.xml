@@ -20,16 +20,15 @@
   <section>
     <title>Installation</title>
     <para>CL-GTK2 is in alpha stage and is unstable and not feature-complete. It is being developed on x86-64 gentoo linux with SBCL. It should, in general, work with other lisp compilers and on other platforms. CL-GTK2 requires some features not present in the Common Lisp Standard, namely it requires CFFI support with callbacks and long-long support (most modern lisp implementations are supported, including clisp) and it requires CLOS MOP (MetaObject Protocol) which is also is present (or is being added to) most modern lisp implementations.</para>
+    <para>CL-GTK2 requires Gtk+ version 2.16 or later. CL-GTK2 was tested on SBCL-1.0.18 and SBCL-1.0.28</para>
     <para>If you have any difficulties installing or using CL-GTK2, contact me (the author of this tutorial and of CL-GTK2) via email Kalyanov.Dmitry@gmail.com or via jabber mo3r@jabber.ru.</para>
-    <para>First, install CL-GTK2 dependcies. CL-GTK2 has the following dependencies:</para>
+    <para>First, install CL-GTK2 dependcies. CL-GTK2 has the following dependencies (CL-GTK2 was tested with specified versions; it would probably not work with earlier versions but should work with later versions):</para>
     <itemizedlist>
-      <listitem><para><ulink url="http://common-lisp.net/project/cffi">CFFI</ulink></para></listitem>
-      <listitem><para><ulink url="http://www.cliki.net/trivial-garbage">Trivial-Garbage</ulink></para></listitem>
-      <listitem><para><ulink url="http://common-lisp.net/project/metabang-bind/">Metabang-Bind</ulink></para></listitem>
-      <listitem><para><ulink url="http://common-lisp.net/project/iterate/">Iterate</ulink></para></listitem>
-      <listitem><para><ulink url="http://common-lisp.net/project/anaphora/">Anaphora</ulink></para></listitem>
-      <listitem><para><ulink url="http://common-lisp.net/project/bordeaux-threads/">Bordeaux-Threads</ulink></para></listitem>
-      <listitem><para><ulink url="http:/common-lisp.net/project/closer/closer-mop.html/">Closer-MOP</ulink></para></listitem>
+      <listitem><para><ulink url="http://common-lisp.net/project/cffi">CFFI</ulink> (version 0.10.4)</para></listitem>
+      <listitem><para><ulink url="http://www.cliki.net/trivial-garbage">Trivial-Garbage</ulink> (version 0.18)</para></listitem>
+      <listitem><para><ulink url="http://common-lisp.net/project/iterate/">Iterate</ulink> (version 1.4.3)</para></listitem>
+      <listitem><para><ulink url="http://common-lisp.net/project/bordeaux-threads/">Bordeaux-Threads</ulink> (version 0.6.0)</para></listitem>
+      <listitem><para><ulink url="http:/common-lisp.net/project/closer/closer-mop.html/">Closer-MOP</ulink> (version 0.55)</para></listitem>
     </itemizedlist>
     <para>Currently, CL-GTK2 is only available in Git repository at <ulink url="http://repo.or.cz/w/cl-gtk2.git">http://repo.or.cz/w/cl-gtk2.git</ulink>. If you do not want or can not to use Git, download the snapshot from <ulink url="http://repo.or.cz/w/cl-gtk2.git?a=snapshot;h=HEAD;sf=tgz">http://repo.or.cz/w/cl-gtk2.git?a=snapshot;h=HEAD;sf=tgz</ulink>.</para>
     <para>Unpack the CL-GTK2 sources, and add them to <varname>asdf:*central-registry*</varname>:</para>
@@ -88,8 +87,8 @@
     <para>Let's analyze the example step by step.</para>
     <para>CL-GTK2 runs the Gtk main loop in background thread. This is done so you could have your application running and interacting with the Lisp system through the REPL.</para>
     <para>To execute some code and ensure that Gtk+ main loop is started, WITH-MAIN-LOOP macro is used. It runs the body of code within the Gtk+ main loop. Because all calls to Gtk+ functions require locking, it is neccessary to run this code from th main loop. Because we are running the code in another thread, its dynamic bindings (including *standard-output*) will be lost. To be able to print at REPL, we save reference to the standard output stream in the closure.</para>
-    <para>Gtk+ objects are created with make-instance and are properly garbage-collected.<para>
-    </para>Object have properties, which are represented as slots in CL-GTK2. Some properties (slots) of objects are constructor-only properties and can only be set at object construction time. For example, "type" property of GtkWindow can only be set during its creation. To access properties, you may use <varname>slot-value</varname> function or slot accessor methods. For property <varname>Y</varname> declared on class <varname>X</varname>, method <varname>X-Y</varname> returns the value of the property. Properties are setfable (with exception of read-only and constructor-only properties).</para>
+    <para>Gtk+ objects are created with make-instance and are properly garbage-collected.</para>
+    <para>Object have properties, which are represented as slots in CL-GTK2. Some properties (slots) of objects are constructor-only properties and can only be set at object construction time. For example, "type" property of GtkWindow can only be set during its creation. To access properties, you may use <varname>slot-value</varname> function or slot accessor methods. For property <varname>Y</varname> declared on class <varname>X</varname>, method <varname>X-Y</varname> returns the value of the property. Properties are setfable (with exception of read-only and constructor-only properties).</para>
     <para>Call to container-add puts button as a child widget into window, and widget-show shows all widgets of window.</para>
     <para>In Gtk+, objects have "signals", to which handlers can be attached. When something happens that results in "emitting" the signal (e.g., button being clicked emits "clicked" signal), all handlers of this signal are called. Handler of GtkButton's "clicked" signal has only one argument - the button that was clicked. CL-GTK2 allows attaching any function (including closures) as signal handlers and ensures that closure is freed properly.</para>
   </section>
