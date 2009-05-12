@@ -456,7 +456,15 @@
       (iter (for i from 0 to 5)
             (for page = (make-instance 'label :label (format nil "Label for page ~A" i)))
             (for tab-label = (make-instance 'label :label (format nil "Tab ~A" i)))
-            (for tab-button = (make-instance 'button :use-stock t :label "gtk-close" :relief :none))
+            (for tab-button = (make-instance 'button
+                                             :image (make-instance 'image :stock "gtk-close" :icon-size 1)
+                                             :relief :none))
+            (g-signal-connect tab-button "clicked"
+                              (let ((page page))
+                                (lambda (button)
+                                  (declare (ignore button))
+                                  (format t "Removing page ~A~%" page)
+                                  (notebook-remove-page notebook page))))
             (for tab-hbox = (make-instance 'h-box))
             (box-pack-start tab-hbox tab-label)
             (box-pack-start tab-hbox tab-button)
