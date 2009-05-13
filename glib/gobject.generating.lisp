@@ -357,7 +357,7 @@
 (defmacro define-g-flags (g-name name (&key (export t) type-initializer) &body values)
   `(progn
      (defbitfield ,name ,@values)
-     (register-enum-type ,g-name ',name)
+     (register-flags-type ,g-name ',name)
      ,@(when export
              (list `(export ',name (find-package ,(package-name (symbol-package name))))))
      ,@(when type-initializer
