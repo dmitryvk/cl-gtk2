@@ -45,30 +45,38 @@
     (parse-g-boxed value (g-boxed-pointer-type-name type))))
 
 (defmethod translate-to-foreign (value (type g-boxed-pointer-type))
-  (let ((ptr (foreign-alloc (boxed-c-structure-name (g-boxed-pointer-type-name type)))))
-    (real-unparse-g-boxed ptr value)
-    (values ptr value)))
+  (if value
+      (let ((ptr (foreign-alloc (boxed-c-structure-name (g-boxed-pointer-type-name type)))))
+        (real-unparse-g-boxed ptr value)
+        (values ptr value))
+      (null-pointer)))
 
 (defmethod free-translated-object (ptr (type g-boxed-pointer-type) param)
-  (when (g-boxed-pointer-type-outp type)
-    (let ((original-object param)
-          (new-real-name (g-boxed-real-name ptr (g-boxed-pointer-type-name type))))
-      (if (eq new-real-name (type-of original-object))
-          (real-parse-g-boxed ptr original-object)
-          (error "Type has changed!"))))
+  (unless (null-pointer-p ptr)
+    (when (g-boxed-pointer-type-outp type)
+      (let ((original-object param)
+            (new-real-name (g-boxed-real-name ptr (g-boxed-pointer-type-name type))))
+        (if (eq new-real-name (type-of original-object))
+            (real-parse-g-boxed ptr original-object)
+            (error "Type has changed!")))))
   (foreign-free ptr))
 
 (defmethod expand-to-foreign-dyn (value var body (type g-boxed-pointer-type))
   (let ((value-var (gensym)))
     `(with-foreign-object (,var ',(boxed-c-structure-name (g-boxed-pointer-type-name type)))
        (let ((,value-var ,value))
-         (real-unparse-g-boxed ,var ,value-var)
-         ,@body
-         ,@(when (g-boxed-pointer-type-outp type)
-                 (list `(let ((new-real-name (g-boxed-real-name ,var ',(g-boxed-pointer-type-name type))))
-                          (if (eq new-real-name (type-of ,value-var))
-                              (real-parse-g-boxed ,var ,value-var)
-                              (error "Type has changed from ~A to ~A" (type-of ,value-var) new-real-name)))))))))
+         (when ,value-var
+           (real-unparse-g-boxed ,var ,value-var))
+         (if (null ,value-var)
+             (let ((,var (null-pointer)))
+               ,@body)
+             (progn ,@body
+                    ,@(when (g-boxed-pointer-type-outp type)
+                            (list `(when ,value-var
+                                     (let ((new-real-name (g-boxed-real-name ,var ',(g-boxed-pointer-type-name type))))
+                                       (if (eq new-real-name (type-of ,value-var))
+                                           (real-parse-g-boxed ,var ,value-var)
+                                           (error "Type has changed from ~A to ~A" (type-of ,value-var) new-real-name))))))))))))
 
 (define-foreign-type g-boxed-inline-type ()
   ((name :accessor g-boxed-inline-type :initarg :name)))
@@ -80,10 +88,11 @@
 (defgeneric real-unparse-g-boxed (pointer object))
 
 (defun parse-g-boxed (pointer name)
-  (let* ((real-name (g-boxed-real-name pointer name))
-         (object (make-instance real-name)))
-    (real-parse-g-boxed pointer object)
-    object))
+  (unless (null-pointer-p pointer)
+    (let* ((real-name (g-boxed-real-name pointer name))
+           (object (make-instance real-name)))
+      (real-parse-g-boxed pointer object)
+      object)))
 
 (defun boxed-alloc (type alloc-type)
   (ecase alloc-type
@@ -371,7 +380,7 @@
          (type-name (g-type-name g-type))
          (boxed-type (get-registered-boxed-type type-name)))
     (unless boxed-type
-      (warn t "Type ~A is a not registered GBoxed~%" type-name)
+      (warn "Type ~A is a not registered GBoxed~%" type-name)
       (return-from parse-gvalue-boxed nil))
     (unless (null-pointer-p (g-value-get-boxed gvalue))
       (cond
