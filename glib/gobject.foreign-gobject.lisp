@@ -200,6 +200,24 @@
       (etypecase object
         (g-object (pointer object)))))
 
+(define-condition property-access-error (error)
+  ((property-name :initarg :property-name :reader property-access-error-property-name)
+   (class-name :initarg :class-name :reader property-access-error-class-name)
+   (message :initarg :message :reader property-access-error-message))
+  (:report (lambda (condition stream)
+             (format stream "Error accessing property '~A' on class '~A': ~A"
+                     (property-access-error-property-name condition)
+                     (property-access-error-class-name condition)
+                     (property-access-error-message condition)))))
+
+(define-condition property-unreadable-error (property-access-error)
+  ()
+  (:default-initargs :message "property is not readable"))
+
+(define-condition property-unwritable-error (property-access-error)
+  ()
+  (:default-initargs :message "property is not writable"))
+
 (defun g-param-spec-property-type (param-spec property-name object-type assert-readable assert-writable)
   (when (null-pointer-p param-spec)
            (error "Property ~A on type ~A is not found"
@@ -210,17 +228,17 @@
                           (foreign-slot-value param-spec
                                               'g-param-spec
                                               'flags))))
-    (error "Property ~A on type ~A is not readable"
-           property-name
-           (g-type-name object-type)))
+    (error 'property-unreadable-error
+           :property-name property-name
+           :class-name (g-type-name object-type)))
   (when (and assert-writable
              (not (member :writable
                           (foreign-slot-value param-spec
                                               'g-param-spec
                                               'flags))))
-    (error "Property ~A on type ~A is not writable"
-           property-name
-           (g-type-name object-type)))
+    (error 'property-unwritable-error
+           :property-name property-name
+           :class-name (g-type-name object-type)))
   (foreign-slot-value param-spec 'g-param-spec 'value-type))
 
 (defun g-object-type-property-type (object-type property-name
@@ -271,9 +289,11 @@
                (foreign-slot-pointer parameter 'g-parameter 'value)))))))
 
 (defun g-object-call-get-property (object property-name &optional property-type)
-  (unless property-type
-    (setf property-type
-          (g-object-property-type object property-name :assert-readable t)))
+  (restart-case
+      (unless property-type
+        (setf property-type
+              (g-object-property-type object property-name :assert-readable t)))
+    (return-nil () (return-from g-object-call-get-property nil)))
   (setf property-type (ensure-g-type property-type))
   (with-foreign-object (value 'g-value)
     (g-value-zero value)
