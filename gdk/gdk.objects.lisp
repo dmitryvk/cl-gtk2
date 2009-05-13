@@ -37,6 +37,29 @@
   (:window-state 32) (:setting 33) (:owner-change 34)
   (:grab-broken 35) (:damage 36)) 
 
+(define-g-flags "GdkEventMask" gdk-event-mask (:export t :type-initializer "gdk_event_mask_get_type")
+  (:exposure-mask 2) (:pointer-motion-mask 4)
+  (:pointer-motion-hint-mask 8) (:button-motion-mask 16)
+  (:button1-motion-mask 32) (:button2-motion-mask 64)
+  (:button3-motion-mask 128) (:button-press-mask 256)
+  (:button-release-mask 512) (:key-press-mask 1024)
+  (:key-release-mask 2048) (:enter-notify-mask 4096)
+  (:leave-notify-mask 8192) (:focus-change-mask 16384)
+  (:structure-mask 32768) (:property-change-mask 65536)
+  (:visibility-notify-mask 131072)
+  (:proximity-in-mask 262144) (:proximity-out-mask 524288)
+  (:substructure-mask 1048576) (:scroll-mask 2097152)
+  (:all-events-mask 4194302))
+
+(define-g-enum "GdkExtensionMode" gdk-extension-mode (:export t :type-initializer "gdk_extension_mode_get_type")
+  (:none 0) (:all 1) (:cursor 2))
+
+(define-g-enum "GdkWindowTypeHint" gdk-window-type-hint (:export t :type-initializer "gdk_window_type_hint_get_type")
+  (:normal 0) (:dialog 1) (:menu 2) (:toolbar 3)
+  (:splashscreen 4) (:utility 5) (:dock 6) (:desktop 7)
+  (:dropdown-menu 8) (:popup-menu 9) (:tooltip 10)
+  (:notification 11) (:combo 12) (:dnd 13))
+
 (gobject::define-g-flags "GdkModifierType" modifier-type ()
   (:shift-mask 1) (:lock-mask 2) (:control-mask 4)
   (:mod1-mask 8) (:mod2-mask 16) (:mod3-mask 32)
@@ -305,6 +328,9 @@
 (define-g-enum "GdkWindowEdge" window-edge ()
   (:north-west 0) (:north 1) (:north-east 2) (:west 3)
   (:east 4) (:south-west 5) (:south 6) (:south-east 7))
+
+(define-g-enum "GdkColorspace" colorspace ()
+  :rgb)
 
 (define-g-object-class "GdkPixbuf" pixbuf ()
     ((colorspace pixbuf-colorspace "colorspace" "GdkColorspace" t nil)
