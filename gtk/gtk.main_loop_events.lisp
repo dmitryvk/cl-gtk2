@@ -28,9 +28,17 @@
 (defcfun gtk-main :void)
 
 #+thread-support
+(defvar *main-thread* nil)
+
+#+thread-support
 (defun ensure-gtk-main ()
-  (unless (find "gtk main thread" (bt:all-threads) :test 'string= :key 'bt:thread-name)
-    (bt:make-thread (lambda () (gtk:gtk-main)) :name "gtk main thread")))
+  (unless *main-thread*
+    (setf *main-thread* (bt:make-thread (lambda () (gtk:gtk-main)) :name "cl-gtk2 main thread"))))
+
+#+thread-support
+(defun join-main-thread ()
+  (when *main-thread*
+    (bt:join-thread *main-thread*)))
 
 #-thread-support
 (defun ensure-gtk-main ()
