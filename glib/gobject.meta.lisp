@@ -179,14 +179,15 @@
       (let ((pointer (create-gobject-from-class-and-initargs class initargs)))
         (call-next-method class :pointer pointer))))
 
+(defmethod slot-boundp-using-class ((class gobject-class) object (slot gobject-property-effective-slot-definition))
+  (handler-case
+      (progn (g-object-property-type object (gobject-property-effective-slot-definition-g-property-name slot) :assert-readable t) t)
+    (property-unreadable-error () nil)))
+
 (defmethod slot-value-using-class ((class gobject-class) object (slot gobject-property-effective-slot-definition))
-  (handler-bind
-      ((property-unreadable-error (lambda (condition)
-                                    (declare (ignore condition))
-                                    (invoke-restart 'return-nil))))
-    (g-object-call-get-property object
-                                (gobject-property-effective-slot-definition-g-property-name slot)
-                                (gobject-effective-slot-definition-g-property-type slot))))
+  (g-object-call-get-property object
+                              (gobject-property-effective-slot-definition-g-property-name slot)
+                              (gobject-effective-slot-definition-g-property-type slot)))
 
 (defmethod (setf slot-value-using-class) (new-value (class gobject-class) object (slot gobject-property-effective-slot-definition))
   (g-object-call-set-property object
