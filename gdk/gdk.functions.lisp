@@ -54,3 +54,41 @@
 (defcfun gdk-atom-intern gdk-atom
   (name :string)
   (only-if-exists :boolean))
+
+(export 'drawable-size)
+
+(defcfun gdk-pixbuf-get-from-drawable (g-object pixbuf)
+  (dest (g-object pixbuf))
+  (src (g-object drawable))
+  (colormap :pointer)
+  (src-x :int)
+  (src-y :int)
+  (dest-x :int)
+  (dest-y :int)
+  (width :int)
+  (height :int))
+
+(defun pixbuf-get-from-drawable (pixbuf drawable &key (src-x 0) (src-y 0) (dest-x 0) (dest-y 0) (width -1) (height -1))
+  (gdk-pixbuf-get-from-drawable pixbuf drawable (null-pointer) src-x src-y dest-x dest-y width height))
+
+(export 'pixbuf-get-from-drawable)
+
+(defcfun gdk-pixbuf-savev :boolean
+  (pixbuf (g-object pixbuf))
+  (filename :string)
+  (type :string)
+  (option-keys (:pointer (:pointer :char)))
+  (option-values (:pointer (:pointer :char)))
+  (error :pointer))
+
+(defun pixbuf-save (pixbuf filename type)
+  (gdk-pixbuf-savev pixbuf
+                    (etypecase filename
+                      (string filename)
+                      (pathname (namestring filename)))
+                    type
+                    (null-pointer)
+                    (null-pointer)
+                    (null-pointer)))
+
+(export 'pixbuf-save)

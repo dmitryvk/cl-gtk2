@@ -541,8 +541,11 @@
 
 (export 'widget-trigger-tooltip-query)
 
-(defcfun (widget-snapshot "gtk_widget_get_snapshot") g-object
+(defcfun gtk-widget-get-snapshot g-object
   (widget g-object)
   (clip-rectangle (g-boxed-ptr rectangle)))
+
+(defun widget-snapshot (widget &optional clip-rectangle)
+  (gtk-widget-get-snapshot widget clip-rectangle))
 
 (export 'widget-snapshot)
