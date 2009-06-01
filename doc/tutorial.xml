@@ -47,40 +47,21 @@
     <title>"Hello world" example</title>
     <para>Let's start from a simple example.</para>
     <graphic fileref="hello_world.png"/>
-    <para>Load the GTK system: <programlisting>(asdf:oos 'asdf:load-op :gtk)</programlisting></para>
-    <para>Having loaded the GTK system, compile the following code:</para>
+    <para>Start Slime, type the following code in the REPL:</para>
     <programlisting linenumbering="numbered">
-(defpackage :gtk-hello
-  (:use :cl :gtk :gobject :glib)
-  (:export :run))
+(asdf:oos 'asdf:load-op :gtk)
 
-(in-package :gtk-hello)
-
-(defun run ()
-  (let ((output *standard-output*))
-    (with-main-loop
-        (let ((window (make-instance 'gtk-window
-                                     :type :toplevel
-                                     :window-position :center
-                                     :title "Hello world!"
-                                     :default-width 300
-                                     :default-height 100))
-              (button (make-instance 'button :label "Hello, world!"))
-              (counter 0))
-          (g-signal-connect button "clicked"
-                            (lambda (b)
-                              (declare (ignore b))
-                              (format output "Hello, world!~%")
-                              (setf (button-label button)
-                                    (format nil
-                                            "Hello, world! (clicked ~D times)"
-                                            (incf counter)))))
-          (container-add window button)
-          (widget-show window :all t)))))
+(gtk:within-main-loop
+  (let ((window (make-instance 'gtk:gtk-window :title "Hello, world!")))
+    (gtk:widget-show window)))
     </programlisting>
-    <para>And now, run it:<programlisting>(gtk-hello:run)</programlisting></para>
-    <para>This code should create a form with a button. When the button is clicked, this program prints a message to standard output and changes the text of the button.</para>
-    <para>If you have a window, then congratulations! Otherwise, contact the author for support.</para>
+    <para>The empty window with title "Hello, world!" should appear.</para>
+    <para>Let's analyze this example line-by-line.</para>
+    <para><varname>(asdf:oos 'asdf:load-op :gtk)</varname> loads the GTK system into Lisp.</para>
+    <para>CL-GTK2 runs Gtk+ main loop in background thread (because Lisp development is interactive in its nature; if main loop would block the REPL thread, you would have to restart the Lisp image too often). Because all access to Gtk+ should come from Gtk+ thread, we should run the code in that thread. Macro <varname>gtk:within-main-loop</varname> does exactly that: it schedules the code to be tun in the Gtk+ thread. You should use this macro whenever you want evaluate the code from the REPL or when you start you application.</para>
+    <para>Next, we create the window with <varname>make-instance</varname> and set its <varname>title</varname> property to <varname>"Hello, world!"</varname>.</para>
+    <para>When the window is created, it is not yet shown on the screen. To show it, we call <varname>(gtk:widget-show window)</varname>.</para>
+    <para>After this code executes, you should get back to the REPL (rememer, Gtk+ runs in background thread) and the window should appear on the screen.</para>
   </section>
   <section>
     <title>Example walk-through</title>
