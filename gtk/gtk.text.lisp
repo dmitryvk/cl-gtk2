@@ -868,7 +868,7 @@
 
 (defun text-tag-table-foreach (table function)
   (with-stable-pointer (ptr function)
-    (gtk-text-tag-table-foreach table (callback gtk-text-table-foreach-function) ptr)))
+    (gtk-text-tag-table-foreach table (callback gtk-text-tag-table-foreach-function) ptr)))
 
 (export 'text-tag-table-foreach)
 
