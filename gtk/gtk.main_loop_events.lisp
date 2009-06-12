@@ -40,6 +40,9 @@
   (when *main-thread*
     (bt:join-thread *main-thread*)))
 
+#+thread-support
+(export 'join-main-thread)
+
 #-thread-support
 (defun ensure-gtk-main ()
   (gtk-main))
