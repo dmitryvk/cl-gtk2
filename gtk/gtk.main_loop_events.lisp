@@ -32,6 +32,8 @@
 
 #+thread-support
 (defun ensure-gtk-main ()
+  (when (and *main-thread* (not (bt:thread-alive-p *main-thread*)))
+    (setf *main-thread* nil))
   (unless *main-thread*
     (setf *main-thread* (bt:make-thread (lambda () (gtk:gtk-main)) :name "cl-gtk2 main thread"))))
 
