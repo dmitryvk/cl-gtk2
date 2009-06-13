@@ -26,7 +26,7 @@
           (text-iter-pixbuf :reader "gtk_text_iter_get_pixbuf" :type (g-object pixbuf))
           (text-iter-marks :reader "gtk_text_iter_get_marks" :type (gslist (g-object text-mark) :free-from-foreign t))
           (text-iter-child-anchor :reader "gtk_text_iter_get_child_anchor" :type (g-object text-child-anchor))
-          (text-iter-tags :reader "gtk_text_iter_get_tags" :type (gslist (g-object text-mark) :free-from-foreign t))
+          (text-iter-tags :reader "gtk_text_iter_get_tags" :type (gslist (g-object text-tag) :free-from-foreign t))
           (text-iter-chars-in-line :reader "gtk_text_iter_get_chars_in_line" :type :int)
           (text-iter-language :reader "gtk_text_iter_get_language" :type :pointer)
           (text-iter-is-end :reader "gtk_text_iter_is_end" :type :boolean)
@@ -948,10 +948,20 @@
 ;;                                                          const GtkTextIter *iter,
 ;;                                                          gint *y,
 ;;                                                          gint *height);
-;; void                gtk_text_view_get_iter_at_location  (GtkTextView *text_view,
-;;                                                          GtkTextIter *iter,
-;;                                                          gint x,
-;;                                                          gint y);
+
+(defcfun gtk-text-view-get-iter-at-location :void
+  (text-view (g-object text-view))
+  (iter (g-boxed-ref text-iter))
+  (x :int)
+  (y :int))
+
+(defun text-view-get-iter-at-location (view x y)
+  (let ((iter (make-instance 'text-iter)))
+    (gtk-text-view-get-iter-at-location view iter x y)
+    iter))
+
+(export 'text-view-get-iter-at-location)
+
 ;; void                gtk_text_view_get_iter_at_position  (GtkTextView *text_view,
 ;;                                                          GtkTextIter *iter,
 ;;                                                          gint *trailing,
@@ -964,15 +974,32 @@
 ;;                                                          gint buffer_y,
 ;;                                                          gint *window_x,
 ;;                                                          gint *window_y);
-;; void                gtk_text_view_window_to_buffer_coords
-;;                                                         (GtkTextView *text_view,
-;;                                                          GtkTextWindowType win,
-;;                                                          gint window_x,
-;;                                                          gint window_y,
-;;                                                          gint *buffer_x,
-;;                                                          gint *buffer_y);
-;; GdkWindow*          gtk_text_view_get_window            (GtkTextView *text_view,
-;;                                                          GtkTextWindowType win);
+
+(defcfun gtk-text-view-window-to-buffer-coords :void
+  (text-view (g-object text-view))
+  (win text-window-type)
+  (window-x :int)
+  (window-y :int)
+  (buffer-x :pointer)
+  (buffer-y :pointer))
+
+(defun text-view-window-to-buffer-coords (text-view win window-x window-y)
+  (with-foreign-objects ((buffer-x :int) (buffer-y :int))
+    (gtk-text-view-window-to-buffer-coords text-view win window-x window-y buffer-x buffer-y)
+    (values (mem-ref buffer-x :int)
+            (mem-ref buffer-y :int))))
+
+(export 'text-view-window-to-buffer-coords)
+
+(defcfun gtk-text-view-get-window (g-object gdk:gdk-window)
+  (text-view (g-object text-view))
+  (win text-window-type))
+
+(defun text-view-get-window (text-view win)
+  (gtk-text-view-get-window text-view win))
+
+(export 'text-view-get-window)
+
 ;; GtkTextWindowType   gtk_text_view_get_window_type       (GtkTextView *text_view,
 ;;                                                          GdkWindow *window);
 ;; void                gtk_text_view_set_border_window_size
