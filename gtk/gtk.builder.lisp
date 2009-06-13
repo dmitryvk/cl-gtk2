@@ -114,3 +114,8 @@
 
 ; TODO: gtk_builder_value_from_string_type
 
+(defmethod initialize-instance :after ((builder builder) &key from-file from-string)
+  (when from-file
+    (builder-add-from-file builder from-file))
+  (when from-string
+    (builder-add-from-string builder from-string)))
