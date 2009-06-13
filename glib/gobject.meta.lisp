@@ -177,7 +177,7 @@
         (assert (= (length initargs) 2) nil "POINTER can not be combined with other initargs (~A)" initargs)
         (call-next-method))
       (let ((pointer (create-gobject-from-class-and-initargs class initargs)))
-        (call-next-method class :pointer pointer))))
+        (apply #'call-next-method class :pointer pointer initargs))))
 
 (defmethod slot-boundp-using-class ((class gobject-class) object (slot gobject-property-effective-slot-definition))
   (handler-case
