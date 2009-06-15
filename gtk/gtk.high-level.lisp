@@ -133,3 +133,15 @@
               (loop
                  repeat 10
                  do (with-progress-bar-action (sleep 1))))))))
+
+(defun show-message (message &key (buttons :ok) (message-type :info) (use-markup nil))
+  (let ((dialog (make-instance 'message-dialog
+                               :text message
+                               :buttons buttons
+                               :message-type message-type
+                               :use-markup use-markup)))
+    (prog1
+        (dialog-run dialog)
+      (object-destroy dialog))))
+
+(export 'show-message)
