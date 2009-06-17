@@ -175,7 +175,7 @@
   (iter (with slots = (class-slots class))
         (for (arg-name arg-value) on initargs by #'cddr)
         (for slot = (find arg-name slots :key #'slot-definition-initargs :test 'member))
-        (when (or (eq arg-name :pointer) (null slot))
+        (unless (and slot (typep slot 'gobject-effective-slot-definition))
           (nconcing (list arg-name arg-value)))))
 
 (defmethod initialize-instance ((instance g-object) &rest initargs &key &allow-other-keys)
