@@ -150,12 +150,12 @@
 (defun create-gobject-from-class-and-initargs (class initargs)
   (when (gobject-class-interface-p class)
     (error "Trying to create instance of GInterface '~A' (class '~A')" (gobject-class-g-type-name class) (class-name class)))
-  (let (arg-names arg-values arg-types nc-setters nc-arg-values rest-initargs)
+  (let (arg-names arg-values arg-types nc-setters nc-arg-values)
     (declare (dynamic-extent arg-names arg-values arg-types nc-setters nc-arg-values))
     (loop
        for (arg-name arg-value) on initargs by #'cddr
        for slot = (find arg-name (class-slots class) :key 'slot-definition-initargs :test 'member)
-       if (and slot (typep slot 'gobject-effective-slot-definition))
+       when (and slot (typep slot 'gobject-effective-slot-definition))
        do (typecase slot
             (gobject-property-effective-slot-definition
              (push (gobject-property-effective-slot-definition-g-property-name slot) arg-names)
@@ -163,8 +163,7 @@
              (push (gobject-effective-slot-definition-g-property-type slot) arg-types))
             (gobject-fn-effective-slot-definition
              (push (gobject-fn-effective-slot-definition-g-setter-fn slot) nc-setters)
-             (push arg-value nc-arg-values)))
-       else do (setf rest-initargs (nconc rest-initargs (list arg-name arg-value))))
+             (push arg-value nc-arg-values))))
     (let ((object (g-object-call-constructor (gobject-class-g-type-name class) arg-names arg-values arg-types)))
       (loop
          for fn in nc-setters
@@ -172,15 +171,24 @@
          do (funcall fn object value))
       object)))
 
+(defun filter-initargs-by-class (class initargs)
+  (iter (with slots = (class-slots class))
+        (for (arg-name arg-value) on initargs by #'cddr)
+        (for slot = (find arg-name slots :key #'slot-definition-initargs :test 'member))
+        (when (or (eq arg-name :pointer) (null slot))
+          (nconcing (list arg-name arg-value)))))
+
+(defmethod initialize-instance ((instance g-object) &rest initargs &key &allow-other-keys)
+  (let ((filtered-initargs (filter-initargs-by-class (class-of instance) initargs)))
+    (apply #'call-next-method instance filtered-initargs)))
+
 (defmethod make-instance ((class gobject-class) &rest initargs &key pointer)
   (if pointer
       (progn
         (assert (= (length initargs) 2) nil "POINTER can not be combined with other initargs (~A)" initargs)
         (call-next-method))
-      (multiple-value-bind (pointer rest-initargs)
-          (create-gobject-from-class-and-initargs class initargs)
-        (declare (dynamic-extent rest-initargs))
-        (apply #'call-next-method class :pointer pointer rest-initargs))))
+      (let ((pointer (create-gobject-from-class-and-initargs class initargs)))
+        (apply #'call-next-method class :pointer pointer initargs))))
 
 (defmethod slot-boundp-using-class ((class gobject-class) object (slot gobject-property-effective-slot-definition))
   (handler-case
