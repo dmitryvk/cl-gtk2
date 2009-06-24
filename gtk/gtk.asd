@@ -53,5 +53,11 @@
 
                (:file "gtk.dialog.example")
                
-               (:file "gtk.demo"))
+               (:file "gtk.demo")
+               (:module "demo-files"
+                        :pathname "demo"
+                        :components ((:static-file "demo1.glade")
+                                     (:static-file "demo1.ui")
+                                     (:static-file "text-editor.glade")
+                                     (:static-file "text-editor.ui"))))
   :depends-on (:glib :cffi :gdk :bordeaux-threads))
