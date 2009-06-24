@@ -1,4 +1,4 @@
-all: doc.html index.html tutorial.html
+all: doc.html tutorial.html
 
 doc.html: doc.xml
 	xsltproc -o $@ /usr/share/sgml/docbook/xsl-stylesheets/html/docbook.xsl $<
