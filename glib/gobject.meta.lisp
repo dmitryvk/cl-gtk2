@@ -13,17 +13,29 @@
 
 (defmethod initialize-instance :after ((object gobject-class) &key &allow-other-keys)
   (register-object-type (gobject-class-g-type-name object) (class-name object))
-  (when (gobject-class-g-type-initializer object)
-    (let ((type (foreign-funcall-pointer (foreign-symbol-pointer (gobject-class-g-type-initializer object)) nil
-                                         g-type)))
-      (assert (/= +g-type-invalid+ type) nil "Declared GType name '~A' for class '~A' is invalid (g_type_name returned 0)"
-              (gobject-class-g-type-name object) (class-name object))
-      (assert (string= (gobject-class-g-type-name object)
-                       (g-type-name type))
-              nil "Declared GType name '~A' for class '~A' does not match actual GType name '~A'"
-              (gobject-class-g-type-name object)
-              (class-name object)
-              (g-type-name type)))))
+  (if (gobject-class-g-type-initializer object)
+      (let* ((initializer-fn-ptr (foreign-symbol-pointer (gobject-class-g-type-initializer object)))
+             (type (when initializer-fn-ptr
+                     (foreign-funcall-pointer initializer-fn-ptr nil
+                                              g-type))))
+        (if (null initializer-fn-ptr)
+            (warn "Type initializer for class '~A' (GType '~A') is invalid: foreign symbol '~A'"
+                  (gobject-class-g-type-name object) (class-name object) (gobject-class-g-type-initializer object))
+          
+            (progn
+              (when (= +g-type-invalid+ type)
+                (warn "Declared GType name '~A' for class '~A' is invalid ('~A' returned 0)"
+                      (gobject-class-g-type-name object) (class-name object)
+                      (gobject-class-g-type-initializer object)))
+              (unless (string= (gobject-class-g-type-name object)
+                               (g-type-name type))
+                (warn "Declared GType name '~A' for class '~A' does not match actual GType name '~A'"
+                      (gobject-class-g-type-name object)
+                      (class-name object)
+                      (g-type-name type))))))
+      (unless (g-type-from-name (gobject-class-g-type-name object))
+        (warn "Declared GType name '~A' for class '~A' is invalid (g_type_name returned 0)"
+              (gobject-class-g-type-name object) (class-name object)))))
 
 (defclass gobject-direct-slot-definition (standard-direct-slot-definition)
   ((g-property-type :initform nil
