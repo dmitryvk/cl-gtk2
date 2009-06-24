@@ -1,5 +1,7 @@
-(defsystem :gtk
-  :name "gtk"
+(defsystem :clgtk2-gtk
+  :name :clgtk2-gtk
+  :author "Kalyanov Dmitry <Kalyanov.Dmitry@gmail.com>"
+  :license "LLGPL"
   :serial t
   :components ((:file "gtk.package")
                (:file "gtk.misc")
@@ -60,4 +62,4 @@
                                      (:static-file "demo1.ui")
                                      (:static-file "text-editor.glade")
                                      (:static-file "text-editor.ui"))))
-  :depends-on (:glib :cffi :gdk :bordeaux-threads))
+  :depends-on (:clgtk2-glib :cffi :clgtk2-gdk :bordeaux-threads))

@@ -1,6 +1,7 @@
-(defsystem :glib
-  :name "glib"
-  :author "Kalyanov Dmitry"
+(defsystem :clgtk2-glib
+  :name :clgtk2-glib
+  :author "Kalyanov Dmitry <Kalyanov.Dmitry@gmail.com>"
+  :license "LLGPL"
   :serial t
   :components ((:file "glib")
                (:file "glib.glist")
