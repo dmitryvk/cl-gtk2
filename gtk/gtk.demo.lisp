@@ -26,7 +26,7 @@
 
 (in-package :gtk-demo)
 
-(defparameter *src-location* (asdf:component-pathname (asdf:find-system :clgtk2-gtk)))
+(defparameter *src-location* (asdf:component-pathname (asdf:find-system :cl-gtk2-gtk)))
 
 (defun test ()
   (within-main-loop

@@ -1,5 +1,5 @@
-(defsystem :clgtk2-glib
-  :name :clgtk2-glib
+(defsystem :cl-gtk2-glib
+  :name :cl-gtk2-glib
   :author "Kalyanov Dmitry <Kalyanov.Dmitry@gmail.com>"
   :license "LLGPL"
   :serial t
