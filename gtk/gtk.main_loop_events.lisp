@@ -19,10 +19,6 @@
 
 (gtk-init)
 
-(defcfun gtk-test-register-all-types :void)
-
-(gtk-test-register-all-types)
-
 (defcfun gtk-events-pending :boolean)
 
 (defcfun gtk-main :void)
