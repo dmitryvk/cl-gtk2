@@ -27,5 +27,7 @@
                (:file "gobject.meta")
                (:file "gobject.generating")
                (:file "gobject.object-defs")
-               (:file "gobject.foreign-gobject-subclassing"))
+               (:file "gobject.foreign-gobject-subclassing")
+
+               #+sbcl (:file "sbcl"))
   :depends-on (:cffi :trivial-garbage :iterate :bordeaux-threads :iterate :closer-mop))

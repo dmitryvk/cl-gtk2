@@ -56,6 +56,7 @@
                (:file "gtk.dialog.example")
                
                (:file "gtk.demo")
+               #+sbcl (:file "sbcl")
                (:module "demo-files"
                         :pathname "demo"
                         :components ((:static-file "demo1.glade")
