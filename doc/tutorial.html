@@ -1,11 +1,214 @@
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>CL-GTK2 Tutorial</title><meta name="generator" content="DocBook XSL Stylesheets V1.75.1"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="article" title="CL-GTK2 Tutorial"><div class="titlepage"><div><div><h2 class="title"><a name="id256750"></a>CL-GTK2 Tutorial</h2></div><div><div class="author"><h3 class="author"><span class="firstname">Dmitry</span> <span class="surname">Kalyanov</span></h3><code class="email">&lt;<a class="email" href="mailto:Kalyanov.Dmitry@gmail.com">Kalyanov.Dmitry@gmail.com</a>&gt;</code></div></div></div><hr></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><span class="section"><a href="#id466095">TODO</a></span></dt><dt><span class="section"><a href="#id466114">Installation</a></span></dt><dt><span class="section"><a href="#id466249">"Hello world" example</a></span></dt><dt><span class="section"><a href="#id466326">Example walk-through</a></span></dt></dl></div><div class="section" title="TODO"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id466095"></a>TODO</h2></div></div></div><p>Introduction</p><p>More involved example: simple text editor</p><p>More involved example walk-through: widgets, properties, packing, child properties</p><p>TreeView example</p></div><div class="section" title="Installation"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id466114"></a>Installation</h2></div></div></div><p>CL-GTK2 is in alpha stage and is unstable and not feature-complete. It is being developed on x86-64 gentoo linux with SBCL. It should, in general, work with other lisp compilers and on other platforms. CL-GTK2 requires some features not present in the Common Lisp Standard, namely it requires CFFI support with callbacks and long-long support (most modern lisp implementations are supported, including clisp) and it requires CLOS MOP (MetaObject Protocol) which is also is present (or is being added to) most modern lisp implementations.</p><p>CL-GTK2 requires Gtk+ version 2.16 or later. CL-GTK2 was tested on SBCL-1.0.18 and SBCL-1.0.28</p><p>If you have any difficulties installing or using CL-GTK2, contact me (the author of this tutorial and of CL-GTK2) via email Kalyanov.Dmitry@gmail.com or via jabber mo3r@jabber.ru.</p><p>First, install CL-GTK2 dependcies. CL-GTK2 has the following dependencies (CL-GTK2 was tested with specified versions; it would probably not work with earlier versions but should work with later versions):</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><p><a class="ulink" href="http://common-lisp.net/project/cffi" target="_top">CFFI</a> (version 0.10.4)</p></li><li class="listitem"><p><a class="ulink" href="http://www.cliki.net/trivial-garbage" target="_top">Trivial-Garbage</a> (version 0.18)</p></li><li class="listitem"><p><a class="ulink" href="http://common-lisp.net/project/iterate/" target="_top">Iterate</a> (version 1.4.3)</p></li><li class="listitem"><p><a class="ulink" href="http://common-lisp.net/project/bordeaux-threads/" target="_top">Bordeaux-Threads</a> (version 0.6.0)</p></li><li class="listitem"><p><a class="ulink" href="http:/common-lisp.net/project/closer/closer-mop.html/" target="_top">Closer-MOP</a> (version 0.55)</p></li></ul></div><p>Currently, CL-GTK2 is only available in Git repository at <a class="ulink" href="http://repo.or.cz/w/cl-gtk2.git" target="_top">http://repo.or.cz/w/cl-gtk2.git</a>. If you do not want or can not to use Git, download the snapshot from <a class="ulink" href="http://repo.or.cz/w/cl-gtk2.git?a=snapshot;h=HEAD;sf=tgz" target="_top">http://repo.or.cz/w/cl-gtk2.git?a=snapshot;h=HEAD;sf=tgz</a>.</p><p>Unpack the CL-GTK2 sources, and add them to <code class="varname">asdf:*central-registry*</code>:</p><pre class="programlisting">
-      (push "/path/to/cl-gtk2/glib/" asdf:*central-registry*)
-      (push "/path/to/cl-gtk2/gdk/" asdf:*central-registry*)
-      (push "/path/to/cl-gtk2/gtk/" asdf:*central-registry*)
-    </pre><p>Now you should be able to load the CL-GTK2:</p><pre class="programlisting">(asdf:oos 'asdf:load-op :gtk)</pre><p>When the system is loaded, run <code class="varname">(gtk-demo:demo-text-editor)</code>. A text editor window should pop up:</p><div><img src="lisp_ide.png"></div><p>This is a very simple text editor written in CL-GTK2. Apart from editing the text, it can evaluate expressions: select expression and press the "execute" button. Expression will be evaluated and its result will be put into text view.</p></div><div class="section" title='"Hello world" example'><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id466249"></a>"Hello world" example</h2></div></div></div><p>Let's start from a simple example.</p><div><img src="hello_world.png"></div><p>Start Slime, type the following code in the REPL:</p><pre class="programlisting">
-(asdf:oos 'asdf:load-op :gtk)
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>CL-GTK2</title>
+  </head>
+  <body>
+    <div class="header">
+      <span>CL-GTK2 &mdash; a Common Lisp binding for Gtk+</span>
+    </div>
+    <div class="navigation">
+      <ul>
+        <li><a href="index.html">Overview</a></li>
+        <li><a href="compatibility.html">Compatibility</a></li>
+        <li><a href="installation.html">Installation</a></li>
+        <li><a href="examples.html">Examples</a></li>
+        <li><a href="tutorial.html">Tutorial</a></li>
+        <li><a href="manual.html">Manual</a></li>
+      </ul>
+    </div>
+    <div class="content">
+<h1>CL-GTK2 Tutorial</h1>
+<p>Dmitry Kalyanov &lt;<a href="mailto:Kalyanov.Dmitry@gmail.com"><code>Kalyanov.Dmitry@gmail.com</code></a>&gt;</p>
+<hr>
+<p>
+  CL-GTK2 is in alpha stage and is unstable and not feature-complete. It is being developed on x86-64 gentoo linux with SBCL. It should, in general, work with other lisp compilers and on other platforms. CL-GTK2 requires some features not present in the Common Lisp Standard, namely it requires CFFI support with callbacks and long-long support (most modern lisp implementations are supported, including clisp) and it requires CLOS MOP (MetaObject Protocol) which is also is present (or is being added to) most modern lisp implementations.
+</p>
+<p>
+  CL-GTK2 requires Gtk+ version 2.16 or later. CL-GTK2 was tested on SBCL-1.0.18 and SBCL-1.0.28
+</p>
+<p>If you have any difficulties installing or using CL-GTK2, contact me (the author of this tutorial and of CL-GTK2) via email Kalyanov.Dmitry@gmail.com or via jabber mo3r@jabber.ru.</p>
+<p>First, install CL-GTK2 dependencies. CL-GTK2 has the following dependencies (CL-GTK2 was tested with specified versions; it would probably not work with earlier versions but should work with later versions):</p>
+<ol>
+<li><a href="http://common-lisp.net/project/cffi/">CFFI</a> (version 0.10.4)</li>
+<li><a href="http://www.cliki.net/trivial-garbage">Trivial-Garbage</a> (version 0.18)</li>
+<li><a href="http://common-lisp.net/project/iterate/">Iterate</a> (version 1.4.3)</li>
+<li><a href="http://common-lisp.net/project/bordeaux-threads/">Bordeaux-Threads</a> (version 0.6.0)</li>
+<li><a href="http://common-lisp.net/project/closer/closer-mop.html">Closer-MOP</a> (version 0.55)</li>
+</ol>
+<p>Currently, CL-GTK2 is only available in Git repository at <a href="http://repo.or.cz/w/cl-gtk2.git">http://repo.or.cz/w/cl-gtk2.git</a>. If you do not want or can not use Git, download the snapshot from <a href="http://repo.or.cz/w/cl-gtk2.git?a=snapshot;h=HEAD;sf=tgz">http://repo.or.cz/w/cl-gtk2.git?a=snapshot;h=HEAD;sf=tgz</a>.</p>
+<p>Unpack the CL-GTK2 sources, and add them to <code>asdf:*central-registry*</code>:</p>
+<pre>
+(push "/path/to/cl-gtk2/glib/" asdf:*central-registry*)
+(push "/path/to/cl-gtk2/gdk/" asdf:*central-registry*)
+(push "/path/to/cl-gtk2/gtk/" asdf:*central-registry*)
+</pre>
+<p>or create symlinks:</p>
+<pre>
+$ cd ~/.sbcl/systems      # or other directory in asdf:*central-registry*
+$ ln -s /path/to/cl-gtk2/glib/cl-gtk2-glib.asd .
+$ ln -s /path/to/cl-gtk2/gdk/cl-gtk2-gdk.asd .
+$ ln -s /path/to/cl-gtk2/gtk/cl-gtk2-gtk.asd .
+</pre>
+    
+<p>Now you should be able to load the CL-GTK2 system:</p>
+<pre>(asdf:operate 'asdf:load-op :cl-gtk2-gtk)</pre>
+<p>When the system is loaded, run <code>(gtk-demo:demo-text-editor)</code>. A text editor window should pop up.
+<img src="lisp_ide.png"></p>
+<p>This is a very simple text editor written in CL-GTK2. Apart from editing the text, it can evaluate expressions: select expression and press the "execute" button. Expression will be evaluated and its result will be put into text view.</p>
+<p>Let's start from a simple example.</p>
+<p>Start Slime, type the following code in the REPL:</p>
+<pre>
+(asdf:operate 'asdf:load-op :cl-gtk2-gtk)
 
 (gtk:within-main-loop
   (let ((window (make-instance 'gtk:gtk-window :title "Hello, world!")))
     (gtk:widget-show window)))
-    </pre><p>The empty window with title "Hello, world!" should appear.</p><p>Let's analyze this example line-by-line.</p><p><code class="varname">(asdf:oos 'asdf:load-op :gtk)</code> loads the GTK system into Lisp.</p><p>CL-GTK2 runs Gtk+ main loop in background thread (because Lisp development is interactive in its nature; if main loop would block the REPL thread, you would have to restart the Lisp image too often). Because all access to Gtk+ should come from Gtk+ thread, we should run the code in that thread. Macro <code class="varname">gtk:within-main-loop</code> does exactly that: it schedules the code to be tun in the Gtk+ thread. You should use this macro whenever you want evaluate the code from the REPL or when you start you application.</p><p>Next, we create the window with <code class="varname">make-instance</code> and set its <code class="varname">title</code> property to <code class="varname">"Hello, world!"</code>.</p><p>When the window is created, it is not yet shown on the screen. To show it, we call <code class="varname">(gtk:widget-show window)</code>.</p><p>After this code executes, you should get back to the REPL (rememer, Gtk+ runs in background thread) and the window should appear on the screen.</p></div><div class="section" title="Example walk-through"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id466326"></a>Example walk-through</h2></div></div></div><p>Let's analyze the example step by step.</p><p>CL-GTK2 runs the Gtk main loop in background thread. This is done so you could have your application running and interacting with the Lisp system through the REPL.</p><p>To execute some code and ensure that Gtk+ main loop is started, WITH-MAIN-LOOP macro is used. It runs the body of code within the Gtk+ main loop. Because all calls to Gtk+ functions require locking, it is neccessary to run this code from th main loop. Because we are running the code in another thread, its dynamic bindings (including *standard-output*) will be lost. To be able to print at REPL, we save reference to the standard output stream in the closure.</p><p>Gtk+ objects are created with make-instance and are properly garbage-collected.</p><p>Object have properties, which are represented as slots in CL-GTK2. Some properties (slots) of objects are constructor-only properties and can only be set at object construction time. For example, "type" property of GtkWindow can only be set during its creation. To access properties, you may use <code class="varname">slot-value</code> function or slot accessor methods. For property <code class="varname">Y</code> declared on class <code class="varname">X</code>, method <code class="varname">X-Y</code> returns the value of the property. Properties are setfable (with exception of read-only and constructor-only properties).</p><p>Call to container-add puts button as a child widget into window, and widget-show shows all widgets of window.</p><p>In Gtk+, objects have "signals", to which handlers can be attached. When something happens that results in "emitting" the signal (e.g., button being clicked emits "clicked" signal), all handlers of this signal are called. Handler of GtkButton's "clicked" signal has only one argument - the button that was clicked. CL-GTK2 allows attaching any function (including closures) as signal handlers and ensures that closure is freed properly.</p></div></div></body></html>
+</pre>
+    
+<p>The empty window with title "Hello, world!" should appear.</p>
+<img src="hello_world.png">
+<p>Let's analyze this example line-by-line.</p>
+<p><code>(asdf:operate 'asdf:load-op :cl-gtk2-gtk)</code> loads the GTK system into Lisp.</p>
+<p>CL-GTK2 runs Gtk+ main loop in background thread (because Lisp development is interactive in its nature; if main loop would block the REPL thread, you would have to restart the Lisp image too often). Because all access to Gtk+ should come from Gtk+ thread, we should run the code in that thread. Macro gtk:within-main-loop does exactly that: it schedules the code to be tun in the Gtk+ thread. You should use this macro whenever you want evaluate the code from the REPL or when you start you application.</p>
+<p>Next, we create the window with make-instance and set its title property to "Hello, world!".</p>
+<p>When the window is created, it is not yet shown on the screen. To show it, we call <code>(gtk:widget-show window)</code>.</p>
+<p>After this code executes, you should get back to the REPL (rememer, Gtk+ runs in background thread) and the window should appear on the screen.</p>
+<p>CL-GTK2 runs the Gtk main loop in background thread. This is done so you could have your application running and interacting with the Lisp system through the REPL.</p>
+<p>To execute some code and ensure that Gtk+ main loop is started, WITH-MAIN-LOOP macro is used. It runs the body of code within the Gtk+ main loop. Because all calls to Gtk+ functions require locking, it is neccessary to run this code from th main loop. Because we are running the code in another thread, its dynamic bindings (including <code>*standard-output*</code>) will be lost. To be able to print at REPL, we save reference to the standard output stream in the closure.</p>
+<p>Gtk+ objects are created with make-instance and are properly garbage-collected.</p>
+<p>Object have properties, which are represented as slots in CL-GTK2. Some properties (slots) of objects are constructor-only properties and can only be set at object construction time. For example, "type" property of GtkWindow can only be set during its creation. To access properties, you may use slot-value function or slot accessor methods. For property Y declared on class X, method X-Y returns the value of the property. Properties are setfable (with exception of read-only and constructor-only properties).</p>
+<p>Call to container-add puts button as a child widget into window, and widget-show shows all widgets of window.</p>
+<p>In Gtk+, objects have "signals", to which handlers can be attached. When something happens that results in "emitting" the signal (e.g., button being clicked emits "clicked" signal), all handlers of this signal are called. Handler of GtkButton's "clicked" signal has only one argument - the button that was clicked. CL-GTK2 allows attaching any function (including closures) as signal handlers and ensures that closure is freed properly.</p>
+<h1>GObject</h1>
+<h2>Overview</h2>
+<p>GObject is an object system that is at the core of Gtk+. GObject provides:</p>
+<ul>
+  <li>Objects.</li>
+  <li>Classes. Classes define which properties, methods and signals are present in instances of this class and how are they implementation. Classes are grouped into single-inheritance hierarchy. Classes implement zero or more interfaces.</li>
+  <li>Interfaces. Interfaces, like classes, define which properties, methods and signals are present in instances of classes that implement this interface but does not specify their implementation.</li>
+  <li>Properties. Properties are attributes of objects that have type and can be read or set. Classes provide implementation of getter and setter procedures. Properties may be readable, writable. Some of properties may only be set at object construction time.</li>
+  <li>Signals. Signals and callbacks are used to connect event handling code with code that notifies about events.</li>
+  <li>Memory management. Objects can be created and destroyed. Memory is managed with reference counting.</li>
+</ul>
+<h2>Defining GObject classes</h2>
+<p><code>G-OBJECT-CLASS</code> metaclass is used to define classes corresponding to GObject classes. <code>G-OBJECT</code> is base class for all classes corresponding to GObject classes.</p>
+<p><code>G-OBJECT-CLASS</code> uses <code>:G-TYPE-NAME</code> option (mandatory) and <code>:G-TYPE-INITIALIZER</code> option (optionally). <code>:G-TYPE-NAME</code> option specifies the GObject class type name that corresponds to the class. <code>:G-TYPE-INITIALIZER</code> specifies the function name that returns the GType of the class.</p>
+<p>Classes of <code>G-OBJECT-CLASS</code> metaclass may have regular slots and GObject slots. Such slots correspond to GObject properties.
+  Slot with <code>:ALLOCATION</code> of <code>:GOBJECT-PROPERTY</code> is a GObject slot. Such slot should have <code>:G-PROPERTY-NAME</code> option that specifies the name of the property to which this slot corresponds. <code>:G-PROPERTY-TYPE</code> option may also be used to specify the type of the property. All other properties may be specified, including <code>:ACCESSOR</code> and <code>:INITARG</code>.
+</p>
+<p><code>G-OBJECT-CLASS</code> metaclass provides slot accessors for GObject slots that read and write corresponding properties of objects.</p>
+<p>To define a GObject class, <code>defclass</code> form is used:</p>
+<pre>(defclass widget (gtk-objetc atk-implementor-iface buildable)
+  ((name :allocation :gobject-property
+         :g-property-name "name"
+         :g-property-type "gchararray"
+         :accessor widget-name :initarg :name)
+   (parent :allocation :gobject-property
+           :g-property-name "parent"
+           :g-property-type "GtkContainer"
+           :accessor widget-parent
+           :initarg :parent)
+   ...)
+  (:metaclass gobject-class)
+  (:g-type-name . "GtkWidget")
+  (:g-type-initializer . "gtk_widget_get_type"))</pre>
+<h2>Using GObject classes</h2>
+<p>Except defining, GObject classes are used as CLOS classes:</p>
+<ul>
+  <li>Created with <code>MAKE-INSTANCE</code>, and <code>:INITARGS<code> for slots may be specified.
+        <pre>(make-instance 'gtk:label :label "Button 1")</pre>
+  </li>
+  <li>Slots are accessed with <code>SLOT-VALUE</code> and accessors:
+    <pre>(slot-value l 'label)
+      (setf (slot-value l 'label) "Button 2")
+      (label-label l)
+      (setf (label-label l) "Button 2")</pre>
+  </li>
+</ul>
+<h2>Signals</h2>
+<p>Signals are used to register functions that get called when specific events are happening in the program.</p>
+<p><code>G-SIGNAL-CONNECT</code> function is used to connect handler to the signal.</p>
+<p>Signal handler is a function that accepts the same arguments as the signal.</p>
+<p>Example:</p>
+<pre>(g-signal-connect button "clicked" (lambda (button) (format t "Button ~A was clicked~%" button))</pre>
+<p><code>EMIT-SIGNAL</code> function emits the given signal on given object with given arguments. Example:</p>
+<pre>(emit-signal button "clicked" button)</pre>
+<h2>Dictionary</h2>
+<p>Following symbols are provided in <code>GOBJECT</code> package as a public interface.</p>
+<ul>
+  <li>Class <code>G-OBJECT</code>
+    <p>Base class for all GObject classes. Metaclass <code>GOBJECT-CLASS</code> ensures that class inherits from <code>G-OBJECT</code>.</p>
+  </li>
+  <li>Function <code>(G-SIGNAL-CONNECT <em>object</em> <em>signal</em> <em>handler</em> &amp;key <em>after</em>)</code>
+    <p>Connects the <em>handler</em> to the <em>signal</em> of the <em>object</em>.</p>
+    <p>If <em>after</em> is not <code>NIL</code>, then the handler is connected after other handlers.</p>
+  </li>
+  <li>Class <code>G-INITIALLY-UNOWNED</code>
+    <p>Class that corresponds to GInitiallyUnowned.</p>
+  </li>
+  <li>Function <code>(EMIT-SIGNAL <em>object</em> <em>signal-name</em> &amp;rest <em>args</em>)</code>
+    <p>Emits the signal named <em>signal-name</em> on <em>object</em> with arguments <em>args</em>.</p>
+  </li>
+  <li>Metclass <code>G-OBJECT-CLASS</code>
+    <p>Metaclass for GObject classes.</p>
+    <p>It has slots:</p>
+    <ul>
+      <li><code>G-TYPE-NAME</code> name of GType corresponding to the class</li>
+      <li><code>G-TYPE-INITIALIZER</code> name of C function returning the GType of the class</li>
+    </ul>
+  </li>
+</ul>
+
+<h1>Gtk</h1>
+<h2>Overview</h2>
+<p>Gtk+ is a high-level, object-oriented toolkit for creating graphical user interfaces (GUIs).</p>
+<p>Gtk+ is based on a set of other libraries:</p>
+<ul>
+  <li>GLib. Provides low-level functionality: interacting with OS, GObject object system.</li>
+  <li>Gdk. Provides abstraction around windowing system.</li>
+  <li>Pango. Library for Unicode text layout.</li>
+  <li>Cairo. Library for drawing.</li>
+</ul>
+<p>Gtk+ operates on widgets that are grouped into widget hierarchy. Some widgets are containers and may contain other widgets inside them. Gtk+ assigns widgets' sizes and positions automatically. To achieve this, layouts are used (horizontal and vertical packing, table, size groups).</p>
+<h2>Main loop</h2>
+<p>At the core of Gtk+ is the main loop. This loop waits for new events from the windowing system and dispatches them to widgets.</p>
+<p>Gtk+ is thread-aware but not thread-safe. All operations with Gtk+ should run within Gdk locks or from main loop. Gtk+ allows code to be scheduled to be run in the main loop.</p>
+<p>CL-GTK2 runs Gtk+ main loop in background thread, and all code interacting with Gtk+ should be run from within main loop. Macros <code>WITHIN-MAIN-LOOP</code> and <code>WITHIN-MAIN-LOOP-AND-WAIT</code> run the code in the Gtk+ main loop. <code>WITHIN-MAIN-LOOP</code> schedules the code to be run within main loop and returns immediately. <code>WITHIN-MAIN-LOOP-AND-WAIT</code> schedules the code to be run within main loop, waits for it to complete and returns the result of its evaluation.</p>
+<p>Running Gtk+ main loop in background threads allows to run the REPL at the same as the GUI is running.</p>
+<p>Example of REPL session:</p>
+<pre>
+(defvar *window*)
+(within-main-loop (setf *window* (make-instance 'gtk-window)))
+(within-main-loop (container-add *window* (make-instance 'label :label "Hello, <i>world</i>!" :use-markup t)))
+(within-main-loop (widget-show *window*))
+</pre>
+<p>Example of using inside non-interactive code:</p>
+<pre>
+(defun run ()
+  (within-main-loop
+    (let ((window (make-instance 'gtk-window :title "Hello, world!"
+                                             :type :toplevel
+                                             :default-width 300
+                                             :default-height 300))
+      (widget-show window)))))
+</pre>
+<p>To shutdown the main loop (to quit the application), <code>GTK-MAIN-QUIT</code> function is used which will cause the main loop to quit. From the main thread, you can use the <code>JOIN-MAIN-THREAD</code> function that will wait until the main loop quits.</p>
+<p>Example:</p>
+<pre>
+(defun run ()
+  (within-main-loop
+    (let ((window (make-instance 'gtk-window)))
+      (g-signal-connect window "delete-event"
+                        (lambda (window event)
+                          (declare (ignore window event))
+                          (gtk-main-quit)))
+      (widget-show window))))
+
+(run)
+(join-main-loop)
+</pre>
+    </div>
+  </body>
+</html>
