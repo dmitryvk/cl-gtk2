@@ -54,7 +54,7 @@
            #:g-class-property-definition-constructor-only
            #:g-class-property-definition-owner-type
            #:g-type-class-ref
-           #:g-object-class
+           #:gobject-class
            #:g-param-spec
            #:type-instance
            #:parse-g-param-spec
