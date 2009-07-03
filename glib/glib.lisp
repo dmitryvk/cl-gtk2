@@ -1,6 +1,7 @@
 (defpackage :glib
   (:use :cl :cffi :iter)
-  (:export #:gsize
+  (:export #:at-init
+           #:gsize
            #:gssize
            #:goffset
            #:*glib-major-version*
@@ -24,6 +25,19 @@
            #:g-idle-add-full))
 
 (in-package :glib)
+
+(eval-when (:compile-toplevel :load-toplevel :execute)
+  (defvar *initializers* nil)
+  (defun register-initializer (fn)
+    (setf *initializers* (nconc *initializers* (list fn)))))
+
+(defun run-initializers ()
+  (iter (for fn in *initializers*)
+        (funcall fn)))
+
+(defmacro at-init (&body body)
+  `(progn (register-initializer (lambda () ,@body))
+          ,@body))
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
   (define-foreign-library glib
@@ -356,9 +370,10 @@
 
 (defvar *threads-initialized-p* nil)
 
-(unless *threads-initialized-p*
-  (g-thread-init (null-pointer))
-  (setf *threads-initialized-p* t))
+(at-init
+  (unless *threads-initialized-p*
+    (g-thread-init (null-pointer))
+    (setf *threads-initialized-p* t)))
 
 (defcenum g-thread-priority
   :g-thread-priority-low

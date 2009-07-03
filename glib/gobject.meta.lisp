@@ -37,7 +37,7 @@
 
 (defmethod initialize-instance :after ((object gobject-class) &key &allow-other-keys)
   (register-object-type (gobject-class-g-type-name object) (class-name object))
-  (initialize-gobject-class-g-type object))
+  (at-init (initialize-gobject-class-g-type object)))
 
 (defclass gobject-direct-slot-definition (standard-direct-slot-definition)
   ((g-property-type :initform nil

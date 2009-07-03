@@ -198,11 +198,13 @@
     (setf parent (g-type-name (ensure-g-type parent))))
   `(progn
      (setf (gethash ,name *registered-types*) (make-object-type :name ,name :class ',class :parent ,parent :interfaces ',interfaces :properties ',properties))
-     (with-foreign-object (query 'g-type-query)
-       (g-type-query (g-type-from-name ,parent) query)
-       (with-foreign-slots ((class-size instance-size) query g-type-query)
-         (g-type-register-static-simple (g-type-from-name ,parent) ,name class-size (callback c-class-init) instance-size (callback c-instance-init) nil)))
-     (add-interfaces ,name)
+     (at-init
+       (format t "Registering GObject type implementation ~A for type ~A~%" ',class ,name)
+       (with-foreign-object (query 'g-type-query)
+         (g-type-query (g-type-from-name ,parent) query)
+         (with-foreign-slots ((class-size instance-size) query g-type-query)
+           (g-type-register-static-simple (g-type-from-name ,parent) ,name class-size (callback c-class-init) instance-size (callback c-instance-init) nil)))
+       (add-interfaces ,name))
      (defmethod initialize-instance :before ((object ,class) &key pointer)
        (unless (or pointer (and (slot-boundp object 'gobject::pointer)
                                 (gobject::pointer object)))
