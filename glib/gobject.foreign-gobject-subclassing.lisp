@@ -199,7 +199,7 @@
   `(progn
      (setf (gethash ,name *registered-types*) (make-object-type :name ,name :class ',class :parent ,parent :interfaces ',interfaces :properties ',properties))
      (at-init
-       (format t "Registering GObject type implementation ~A for type ~A~%" ',class ,name)
+       (debugf "Registering GObject type implementation ~A for type ~A~%" ',class ,name)
        (with-foreign-object (query 'g-type-query)
          (g-type-query (g-type-from-name ,parent) query)
          (with-foreign-slots ((class-size instance-size) query g-type-query)

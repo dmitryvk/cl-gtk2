@@ -185,6 +185,49 @@
     (get-g-boxed-completed-c-definition (g-boxed-root name) (get name 'c-name))))
 
 (defmacro define-g-boxed-class (g-name-and-c-name name (&optional superclass-and-dispatch (export t)) &body slots)
+  "Defines the class corresponding to GBoxed type. Used only for structures that are passed (semantically) by value. E.g., GdkEvent.
+Single inheritance of classes is supported (and is used for definining different sub-types of GdkEvent). Decision of which class to use for a given C structure is made based on values of certain slots (see arguments @code{dispatch-slot} and @code{dispatch-values}).
+
+Example:
+
+@begin{pre}
+\(define-g-boxed-class (\"GdkEvent\" event-struct) event ()
+  (type event-type)
+  (window (g-object gdk-window))
+  (send-event (:boolean :int8)))
+
+\(define-g-boxed-class nil event-button ((event type (:button-press :2button-press :3button-press :button-release)))
+  (time :uint32)
+  (x :double)
+  (y :double)
+  (axes (fixed-array :double 2))
+  (state :uint)
+  (button :uint)
+  (device (g-object device))
+  (x-root :double)
+  (y-root :double))
+
+\(define-g-boxed-class \"GdkColor\" color ()
+  (pixel :uint32 :initform 0)
+  (red :uint16 :initform 0)
+  (green :uint16 :initform 0)
+  (blue :uint16 :initform 0))
+@end{pre}
+@arg[g-name-and-c-name]{@code{NIL} or list @code{(&optional g-name c-name)}; g-name is the GObject type name and c-name is the name of generated CFFI C structure.}
+@arg[name]{a symbol; name of the structure (defstruct) that is defined}
+@arg[superclass-and-dispatch]{@code{NIL} or list @code{(&optional superclass dispatch-slot dispatch-values)}}
+@arg[superclass]{a symbol denoting the superclass of the class being defined}
+@arg[dispatch-slot]{a symbol denoting the slot of the superclass that identifies the \"real\" class}
+@arg[dispatch-values]{a value or a list of values of @code{dispatch-slot} of @code{superclass} that correspond to the class being defined}
+@arg[export]{a boolean; defines whether all related symbols (@code{name} and generated slot accessors) should be exported from the current package}
+@arg[slots]{a list of slots; each slot is defined by list @code{(name type &key initform parser unparser)}.
+@begin{itemize}
+@item{@code{name} is the name of a slot}
+@item{@code{type} is a CFFI type of a slot}
+@item{@code{initform} is an expression that is the iniform of a slot in generated @code{defstruct}; used when the lisp code creates the object.}
+@item{@code{parser} is a function designator for a slot parser function (if a slot parsing depends on other slots of a structure; custom slot parsing is better implemented with CFFI foreign types). Slot parser function is a function that accepts two arguments: name of a slot and a pointer to C structure and returns the value of a slot}
+@item{@code{unparser} is a function designator for a slot unparser function. Slot unparsing function is a function that accepts three arguments: name of a slot, pointer to a C structure and a value of a slot. It should assign the slot value to a C structure.}
+@end{itemize}}"
   (destructuring-bind (&optional g-name c-name) (ensure-list g-name-and-c-name)
     (destructuring-bind (&optional superclass dispatch-slot dispatch-values) superclass-and-dispatch
       (let* ((superclass-slots (get superclass 'boxed-combined-slots))
@@ -213,7 +256,15 @@
 (defun boxed-c-structure-name (name)
   (get (g-boxed-root name) 'c-name))
 
-(defclass g-boxed-ref () ((pointer :accessor pointer :initarg :pointer)))
+(defclass g-boxed-ref ()
+  ((pointer :accessor pointer :initarg :pointer))
+  (:documentation "Class corresponding to GBoxed objects that are passed by reference to C structure rather than by value.
+
+Instances of this class are collected by garbage collector. Each object has an owner: lisp code or C code. If owner is the lisp code then the corresponding C structure will be freed when the object is collected. Is the owner is the C code, the C structure lifetime is not connected with the lifetime of the object: it may be freed before or after the object becomes collected. If the owner if C code, lisp code must be careful not to access slots of the object after the C code frees the object (it cannot be tracked automatically).
+
+When object is created by lisp code (using @fun{make-instance}), it is owned by lisp code unless explicitly disowned by @fun{disown-boxed-ref}. Disowning should be done when the object is passed to some function that becomes the owner of the reference.
+
+When object is returned from a function, it depends on a function whether lisp code is the owner of GBoxed object. Return values and arguments of foreign functions are marked with CFFI foreign-type called @class{g-boxed-ref-type} that specifies (by the value of its @code{owner} slot) which code owns the reference."))
 
 (defvar *g-boxed-gc-lock* (make-recursive-lock "g-boxed-gc-lock"))
 (defvar *known-boxed-refs* (tg:make-weak-hash-table :test 'equal :weakness :value))
@@ -225,6 +276,9 @@
       (error "g-boxed-ref class ~A has no free-function" name)))
 
 (defun disown-boxed-ref (object)
+  "Specify that the Lisp code no longer owns the reference to the @code{object}. Otherwise garbage collector would collect the @code{object} and corresponding C structure would be freed, causing dangling pointer (if C code does not free the structure) of double free (if C code frees the structure).
+
+@arg[object]{an instance of @class{g-boxed-ref}}"
   (setf (gethash (pointer-address (pointer object)) *boxed-ref-owner*) :foreign))
 
 (defun dispose-boxed-ref (type pointer)
@@ -321,6 +375,51 @@
                                   `(,writer new-value object))))))))
 
 (defmacro define-g-boxed-ref (gobject-name name &rest properties)
+  "Defines a class corresponding to GBoxed type that is passed by reference (e.g., GtkTextIter). Class is made a subclass of @code{g-boxed-ref}.
+
+Example:
+@begin{pre}
+\(defun tree-iter-alloc () (glib:g-malloc (foreign-type-size 'tree-iter)))
+\(defun tree-iter-free (v) (glib:g-free v))
+
+\(define-g-boxed-ref \"GtkTreeIter\" tree-iter
+  (:slots (stamp :reader tree-iter-get-stamp :writer tree-iter-set-stamp :accessor tree-iter-stamp)
+          (user-data :reader tree-iter-get-user-data :writer tree-iter-set-user-data :accessor tree-iter-user-data))
+  (:alloc-function tree-iter-alloc)
+  (:free-function tree-iter-free))
+@end{pre}
+@arg[gobject-name]{a string denoting the GObject type}
+@arg[name]{a symbol denoting the class name for generated class}
+@arg[properties]{p-list of options.
+Each option is a list @code{(name value)} where @code{name} is name of an option and @code{value} is its value.
+Following options are used:
+@begin{itemize}
+@item{@code{:free-function} (mandatory). Designator for a function that frees the allocated object. Accepts a single argument - pointer.}
+@item{@code{:alloc-function} (mandator). Designator for a function that accepts zero arguments and returns the C pointer to newly allocated object.}
+@item{@code{:slots} (optional). Slots specifications for GBoxed.
+Each slot is specified as a list @code{(slot-name &key reader writer type (accessor slot-name))}.
+@begin{itemize}
+@item{@code{slot-name} is a symbol - the name of a slot}
+@item{@code{type} is a CFFI type of a slot}
+@item{@code{reader} is a @code{NIL} or a string or a function designator.
+
+If it is a @code{NIL} then the slot is not readable.
+
+If it is a string then it names the C function that accepts the pointer to C structure and returns the value of a slot (of specified CFFI type). 
+
+If it is a function designator then it specifies a function that accepts the Lisp object and returns its slot value.}
+@item{@code{writer} is a @code{NIL} or string or a function designator.
+
+If it is a @code{NIL} then the slot is not writable.
+
+If it is a string then it names the C function that accepts the pointer to C structure and a value (of specified CFFI type) and assigns it to the slot of a structure. and returns the value of a slot (of specified CFFI type).
+
+If it is a function designator then it specifies a function that accepts the new slot value and a Lisp object and assigns it to the slot.}
+@item{@code{accessor} is a symbol that names accessor function for this slot. By default it equals to @code{slot-name}.}
+@end{itemize}
+}
+@end{itemize}
+}"
   (let ((free-fn (second (find :free-function properties :key 'first)))
         (alloc-fn (second (find :alloc-function properties :key 'first)))
         (slots (rest (find :slots properties :key 'first))))
@@ -341,7 +440,9 @@
 (define-foreign-type fixed-array ()
   ((element-type :reader fixed-array-element-type :initarg :element-type :initform (error "Element type must be specified"))
    (array-size :reader fixed-array-array-size :initarg :array-size :initform (error "Array size must be specified")))
-  (:actual-type :pointer))
+  (:actual-type :pointer)
+  (:documentation
+"CFFI foreign type for an array of a fixed length. Slot @code{element-type}@see-slot{fixed-array-element-type} specifies the type of elements and slot @code{array-size}@see-slot{fixed-array-array-size} specifies the size of array (in elements)."))
 
 (define-parse-method fixed-array (element-type array-size)
   (make-instance 'fixed-array :element-type element-type :array-size array-size))

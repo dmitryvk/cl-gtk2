@@ -1,6 +1,7 @@
 (in-package :gobject)
 
-(defvar *lisp-name-package* (find-package :gobject))
+(defvar *lisp-name-package* (find-package :gobject)
+  "For internal use (used by class definitions generator). Specifies the package in which symbols are interned.")
 (defvar *strip-prefix* "")
 (defvar *lisp-name-exceptions* nil)
 (defvar *generation-exclusions* nil)
@@ -326,7 +327,22 @@
      (equal (g-type-fundamental (ensure-g-type type)) fund-type))
    types))
 
-(defmacro define-g-enum (g-name name (&key (export t) type-initializer)  &body values)
+(defmacro define-g-enum (g-name name (&key (export t) type-initializer) &body values)
+  "Defines a GEnum type for enumeration. Generates corresponding CFFI definition.
+
+Example:
+@begin{pre}
+\(define-g-enum \"GdkGrabStatus\" grab-status () :success :already-grabbed :invalid-time :not-viewable :frozen)
+\(define-g-enum \"GdkExtensionMode\" gdk-extension-mode (:export t :type-initializer \"gdk_extension_mode_get_type\")
+  (:none 0) (:all 1) (:cursor 2))
+@end{pre}
+@arg[g-name]{a string. Specifies the GEnum name}
+@arg[name]{a symbol. Names the enumeration type.}
+@arg[export]{a boolean. If true, @code{name} will be exported.}
+@arg[type-initializer]{a @code{NIL} or a string or a function designator.
+
+If non-@code{NIL}, specifies the function that initializes the type: string specifies a C function that returns the GType value and function designator specifies the Lisp function.}
+@arg[values]{values for enum. Each value is a keyword or a list @code{(keyword integer-value)}. @code{keyword} corresponds to Lisp value of enumeration, and @code{integer-value} is an C integer for enumeration item. If @code{integer-value} is not specified, it is generated automatically (see CFFI manual)}"
   `(progn
      (defcenum ,name ,@values)
      (register-enum-type ,g-name ',name)
@@ -355,6 +371,22 @@
        ,@(mapcar #'enum-value->definition items))))
 
 (defmacro define-g-flags (g-name name (&key (export t) type-initializer) &body values)
+  "Defines a GFlags type for enumeration that can combine its values. Generates corresponding CFFI definition. Values of this type are lists of keywords that are combined.
+
+Example:
+@begin{pre}
+\(define-g-flags \"GdkWindowState\" window-state ()
+  (:withdrawn 1)
+  (:iconified 2) (:maximized 4) (:sticky 8) (:fullscreen 16)
+  (:above 32) (:below 64))
+@end{pre}
+@arg[g-name]{a string. Specifies the GEnum name}
+@arg[name]{a symbol. Names the enumeration type.}
+@arg[export]{a boolean. If true, @code{name} will be exported.}
+@arg[type-initializer]{a @code{NIL} or a string or a function designator.
+
+If non-@code{NIL}, specifies the function that initializes the type: string specifies a C function that returns the GType value and function designator specifies the Lisp function.}
+@arg[values]{values for flags. Each value is a keyword or a list @code{(keyword integer-value)}. @code{keyword} corresponds to Lisp value of a flag, and @code{integer-value} is an C integer for flag. If @code{integer-value} is not specified, it is generated automatically (see CFFI manual)}"
   `(progn
      (defbitfield ,name ,@values)
      (register-flags-type ,g-name ',name)

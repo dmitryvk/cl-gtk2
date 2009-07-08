@@ -16,6 +16,10 @@
                     `((equalp ,key ,value) ,@forms)))))))
 
 (defun parse-gvalue (gvalue)
+  "Parses the GValue structure and returns the corresponding Lisp object.
+
+@arg[value]{a C pointer to the GValue structure}
+@return{value contained in the GValue structure. Type of value depends on GValue type}"
   (let* ((type (gvalue-type gvalue))
          (fundamental-type (g-type-fundamental type)))
     (cond
@@ -45,6 +49,14 @@
            (t (error "Unknown type: ~A (~A)" type (g-type-name type))))))))
 
 (defun set-g-value (gvalue value type &key zero-g-value unset-g-value (g-value-init t))
+  "Assigns the GValue structure @code{gvalue} the value @code{value} of GType @code{type}.
+
+@arg[gvalue]{a C pointer to the GValue structure}
+@arg[value]{a Lisp object that is to be assigned}
+@arg[type]{a GType that is to be assigned}
+@arg[zero-g-value]{a boolean specifying whether GValue should be zero-initialized before assigning. See @fun{g-value-zero}}
+@arg[unset-g-value]{a boolean specifying whether GValue should be \"unset\" before assigning. See @fun{g-value-unset}. The \"true\" value should not be passed to both @code{zero-g-value} and @code{unset-g-value} arguments}
+@arg[g-value-init]{a boolean specifying where GValue should be initialized}"
   (cond
     (zero-g-value (g-value-zero gvalue))
     (unset-g-value (g-value-unset gvalue)))

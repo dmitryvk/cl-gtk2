@@ -17,8 +17,8 @@
 (defun tree-iter-get-user-data (i) (pointer-address (foreign-slot-value (pointer i) 'tree-iter 'user-data)))
 (defun tree-iter-set-user-data (value i) (setf (foreign-slot-value (pointer i) 'tree-iter 'user-data) (make-pointer value)))
 
-(defun tree-iter-alloc () (glib::g-malloc (foreign-type-size 'tree-iter)))
-(defun tree-iter-free (v) (glib::g-free v))
+(defun tree-iter-alloc () (glib:g-malloc (foreign-type-size 'tree-iter)))
+(defun tree-iter-free (v) (glib:g-free v))
 
 (define-g-boxed-ref "GtkTreeIter" tree-iter
   (:slots (stamp :reader tree-iter-get-stamp :writer tree-iter-set-stamp :accessor tree-iter-stamp)

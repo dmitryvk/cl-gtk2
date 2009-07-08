@@ -8,12 +8,24 @@
 (at-init (%g-type-init))
 
 (defcfun (g-type-name "g_type_name") :string
+  "Returns the GType name
+
+@arg[type]{an integer specifying the GType}
+@return{a string - name of type}"
   (type g-type))
 
 (defcfun (g-type-from-name "g_type_from_name") g-type
+  "Looks up the GType by its name
+
+@arg[name]{a string naming the type}
+@return{an integer specifying GType}"
   (name :string))
 
 (defcfun g-type-parent g-type
+  "Returns the parent of a GType
+
+@arg[type]{an integer specifying the GType}
+@return{an integer specifying the parent GType}"
   (type g-type))
 
 (defcfun g-type-depth :uint
@@ -48,6 +60,9 @@
   (n-children (:pointer :uint)))
 
 (defun g-type-children (g-type)
+  "Returns the list of types inherited from @code{g-type}.
+
+@arg[g-type]{an integer or a string specifying type}"
   (setf g-type (ensure-g-type g-type))
   (with-foreign-object (n-children :uint)
     (let ((g-types-ptr (%g-type-children g-type n-children)))
@@ -109,6 +124,10 @@
   (prerequisite-type g-type))
 
 (defun g-type-from-object (object)
+  "Returns the GType of an @code{object}
+
+@arg[object]{C pointer to an object}
+@return{an integer specifying the GType}"
   (g-type-from-instance object))
 
 (defun g-type-from-class (g-class)

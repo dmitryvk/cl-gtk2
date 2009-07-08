@@ -9,7 +9,8 @@
                        :reader gobject-class-g-type-initializer)
    (interface-p :initform nil
                 :initarg :g-interface-p
-                :reader gobject-class-interface-p)))
+                :reader gobject-class-interface-p))
+  (:documentation "Metaclass for GObject-based classes."))
 
 (defun initialize-gobject-class-g-type (class)
   (if (gobject-class-g-type-initializer class)

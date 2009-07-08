@@ -9,7 +9,9 @@
    (has-reference
     :type boolean
     :accessor g-object-has-reference
-    :initform nil)))
+    :initform nil))
+  (:documentation
+   "Base class for GObject classes hierarchy."))
 
 (defvar *foreign-gobjects* (make-weak-hash-table :test 'equal :weakness :value))
 (defvar *foreign-gobjects-ref-count* (make-hash-table :test 'equal))
@@ -189,6 +191,9 @@
 (register-object-type "GObject" 'g-object)
 
 (defun ensure-g-type (type)
+  "Returns the GType value for a given type. If type is an integer, it is returned. If type is a string, GType corresponding to this type name is looked up and returned.
+@arg[type]{a string or and integer}
+@return{integer equal to GType of @code{type}}"
   (etypecase type
     (integer type)
     (string (or (g-type-from-name type)

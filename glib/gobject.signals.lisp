@@ -36,6 +36,11 @@
   (logxor type (ldb (byte 1 0) type)));;subtract the G_SIGNAL_TYPE_STATIC_SCOPE
 
 (defun emit-signal (object signal-name &rest args)
+  "Emits the signal.
+@arg[object]{an instance of @class{g-object}. Signal is emitted on this object}
+@arg[signal-name]{a string specifying the signal}
+@arg[args]{arguments for the signal}
+@return{none}"
   (let ((signal-id (g-signal-lookup signal-name (g-type-from-object (pointer object)))))
     (when (= signal-id 0)
       (error "Signal ~A not found on object ~A" signal-name object))

@@ -22,7 +22,9 @@
            #:+g-priority-high-idle+
            #:+g-priority-default-idle+
            #:+g-priority-low+
-           #:g-idle-add-full))
+           #:g-idle-add-full)
+  (:documentation
+   "Cl-gtk2-glib is wrapper for @a[http://library.gnome.org/devel/glib/]{GLib}."))
 
 (in-package :glib)
 
@@ -36,6 +38,11 @@
         (funcall fn)))
 
 (defmacro at-init (&body body)
+  "@arg[body]{the code}
+Runs the code normally but also schedules the code to be run at image load time.
+It is used to reinitialize the libraries when the dumped image is loaded.
+(Works only on SBCL for now)
+"
   `(progn (register-initializer (lambda () ,@body))
           ,@body))
 
@@ -142,11 +149,11 @@
 (defcfun (g-main-loop-get-context "g_main_loop_get_context" :library glib) (:pointer g-main-context)
   (loop (:pointer g-main-loop)))
 
-(defconstant +g-priority-high+ -100)
-(defconstant +g-priority-default+ 0)
-(defconstant +g-priority-high-idle+ 100)
-(defconstant +g-priority-default-idle+ 200)
-(defconstant +g-priority-low+ 300)
+(defconstant +g-priority-high+ -100 "Use this for high priority event sources. It is not used within GLib or GTK+.")
+(defconstant +g-priority-default+ 0 "Use this for default priority event sources. In GLib this priority is used when adding timeout functions with g_timeout_add(). In GDK this priority is used for events from the X server.")
+(defconstant +g-priority-high-idle+ 100 "Use this for high priority idle functions. GTK+ uses @variable{+g-priority-high-idle+} + 10 for resizing operations, and @variable{+g-priority-high-idle+} + 20 for redrawing operations. (This is done to ensure that any pending resizes are processed before any pending redraws, so that widgets are not redrawn twice unnecessarily.)")
+(defconstant +g-priority-default-idle+ 200 "Use this for default priority idle functions. In GLib this priority is used when adding idle functions with g_idle_add().")
+(defconstant +g-priority-low+ 300 "Use this for very low priority background tasks. It is not used within GLib or GTK+.")
 
 (defcfun (g-main-context-new "g_main_context_new" :library glib) (:pointer g-main-context))
 
@@ -272,6 +279,12 @@
   (data :pointer))
 
 (defcfun (g-idle-add-full "g_idle_add_full" :library glib) :uint
+  "A low-level function for adding callbacks to be called from main loop. Wrapper around g_idle_add_full.
+Adds a function to be called whenever there are no higher priority events pending. If the function returns FALSE it is automatically removed from the list of event sources and will not be called again.
+@arg[priority]{an integer specifying the priority. See @variable{+g-priority-default+}, @variable{+g-priority-default-idle+}, @variable{+g-priority-high+}, @variable{+g-priority-high-idle+}, @variable{+g-priority-low+}.}
+@arg[function]{pointer to callback that will be called. Callback should accept a single pointer argument and return a boolean FALSE if it should be removed}
+@arg[data]{pointer that will be passed to callback function}
+@arg[notify]{function that will be called when callback is no more needed. It will receive the @code{data} argument}"
   (priority :uint)
   (function :pointer)
   (data :pointer)
@@ -433,12 +446,21 @@
 ; Memory Allocation, IO Channels, Error Reporting, Message Output and Debugging  Functions, Message Logging
 
 (defcfun g-free :void
+  "@arg[ptr]{pointer previously obtained with @fun{g-malloc} or with g_malloc C function}
+Frees the pointer by calling g_free on it."
   (ptr :pointer))
 
 (defcfun (g-malloc "g_malloc0") :pointer
+  "@arg[n-bytes]{an integer}
+@return{pointer to beginning of allocated memory}
+Allocates the specified number of bytes in memory. Calls g_malloc.
+@see{g-free}"
   (n-bytes gsize))
 
 (defcfun g-strdup :pointer
+  "@arg[str]{a @class{string}}
+@return{foreign pointer to new string}
+Allocates a new string that is equal to @code{str}. Use @fun{g-free} to free it."
   (str (:string :free-to-foreign t)))
 
 ;omitted all GLib Utilites

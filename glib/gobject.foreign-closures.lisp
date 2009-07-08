@@ -46,6 +46,17 @@
     closure))
 
 (defun g-signal-connect (object signal handler &key after)
+  "Deprecated alias for @fun{connect-signal}"
+  (connect-signal object signal handler :after after))
+
+(defun connect-signal (object signal handler &key after)
+  "Connects the function to a signal for a particular object.
+If @code{after} is true, then the function will be called after the default handler of the signal.
+
+@arg[object]{an instance of @class{gobject}}
+@arg[signal]{a string; names the signal}
+@arg[handler]{a function; handles the signal. Number (and type) of arguments and return value type depends on the signal}
+@arg[after]{a boolean}"
   (g-signal-connect-closure (ensure-object-pointer object)
                             signal
                             (create-closure handler)
