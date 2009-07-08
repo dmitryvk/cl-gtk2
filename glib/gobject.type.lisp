@@ -5,7 +5,7 @@
 
 (defcfun (%g-type-init "g_type_init") :void)
 
-(at-init (%g-type-init))
+(at-init () (%g-type-init))
 
 (defcfun (g-type-name "g_type_name") :string
   "Returns the GType name

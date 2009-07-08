@@ -349,7 +349,7 @@ If non-@code{NIL}, specifies the function that initializes the type: string spec
      ,@(when export
              (list `(export ',name (find-package ,(package-name (symbol-package name))))))
      ,@(when type-initializer
-             (list (type-initializer-call type-initializer)))))
+             (list `(at-init () ,(type-initializer-call type-initializer))))))
 
 (defun enum-value->definition (enum-value)
   (let ((value-name (intern (lispify-name (enum-item-nick enum-value))
@@ -393,7 +393,7 @@ If non-@code{NIL}, specifies the function that initializes the type: string spec
      ,@(when export
              (list `(export ',name (find-package ,(package-name (symbol-package name))))))
      ,@(when type-initializer
-             (list (type-initializer-call type-initializer)))))
+             (list `(at-init () ,(type-initializer-call type-initializer))))))
 
 (defun flags-value->definition (flags-value)
   (let ((value-name (intern (lispify-name (flags-item-nick flags-value))

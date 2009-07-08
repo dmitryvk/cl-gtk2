@@ -29,21 +29,23 @@
 (in-package :glib)
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
+  (defvar *initializers-table* (make-hash-table :test 'equalp))
   (defvar *initializers* nil)
-  (defun register-initializer (fn)
-    (setf *initializers* (nconc *initializers* (list fn)))))
+  (defun register-initializer (key fn)
+    (unless (gethash key *initializers-table*)
+      (setf (gethash key *initializers-table*) t
+            *initializers* (nconc *initializers* (list fn))))))
 
 (defun run-initializers ()
   (iter (for fn in *initializers*)
         (funcall fn)))
 
-(defmacro at-init (&body body)
+(defmacro at-init ((&rest keys) &body body)
   "@arg[body]{the code}
 Runs the code normally but also schedules the code to be run at image load time.
-It is used to reinitialize the libraries when the dumped image is loaded.
-(Works only on SBCL for now)
+It is used to reinitialize the libraries when the dumped image is loaded. (Works only on SBCL for now)
 "
-  `(progn (register-initializer (lambda () ,@body))
+  `(progn (register-initializer (list ,@keys ',body) (lambda () ,@body))
           ,@body))
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
@@ -383,7 +385,7 @@ Adds a function to be called whenever there are no higher priority events pendin
 
 (defvar *threads-initialized-p* nil)
 
-(at-init
+(at-init ()
   (unless *threads-initialized-p*
     (g-thread-init (null-pointer))
     (setf *threads-initialized-p* t)))

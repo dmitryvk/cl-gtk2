@@ -198,7 +198,7 @@
     (setf parent (g-type-name (ensure-g-type parent))))
   `(progn
      (setf (gethash ,name *registered-types*) (make-object-type :name ,name :class ',class :parent ,parent :interfaces ',interfaces :properties ',properties))
-     (at-init
+     (at-init (',class)
        (debugf "Registering GObject type implementation ~A for type ~A~%" ',class ,name)
        (with-foreign-object (query 'g-type-query)
          (g-type-query (g-type-from-name ,parent) query)
