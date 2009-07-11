@@ -1,4 +1,70 @@
-(in-package :gobject)
+(defpackage :gobject.type-info
+  (:use :cl :iter :cffi :glib)
+  (:export #:+g-type-invalid+
+           #:+g-type-void+
+           #:+g-type-interface+
+           #:+g-type-char+
+           #:+g-type-uchar+
+           #:+g-type-boolean+
+           #:+g-type-int+
+           #:+g-type-uint+
+           #:+g-type-long+
+           #:+g-type-ulong+
+           #:+g-type-int64+
+           #:+g-type-uint64+
+           #:+g-type-enum+
+           #:+g-type-flags+
+           #:+g-type-float+
+           #:+g-type-double+
+           #:+g-type-string+
+           #:+g-type-pointer+
+           #:+g-type-boxed+
+           #:+g-type-param+
+           #:+g-type-object+
+           #:g-type-name
+           #:g-type-from-name
+           #:g-type
+           #:g-type-children
+           #:g-type-parent
+           #:g-type-designator
+           #:g-type-fundamental
+           #:g-type-depth
+           #:g-type-next-base
+           #:g-type-is-a
+           #:g-type-interfaces
+           #:g-type-interface-prerequisites
+           #:g-strv-get-type
+           #:g-closure-get-type))
+
+(in-package :gobject.type-info)
+
+(defctype g-type gsize)
+
+(eval-when (:load-toplevel :compile-toplevel)
+  (defun gtype-make-fundamental-type (x)
+    (ash x 2)))
+
+(defconstant +g-type-invalid+ (gtype-make-fundamental-type 0))
+(defconstant +g-type-void+ (gtype-make-fundamental-type 1))
+(defconstant +g-type-interface+ (gtype-make-fundamental-type 2))
+(defconstant +g-type-char+ (gtype-make-fundamental-type 3))
+(defconstant +g-type-uchar+ (gtype-make-fundamental-type 4))
+(defconstant +g-type-boolean+ (gtype-make-fundamental-type 5))
+(defconstant +g-type-int+ (gtype-make-fundamental-type 6))
+(defconstant +g-type-uint+ (gtype-make-fundamental-type 7))
+(defconstant +g-type-long+ (gtype-make-fundamental-type 8))
+(defconstant +g-type-ulong+ (gtype-make-fundamental-type 9))
+(defconstant +g-type-int64+ (gtype-make-fundamental-type 10))
+(defconstant +g-type-uint64+ (gtype-make-fundamental-type 11))
+(defconstant +g-type-enum+ (gtype-make-fundamental-type 12))
+(defconstant +g-type-flags+ (gtype-make-fundamental-type 13))
+(defconstant +g-type-float+ (gtype-make-fundamental-type 14))
+(defconstant +g-type-double+ (gtype-make-fundamental-type 15))
+(defconstant +g-type-string+ (gtype-make-fundamental-type 16))
+(defconstant +g-type-pointer+ (gtype-make-fundamental-type 17))
+(defconstant +g-type-boxed+ (gtype-make-fundamental-type 18))
+(defconstant +g-type-param+ (gtype-make-fundamental-type 19))
+(defconstant +g-type-object+ (gtype-make-fundamental-type 20))
 
 (define-foreign-type g-type-designator ()
   ()
@@ -68,22 +134,6 @@
   (type g-type-designator)
   (is-a-type g-type-designator))
 
-(defcfun g-type-class-ref (:pointer g-type-class)
-  (type g-type-designator))
-
-(defcfun g-type-class-unref :void
-  (class (:pointer g-type-class)))
-
-(defcfun g-type-class-add-private :void
-  (class (:pointer g-type-class))
-  (private-size gsize))
-
-(defcfun g-type-default-interface-ref :pointer
-  (type g-type-designator))
-
-(defcfun g-type-default-interface-unref :void
-  (interface :pointer))
-
 (defcfun (%g-type-children "g_type_children") (:pointer g-type)
   (type g-type-designator)
   (n-children (:pointer :uint)))
@@ -134,46 +184,6 @@
              collect (mem-aref g-types-ptr 'g-type-designator i))
         (g-free g-types-ptr)))))
 
-(defcfun g-type-register-static g-type-designator
-  (parent-type g-type-designator)
-  (type-name :string)
-  (info (:pointer g-type-info))
-  (flags g-type-flags))
-
-(defcfun g-type-register-static-simple g-type-designator
-  (parent-type g-type-designator)
-  (type-name :string)
-  (class-size :uint)
-  (class-init :pointer)
-  (instance-size :uint)
-  (instance-init :pointer)
-  (flags g-type-flags))
-
-(defcfun g-type-add-interface-static :void
-  (instance-type g-type-designator)
-  (interface-type g-type-designator)
-  (info (:pointer g-interface-info)))
-
-(defcfun g-type-interface-add-prerequisite :void
-  (interface-type g-type-designator)
-  (prerequisite-type g-type-designator))
-
-(defun g-type-from-object (object)
-  "Returns the GType of an @code{object}
-
-@arg[object]{C pointer to an object}
-@return{GType designator (see @class{g-type-designator})}"
-  (g-type-from-instance object))
-
-(defun g-type-from-class (g-class)
-  (g-type-name (foreign-slot-value g-class 'g-type-class 'type)))
-
-(defun g-type-from-instance (type-instance)
-  (g-type-from-class (foreign-slot-value type-instance 'g-type-instance 'class)))
-
-(defun g-type-from-interface (type-interface)
-  (g-type-name (foreign-slot-value type-interface 'g-type-interface 'type)))
-
 (defcfun g-strv-get-type g-type-designator)
 
 (at-init nil (g-strv-get-type))
@@ -181,7 +191,3 @@
 (defcfun g-closure-get-type g-type-designator)
 
 (at-init nil (g-closure-get-type))
-
-(defcfun g-type-query :void
-  (type g-type-designator)
-  (query (:pointer g-type-query)))

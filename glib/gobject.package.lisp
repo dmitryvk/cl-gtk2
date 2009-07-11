@@ -1,5 +1,5 @@
 (defpackage :gobject
-  (:use :cl :glib :cffi :tg :bordeaux-threads :iter :closer-mop)
+  (:use :cl :glib :cffi :tg :bordeaux-threads :iter :closer-mop :gobject.type-info)
   (:export #:+g-type-invalid+
            #:+g-type-void+
            #:+g-type-interface+
@@ -152,13 +152,6 @@ GObject uses GValues as a generic way to pass values. It is used when calling cl
 @end{section}"))
 
 (in-package :gobject)
-
-(eval-when (:compile-toplevel :load-toplevel :execute)
-  (define-foreign-library gobject
-    (:unix (:or "libgobject-2.0.so.0" "libgobject-2.0.so"))
-    (t "libgobject-2.0")))
-
-(use-foreign-library gobject)
 
 (defvar *gobject-debug* nil)
 
