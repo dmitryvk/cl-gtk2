@@ -20,10 +20,10 @@
 
 @arg[value]{a C pointer to the GValue structure}
 @return{value contained in the GValue structure. Type of value depends on GValue type}"
-  (let* ((type (gvalue-type gvalue))
-         (fundamental-type (g-type-fundamental type)))
+  (let* ((type (ensure-g-type (gvalue-type gvalue)))
+         (fundamental-type (ensure-g-type (g-type-fundamental type))))
     (cond
-      ((= type (g-strv-get-type)) (convert-from-foreign (g-value-get-boxed gvalue) '(glib:gstrv :free-from-foreign nil)))
+      ((= type (ensure-g-type (g-strv-get-type))) (convert-from-foreign (g-value-get-boxed gvalue) '(glib:gstrv :free-from-foreign nil)))
       (t (ev-case fundamental-type
            (+g-type-invalid+ (error "GValue is of invalid type (~A)" (g-type-name type)))
            (+g-type-void+ nil)
@@ -57,13 +57,14 @@
 @arg[zero-g-value]{a boolean specifying whether GValue should be zero-initialized before assigning. See @fun{g-value-zero}}
 @arg[unset-g-value]{a boolean specifying whether GValue should be \"unset\" before assigning. See @fun{g-value-unset}. The \"true\" value should not be passed to both @code{zero-g-value} and @code{unset-g-value} arguments}
 @arg[g-value-init]{a boolean specifying where GValue should be initialized}"
+  (setf type (ensure-g-type type))
   (cond
     (zero-g-value (g-value-zero gvalue))
     (unset-g-value (g-value-unset gvalue)))
   (when g-value-init (g-value-init gvalue type))
-  (let ((fundamental-type (g-type-fundamental type)))
+  (let ((fundamental-type (ensure-g-type (g-type-fundamental type))))
     (cond
-      ((= type (g-strv-get-type)) (g-value-set-boxed gvalue (convert-to-foreign value 'glib:gstrv)))
+      ((= type (ensure-g-type (g-strv-get-type))) (g-value-set-boxed gvalue (convert-to-foreign value 'glib:gstrv)))
       (t (ev-case fundamental-type
            (+g-type-invalid+ (error "Invalid type (~A)" type))
            (+g-type-void+ nil)

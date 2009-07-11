@@ -31,7 +31,7 @@
   (n-properties (:pointer :uint)))
 
 (defcfun g-object-newv :pointer
-  (object-type g-type)
+  (object-type g-type-designator)
   (n-parameter :uint)
   (parameters (:pointer g-parameter)))
 

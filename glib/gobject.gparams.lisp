@@ -178,7 +178,7 @@
   (name :string)
   (nick :string)
   (blurb :string)
-  (enum-type g-type)
+  (enum-type g-type-designator)
   (default-value :int)
   (flags g-param-flags))
 
@@ -193,7 +193,7 @@
   (name :string)
   (nick :string)
   (blurb :string)
-  (flags-type g-type)
+  (flags-type g-type-designator)
   (default-value :int)
   (flags g-param-flags))
 
@@ -222,7 +222,7 @@
   (name :string)
   (nick :string)
   (blurb :string)
-  (param-type g-type)
+  (param-type g-type-designator)
   (flags g-param-flags))
 
 (defcfun g-value-set-param :void
@@ -236,7 +236,7 @@
   (name :string)
   (nick :string)
   (blurb :string)
-  (boxed-type g-type)
+  (boxed-type g-type-designator)
   (flags g-param-flags))
 
 (defcfun g-value-set-boxed :void
@@ -267,7 +267,7 @@
   (name :string)
   (nick :string)
   (blurb :string)
-  (object-type g-type)
+  (object-type g-type-designator)
   (flags g-param-flags))
 
 (defcfun g-value-set-object :void
@@ -288,14 +288,14 @@
   (name :string)
   (nick :string)
   (blurb :string)
-  (types-root g-type)
+  (types-root g-type-designator)
   (flags g-param-flags))
 
 (defcfun (g-value-set-g-type "g_value_set_gtype") :void
   (g-value (:pointer g-value))
-  (new-value g-type))
+  (new-value g-type-designator))
 
-(defcfun (g-value-get-g-type "g_value_get_gtype") g-type
+(defcfun (g-value-get-g-type "g_value_get_gtype") g-type-designator
   (g-value (:pointer g-value)))
 
 (defcfun g-param-spec-ref-sink (:pointer g-param-spec)

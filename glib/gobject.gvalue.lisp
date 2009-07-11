@@ -6,7 +6,7 @@
 @arg[value]{a C pointer to the GValue structure}
 @arg[type]{an integer specifying the GType}"
   (value (:pointer g-value))
-  (type g-type))
+  (type g-type-designator))
 
 (defun g-value-zero (g-value)
   "Initializes the GValue in \"unset\" state.

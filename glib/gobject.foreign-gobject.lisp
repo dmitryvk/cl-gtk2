@@ -140,11 +140,12 @@
 (defun registered-object-type-by-name (name)
   (gethash name *registered-object-types*))
 (defun get-g-object-lisp-type (g-type)
+  (setf g-type (ensure-g-type g-type))
   (loop
      while (not (zerop g-type))
      for lisp-type = (gethash (g-type-name g-type) *registered-object-types*)
      when lisp-type do (return lisp-type)
-     do (setf g-type (g-type-parent g-type))))
+     do (setf g-type (ensure-g-type (g-type-parent g-type)))))
 
 (defun make-g-object-from-pointer (pointer)
   (let* ((g-type (g-type-from-instance pointer))
@@ -263,7 +264,6 @@
 
 (defun g-object-call-constructor (object-type args-names args-values
                                   &optional args-types)
-  (setf object-type (ensure-g-type object-type))
   (unless args-types
     (setf args-types
           (mapcar (lambda (name)

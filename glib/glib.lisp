@@ -41,9 +41,22 @@
         (funcall fn)))
 
 (defmacro at-init ((&rest keys) &body body)
-  "@arg[body]{the code}
+  "
+@arg[keys]{list of expression}
+@arg[body]{the code}
 Runs the code normally but also schedules the code to be run at image load time.
-It is used to reinitialize the libraries when the dumped image is loaded. (Works only on SBCL for now)
+It is used to reinitialize the libraries when the dumped image is loaded. (Works only on SBCL for now).
+
+At-init form may be called multiple times. The same code from should not be run multiple times at initialization time (in best case, this will only slow down initialization, in worst case, the code may crash). To ensure this, every @code{at-init} expression is added to hash-table with the @code{body} and @code{keys} as a composite key. This ensures that the same code is only executed once (once on the same set of parameters).
+
+Example:
+@begin{pre}
+\(defmethod initialize-instance :after ((class gobject-class) &key &allow-other-keys)
+  (register-object-type (gobject-class-g-type-name class) (class-name class))
+  (at-init (class) (initialize-gobject-class-g-type class)))
+@end{pre}
+
+In this example, for every @code{class}, @code{(initialize-gobject-class-g-type class)} will be called only once.
 "
   `(progn (register-initializer (list ,@keys ',body) (lambda () ,@body))
           ,@body))
