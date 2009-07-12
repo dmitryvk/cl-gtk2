@@ -24,7 +24,6 @@
                (:file "gobject.foreign-closures")
                (:file "gobject.foreign-gboxed")
                (:file "gobject.gvalue-parser")
-               (:file "gobject.gobject-query")
                (:file "gobject.meta")
                (:file "gobject.generating")
                (:file "gobject.object-defs")

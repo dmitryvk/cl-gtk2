@@ -60,32 +60,11 @@
            #:g-value-unset
            #:g-value-zero
            #:g-value-init
-           #:g-class-property-definition
-           #:g-class-property-definition-name
-           #:g-class-property-definition-type
-           #:g-class-property-definition-readable
-           #:g-class-property-definition-writable
-           #:g-class-property-definition-constructor
-           #:g-class-property-definition-constructor-only
-           #:g-class-property-definition-owner-type
-           #:class-properties
-           #:interface-properties
-           #:enum-item
-           #:enum-item-name
-           #:enum-item-value
-           #:enum-item-nick
-           #:get-enum-types
-           #:flags-item
-           #:flags-item-name
-           #:flags-item-value
-           #:flags-item-nick
-           #:get-flags-types
            #:g-type-class-ref
            #:g-object-class
            #:gobject-class
            #:g-param-spec
            #:type-instance
-           #:parse-g-param-spec
            #:g-type-class-unref
            #:registered-object-type-by-name
            #:g-type-children
@@ -99,7 +78,42 @@
            #:g-type-next-base
            #:g-type-is-a
            #:g-type-interfaces
-           #:g-type-interface-prerequisites)
+           #:g-type-interface-prerequisites
+           #:g-type-name
+           #:g-type-from-name
+           #:g-type
+           #:g-type-children
+           #:g-type-parent
+           #:g-type-designator
+           #:g-type-fundamental
+           #:g-type-depth
+           #:g-type-next-base
+           #:g-type-is-a
+           #:g-type-interfaces
+           #:g-type-interface-prerequisites
+           #:g-strv-get-type
+           #:g-closure-get-type
+           #:g-class-property-definition
+           #:g-class-property-definition-name
+           #:g-class-property-definition-type
+           #:g-class-property-definition-readable
+           #:g-class-property-definition-writable
+           #:g-class-property-definition-constructor
+           #:g-class-property-definition-constructor-only
+           #:g-class-property-definition-owner-type
+           #:parse-g-param-spec
+           #:class-properties
+           #:interface-properties
+           #:enum-item
+           #:enum-item-name
+           #:enum-item-value
+           #:enum-item-nick
+           #:get-enum-items
+           #:flags-item
+           #:flags-item-name
+           #:flags-item-value
+           #:flags-item-nick
+           #:get-flags-items)
   (:documentation
    "CL-GTK2-GOBJECT is a binding to GObject type system.
 For information on GObject, see its @a[http://library.gnome.org/devel/gobject/stable/]{documentation}.

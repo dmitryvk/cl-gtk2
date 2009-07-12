@@ -1,4 +1,4 @@
-(in-package :gobject)
+(in-package :gobject.type-info)
 
 (defstruct g-class-property-definition
   "Structure describing property of a GObject class.
@@ -53,62 +53,42 @@ See accessor functions:
 (defun parse-g-param-spec (param)
   (let ((flags (foreign-slot-value param 'g-param-spec :flags)))
     (make-g-class-property-definition
-     :name (foreign-slot-value param 'g-param-spec
-                               :name)
-     :type (foreign-slot-value param 'g-param-spec
-                               :value-type)
+     :name (foreign-slot-value param 'g-param-spec :name)
+     :type (foreign-slot-value param 'g-param-spec :value-type)
      :readable (not (null (member :readable flags)))
      :writable (not (null (member :writable flags)))
      :constructor (not (null (member :construct flags)))
      :constructor-only (not (null (member :construct-only flags)))
-     :owner-type (foreign-slot-value param 'g-param-spec
-                                     :owner-type))))
+     :owner-type (foreign-slot-value param 'g-param-spec :owner-type))))
+
+(defmacro with-unwind ((var expr unwind-function) &body body)
+  `(let ((,var ,expr))
+     (unwind-protect (progn ,@body)
+       (,unwind-function ,var))))
 
 (defun class-properties (g-type)
   "@return{list of properties of GObject class @code{g-type}. Each property is described by an object of type @class{g-class-property-definition}.}
 @arg[g-type]{an integer or a string specifying the GType}"
-  (setf g-type (ensure-g-type g-type))
-  (let ((g-class (g-type-class-ref g-type)))
-    (unwind-protect
-         (with-foreign-object (n-properties :uint)
-           (let ((params (g-object-class-list-properties g-class n-properties)))
-             (unwind-protect
-                  (loop
-                     for i from 0 below (mem-ref n-properties :uint)
-                     for param = (mem-aref params :pointer i)
-                     collect (parse-g-param-spec param))
-               (g-free params))))
-      (g-type-class-unref g-class))))
-
-(defun class-parent (type)
-  (g-type-parent (ensure-g-type type)))
+  (assert (g-type-is-a g-type +g-type-object+))
+  (with-unwind (g-class (g-type-class-ref g-type) g-type-class-unref)
+    (with-foreign-object (n-properties :uint)
+      (with-unwind (params (g-object-class-list-properties g-class n-properties) g-free)
+        (loop
+           for i from 0 below (mem-ref n-properties :uint)
+           for param = (mem-aref params :pointer i)
+           collect (parse-g-param-spec param))))))
 
 (defun interface-properties (g-type)
-"@return{list of properties of GObject interface @code{g-type}. Each property is described by an object of type @class{g-class-property-definition}.}
+  "@return{list of properties of GObject interface @code{g-type}. Each property is described by an object of type @class{g-class-property-definition}.}
 @arg[g-type]{an integer or a string specifying the GType}"
-  (setf g-type (ensure-g-type g-type))
-  (let ((g-iface (g-type-default-interface-ref g-type)))
-    (unwind-protect
-         (with-foreign-object (n-properties :uint)
-           (let ((params (g-object-interface-list-properties g-iface n-properties)))
-             (unwind-protect
-                  (loop
-                     for i from 0 below (mem-ref n-properties :uint)
-                     for param = (mem-aref params :pointer i)
-                     for flags = (foreign-slot-value param 'g-param-spec :flags)
-                     collect (make-g-class-property-definition
-                              :name (foreign-slot-value param 'g-param-spec
-                                                        :name)
-                              :type (foreign-slot-value param 'g-param-spec
-                                                        :value-type)
-                              :readable (not (null (member :readable flags)))
-                              :writable (not (null (member :writable flags)))
-                              :constructor (not (null (member :construct flags)))
-                              :constructor-only (not (null (member :construct-only flags)))
-                              :owner-type (foreign-slot-value param 'g-param-spec
-                                                              :owner-type)))
-               (g-free params))))
-      (g-type-default-interface-unref g-iface))))
+  (assert (g-type-is-a g-type +g-type-interface+))
+  (with-unwind (g-iface (g-type-default-interface-ref g-type) g-type-default-interface-unref)
+    (with-foreign-object (n-properties :uint)
+      (with-unwind (params (g-object-interface-list-properties g-iface n-properties) g-free)
+        (loop
+           for i from 0 below (mem-ref n-properties :uint)
+           for param = (mem-aref params :pointer i)
+           collect (parse-g-param-spec param))))))
 
 (defstruct enum-item
   "A structure describing a single enumeration item.
@@ -137,7 +117,8 @@ See accessor functions:
   "Gets the list of enum items that belong to GEnum type @code{type}
 @arg[type]{a string or an integer specifying GEnum type}
 @return{a list of @class{enum-item} objects}"
-  (let ((g-class (g-type-class-ref (ensure-g-type type))))
+  (assert (g-type-is-a type +g-type-enum+))
+  (let ((g-class (g-type-class-ref type)))
     (unwind-protect
          (loop
             with n = (foreign-slot-value g-class 'g-enum-class :n-values)
@@ -180,7 +161,8 @@ See accessor functions:
   "Gets the list of flags items that belong to GFlags type @code{type}
 @arg[type]{a string or an integer specifying GFlags type}
 @return{a list of @class{flags-item} objects}"
-  (let ((g-class (g-type-class-ref (ensure-g-type type))))
+  (assert (g-type-is-a type +g-type-flags+))
+  (let ((g-class (g-type-class-ref type)))
     (unwind-protect
          (loop
             with n = (foreign-slot-value g-class 'g-flags-class :n-values)

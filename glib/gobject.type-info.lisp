@@ -34,7 +34,28 @@
            #:g-type-interfaces
            #:g-type-interface-prerequisites
            #:g-strv-get-type
-           #:g-closure-get-type)
+           #:g-closure-get-type
+           #:g-class-property-definition
+           #:g-class-property-definition-name
+           #:g-class-property-definition-type
+           #:g-class-property-definition-readable
+           #:g-class-property-definition-writable
+           #:g-class-property-definition-constructor
+           #:g-class-property-definition-constructor-only
+           #:g-class-property-definition-owner-type
+           #:parse-g-param-spec
+           #:class-properties
+           #:interface-properties
+           #:enum-item
+           #:enum-item-name
+           #:enum-item-value
+           #:enum-item-nick
+           #:get-enum-items
+           #:flags-item
+           #:flags-item-name
+           #:flags-item-value
+           #:flags-item-nick
+           #:get-flags-items)
   (:documentation
 "This package contains functions for querying the basic type information from GObject type system. For an overview of GObject type system, see @a[http://library.gnome.org/devel/gobject/stable/index.html]{GObject documentation}
 

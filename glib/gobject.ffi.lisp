@@ -125,11 +125,11 @@ Example:
   (n-interfaces (:pointer :uint)))
 
 (defcstruct g-type-interface
-  (:type g-type)
-  (:instance-type g-type))
+  (:type g-type-designator)
+  (:instance-type g-type-designator))
 
 (defcstruct g-type-class
-  (:type g-type))
+  (:type g-type-designator))
 
 (defcstruct g-type-instance
   (:class (:pointer g-type-class)))
@@ -147,7 +147,7 @@ Example:
   (:value-table :pointer))
 
 (defcstruct g-type-query
-  (:type g-type)
+  (:type g-type-designator)
   (:type-name (:string :free-from-foreign nil))
   (:class-size :uint)
   (:instance-size :uint))
@@ -214,8 +214,8 @@ Example:
   (:type-instance g-type-instance)
   (:name (:string :free-from-foreign nil :free-to-foreign nil))
   (:flags g-param-flags)
-  (:value-type g-type)
-  (:owner-type g-type))
+  (:value-type g-type-designator)
+  (:owner-type g-type-designator))
 
 (defcunion g-value-data
   (:int :int)
@@ -229,7 +229,7 @@ Example:
   (:pointer :pointer))
 
 (defcstruct g-value
-  (:type g-type)
+  (:type g-type-designator)
   (:data g-value-data :count 2))
 
 (defcstruct g-object-construct-param
@@ -366,11 +366,11 @@ Example:
 
 (defcstruct g-param-spec-g-type
   (:parent-instance g-param-spec)
-  (:types-root g-type))
+  (:types-root g-type-designator))
 
 (defcstruct g-param-spec-class
   (:type-class g-type-class)
-  (:value-type g-type)
+  (:value-type g-type-designator)
   (:finalize :pointer)
   (:value-set-default :pointer)
   (:value-validate :pointer)
@@ -956,7 +956,7 @@ Example:
 
 (defcfun g-signal-lookup :uint
   (name :string)
-  (type g-type))
+  (type g-type-designator))
 
 (defbitfield g-signal-flags
   :run-first :run-last :run-cleanup :no-recurse :detailed :action :no-hooks)
@@ -964,9 +964,9 @@ Example:
 (defcstruct g-signal-query
   (:signal-id :uint)
   (:signal-name :string)
-  (:owner-type g-type)
+  (:owner-type g-type-designator)
   (:signal-flags g-signal-flags)
-  (:return-type g-type)
+  (:return-type g-type-designator)
   (:n-params :uint)
   (:param-types (:pointer g-type)))
 
