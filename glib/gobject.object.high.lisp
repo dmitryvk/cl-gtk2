@@ -61,7 +61,7 @@
       (push pointer *gobject-gc-hooks*)
       (unless locks-were-present
         (debugf "adding idle-gc-hook to main loop~%")
-        (glib::g-idle-add (callback g-idle-gc-hook) (null-pointer))))))
+        (g-idle-add (callback g-idle-gc-hook) (null-pointer))))))
 
 (defun g-object-dispose-carefully (pointer)
   (handler-case

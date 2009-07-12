@@ -22,7 +22,8 @@
            #:+g-priority-high-idle+
            #:+g-priority-default-idle+
            #:+g-priority-low+
-           #:g-idle-add-full)
+           #:g-idle-add-full
+           #:g-idle-add)
   (:documentation
    "Cl-gtk2-glib is wrapper for @a[http://library.gnome.org/devel/glib/]{GLib}."))
 

@@ -25,7 +25,7 @@
                (:file "gobject.stable-pointer")
                (:file "gobject.closure")
                (:file "gobject.object.low")
-               (:file "gobject.foreign-gobject")
+               (:file "gobject.object.high")
                (:file "gobject.foreign-gboxed")
                
                (:file "gobject.meta")
