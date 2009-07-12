@@ -23,38 +23,62 @@
                     `(t ,@forms)
                     `((equalp ,key ,value) ,@forms)))))))
 
+(defgeneric parse-gvalue-for-type (gvalue-ptr type-numeric))
+
+(defmethod parse-gvalue-for-type (gvalue-ptr type-numeric)
+  (if (= type-numeric (g-type-numeric (g-type-fundamental type-numeric)))
+      (call-next-method)
+      (parse-gvalue-for-type gvalue-ptr (g-type-numeric (g-type-fundamental type-numeric)))))
+
 (defun parse-gvalue (gvalue)
   "Parses the GValue structure and returns the corresponding Lisp object.
 
 @arg[value]{a C pointer to the GValue structure}
 @return{value contained in the GValue structure. Type of value depends on GValue type}"
-  (let* ((type (ensure-g-type (gvalue-type gvalue)))
-         (fundamental-type (ensure-g-type (g-type-fundamental type))))
-    (cond
-      ((= type (ensure-g-type (g-strv-get-type))) (convert-from-foreign (g-value-get-boxed gvalue) '(glib:gstrv :free-from-foreign nil)))
-      (t (ev-case fundamental-type
-           (+g-type-invalid+ (error "GValue is of invalid type (~A)" (g-type-name type)))
-           (+g-type-void+ nil)
-           (+g-type-char+ (g-value-get-char gvalue))
-           (+g-type-uchar+ (g-value-get-uchar gvalue))
-           (+g-type-boolean+ (g-value-get-boolean gvalue))
-           (+g-type-int+ (g-value-get-int gvalue))
-           (+g-type-uint+ (g-value-get-uint gvalue))
-           (+g-type-long+ (g-value-get-long gvalue))
-           (+g-type-ulong+ (g-value-get-ulong gvalue))
-           (+g-type-int64+ (g-value-get-int64 gvalue))
-           (+g-type-uint64+ (g-value-get-uint64 gvalue))
-           (+g-type-enum+ (parse-gvalue-enum gvalue))
-           (+g-type-flags+ (parse-gvalue-flags gvalue))
-           (+g-type-float+ (g-value-get-float gvalue))
-           (+g-type-double+ (g-value-get-double gvalue))
-           (+g-type-string+ (g-value-get-string gvalue))
-           (+g-type-pointer+ (g-value-get-pointer gvalue))
-           (+g-type-boxed+ (parse-gvalue-boxed gvalue))
-           (+g-type-param+ (parse-g-param-spec (g-value-get-param gvalue)))
-           (+g-type-object+ (parse-gvalue-object gvalue))
-           (+g-type-interface+ (parse-gvalue-object gvalue))
-           (t (error "Unknown type: ~A (~A)" type (g-type-name type))))))))
+  (let* ((type (g-type-numeric (gvalue-type gvalue)))
+         (fundamental-type (g-type-numeric (g-type-fundamental type))))
+    (ev-case fundamental-type
+      (+g-type-invalid+ (error "GValue is of invalid type (~A)" (g-type-name type)))
+      (+g-type-void+ nil)
+      (+g-type-char+ (g-value-get-char gvalue))
+      (+g-type-uchar+ (g-value-get-uchar gvalue))
+      (+g-type-boolean+ (g-value-get-boolean gvalue))
+      (+g-type-int+ (g-value-get-int gvalue))
+      (+g-type-uint+ (g-value-get-uint gvalue))
+      (+g-type-long+ (g-value-get-long gvalue))
+      (+g-type-ulong+ (g-value-get-ulong gvalue))
+      (+g-type-int64+ (g-value-get-int64 gvalue))
+      (+g-type-uint64+ (g-value-get-uint64 gvalue))
+      (+g-type-enum+ (parse-gvalue-enum gvalue))
+      (+g-type-flags+ (parse-gvalue-flags gvalue))
+      (+g-type-float+ (g-value-get-float gvalue))
+      (+g-type-double+ (g-value-get-double gvalue))
+      (+g-type-string+ (g-value-get-string gvalue))
+      (t (parse-gvalue-for-type gvalue type)))))
+
+(defmethod parse-gvalue-for-type (gvalue-ptr (type-numeric (eql +g-type-pointer+)))
+  (g-value-get-pointer gvalue-ptr))
+
+(defmethod parse-gvalue-for-type (gvalue-ptr (type-numeric (eql +g-type-boxed+)))
+  (if (= (g-type-numeric (gvalue-type gvalue-ptr)) type-numeric)
+      (convert-from-foreign (g-value-get-boxed gvalue-ptr) '(glib:gstrv :free-from-foreign nil))
+      (parse-gvalue-boxed gvalue-ptr)))
+
+(defmethod parse-gvalue-for-type (gvalue-ptr (type-numeric (eql +g-type-param+)))
+  (parse-g-param-spec (g-value-get-param gvalue-ptr)))
+
+(defmethod parse-gvalue-for-type (gvalue-ptr (type-numeric (eql +g-type-object+)))
+  (parse-gvalue-object gvalue-ptr))
+
+(defmethod parse-gvalue-for-type (gvalue-ptr (type-numeric (eql +g-type-interface+)))
+  (parse-gvalue-object gvalue-ptr))
+
+(defgeneric set-gvalue-for-type (gvalue-ptr type-numeric value))
+
+(defmethod set-gvalue-for-type (gvalue-ptr type-numeric value)
+  (if (= type-numeric (g-type-numeric (g-type-fundamental type-numeric)))
+      (call-next-method)
+      (set-gvalue-for-type gvalue-ptr (g-type-numeric (g-type-fundamental type-numeric)) value)))
 
 (defun set-g-value (gvalue value type &key zero-g-value unset-g-value (g-value-init t))
   "Assigns the GValue structure @code{gvalue} the value @code{value} of GType @code{type}.
@@ -65,37 +89,47 @@
 @arg[zero-g-value]{a boolean specifying whether GValue should be zero-initialized before assigning. See @fun{g-value-zero}}
 @arg[unset-g-value]{a boolean specifying whether GValue should be \"unset\" before assigning. See @fun{g-value-unset}. The \"true\" value should not be passed to both @code{zero-g-value} and @code{unset-g-value} arguments}
 @arg[g-value-init]{a boolean specifying where GValue should be initialized}"
-  (setf type (ensure-g-type type))
+  (setf type (g-type-numeric type))
   (cond
     (zero-g-value (g-value-zero gvalue))
     (unset-g-value (g-value-unset gvalue)))
   (when g-value-init (g-value-init gvalue type))
   (let ((fundamental-type (ensure-g-type (g-type-fundamental type))))
-    (cond
-      ((= type (ensure-g-type (g-strv-get-type))) (g-value-set-boxed gvalue (convert-to-foreign value 'glib:gstrv)))
-      (t (ev-case fundamental-type
-           (+g-type-invalid+ (error "Invalid type (~A)" type))
-           (+g-type-void+ nil)
-           (+g-type-char+ (g-value-set-char gvalue value))
-           (+g-type-uchar+ (g-value-set-uchar gvalue value))
-           (+g-type-boolean+ (g-value-set-boolean gvalue value))
-           (+g-type-int+ (g-value-set-int gvalue value))
-           (+g-type-uint+ (g-value-set-uint gvalue value))
-           (+g-type-long+ (g-value-set-long gvalue value))
-           (+g-type-ulong+ (g-value-set-ulong gvalue value))
-           (+g-type-int64+ (g-value-set-int64 gvalue value))
-           (+g-type-uint64+ (g-value-set-uint64 gvalue value))
-           (+g-type-enum+ (set-gvalue-enum gvalue value))
-           (+g-type-flags+ (set-gvalue-flags gvalue value))
-           (+g-type-float+ (unless (realp value) (error "~A is not a real number" value)) (g-value-set-float gvalue (coerce value 'single-float)))
-           (+g-type-double+ (unless (realp value) (error "~A is not a real number" value)) (g-value-set-double gvalue (coerce value 'double-float)))
-           (+g-type-string+ (g-value-set-string gvalue value))
-           (+g-type-pointer+ (g-value-set-pointer gvalue value))
-           (+g-type-boxed+ (set-gvalue-boxed gvalue value))
-                                        ;(+g-type-param+ (set-gvalue-param gvalue value))
-           (+g-type-object+ (set-gvalue-object gvalue value))
-           (+g-type-interface+ (set-gvalue-object gvalue value))
-           (t (error "Unknown type: ~A (~A)" type (g-type-name type))))))))
+    (ev-case fundamental-type
+      (+g-type-invalid+ (error "Invalid type (~A)" type))
+      (+g-type-void+ nil)
+      (+g-type-char+ (g-value-set-char gvalue value))
+      (+g-type-uchar+ (g-value-set-uchar gvalue value))
+      (+g-type-boolean+ (g-value-set-boolean gvalue value))
+      (+g-type-int+ (g-value-set-int gvalue value))
+      (+g-type-uint+ (g-value-set-uint gvalue value))
+      (+g-type-long+ (g-value-set-long gvalue value))
+      (+g-type-ulong+ (g-value-set-ulong gvalue value))
+      (+g-type-int64+ (g-value-set-int64 gvalue value))
+      (+g-type-uint64+ (g-value-set-uint64 gvalue value))
+      (+g-type-enum+ (set-gvalue-enum gvalue value))
+      (+g-type-flags+ (set-gvalue-flags gvalue value))
+      (+g-type-float+ (unless (realp value) (error "~A is not a real number" value)) (g-value-set-float gvalue (coerce value 'single-float)))
+      (+g-type-double+ (unless (realp value) (error "~A is not a real number" value)) (g-value-set-double gvalue (coerce value 'double-float)))
+      (+g-type-string+ (g-value-set-string gvalue value))
+      (t (set-gvalue-for-type gvalue type value)))))
+
+(defmethod set-gvalue-for-type (gvalue-ptr (type-numeric (eql +g-type-pointer+)) value)
+  (g-value-set-pointer gvalue-ptr value))
+
+(defmethod set-gvalue-for-type (gvalue-ptr (type-numeric (eql +g-type-boxed+)) value)
+  (if (= (g-type-numeric (gvalue-type gvalue-ptr)) type-numeric)
+      (g-value-set-boxed gvalue-ptr (convert-to-foreign value '(glib:gstrv :free-from-foreign nil)))
+      (set-gvalue-boxed gvalue-ptr value)))
+
+(defmethod set-gvalue-for-type (gvalue-ptr (type-numeric (eql +g-type-param+)) value)
+  (error "Setting of GParam is not implemented"))
+
+(defmethod set-gvalue-for-type (gvalue-ptr (type-numeric (eql +g-type-object+)) value)
+  (set-gvalue-object gvalue-ptr value))
+
+(defmethod set-gvalue-for-type (gvalue-ptr (type-numeric (eql +g-type-interface+)) value)
+  (set-gvalue-object gvalue-ptr value))
 
 ;;Enums
 
