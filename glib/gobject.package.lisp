@@ -1,6 +1,51 @@
 (defpackage :gobject
-  (:use :cl :glib :cffi :tg :bordeaux-threads :iter :closer-mop :gobject.ffi :gobject.type-info)
-  (:export #:+g-type-invalid+
+  (:use :cl :glib :cffi :tg :bordeaux-threads :iter :closer-mop :gobject.ffi)
+  (:export #:g-type
+           #:g-type-children
+           #:g-type-parent
+           #:g-type-designator
+           #:g-type-fundamental
+           #:g-type-depth
+           #:g-type-next-base
+           #:g-type-is-a
+           #:g-type-interfaces
+           #:g-type-interface-prerequisites
+           #:g-strv-get-type
+           #:g-closure-get-type
+           #:g-class-property-definition
+           #:g-class-property-definition-name
+           #:g-class-property-definition-type
+           #:g-class-property-definition-readable
+           #:g-class-property-definition-writable
+           #:g-class-property-definition-constructor
+           #:g-class-property-definition-constructor-only
+           #:g-class-property-definition-owner-type
+           #:parse-g-param-spec
+           #:class-properties
+           #:interface-properties
+           #:enum-item
+           #:enum-item-name
+           #:enum-item-value
+           #:enum-item-nick
+           #:get-enum-items
+           #:flags-item
+           #:flags-item-name
+           #:flags-item-value
+           #:flags-item-nick
+           #:get-flags-items
+           #:signal-info
+           #:signal-info-id
+           #:signal-info-name
+           #:signal-info-owner-type
+           #:signal-info-flags
+           #:signal-info-return-type
+           #:signal-info-param-types
+           #:signal-info-detail
+           #:query-signal-info
+           #:type-signals
+           #:parse-signal-name
+           #:class-property-info
+           #:+g-type-invalid+
            #:+g-type-void+
            #:+g-type-interface+
            #:+g-type-char+

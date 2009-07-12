@@ -14,12 +14,13 @@
                (:file "gobject.type-designator")
                (:file "gobject.ffi")
 
+               (:file "gobject.package")               
+               
                (:file "gobject.type-info")
                (:file "gobject.type-info.object")
                (:file "gobject.type-info.enum")
                (:file "gobject.type-info.signals")
                
-               (:file "gobject.package")
                (:file "gobject.gvalue")
                (:file "gobject.foreign")
                (:file "gobject.stable-pointer")

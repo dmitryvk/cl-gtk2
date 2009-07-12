@@ -1,4 +1,4 @@
-(in-package :gobject.type-info)
+(in-package :gobject)
 
 (defstruct signal-info
   id

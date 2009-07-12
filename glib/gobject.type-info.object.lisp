@@ -1,4 +1,4 @@
-(in-package :gobject.type-info)
+(in-package :gobject)
 
 (defstruct g-class-property-definition
   "Structure describing property of a GObject class.

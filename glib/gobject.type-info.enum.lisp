@@ -1,4 +1,4 @@
-(in-package :gobject.type-info)
+(in-package :gobject)
 
 (defstruct enum-item
   "A structure describing a single enumeration item.
