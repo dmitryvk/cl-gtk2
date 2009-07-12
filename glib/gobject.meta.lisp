@@ -211,12 +211,12 @@
     (property-unreadable-error () nil)))
 
 (defmethod slot-value-using-class ((class gobject-class) object (slot gobject-property-effective-slot-definition))
-  (g-object-call-get-property object
+  (g-object-call-get-property (pointer object)
                               (gobject-property-effective-slot-definition-g-property-name slot)
                               (gobject-effective-slot-definition-g-property-type slot)))
 
 (defmethod (setf slot-value-using-class) (new-value (class gobject-class) object (slot gobject-property-effective-slot-definition))
-  (g-object-call-set-property object
+  (g-object-call-set-property (pointer object)
                               (gobject-property-effective-slot-definition-g-property-name slot)
                               new-value
                               (gobject-effective-slot-definition-g-property-type slot)))

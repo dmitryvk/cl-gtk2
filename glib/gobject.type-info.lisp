@@ -66,7 +66,8 @@
            #:signal-info-detail
            #:query-signal-info
            #:type-signals
-           #:parse-signal-name)
+           #:parse-signal-name
+           #:class-property-info)
   (:documentation
 "This package contains functions for querying the basic type information from GObject type system. For an overview of GObject type system, see @a[http://library.gnome.org/devel/gobject/stable/index.html]{GObject documentation}
 
