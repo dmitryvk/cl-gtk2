@@ -1,5 +1,5 @@
 (defpackage :gobject
-  (:use :cl :glib :cffi :tg :bordeaux-threads :iter :closer-mop :gobject.type-info)
+  (:use :cl :glib :cffi :tg :bordeaux-threads :iter :closer-mop :gobject.ffi :gobject.type-info)
   (:export #:+g-type-invalid+
            #:+g-type-void+
            #:+g-type-interface+

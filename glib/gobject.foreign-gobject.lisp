@@ -18,13 +18,8 @@
 (defvar *lisp-objects-pointers* (make-hash-table :test 'equal))
 (defvar *current-creating-object* nil)
 
-(defcstruct g-object-struct
-  (type-instance g-type-instance)
-  (ref-count :uint)
-  (qdata :pointer))
-
 (defun ref-count (pointer)
-  (foreign-slot-value (if (pointerp pointer) pointer (pointer pointer)) 'g-object-struct 'ref-count))
+  (foreign-slot-value (if (pointerp pointer) pointer (pointer pointer)) 'g-object-struct :ref-count))
 
 (defmethod initialize-instance :around ((obj g-object) &key)
   (let ((*current-creating-object* obj))
@@ -233,7 +228,7 @@
              (not (member :readable
                           (foreign-slot-value param-spec
                                               'g-param-spec
-                                              'flags))))
+                                              :flags))))
     (error 'property-unreadable-error
            :property-name property-name
            :class-name (g-type-name object-type)))
@@ -241,11 +236,11 @@
              (not (member :writable
                           (foreign-slot-value param-spec
                                               'g-param-spec
-                                              'flags))))
+                                              :flags))))
     (error 'property-unwritable-error
            :property-name property-name
            :class-name (g-type-name object-type)))
-  (foreign-slot-value param-spec 'g-param-spec 'value-type))
+  (foreign-slot-value param-spec 'g-param-spec :value-type))
 
 (defun g-object-type-property-type (object-type property-name
                                     &key assert-readable assert-writable)
@@ -278,8 +273,8 @@
          for arg-type in args-types
          for arg-g-type = (if arg-type (ensure-g-type arg-type) (g-object-type-property-type object-type arg-name))
          for parameter = (mem-aref parameters 'g-parameter i)
-         do (setf (foreign-slot-value parameter 'g-parameter 'name) arg-name)
-         do (set-g-value (foreign-slot-value parameter 'g-parameter 'value)
+         do (setf (foreign-slot-value parameter 'g-parameter :name) arg-name)
+         do (set-g-value (foreign-slot-value parameter 'g-parameter :value)
                          arg-value arg-g-type
                          :zero-g-value t))
       (unwind-protect

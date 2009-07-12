@@ -1,5 +1,5 @@
 (defpackage :gobject.type-info
-  (:use :cl :iter :cffi :glib)
+  (:use :cl :iter :cffi :glib :gobject.ffi)
   (:export #:+g-type-invalid+
            #:+g-type-void+
            #:+g-type-interface+
@@ -104,129 +104,6 @@ This is a list of variables and functions that correspond to basic types:
 (defconstant +g-type-param+ (gtype-make-fundamental-type 19) "The fundamental type from which all GParamSpec types are derived.")
 (defconstant +g-type-object+ (gtype-make-fundamental-type 20) "The fundamental type for GObject.")
 
-(define-foreign-type g-type-designator ()
-  ()
-  (:documentation "Values of this CFFI foreign type identify the GType. GType is designated by a its name (a string) or a numeric identifier. Functions accept GType designators as a string or integer and return them as a string. Functions @fun{g-type-name} and @fun{g-type-from-name} are used to convert between name and numeric identifier.
-
-Numeric identifier of GType may be different between different program runs. But string identifier of GType does not change.")
-  (:actual-type g-type)
-  (:simple-parser g-type-designator))
-
-(defmethod translate-from-foreign (value (type g-type-designator))
-  (g-type-name value))
-
-(defmethod translate-to-foreign (value (type g-type-designator))
-  (etypecase value
-    (string (g-type-from-name value))
-    (integer value)
-    (null +g-type-invalid+)))
-
-(defcfun (g-type-fundamental "g_type_fundamental") g-type-designator
-  "Returns the fundamental type which is the ancestor of @code{type}.
-
-Example:
-@pre{
-\(g-type-fundamental \"GtkWindowType\")
-=> \"GEnum\"
-\(g-type-fundamental \"GtkLabel\")
-=> \"GObject\"
-}
-@arg[type]{GType designator (see @class{g-type-designator})}
-@return{GType designator}"
-  (type g-type-designator))
-
-(defcfun (%g-type-init "g_type_init") :void)
-
-(at-init () (%g-type-init))
-
-(defcfun (g-type-name "g_type_name") :string
-  "Returns the name of a GType.@see{g-type-from-name}
-
-Example:
-@pre{
-\(g-type-from-name \"GtkLabel\")
-=> 7151952
-\(g-type-name 7151952)
-=> \"GtkLabel\"
-}
-@arg[type]{GType designator (see @class{g-type-designator})}
-@return{a string}"
-  (type g-type-designator))
-
-(defcfun (g-type-from-name "g_type_from_name") g-type
-  "Returns the numeric identifier of a GType by its name. @see{g-type-name}
-
-Example:
-@pre{
-\(g-type-from-name \"GtkLabel\")
-=> 7151952
-\(g-type-name 7151952)
-=> \"GtkLabel\"
-}
-@arg[name]{a string - name of GType}
-@return{an integer}"
-  (name :string))
-
-(defcfun g-type-parent g-type-designator
-  "Returns the parent of a GType. @see{g-type-chilren}
-
-Example:
-@pre{
-\(g-type-parent \"GtkLabel\")
-=> \"GtkMisc\"
-}
-@arg[type]{GType designator (see @class{g-type-designator})}
-@return{GType designator}"
-  (type g-type-designator))
-
-(defcfun g-type-depth :uint
-  "Returns the length of the ancestry of @code{type}. This includes the @code{type} itself, so that e.g. a fundamental type has depth 1.
-
-Example:
-@pre{
-\(g-type-depth \"GtkLabel\")
-=> 6
-}
-@arg[type]{GType designator (see @class{g-type-designator})}
-@return{an integer}"
-  (type g-type-designator))
-
-(defcfun g-type-next-base g-type-designator
-  "Determines the type that is derived directly from @code{root-type} which is also a base class of @code{leaf-type}.
-
-Example:
-@pre{
-\(g-type-next-base \"GtkButton\" \"GtkWidget\")
-=> \"GtkContainer\"
-}
-@arg[leaf-type]{GType designator (see @class{g-type-designator})}
-@arg[root-type]{GType designator}
-@return{GType designator}"
-  (leaf-type g-type-designator)
-  (root-type g-type-designator))
-
-(defcfun g-type-is-a :boolean
-  "If @code{is-a-type} is a derivable type, check whether type is a descendant of @code{is-a-type}. If @code{is-a-type} is an interface, check whether type conforms to it.
-
-Example:
-@pre{
-\(g-type-is-a \"GtkButton\" \"GtkWidget\")
-=> T
-\(g-type-is-a \"GtkButton\" \"AtkImplementorIface\")
-=> T
-\(g-type-is-a \"GtkButton\" \"GtkLabel\")
-=> NIL
-}
-@arg[type]{GType designator (see @class{g-type-designator})}
-@arg[is-a-type]{GType designator}
-@return{boolean}"
-  (type g-type-designator)
-  (is-a-type g-type-designator))
-
-(defcfun (%g-type-children "g_type_children") (:pointer g-type)
-  (type g-type-designator)
-  (n-children (:pointer :uint)))
-
 (defun g-type-children (g-type)
   "Returns the list of types inherited from @code{g-type}.@see{g-type-parent}
 
@@ -246,10 +123,6 @@ Example:
              collect (mem-aref g-types-ptr 'g-type-designator i))
         (g-free g-types-ptr)))))
 
-(defcfun (%g-type-interfaces "g_type_interfaces") (:pointer g-type)
-  (type g-type-designator)
-  (n-interfaces (:pointer :uint)))
-
 (defun g-type-interfaces (g-type)
   "Returns the list of interfaces the @code{g-type} conforms to.
 
@@ -267,10 +140,6 @@ Example:
              for i from 0 below (mem-ref n-interfaces :uint)
              collect (mem-aref g-types-ptr 'g-type-designator i))
         (g-free g-types-ptr)))))
-
-(defcfun (%g-type-interface-prerequisites "g_type_interface_prerequisites") (:pointer g-type)
-  (type g-type-designator)
-  (n-interface-prerequisites (:pointer :uint)))
 
 (defun g-type-interface-prerequisites (g-type)
   "Returns the prerequisites of an interface type. Prerequisite is a type that must be a superclass of an implementing class or an interface that the object must also implement.
@@ -290,12 +159,3 @@ Example:
              collect (mem-aref g-types-ptr 'g-type-designator i))
         (g-free g-types-ptr)))))
 
-(defcfun g-strv-get-type g-type-designator
-  "Returns the type designator (see @class{g-type-designator}) for GStrv type. As a side effect, ensures that the type is registered.")
-
-(at-init nil (g-strv-get-type))
-
-(defcfun g-closure-get-type g-type-designator
-  "Returns the type designator (see @class{g-type-designator}) for GClosure type. As a side effect, ensure that the type is registered.")
-
-(at-init nil (g-closure-get-type))

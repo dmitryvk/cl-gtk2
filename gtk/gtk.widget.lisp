@@ -13,33 +13,33 @@
 (export 'widget-flags)
 
 (defcstruct %gtk-requisition
-  (width :int)
-  (height :int))
+  (:width :int)
+  (:height :int))
 
 (defcstruct %gtk-allocation
-  (x :int)
-  (y :int)
-  (width :int)
-  (height :int))
+  (:x :int)
+  (:y :int)
+  (:width :int)
+  (:height :int))
 
 (defcstruct %gtk-widget
-  (object %gtk-object)
-  (private-flags :uint16)
-  (state state-type)
-  (saved-state state-type)
-  (name (:pointer :char))
-  (style :pointer)
-  (requisition %gtk-requisition)
-  (allocation %gtk-allocation)
-  (window :pointer)
-  (parent :pointer))
+  (:object %gtk-object)
+  (:private-flags :uint16)
+  (:state state-type)
+  (:saved-state state-type)
+  (:name (:pointer :char))
+  (:style :pointer)
+  (:requisition %gtk-requisition)
+  (:allocation %gtk-allocation)
+  (:window :pointer)
+  (:parent :pointer))
 
 (defun widget-state (widget)
-  (foreign-slot-value (pointer widget) '%gtk-widget 'state))
+  (foreign-slot-value (pointer widget) '%gtk-widget :state))
 
 (export 'widget-state)
 (defun widget-saved-state (widget)
-  (foreign-slot-value (pointer widget) '%gtk-widget 'saved-state))
+  (foreign-slot-value (pointer widget) '%gtk-widget :saved-state))
 
 (export 'widget-saved-state)
 
@@ -448,7 +448,7 @@
     (unwind-protect
          (let ((g-param-spec (gtk-widget-class-find-style-property class property-name)))
            (unless g-param-spec (error "Widget ~A has no style-property named '~A'" widget property-name))
-           (foreign-slot-value g-param-spec 'gobject::g-param-spec 'gobject::value-type))
+           (foreign-slot-value g-param-spec 'gobject:g-param-spec :value-type))
       (g-type-class-unref class))))
 
 (defun widget-child-property-value (widget property-name &optional property-type)

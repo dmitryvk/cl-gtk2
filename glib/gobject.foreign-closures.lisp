@@ -1,9 +1,5 @@
 (in-package :gobject)
 
-(defcstruct lisp-closure
-  (parent-instance g-closure)
-  (function-id :pointer))
-
 (defcallback lisp-closure-finalize :void ((data :pointer)
                                           (closure (:pointer lisp-closure)))
   (declare (ignore data))
@@ -22,7 +18,7 @@
                                          (marshal-data :pointer))
   (declare (ignore invocation-hint marshal-data))
   (let* ((args (parse-closure-arguments count-of-args args))
-         (function-id (foreign-slot-value closure 'lisp-closure 'function-id))
+         (function-id (foreign-slot-value closure 'lisp-closure :function-id))
          (return-type (and (not (null-pointer-p return-value))
                            (gvalue-type return-value)))
          (fn (get-stable-pointer-value function-id))
@@ -37,9 +33,8 @@
 
 (defun create-closure (fn)
   (let ((function-id (allocate-stable-pointer fn))
-        (closure (g-closure-new-simple (foreign-type-size 'lisp-closure)
-                                       (null-pointer))))
-    (setf (foreign-slot-value closure 'lisp-closure 'function-id) function-id)
+        (closure (g-closure-new-simple (foreign-type-size 'lisp-closure) (null-pointer))))
+    (setf (foreign-slot-value closure 'lisp-closure :function-id) function-id)
     (g-closure-add-finalize-notifier closure (null-pointer)
                                      (callback lisp-closure-finalize))
     (g-closure-set-marshal closure (callback lisp-closure-marshal))
@@ -63,5 +58,5 @@ If @code{after} is true, then the function will be called after the default hand
                             after))
 
 (defun finalize-lisp-closure (closure)
-  (let ((function-id (foreign-slot-value closure 'lisp-closure 'function-id)))
+  (let ((function-id (foreign-slot-value closure 'lisp-closure :function-id)))
     (free-stable-pointer function-id)))

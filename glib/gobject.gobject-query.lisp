@@ -51,18 +51,18 @@ See accessor functions:
 @return{a GType (integer)}")
 
 (defun parse-g-param-spec (param)
-  (let ((flags (foreign-slot-value param 'g-param-spec 'flags)))
+  (let ((flags (foreign-slot-value param 'g-param-spec :flags)))
     (make-g-class-property-definition
      :name (foreign-slot-value param 'g-param-spec
-                               'name)
+                               :name)
      :type (foreign-slot-value param 'g-param-spec
-                               'value-type)
+                               :value-type)
      :readable (not (null (member :readable flags)))
      :writable (not (null (member :writable flags)))
      :constructor (not (null (member :construct flags)))
      :constructor-only (not (null (member :construct-only flags)))
      :owner-type (foreign-slot-value param 'g-param-spec
-                                     'owner-type))))
+                                     :owner-type))))
 
 (defun class-properties (g-type)
   "@return{list of properties of GObject class @code{g-type}. Each property is described by an object of type @class{g-class-property-definition}.}
@@ -95,18 +95,18 @@ See accessor functions:
                   (loop
                      for i from 0 below (mem-ref n-properties :uint)
                      for param = (mem-aref params :pointer i)
-                     for flags = (foreign-slot-value param 'g-param-spec 'flags)
+                     for flags = (foreign-slot-value param 'g-param-spec :flags)
                      collect (make-g-class-property-definition
                               :name (foreign-slot-value param 'g-param-spec
-                                                        'name)
+                                                        :name)
                               :type (foreign-slot-value param 'g-param-spec
-                                                        'value-type)
+                                                        :value-type)
                               :readable (not (null (member :readable flags)))
                               :writable (not (null (member :writable flags)))
                               :constructor (not (null (member :construct flags)))
                               :constructor-only (not (null (member :construct-only flags)))
                               :owner-type (foreign-slot-value param 'g-param-spec
-                                                              'owner-type)))
+                                                              :owner-type)))
                (g-free params))))
       (g-type-default-interface-unref g-iface))))
 
@@ -140,17 +140,17 @@ See accessor functions:
   (let ((g-class (g-type-class-ref (ensure-g-type type))))
     (unwind-protect
          (loop
-            with n = (foreign-slot-value g-class 'g-enum-class 'n-values)
-            with values = (foreign-slot-value g-class 'g-enum-class 'values)
+            with n = (foreign-slot-value g-class 'g-enum-class :n-values)
+            with values = (foreign-slot-value g-class 'g-enum-class :values)
             for i from 0 below n
             for enum-value = (mem-aref values 'g-enum-value i)
             collect (make-enum-item
                      :name (foreign-slot-value enum-value 'g-enum-value
-                                               'name)
+                                               :name)
                      :value (foreign-slot-value enum-value 'g-enum-value
-                                                'value)
+                                                :value)
                      :nick (foreign-slot-value enum-value 'g-enum-value
-                                               'nick)))
+                                               :nick)))
       (g-type-class-unref g-class))))
 
 (defstruct flags-item
@@ -183,15 +183,15 @@ See accessor functions:
   (let ((g-class (g-type-class-ref (ensure-g-type type))))
     (unwind-protect
          (loop
-            with n = (foreign-slot-value g-class 'g-flags-class 'n-values)
-            with values = (foreign-slot-value g-class 'g-flags-class 'values)
+            with n = (foreign-slot-value g-class 'g-flags-class :n-values)
+            with values = (foreign-slot-value g-class 'g-flags-class :values)
             for i from 0 below n
             for flags-value = (mem-aref values 'g-flags-value i)
             collect (make-flags-item
                      :name (foreign-slot-value flags-value 'g-flags-value
-                                               'name)
+                                               :name)
                      :value (foreign-slot-value flags-value 'g-flags-value
-                                                'value)
+                                                :value)
                      :nick (foreign-slot-value flags-value 'g-flags-value
-                                               'nick)))
+                                               :nick)))
       (g-type-class-unref g-class))))

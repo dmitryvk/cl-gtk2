@@ -1,7 +1,7 @@
 (in-package :gobject)
 
 (defun gvalue-type (gvalue)
-  (foreign-slot-value gvalue 'g-value 'type))
+  (foreign-slot-value gvalue 'g-value :type))
 
 (defmacro ev-case (keyform &body clauses)
   "Macro that is an analogue of CASE except that it evaluates keyforms"
