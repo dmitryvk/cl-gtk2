@@ -27,7 +27,7 @@ See accessor functions:
       (call-next-method)
       (print-unreadable-object (instance stream)
         (format stream
-                "PROPERTY ~A ~A.~A (flags:~@[ readable~]~@[ writable~]~@[ constructor~]~@[ constructor-only~])"
+                "PROPERTY ~A ~A.~A (flags:~@[~* readable~]~@[~* writable~]~@[~* constructor~]~@[~* constructor-only~])"
                 (g-class-property-definition-type instance)
                 (g-class-property-definition-owner-type instance)
                 (g-class-property-definition-name instance)
@@ -91,6 +91,11 @@ See accessor functions:
            for i from 0 below (mem-ref n-properties :uint)
            for param = (mem-aref params :pointer i)
            collect (parse-g-param-spec param))))))
+
+(defun class-property-info (g-type property-name)
+  (with-unwind (g-class (g-type-class-ref g-type) g-type-class-unref)
+    (let* ((param-spec (g-object-class-find-property g-class property-name)))
+      (when param-spec (parse-g-param-spec param-spec)))))
 
 (defun interface-properties (g-type)
   "@return{list of properties of GObject interface @code{g-type}. Each property is described by an object of type @class{g-class-property-definition}.}
