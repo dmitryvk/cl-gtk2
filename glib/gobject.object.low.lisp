@@ -61,7 +61,7 @@
     (g-value-init value property-type)
     (g-object-get-property object-ptr property-name value)
     (unwind-protect
-         (parse-gvalue value)
+         (parse-g-value value)
       (g-value-unset value))))
 
 (defun g-object-call-set-property (object-ptr property-name new-value

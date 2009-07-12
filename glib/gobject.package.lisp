@@ -1,6 +1,8 @@
 (defpackage :gobject
   (:use :cl :glib :cffi :tg :bordeaux-threads :iter :closer-mop :gobject.ffi)
   (:export #:g-type
+           #:g-type-string
+           #:g-type-numeric
            #:g-type-children
            #:g-type-parent
            #:g-type-designator
@@ -100,7 +102,7 @@
            #:define-vtable
            #:g-type
            #:set-g-value
-           #:parse-gvalue
+           #:parse-g-value
            #:emit-signal
            #:g-value-unset
            #:g-value-zero
@@ -159,7 +161,8 @@
            #:flags-item-value
            #:flags-item-nick
            #:get-flags-items
-           #:stable-pointer-value)
+           #:stable-pointer-value
+           #:g-value-type)
   (:documentation
    "CL-GTK2-GOBJECT is a binding to GObject type system.
 For information on GObject, see its @a[http://library.gnome.org/devel/gobject/stable/]{documentation}.

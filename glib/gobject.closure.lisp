@@ -28,7 +28,7 @@
   (let* ((args (parse-closure-arguments count-of-args args))
          (function-id (foreign-slot-value closure 'lisp-closure :function-id))
          (return-type (and (not (null-pointer-p return-value))
-                           (gvalue-type return-value)))
+                           (g-value-type return-value)))
          (fn (get-stable-pointer-value function-id))
          (fn-result (call-with-restarts fn args)))
     (when return-type
@@ -37,7 +37,7 @@
 (defun parse-closure-arguments (count-of-args args)
   (loop
      for i from 0 below count-of-args
-     collect (parse-gvalue (mem-aref args 'g-value i))))
+     collect (parse-g-value (mem-aref args 'g-value i))))
 
 (defun create-g-closure (fn)
   (let ((function-id (allocate-stable-pointer fn))

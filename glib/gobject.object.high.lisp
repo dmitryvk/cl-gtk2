@@ -201,17 +201,17 @@
       (etypecase object
         (g-object (pointer object)))))
 
-(defun parse-gvalue-object (gvalue)
+(defun parse-g-value-object (gvalue)
   (get-g-object-for-pointer (g-value-get-object gvalue)))
 
 (defun set-gvalue-object (gvalue value)
   (g-value-set-object gvalue (if value (pointer value) (null-pointer))))
 
-(defmethod parse-gvalue-for-type (gvalue-ptr (type-numeric (eql +g-type-object+)))
-  (parse-gvalue-object gvalue-ptr))
+(defmethod parse-g-value-for-type (gvalue-ptr (type-numeric (eql +g-type-object+)))
+  (parse-g-value-object gvalue-ptr))
 
-(defmethod parse-gvalue-for-type (gvalue-ptr (type-numeric (eql +g-type-interface+)))
-  (parse-gvalue-object gvalue-ptr))
+(defmethod parse-g-value-for-type (gvalue-ptr (type-numeric (eql +g-type-interface+)))
+  (parse-g-value-object gvalue-ptr))
 
 (defmethod set-gvalue-for-type (gvalue-ptr (type-numeric (eql +g-type-object+)) value)
   (set-gvalue-object gvalue-ptr value))
@@ -259,7 +259,7 @@ If @code{after} is true, then the function will be called after the default hand
                 (with-foreign-object (return-value 'g-value)
                   (g-value-zero return-value)
                   (g-value-init return-value (signal-info-return-type signal-info))
-                  (prog1 (parse-gvalue return-value)
+                  (prog1 (parse-g-value return-value)
                     (g-value-unset return-value))))
           (iter (for i from 0 below (1+ params-count))
                 (g-value-unset (mem-aref params 'g-value i))))))))

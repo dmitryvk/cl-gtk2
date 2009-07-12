@@ -217,7 +217,7 @@
   (with-foreign-object (v 'g-value)
     (g-value-zero v)
     (gtk-tree-model-get-value tree-model iter column v)
-    (prog1 (parse-gvalue v)
+    (prog1 (parse-g-value v)
       (g-value-unset v))))
 
 (export 'tree-model-value)

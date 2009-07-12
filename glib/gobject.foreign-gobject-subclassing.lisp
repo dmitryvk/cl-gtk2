@@ -72,7 +72,7 @@
         (+g-type-string+ (g-param-spec-string property-name property-name property-name "" flags))
         (+g-type-pointer+ (g-param-spec-pointer property-name property-name property-name flags))
         (+g-type-boxed+ (g-param-spec-boxed property-name property-name property-name property-g-type flags))
-                                        ;(+g-type-param+ (parse-gvalue-param gvalue))
+                                        ;(+g-type-param+ (parse-g-value-param gvalue))
         (+g-type-object+ (g-param-spec-object property-name property-name property-name property-g-type flags))
                                         ;(+g-type-interface+ )
         (t (error "Unknown type: ~A (~A)" property-g-type (g-type-name property-g-type)))))))
@@ -184,7 +184,7 @@
          (lisp-type-info (gethash type-name *registered-types*))
          (property-info (find property-name (object-type-properties lisp-type-info) :test 'string= :key 'first))
          (property-set-fn (fifth property-info))
-         (new-value (parse-gvalue value)))
+         (new-value (parse-g-value value)))
     (debugf "set(~A,'~A',~A)~%" lisp-object property-name new-value)
     (restart-case
         (funcall property-set-fn new-value lisp-object)

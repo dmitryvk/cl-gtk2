@@ -476,25 +476,25 @@ If it is a function designator then it specifies a function that accepts the new
           (t (g-value-take-boxed gvalue (g-boxed->cstruct value :alloc-type :boxed)))))
       (g-value-set-boxed gvalue (null-pointer))))
 
-(defun parse-gvalue-boxed (gvalue)
-  (let* ((g-type (gvalue-type gvalue))
+(defun parse-g-value-boxed (gvalue)
+  (let* ((g-type (g-value-type gvalue))
          (type-name (g-type-name g-type))
          (boxed-type (get-registered-boxed-type type-name)))
     (unless boxed-type
       (warn "Type ~A is a not registered GBoxed~%" type-name)
-      (return-from parse-gvalue-boxed nil))
+      (return-from parse-g-value-boxed nil))
     (unless (null-pointer-p (g-value-get-boxed gvalue))
       (cond
         ((subtypep boxed-type 'g-boxed-ref) (convert-g-boxed-ref-from-pointer (g-value-get-boxed gvalue) boxed-type (make-instance 'g-boxed-ref-type :class-name boxed-type :owner :foreign)))
         (t (parse-g-boxed (g-value-get-boxed gvalue) boxed-type))))))
 
-(defmethod parse-gvalue-for-type (gvalue-ptr (type-numeric (eql +g-type-boxed+)))
-  (if (= (g-type-numeric (gvalue-type gvalue-ptr)) type-numeric)
+(defmethod parse-g-value-for-type (gvalue-ptr (type-numeric (eql +g-type-boxed+)))
+  (if (= (g-type-numeric (g-value-type gvalue-ptr)) type-numeric)
       (convert-from-foreign (g-value-get-boxed gvalue-ptr) '(glib:gstrv :free-from-foreign nil))
-      (parse-gvalue-boxed gvalue-ptr)))
+      (parse-g-value-boxed gvalue-ptr)))
 
 (defmethod set-gvalue-for-type (gvalue-ptr (type-numeric (eql +g-type-boxed+)) value)
-  (if (= (g-type-numeric (gvalue-type gvalue-ptr)) type-numeric)
+  (if (= (g-type-numeric (g-value-type gvalue-ptr)) type-numeric)
       (g-value-set-boxed gvalue-ptr (convert-to-foreign value '(glib:gstrv :free-from-foreign nil)))
       (set-gvalue-boxed gvalue-ptr value)))
 

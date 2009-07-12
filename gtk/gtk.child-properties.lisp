@@ -17,7 +17,7 @@
     (g-value-unset gvalue)
     (g-value-init gvalue (ensure-g-type type))
     (gtk-container-child-get-property container child property-name gvalue)
-    (prog1 (parse-gvalue gvalue)
+    (prog1 (parse-g-value gvalue)
       (g-value-unset gvalue))))
 
 (defun container-call-set-property (container child property-name new-value type)

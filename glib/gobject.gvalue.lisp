@@ -8,7 +8,7 @@
      for i from 0 below (foreign-type-size 'g-value)
      do (setf (mem-ref g-value :uchar i) 0)))
 
-(defun gvalue-type (gvalue)
+(defun g-value-type (gvalue)
   (foreign-slot-value gvalue 'g-value :type))
 
 (defmacro ev-case (keyform &body clauses)
@@ -23,19 +23,19 @@
                     `(t ,@forms)
                     `((equalp ,key ,value) ,@forms)))))))
 
-(defgeneric parse-gvalue-for-type (gvalue-ptr type-numeric))
+(defgeneric parse-g-value-for-type (gvalue-ptr type-numeric))
 
-(defmethod parse-gvalue-for-type (gvalue-ptr type-numeric)
+(defmethod parse-g-value-for-type (gvalue-ptr type-numeric)
   (if (= type-numeric (g-type-numeric (g-type-fundamental type-numeric)))
       (call-next-method)
-      (parse-gvalue-for-type gvalue-ptr (g-type-numeric (g-type-fundamental type-numeric)))))
+      (parse-g-value-for-type gvalue-ptr (g-type-numeric (g-type-fundamental type-numeric)))))
 
-(defun parse-gvalue (gvalue)
+(defun parse-g-value (gvalue)
   "Parses the GValue structure and returns the corresponding Lisp object.
 
 @arg[value]{a C pointer to the GValue structure}
 @return{value contained in the GValue structure. Type of value depends on GValue type}"
-  (let* ((type (g-type-numeric (gvalue-type gvalue)))
+  (let* ((type (g-type-numeric (g-value-type gvalue)))
          (fundamental-type (g-type-numeric (g-type-fundamental type))))
     (ev-case fundamental-type
       (+g-type-invalid+ (error "GValue is of invalid type (~A)" (g-type-name type)))
@@ -49,17 +49,17 @@
       (+g-type-ulong+ (g-value-get-ulong gvalue))
       (+g-type-int64+ (g-value-get-int64 gvalue))
       (+g-type-uint64+ (g-value-get-uint64 gvalue))
-      (+g-type-enum+ (parse-gvalue-enum gvalue))
-      (+g-type-flags+ (parse-gvalue-flags gvalue))
+      (+g-type-enum+ (parse-g-value-enum gvalue))
+      (+g-type-flags+ (parse-g-value-flags gvalue))
       (+g-type-float+ (g-value-get-float gvalue))
       (+g-type-double+ (g-value-get-double gvalue))
       (+g-type-string+ (g-value-get-string gvalue))
-      (t (parse-gvalue-for-type gvalue type)))))
+      (t (parse-g-value-for-type gvalue type)))))
 
-(defmethod parse-gvalue-for-type (gvalue-ptr (type-numeric (eql +g-type-pointer+)))
+(defmethod parse-g-value-for-type (gvalue-ptr (type-numeric (eql +g-type-pointer+)))
   (g-value-get-pointer gvalue-ptr))
 
-(defmethod parse-gvalue-for-type (gvalue-ptr (type-numeric (eql +g-type-param+)))
+(defmethod parse-g-value-for-type (gvalue-ptr (type-numeric (eql +g-type-param+)))
   (parse-g-param-spec (g-value-get-param gvalue-ptr)))
 
 (defgeneric set-gvalue-for-type (gvalue-ptr type-numeric value))
@@ -117,8 +117,8 @@
 (defun registered-enum-type (name)
   (gethash name *registered-enum-types*))
 
-(defun parse-gvalue-enum (gvalue)
-  (let* ((g-type (gvalue-type gvalue))
+(defun parse-g-value-enum (gvalue)
+  (let* ((g-type (g-value-type gvalue))
          (type-name (g-type-name g-type))
          (enum-type (registered-enum-type type-name)))
     (unless enum-type
@@ -126,7 +126,7 @@
     (convert-from-foreign (g-value-get-enum gvalue) enum-type)))
 
 (defun set-gvalue-enum (gvalue value)
-  (let* ((g-type (gvalue-type gvalue))
+  (let* ((g-type (g-value-type gvalue))
          (type-name (g-type-name g-type))
          (enum-type (registered-enum-type type-name)))
     (unless enum-type
@@ -142,8 +142,8 @@
 (defun registered-flags-type (name)
   (gethash name *registered-flags-types*))
 
-(defun parse-gvalue-flags (gvalue)
-  (let* ((g-type (gvalue-type gvalue))
+(defun parse-g-value-flags (gvalue)
+  (let* ((g-type (g-value-type gvalue))
          (type-name (g-type-name g-type))
          (flags-type (registered-flags-type type-name)))
     (unless flags-type
@@ -151,7 +151,7 @@
     (convert-from-foreign (g-value-get-flags gvalue) flags-type)))
 
 (defun set-gvalue-flags (gvalue value)
-  (let* ((g-type (gvalue-type gvalue))
+  (let* ((g-type (g-value-type gvalue))
          (type-name (g-type-name g-type))
          (flags-type (registered-flags-type type-name)))
     (unless flags-type
