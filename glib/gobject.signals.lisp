@@ -1,8 +1,5 @@
 (in-package :gobject)
 
-(defun unmangle-type (type)
-  (logxor type (ldb (byte 1 0) type)));;subtract the G_SIGNAL_TYPE_STATIC_SCOPE
-
 (defun emit-signal (object signal-name &rest args)
   "Emits the signal.
 @arg[object]{an instance of @class{g-object}. Signal is emitted on this object}
@@ -18,7 +15,7 @@
         (set-g-value (mem-aref params 'g-value 0) object (g-type-from-object (pointer object)) :zero-g-value t)
         (iter (for i from 0 below (foreign-slot-value q 'g-signal-query :n-params))
               (for arg in args)
-              (for type = (unmangle-type (mem-aref (foreign-slot-value q 'g-signal-query :param-types) 'g-type i)))
+              (for type = (mem-aref (foreign-slot-value q 'g-signal-query :param-types) '(g-type-designator :mangled-p t) i))
               (set-g-value (mem-aref params 'g-value (1+ i)) arg type :zero-g-value t))
         (prog1
             (if (= (foreign-slot-value q 'g-signal-query :return-type) +g-type-void+)

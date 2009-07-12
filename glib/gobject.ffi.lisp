@@ -966,13 +966,24 @@ Example:
   (:signal-name :string)
   (:owner-type g-type-designator)
   (:signal-flags g-signal-flags)
-  (:return-type g-type-designator)
+  (:return-type (g-type-designator :mangled-p t))
   (:n-params :uint)
-  (:param-types (:pointer g-type)))
+  (:param-types (:pointer (g-type-designator :mangled-p t))))
 
 (defcfun g-signal-query :void
   (signal-id :uint)
   (query (:pointer g-signal-query)))
+
+(defcfun g-signal-list-ids (:pointer :uint)
+  (type g-type-designator)
+  (n-ids (:pointer :uint)))
+
+(defcfun g-signal-parse-name :boolean
+  (detailed-signal :string)
+  (owner-type g-type-designator)
+  (signal-id-ptr (:pointer :uint))
+  (detail-ptr (:pointer g-quark))
+  (force-detail-quark :boolean))
 
 (defcstruct lisp-closure
   (:parent-instance g-closure)

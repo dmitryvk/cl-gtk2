@@ -55,7 +55,18 @@
            #:flags-item-name
            #:flags-item-value
            #:flags-item-nick
-           #:get-flags-items)
+           #:get-flags-items
+           #:signal-info
+           #:signal-info-id
+           #:signal-info-name
+           #:signal-info-owner-type
+           #:signal-info-flags
+           #:signal-info-return-type
+           #:signal-info-param-types
+           #:signal-info-detail
+           #:query-signal-info
+           #:type-signals
+           #:parse-signal-name)
   (:documentation
 "This package contains functions for querying the basic type information from GObject type system. For an overview of GObject type system, see @a[http://library.gnome.org/devel/gobject/stable/index.html]{GObject documentation}
 

@@ -193,4 +193,8 @@
            #:g-signal-query
            #:g-signal-query
            #:lisp-closure
-           #:g-object-struct))
+           #:g-object-struct
+           #:g-signal-list-ids
+           #:g-type-string
+           #:g-type-numeric
+           #:g-signal-parse-name))
