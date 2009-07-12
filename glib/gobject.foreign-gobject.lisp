@@ -282,11 +282,8 @@
         (loop
            for i from 0 below args-count
            for parameter = (mem-aref parameters 'g-parameter i)
-           do (foreign-free
-               (mem-ref (foreign-slot-pointer parameter 'g-parameter 'name)
-                        :pointer))
-           do (g-value-unset
-               (foreign-slot-pointer parameter 'g-parameter 'value)))))))
+           do (foreign-free (mem-ref (foreign-slot-pointer parameter 'g-parameter :name) :pointer))
+           do (g-value-unset (foreign-slot-pointer parameter 'g-parameter :value)))))))
 
 (defun g-object-call-get-property (object property-name &optional property-type)
   (restart-case
