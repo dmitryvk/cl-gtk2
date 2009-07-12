@@ -985,10 +985,6 @@ Example:
   (detail-ptr (:pointer g-quark))
   (force-detail-quark :boolean))
 
-(defcstruct lisp-closure
-  (:parent-instance g-closure)
-  (:function-id :pointer))
-
 (defcstruct g-object-struct
   (:type-instance g-type-instance)
   (:ref-count :uint)
