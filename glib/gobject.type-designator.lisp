@@ -35,7 +35,7 @@ Numeric identifier of GType may be different between different program runs. But
 
 (defun g-type-string (g-type-designator)
   (etypecase g-type-designator
-    (string g-type-designator)
+    (string (g-type-name g-type-designator))
     (integer (g-type-name g-type-designator))
     (null nil)))
 
