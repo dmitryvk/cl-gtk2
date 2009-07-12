@@ -313,3 +313,16 @@
          (g-object-set-property (ensure-object-pointer object)
                                 property-name value)
       (g-value-unset value))))
+
+(defmethod parse-gvalue-for-type (gvalue-ptr (type-numeric (eql +g-type-object+)))
+  (parse-gvalue-object gvalue-ptr))
+
+(defmethod parse-gvalue-for-type (gvalue-ptr (type-numeric (eql +g-type-interface+)))
+  (parse-gvalue-object gvalue-ptr))
+
+(defmethod set-gvalue-for-type (gvalue-ptr (type-numeric (eql +g-type-object+)) value)
+  (set-gvalue-object gvalue-ptr value))
+
+(defmethod set-gvalue-for-type (gvalue-ptr (type-numeric (eql +g-type-interface+)) value)
+  (set-gvalue-object gvalue-ptr value))
+

@@ -59,19 +59,8 @@
 (defmethod parse-gvalue-for-type (gvalue-ptr (type-numeric (eql +g-type-pointer+)))
   (g-value-get-pointer gvalue-ptr))
 
-(defmethod parse-gvalue-for-type (gvalue-ptr (type-numeric (eql +g-type-boxed+)))
-  (if (= (g-type-numeric (gvalue-type gvalue-ptr)) type-numeric)
-      (convert-from-foreign (g-value-get-boxed gvalue-ptr) '(glib:gstrv :free-from-foreign nil))
-      (parse-gvalue-boxed gvalue-ptr)))
-
 (defmethod parse-gvalue-for-type (gvalue-ptr (type-numeric (eql +g-type-param+)))
   (parse-g-param-spec (g-value-get-param gvalue-ptr)))
-
-(defmethod parse-gvalue-for-type (gvalue-ptr (type-numeric (eql +g-type-object+)))
-  (parse-gvalue-object gvalue-ptr))
-
-(defmethod parse-gvalue-for-type (gvalue-ptr (type-numeric (eql +g-type-interface+)))
-  (parse-gvalue-object gvalue-ptr))
 
 (defgeneric set-gvalue-for-type (gvalue-ptr type-numeric value))
 
@@ -117,19 +106,8 @@
 (defmethod set-gvalue-for-type (gvalue-ptr (type-numeric (eql +g-type-pointer+)) value)
   (g-value-set-pointer gvalue-ptr value))
 
-(defmethod set-gvalue-for-type (gvalue-ptr (type-numeric (eql +g-type-boxed+)) value)
-  (if (= (g-type-numeric (gvalue-type gvalue-ptr)) type-numeric)
-      (g-value-set-boxed gvalue-ptr (convert-to-foreign value '(glib:gstrv :free-from-foreign nil)))
-      (set-gvalue-boxed gvalue-ptr value)))
-
 (defmethod set-gvalue-for-type (gvalue-ptr (type-numeric (eql +g-type-param+)) value)
   (error "Setting of GParam is not implemented"))
-
-(defmethod set-gvalue-for-type (gvalue-ptr (type-numeric (eql +g-type-object+)) value)
-  (set-gvalue-object gvalue-ptr value))
-
-(defmethod set-gvalue-for-type (gvalue-ptr (type-numeric (eql +g-type-interface+)) value)
-  (set-gvalue-object gvalue-ptr value))
 
 ;;Enums
 
