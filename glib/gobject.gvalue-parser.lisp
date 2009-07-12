@@ -43,7 +43,7 @@
            (+g-type-string+ (g-value-get-string gvalue))
            (+g-type-pointer+ (g-value-get-pointer gvalue))
            (+g-type-boxed+ (parse-gvalue-boxed gvalue))
-                                        ;(+g-type-param+ (parse-gvalue-param gvalue))
+           (+g-type-param+ (parse-g-param-spec (g-value-get-param gvalue)))
            (+g-type-object+ (parse-gvalue-object gvalue))
            (+g-type-interface+ (parse-gvalue-object gvalue))
            (t (error "Unknown type: ~A (~A)" type (g-type-name type))))))))
