@@ -10,7 +10,7 @@
          (signal-info (parse-signal-name object-type signal-name)))
     (unless signal-info
       (error "Signal ~A not found on object ~A" signal-name object))
-    (let ((params-count (length (signal-info-param-types object))))
+    (let ((params-count (length (signal-info-param-types signal-info))))
       (with-foreign-object (params 'g-value (1+ params-count))
         (set-g-value (mem-aref params 'g-value 0) object object-type :zero-g-value t)
         (iter (for i from 0 below params-count)
