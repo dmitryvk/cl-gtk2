@@ -22,6 +22,20 @@ See accessor functions:
   constructor-only
   owner-type)
 
+(defmethod print-object ((instance g-class-property-definition) stream)
+  (if *print-readably*
+      (call-next-method)
+      (print-unreadable-object (instance stream)
+        (format stream
+                "PROPERTY ~A ~A.~A (flags:~@[ readable~]~@[ writable~]~@[ constructor~]~@[ constructor-only~])"
+                (g-class-property-definition-type instance)
+                (g-class-property-definition-owner-type instance)
+                (g-class-property-definition-name instance)
+                (g-class-property-definition-readable instance)
+                (g-class-property-definition-writable instance)
+                (g-class-property-definition-constructor instance)
+                (g-class-property-definition-constructor-only instance)))))
+
 (setf (documentation 'g-class-property-definition-name 'function)
       "Name of GObject class property. See @class{g-class-property-definition}.
 @return{a string}")
