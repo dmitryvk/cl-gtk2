@@ -23,6 +23,7 @@
                (:file "gobject.gvalue")
                (:file "gobject.signals")
                (:file "gobject.foreign")
+               (:file "gobject.stable-pointer")
                (:file "gobject.foreign-gobject")
                (:file "gobject.foreign-closures")
                (:file "gobject.foreign-gboxed")

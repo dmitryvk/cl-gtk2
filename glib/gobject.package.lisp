@@ -113,7 +113,8 @@
            #:flags-item-name
            #:flags-item-value
            #:flags-item-nick
-           #:get-flags-items)
+           #:get-flags-items
+           #:stable-pointer-value)
   (:documentation
    "CL-GTK2-GOBJECT is a binding to GObject type system.
 For information on GObject, see its @a[http://library.gnome.org/devel/gobject/stable/]{documentation}.
