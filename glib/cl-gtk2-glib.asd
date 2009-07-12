@@ -14,6 +14,7 @@
                (:file "gobject.type-designator")
                (:file "gobject.ffi")
                (:file "gobject.type-info")
+               (:file "gobject.type-info.object")
                
                (:file "gobject.package")
                (:file "gobject.structs")
