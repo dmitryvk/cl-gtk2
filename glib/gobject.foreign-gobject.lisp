@@ -201,6 +201,12 @@
       (etypecase object
         (g-object (pointer object)))))
 
+(defun parse-gvalue-object (gvalue)
+  (get-g-object-for-pointer (g-value-get-object gvalue)))
+
+(defun set-gvalue-object (gvalue value)
+  (g-value-set-object gvalue (if value (pointer value) (null-pointer))))
+
 (defmethod parse-gvalue-for-type (gvalue-ptr (type-numeric (eql +g-type-object+)))
   (parse-gvalue-object gvalue-ptr))
 

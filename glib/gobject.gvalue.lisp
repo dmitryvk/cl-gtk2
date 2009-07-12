@@ -157,11 +157,3 @@
     (unless flags-type
       (error "Flags ~A is not registered" type-name))
     (g-value-set-flags gvalue (convert-to-foreign value flags-type))))
-
-;;Objects
-
-(defun parse-gvalue-object (gvalue)
-  (get-g-object-for-pointer (g-value-get-object gvalue)))
-
-(defun set-gvalue-object (gvalue value)
-  (g-value-set-object gvalue (if value (pointer value) (null-pointer))))
