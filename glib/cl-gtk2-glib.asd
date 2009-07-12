@@ -8,25 +8,25 @@
                (:file "glib.gstrv")
                (:file "glib.string")
                (:file "glib.quark")
+
                (:file "gobject.init")
-               
                (:file "gobject.ffi.package")
                (:file "gobject.type-designator")
                (:file "gobject.ffi")
+
                (:file "gobject.type-info")
                (:file "gobject.type-info.object")
                (:file "gobject.type-info.enum")
                (:file "gobject.type-info.signals")
                
                (:file "gobject.package")
-               (:file "gobject.structs")
                (:file "gobject.gvalue")
-               (:file "gobject.signals")
                (:file "gobject.foreign")
                (:file "gobject.stable-pointer")
                (:file "gobject.foreign-gobject")
                (:file "gobject.foreign-closures")
                (:file "gobject.foreign-gboxed")
+               
                (:file "gobject.meta")
                (:file "gobject.generating")
                (:file "gobject.object-defs")
