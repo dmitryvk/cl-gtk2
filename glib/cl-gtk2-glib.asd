@@ -26,12 +26,13 @@
                (:file "gobject.closure")
                (:file "gobject.object.low")
                (:file "gobject.object.high")
-               (:file "gobject.foreign-gboxed")
-               
+
                (:file "gobject.meta")
                (:file "gobject.generating")
                (:file "gobject.object-defs")
                (:file "gobject.foreign-gobject-subclassing")
 
+               (:file "gobject.foreign-gboxed")
+               
                #+sbcl (:file "sbcl"))
   :depends-on (:cffi :trivial-garbage :iterate :bordeaux-threads :iterate :closer-mop))
