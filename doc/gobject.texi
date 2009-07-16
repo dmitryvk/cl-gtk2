@@ -105,7 +105,7 @@
 @titlepage
 @title CL-GTK2
 @subtitle A Common Lisp binding for Gtk+
-@subtitle GObject bindings
+@subtitle GObject
 @author Dmitry Kalyanov
 @end titlepage
 
@@ -982,9 +982,10 @@ NIL
 @node stable-pointer-value
 @section stable-pointer-value
 
-@code{(stable-pointer-value stable-pointer) @result{} thing}
-
-@code{(setf (stable-pointer-value stable-pointer) thing)}
+@example
+(stable-pointer-value stable-pointer) @result{} thing
+(setf (stable-pointer-value stable-pointer) thing)
+@end example
 
 @table @var
 @item @var{stable-pointer}
@@ -1191,6 +1192,236 @@ Example:
 
 @node GObject high-level
 @chapter GObject high-level
+@menu
+* GObject metaclass::
+* Using objects::
+* Signals::
+* GObject foreign class::
+@end menu
+
+GObject high-level support includes integration of GObject and CLOS systems. This enables to use GObjects classes as CLOS classes (with support from @code{gobject-class} metaclass):
+@itemize
+@item objects are created with @code{make-instance}
+@item properties are used as regular slots
+@end itemize
+
+GObjects are reference counted, and CL-GTK2-GOBJECT manages its own reference to GObjects. This enables to have transparent garbage collection of unreferenced GObjects.
+
+To be able to use particular GObject class with CLOS, it should be defined and registered. This is accomplished by @code{defclass}'ing it with @code{gobject-class} metaclass. After GObject class is defined, it may be used as CLOS class.
+
+Example GObject class of definition:
+@example
+(defclass dialog (gtk-window atk-implementor-iface buildable)
+  ((has-separator :accessor dialog-has-separator
+                  :initarg :has-separator
+                  :allocation :gobject-property
+                  :g-property-type "gboolean"
+                  :g-property-name "has-separator"))
+  (:metaclass gobject-class)
+  (:g-type-name . "GtkDialog")
+  (:g-type-initializer . "gtk_dialog_get_type"))
+@end example
+
+This example defines the CLOS class @code{dialog} that corresponds to GObject class @code{GtkDialog}. Whenever object of GObject type @code{GtkDialog} are to be received from foreign functions or passed to foreign functions, it will be mapped to CLOS class @code{dialog}. Properties that have @code{:allocation} of @code{:gobject-property} are mapped to GObject properties, and reading or writing this slot reads or writes corresponding GObject class property.
+
+GObject does not expose objects methods. Because of this, methods are not automatically mapped to CLOS generic functions and methods. Methods should be manually wrapped with CFFI as foreign functions. Foreign type @code{g-object} aids in it. This type automatically wraps (and unwraps) the GObject class instances and handles the reference counting.
+
+GObject high-level support enables connect signals to signal handlers. Any function may be connected as a signal handler, and GObject will release the reference on signal handler whenever it become unneded (e.g., when object is destroyed or handler is disconnected).
+
+@node GObject metaclass
+@section GObject metaclass
+
+See MOP for information what metaclass is and why is it useful.
+
+GObject metaclass @code{gobject-class} bridges two object systems: GObject and CLOS.
+
+Classes that correspond to GObject classes are instances of this class.
+
+This class has the following slots:
+@itemize
+@item @var{g-type-name} (accessor @code{gobject-class-g-type-name}, initarg @code{:g-type-name})
+
+Specifies the name of GObject class
+@item @var{g-type-initializer} (accessor @code{gobject-class-g-type-initializer}, initarg @code{:g-type-initializer})
+
+Name of type initializer function. This function initializes the class and returns its GType. Typically it is named @code{class_get_type}.
+@item @var{interface-p} (accessor @code{gobject-class-interface-p}, initarg @code{:interface-p})
+@end itemize
+
+This metaclass defines the GObject classes.
+
+Slots which have @code{:allocation} of @code{:gobject-property} are mapped to GObject properties. This metaclass defines the following attributes for slots:
+@itemize
+@item @var{:g-property-type}
+
+A name of a type of property
+@item @var{:g-property-name}
+
+A name of a property
+@end itemize
+
+Initargs of a slot are used to construct the GObject class.
+
+Example:
+@example
+(defclass dialog (gtk-window atk-implementor-iface buildable)
+  ((has-separator :accessor dialog-has-separator
+                  :initarg :has-separator
+                  :allocation :gobject-property
+                  :g-property-type "gboolean"
+                  :g-property-name "has-separator"))
+  (:metaclass gobject-class)
+  (:g-type-name . "GtkDialog")
+  (:g-type-initializer . "gtk_dialog_get_type"))
+@end example
+(note the dot in @code{(:g-type-name . "GtkDialog")} and in @code{(:g-type-initializer . "gtk_dialog_get_type")}. It should be present)
+
+@node Using objects
+@section Using objects
+Instances are created with @code{make-instance}. If initargs of GObject properties are supplied, they are passed to constructor. Some slots (properties) may only be set at construction time (e.g., @code{type} property of @code{GtkWindow}). Properties may be accessed (read or assigned) with defined @code{:accessor}, @code{:reader} or @code{:writer} functions.
+
+Example:
+@example
+(make-instance 'gtk:dialog :has-separator t)
+@result{}
+#<GTK:DIALOG @{10036C5A71@}>
+
+(defvar *d* (make-instance 'gtk:dialog :has-separator t))
+@result{}
+*D*
+
+(gtk:dialog-has-separator *d*)
+@result{}
+T
+
+(setf (gtk:dialog-has-separator *d*) nil)
+@result{}
+NIL
+
+(gtk:dialog-has-separator *d*)
+@result{}
+NIL
+@end example
+
+@node Signals
+@section Signals
+
+To connect handler to a signal, @code{connect-signal} function is used.
+
+@code{(connect-signal object signal handler &key after)}
+
+@table @var
+@item @var{object}
+An instance of GObject object
+@item @var{signal}
+A signal name
+@item @var{handler}
+A function
+@item @var{after}
+A boolean specifying whether the handler should be called after the default handler
+@end table
+
+Connects the @code{handler} to signal @code{signal} on object @code{object}. Signature of @code{handler} should comply with signature of a signal. @code{handler} will be called with arguments of type specified by signal with the object (on which the signal was emitted) prepended to them and it should return the value of the signal's return type.
+
+Example:
+@example
+(defvar *d* (make-instance 'gtk:dialog))
+@result{}
+*D*
+
+*d*
+@result{}
+#<GTK:DIALOG @{1002D866F1@}>
+
+(parse-signal-name "GtkDialog" "response")
+@result{}
+#<Signal [#86] void GtkDialog.response(gint) [RUN-LAST]>
+
+(connect-signal *d* "response" (lambda (dialog response-value) (print dialog) (print response-value)))
+
+(emit-signal *d* "response" 14)
+@result{}
+;; Prints:
+#<GTK:DIALOG @{1002D866F1@}>
+14 
+@end example
+
+Function @code{emit-signal} is used to emit signals on objects.
+
+@code{(emit-signal object signal-name &rest args) @result{} return-value}
+
+@table @var
+@item @var{object}
+An object on which the signal should be emitted
+@item @var{signal-name}
+A string naming the signal
+@item @var{args}
+Arguments for a signal
+@item @var{return-value}
+Return value of a signal
+@end table
+
+Emits the signal and calls all handlers of the signal. If signal returns a value, it is returned from @code{emit-signal}.
+
+Example:
+@example
+(defvar *d* (make-instance 'gtk:dialog))
+@result{}
+*D*
+
+*d*
+@result{}
+#<GTK:DIALOG @{1002D866F1@}>
+
+(parse-signal-name "GtkDialog" "response")
+@result{}
+#<Signal [#86] void GtkDialog.response(gint) [RUN-LAST]>
+
+(connect-signal *d* "response" (lambda (dialog response-value) (print dialog) (print response-value)))
+
+(emit-signal *d* "response" 14)
+@result{}
+;; Prints:
+#<GTK:DIALOG @{1002D866F1@}>
+14 
+@end example
+
+@node GObject foreign class
+@section GObject foreign class
+
+To enable passing GObject instance between Lisp code and foreign code, @code{g-object} foreign type is introduced.
+
+This type has the following syntax:
+@code{(g-object &optional type)} or @code{g-object}.
+
+When the @code{g-object} foreign type is specified as a return type of a function, the value is converted to instance of corresponding CLOS class. If @code{type} is specified then it is checked that object is of this type.
+
+When the @code{g-object} foreign type is specified as a type of function's argument, the value is converted to pointer to GObject. If @code{type} is specified then it is checked that the object is of this type.
+
+This defines the function that may be called with instances of types @code{container} and @code{widget}:
+@example
+(defcfun (container-add "gtk_container_add") :void
+  (container (g-object container))
+  (widget (g-object widget)))
+
+(let ((window (make-instance 'gtk-window))
+      (widget (make-instance 'button)))
+  (container-add window widget))
+@end example
+(@code{gtk-window} is a subclass of @code{container}; @code{button} is a subclass of @code{widget})
+
+This defines the function that returns an instance of GObject class:
+@example
+(defcfun (bin-child "gtk_bin_get_child") (g-object widget)
+  (bin (g-object bin)))
+
+(let ((window (make-instance 'gtk-window))
+      (widget (make-instance 'button)))
+  (container-add window widget)
+  (bin-child window))
+@result{}
+#<GTK:BUTTON @{1002DE74B1@}>
+@end example
 
 @node Subclassing GObjects and implementing GInterfaces
 @chapter Subclassing GObjects and implementing GInterfaces
