@@ -1020,9 +1020,39 @@ Example:
 @node Closures
 @chapter Closures
 
+Closure are anonymous functions that capture their lexical environment.
+
 GObject supports using closures (as instances of type GClosure) as signal handlers and in some other places where a function is expected. Function @code{create-g-closure} create closure from lisp function. The GClosure is finalized automatically when GObject no longer needs it (e.g., when GClosure is disconnected from signal).
 
 @section create-g-closure
+@code{(create-g-closure fn) @result{} closure}
+
+@table @var
+@item @var{fn}
+A function that will be called by closure invokation
+@item @var{closure}
+A foreign pointer to allocated closure
+@end table
+
+Allocates the closure. The closure is destroyed automatically by GObject.
+
+Example:
+@example
+(create-g-closure (lambda (x) (+ x 10)))
+@result{}
+#.(SB-SYS:INT-SAP #X006D7B20)
+@end example
+
+Example of usage from GObject binding code:
+@example
+(defun connect-signal (object signal handler &key after)
+  (g-signal-connect-closure (ensure-object-pointer object)
+                            signal
+                            (create-g-closure handler)
+                            after))
+@end example
+
+(TODO: GObject defines finer closure API: g_closure_ref, g_closure_unref, g_closure_invoke. It should be bound.)
 
 @node GObject low-level
 @chapter GObject low-level
