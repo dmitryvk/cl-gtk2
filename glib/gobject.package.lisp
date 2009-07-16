@@ -162,7 +162,8 @@
            #:flags-item-nick
            #:get-flags-items
            #:stable-pointer-value
-           #:g-value-type)
+           #:g-value-type
+           #:create-g-closure)
   (:documentation
    "CL-GTK2-GOBJECT is a binding to GObject type system.
 For information on GObject, see its @a[http://library.gnome.org/devel/gobject/stable/]{documentation}.
