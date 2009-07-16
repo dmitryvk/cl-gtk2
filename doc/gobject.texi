@@ -1056,18 +1056,138 @@ Example of usage from GObject binding code:
 
 @node GObject low-level
 @chapter GObject low-level
+@menu
+* g-object-call-constructor::
+* g-type-from-object::
+* g-object-call-get-property::
+* g-object-call-set-property::
+@end menu
 
-GObject low-level support includes facilities for working with objects as foreign pointers and using explicit function to get and set properties.
+GObject low-level support includes facilities for working with objects as foreign pointers and using explicit function to get and set properties. This low-level support does not deal with integration of GObject with CLOS; GObject high-level support does that.
 
 Function @code{g-type-from-object} identifies the type of the object. Function @code{g-object-call-get-property} retrieves the value of the property and function @code{g-object-call-set-property} sets the value of the property. Function @code{g-object-call-constructor} calls the constructor of the GObject type.
 
+@node g-object-call-constructor
+@section g-object-call-constructor
+
+@code{(g-object-call-constructor object-type args-names args-values &optional args-types) @result{} object-ptr}
+
+@table @var
+@item @var{object-type}
+A GType designator that specifies the object type that is to be created
+@item @var{args-names}
+A list of strings naming the arguments to constructor
+@item @var{args-value}
+A list of arguments values (in the same order as args-names)
+@item @var{args-types}
+Optional list of arguments types (in the same order as args-names). If not specified, it is detected automatically
+@item @var{object-ptr}
+A foreign pointer to newly created instance
+@end table
+
+Creates the object of type @code{object-type} by calling its constructors with arguments specified by @code{args-names}, @code{args-values}, @code{args-types}.
+
+Example:
+@example
+(g-object-call-constructor "GtkButton" '("label" "use-underline") '("Hello" t) '("gchararray" "gboolean"))
+@result{}
+#.(SB-SYS:INT-SAP #X006D8900)
+
+(g-object-call-get-property * "label")
+@result{}
+"Hello"
+
+(g-object-call-get-property ** "use-underline")
+@result{}
+T
+@end example
+
+@node g-type-from-object
 @section g-type-from-object
 
+@code{(g-type-from-object object-ptr) @result{} type}
+
+@table @var
+@item @var{object-ptr}
+A foreign pointer to a GObject instance
+@item @var{type}
+A GType designator
+@end table
+
+Returns the type of an object by a pointer to its instance
+
+Example:
+@example
+(g-type-from-object (g-object-call-constructor "GtkButton" nil nil))
+@result{}
+"GtkButton"
+@end example
+
+@node g-object-call-get-property
 @section g-object-call-get-property
 
+@code{(g-object-call-get-property object-ptr property-name &optional property-type) @result{} property-value}
+
+@table @var
+@item @var{object-ptr}
+A foreign pointer to a GObject instance
+@item @var{property-name}
+A string naming the property
+@item @var{property-type}
+Optional GType designator specifying the type of a property
+@item @var{property-value}
+The value of a property
+@end table
+
+Retrieves the value of a property @code{property-name} of object pointed to by @code{object-ptr}. @code{property-type} specifies the type of a property; it may be omitted.
+
+Example:
+@example
+(g-object-call-constructor "GtkButton" '("label" "use-underline") '("Hello" t) '("gchararray" "gboolean"))
+@result{}
+#.(SB-SYS:INT-SAP #X006D8900)
+
+(g-object-call-get-property * "label")
+@result{}
+"Hello"
+
+(g-object-call-get-property ** "use-underline")
+@result{}
+T
+@end example
+
+@node g-object-call-set-property
 @section g-object-call-set-property
 
-@section g-object-call-constructor
+@code{(g-object-call-set-property object-ptr property-name new-value &optional property-type)}
+
+@table @var
+@item @var{object-ptr}
+A foreign pointer to a GObject instance
+@item @var{property-name}
+A string naming the property
+@item @var{new-value}
+A new value of a property
+@item @var{property-type}
+Optional GType designator specifying the type of a property
+@end table
+
+Sets the property value of property @code{property-name} of object @code{object-ptr} to @code{new-value}.
+
+Example:
+@example
+(g-object-call-constructor "GtkButton" nil nil)
+@result{}
+#.(SB-SYS:INT-SAP #X006D8B40)
+
+(g-object-call-set-property * "label" "Hello")
+@result{}
+; No value
+
+(g-object-call-get-property ** "label")
+@result{}
+"Hello"
+@end example
 
 @node GObject high-level
 @chapter GObject high-level
