@@ -138,6 +138,19 @@
 
 GObject is a part of GLib library that implements the type system. The CL-GTK2-GObject is a Common Lisp binding for relevant parts of GObject.
 
+The purpose of CL-GTK2-GObject is to ease the creation of binding for libraries based on GObject.
+
+Please bear in mind that this is the documentation for a work-in-progress library and is a snapshot of current situation. API and functionality may (and will) change. Largely unfinished parts are working with GBoxed types, subclassing GObjects and implementing GInterfaces.
+
+CL-GTK2-GObject is logically split into several layers:
+@itemize
+@item FFI code. FFI (foreign functions interface) layer is a glue between Lisp code and @code{libglib}, @code{libgobject}, @code{libgthread}. This code includes basic wrapper around GType designator (it is used everywhere and should be defined first) and definitions of foreign structures and imports foreign functions.
+@item Low-level GObject integration. These are facilities provided by GObject that capture specific aspects of type system, object system and cross-language runtime. This includes types information, GValues (generic containers for value of any type supported by GObject type system), closures, means to create and use objects. This layer also includes some non-GObject facilities: stable pointers.
+@item High-level GObject integration. This layer includes support for interoperability between CLOS and GObject and automatic generation of corresponding definitions.
+@end itemize
+
+Naturally, users of CL-GTK2-GObject should use the high-level GObject integration, but occasionaly it may be necessary to use lower-level functionality.
+
 @node Installation
 @chapter Installation
 
@@ -159,29 +172,29 @@ GObject is an object system based on GType type system. Types in it are identifi
 
 An example of GType designator is a string @code{"GObject"} and the numeric value 80 that corresponds to it.
 
-Some of the types are fundamental and have constant integer values. They are identified by constants:
+Some of the types are fundamental and have constant integer values. They are identified by constants (strings in parentheses are corresponding type names):
 @itemize
 @item @code{+g-type-invalid+}. An invalid GType used as error return value in some functions which return a GType.
-@item @code{+g-type-void+}. A fundamental type which is used as a replacement for the C @code{void} return type.
-@item @code{+g-type-interface+}. The fundamental type from which all interfaces are derived.
-@item @code{+g-type-char+}. The fundamental type corresponding to gchar. The type designated by @code{+g-type-char+} is unconditionally an 8-bit signed integer. This may or may not be the same type a the C type @code{gchar}.
-@item @code{+g-type-uchar+}. The fundamental type corresponding to @code{guchar}.
-@item @code{+g-type-boolean+}. The fundamental type corresponding to @code{gboolean}.
-@item @code{+g-type-int+}. The fundamental type corresponding to @code{gint}.
-@item @code{+g-type-uint+}. The fundamental type corresponding to @code{guint}.
-@item @code{+g-type-long+}. The fundamental type corresponding to @code{glong}.
-@item @code{+g-type-ulong+}. The fundamental type corresponding to @code{gulong}.
-@item @code{+g-type-int64+}. The fundamental type corresponding to @code{gint64}.
-@item @code{+g-type-uint64+}. The fundamental type corresponding to @code{guint64}.
-@item @code{+g-type-enum+}. The fundamental type from which all enumeration types are derived.
-@item @code{+g-type-flags+}. The fundamental type from which all flags types are derived.
-@item @code{+g-type-float+}. The fundamental type corresponding to @code{gfloat}.
-@item @code{+g-type-double+}. The fundamental type corresponding to @code{gdouble}.
-@item @code{+g-type-string+}. The fundamental type corresponding to null-terminated C strings.
-@item @code{+g-type-pointer+}. The fundamental type corresponding to @code{gpointer}.
-@item @code{+g-type-boxed+}. The fundamental type from which all boxed types are derived.
-@item @code{+g-type-param+}. The fundamental type from which all GParamSpec types are derived.
-@item @code{+g-type-object+}. The fundamental type for GObject.
+@item @code{+g-type-void+} ("void"). A fundamental type which is used as a replacement for the C @code{void} return type.
+@item @code{+g-type-interface+} ("GInterface"). The fundamental type from which all interfaces are derived.
+@item @code{+g-type-char+} ("gchar"). The fundamental type corresponding to gchar. The type designated by @code{+g-type-char+} is unconditionally an 8-bit signed integer. This may or may not be the same type a the C type @code{gchar}.
+@item @code{+g-type-uchar+} ("guchar"). The fundamental type corresponding to @code{guchar}.
+@item @code{+g-type-boolean+} ("gboolean"). The fundamental type corresponding to @code{gboolean}.
+@item @code{+g-type-int+} ("gint"). The fundamental type corresponding to @code{gint}.
+@item @code{+g-type-uint+} ("guint"). The fundamental type corresponding to @code{guint}.
+@item @code{+g-type-long+} ("glong"). The fundamental type corresponding to @code{glong}.
+@item @code{+g-type-ulong+} ("gulong"). The fundamental type corresponding to @code{gulong}.
+@item @code{+g-type-int64+} ("gint64"). The fundamental type corresponding to @code{gint64}.
+@item @code{+g-type-uint64+} ("guint64"). The fundamental type corresponding to @code{guint64}.
+@item @code{+g-type-enum+} ("GEnum"). The fundamental type from which all enumeration types are derived.
+@item @code{+g-type-flags+} ("GFlags"). The fundamental type from which all flags types are derived.
+@item @code{+g-type-float+} ("gfloat"). The fundamental type corresponding to @code{gfloat}.
+@item @code{+g-type-double+} ("gdouble"). The fundamental type corresponding to @code{gdouble}.
+@item @code{+g-type-string+} ("gchararray"). The fundamental type corresponding to null-terminated C strings.
+@item @code{+g-type-pointer+} ("gpointer"). The fundamental type corresponding to @code{gpointer}.
+@item @code{+g-type-boxed+} ("GBoxed"). The fundamental type from which all boxed types are derived.
+@item @code{+g-type-param+} ("GParam"). The fundamental type from which all GParamSpec types are derived.
+@item @code{+g-type-object+} ("GObject"). The fundamental type for GObject.
 @end itemize
 
 Functions @ref{g-type-string} and @ref{g-type-numeric} return the numeric and string representations of GType designators (given any of them).
@@ -1522,10 +1535,12 @@ This defines the function that returns an instance of GObject class:
 * define-g-interface::
 * define-g-enum::
 * define-g-flags::
-* get-g-flags-definition::
 * get-g-enum-definition::
+* get-g-flags-definition::
 * get-g-interface-definition::
 * get-g-class-definition::
+* Specifying additional properties for CLOS classes::
+* Generating names for CLOS classes and accessors::
 * generate-types-hierarchy-to-file::
 @end menu
 
@@ -1537,10 +1552,10 @@ CL-GTK2-GOBJECT includes facilities for automatically generating parts of bindin
 @example
 (define-g-object-class g-type-name name
   (&key (superclass 'g-object) (export t) interfaces type-initializer)
-  (&rest properties))
+  (&rest property*))
 
-property ::= name accessor gname type readable writable
-property ::= :cffi name acessor type reader writer
+property ::= (name accessor gname type readable writable)
+property ::= (:cffi name acessor type reader writer)
 @end example
 
 Parameters of @code{define-g-object-class}
@@ -1577,7 +1592,7 @@ A string or a symbol naming getter function. See description of @code{gobject-cl
 A string or a symbol naming setter function. See description of @code{gobject-class} metaclass for information.
 @end table
 
-Macro that expand to @code{defclass} for specified class. Additionally, exports accessor names and name of a class.
+Macro that expands to @code{defclass} for specified class. Additionally, if @code{export} is true, it exports accessor names and name of a class.
 
 Example:
 @example
@@ -1596,26 +1611,424 @@ Example:
 @node define-g-interface
 @section define-g-interface
 
+@example
+(define-g-interface g-type-name name (&key (export t) type-initializer)
+  &body property*)
+
+property ::= (name accessor gname type readable writable)
+property ::= (:cffi name acessor type reader writer)
+@end example
+
+Parameters of @code{define-g-interface}
+@table @var
+@item @var{export}
+Whether to export the name of the interface and names of autogenerated properties names from the current package.
+@item @var{type-initializer}
+A string naming the type initiliazer function. It is usually named @code{interface_get_type}.
+@item @var{properties}
+A list of slots of a interface
+@end table
+
+Parameters of @code{property}:
+@table @var
+@item @var{name}
+A symbol naming the slot
+@item @var{accessor}
+A symbol naming the accessor function for this slot
+@item @var{gname}
+A string naming the property of GObject
+@item @var{type}
+A string naming the type of property of GObject (for GObject properties); or a symbol naming CFFI foreign type (for slots mapped to foreign accessors)
+@item @var{readable}
+A boolean specifying whether the slot can be read
+@item @var{writable}
+A boolean specifying whether the slot can be assigned to
+@item @var{reader}
+A string or a symbol naming getter function. See description of @code{gobject-class} metaclass for information.
+@item @var{writter}
+A string or a symbol naming setter function. See description of @code{gobject-class} metaclass for information.
+@end table
+
+Macro that expands to @code{defclass} for specified interface. Additionally, if @code{export} is true, it exports accessor names and name of a interface.
+
+Example:
+@example
+(define-g-interface "GtkFileChooser" file-chooser
+  (:export t :type-initializer "gtk_file_chooser_get_type")
+  (do-overwrite-confirmation file-chooser-do-overwrite-confirmation "do-overwrite-confirmation" "gboolean" t t)
+  (select-multiple file-chooser-select-multiple "select-multiple" "gboolean" t t)
+  (filter file-chooser-filter "filter" "GtkFileFilter" t t)
+  (local-only file-chooser-local-only "local-only" "gboolean" t t)
+  (preview-widget file-chooser-preview-widget "preview-widget" "GtkWidget" t t)
+  (use-preview-label file-chooser-use-preview-label "use-preview-label" "gboolean" t t)
+  (preview-widget-active file-chooser-preview-widget-active "preview-widget-active" "gboolean" t t)
+  (file-system-backend file-chooser-file-system-backend "file-system-backend" "gchararray" nil nil)
+  (extra-widget file-chooser-extra-widget "extra-widget" "GtkWidget" t t)
+  (show-hidden file-chooser-show-hidden "show-hidden" "gboolean" t t)
+  (action file-chooser-action "action" "GtkFileChooserAction" t t)
+  (:cffi current-name file-chooser-current-name
+   (:string :free-to-foreign t :encoding :utf-8) nil "gtk_file_chooser_set_current_name")
+  (:cffi filename file-chooser-filename
+   (g-string :free-from-foreign t :free-to-foreign t)
+   "gtk_file_chooser_get_filename" "gtk_file_chooser_set_filename")
+  (:cffi current-folder file-chooser-current-folder
+   (g-string :free-from-foreign t :free-to-foreign t)
+   "gtk_file_chooser_get_current_folder"
+   "gtk_file_chooser_set_current_folder")
+  (:cffi uri file-chooser-uri
+   (g-string :free-from-foreign t :free-to-foreign t)
+   "gtk_file_chooser_get_uri" "gtk_file_chooser_set_uri")
+  (:cffi current-folder-uri file-chooser-current-folder-uri
+   (g-string :free-from-foreign t :free-to-foreign t)
+   "gtk_file_chooser_get_current_folder_uri"
+   "gtk_file_chooser_set_current_folder_uri")
+  (:cffi preview-filename file-chooser-preview-filename
+   (g-string :free-from-foreign t :free-to-foreign t)
+   "gtk_file_chooser_get_preview_filename" nil)
+  (:cffi preview-uri file-chooser-preview-uri
+   (g-string :free-from-foreign t :free-to-foreign t)
+   "gtk_file_chooser_get_preview_uri" nil))
+@end example
+
 @node define-g-enum
 @section define-g-enum
+
+@example
+(define-g-enum g-name name (&key (export t) type-initializer) &body value*)
+
+value ::= :keyword
+value ::= (:keyword integer)
+@end example
+
+@table @var
+@item @var{g-name}
+A string naming the GEnum type
+@item @var{name}
+A symbol naming the CFFI enumeration type
+@item @var{export}
+A boolean indicating whether to export @code{name}
+@item @var{type-initializer}
+A string naming the foreign type initializer function. Usually named @code{enum_get_type}.
+@end table
+
+Macro that defines CFFI enumeration, registers it with GValue, and calls the type initializer.
+
+Example:
+@example
+(define-g-enum "GtkTextDirection" text-direction
+  (:export t :type-initializer "gtk_text_direction_get_type")
+  (:none 0) (:ltr 1) (:rtl 2))
+
+(define-g-enum "GtkSizeGroupMode" size-group-mode
+ (:export t :type-initializer "gtk_size_group_mode_get_type")
+ :none :horizontal :vertical :both)
+@end example
 
 @node define-g-flags
 @section define-g-flags
 
-@node get-g-flags-definition
-@section get-g-flags-definition
+@example
+(define-g-flags g-name name (&key (export t) type-initializer) &body value*)
+
+value ::= :keyword
+value ::= (:keyword integer)
+@end example
+
+@table @var
+@item @var{g-name}
+A string naming the GFlags type
+@item @var{name}
+A symbol naming the CFFI flags type
+@item @var{export}
+A boolean indicating whether to export @code{name}
+@item @var{type-initializer}
+A string naming the foreign type initializer function. Usually named @code{flags_get_type}.
+@end table
+
+Macro that defines CFFI bitfield, registers it with GValue, and calls the type initializer.
+
+Example:
+@example
+(define-g-flags "GtkAttachOptions" attach-options
+  (:export t :type-initializer "gtk_attach_options_get_type")
+  (:expand 1) (:shrink 2) (:fill 4))
+
+(define-g-flags "GtkButtonAction" button-action
+  (:export t :type-initializer "gtk_button_action_get_type")
+  :ignored :selects :drags :expands)
+@end example
 
 @node get-g-enum-definition
 @section get-g-enum-definition
 
+@code{(get-g-enum-definition type &optional lisp-name-package) @result{} definition}
+
+@table @var
+@item @var{type}
+A string naming the GEnum type
+@item @var{lisp-name-package}
+A package that will be used as a package for generated symbols (enum name). If not specified, symbols are interned in @code{*package*}
+@item @var{definition}
+A Lisp form that when evaluated defines the GEnum.
+@end table
+
+Uses GObject introspection capabilities to automatically produce the definition of GEnum. The foreign library that defines the enum type should be loaded.
+
+See @ref{Generating names for CLOS classes and accessors} for information about used method for generating names.
+
+Example:
+@example
+(get-g-enum-definition "GtkDirectionType")
+@result{}
+(DEFINE-G-ENUM "GtkDirectionType" GTK-DIRECTION-TYPE
+               (:EXPORT T :TYPE-INITIALIZER "gtk_direction_type_get_type")
+               (:TAB-FORWARD 0) (:TAB-BACKWARD 1) (:UP 2) (:DOWN 3) (:LEFT 4)
+               (:RIGHT 5))
+@end example
+
+@node get-g-flags-definition
+@section get-g-flags-definition
+
+@code{(get-g-flags-definition type &optional lisp-name-package) @result{} definition}
+
+@table @var
+@item @var{type}
+A string naming the GFlags type
+@item @var{lisp-name-package}
+A package that will be used as a package for generated symbols (flags name). If not specified, symbols are interned in @code{*package*}
+@item @var{definition}
+A Lisp form that when evaluated defines the GFlags.
+@end table
+
+Uses GObject introspection capabilities to automatically produce the definition of GFlags. The foreign library that defines the flags type should be loaded.
+
+See @ref{Generating names for CLOS classes and accessors} for information about used method for generating names.
+
+Example:
+@example
+(get-g-flags-definition "GtkCalendarDisplayOptions")
+@result{}
+(DEFINE-G-FLAGS "GtkCalendarDisplayOptions" GTK-CALENDAR-DISPLAY-OPTIONS
+                (:EXPORT T :TYPE-INITIALIZER
+                 "gtk_calendar_display_options_get_type")
+                (:SHOW-HEADING 1) (:SHOW-DAY-NAMES 2) (:NO-MONTH-CHANGE 4)
+                (:SHOW-WEEK-NUMBERS 8) (:WEEK-START-MONDAY 16)
+                (:SHOW-DETAILS 32))
+@end example
+
 @node get-g-interface-definition
 @section get-g-interface-definition
+
+@code{get-g-interface-definition type &optional lisp-name-package) @result{} definition}
+
+@table @var
+@item @var{type}
+A string naming the GInterface type
+@item @var{lisp-name-package}
+A package that will be used as a package for generated symbols (type name, accessor names). If not specified, symbols are interned in @code{*package*}
+@item @var{definition}
+A Lisp form that when evaluated defines the GInterface.
+@end table
+
+Uses GObject introspection capabilities to automatically produce the definition of GInterface. The foreign library that defines the GInterface type should be loaded.
+
+See @ref{Generating names for CLOS classes and accessors} for information about used method for generating names.
+
+Example:
+@example
+(get-g-interface-definition "GtkActivatable")
+@result{}
+(DEFINE-G-INTERFACE "GtkActivatable" GTK-ACTIVATABLE
+                    (:EXPORT T :TYPE-INITIALIZER "gtk_activatable_get_type")
+                    (USE-ACTION-APPEARANCE
+                     GTK-ACTIVATABLE-USE-ACTION-APPEARANCE
+                     "use-action-appearance" "gboolean" T T)
+                    (RELATED-ACTION GTK-ACTIVATABLE-RELATED-ACTION
+                     "related-action" "GtkAction" T T))
+@end example
 
 @node get-g-class-definition
 @section get-g-class-definition
 
+
+@code{get-g-class-definition type &optional lisp-name-package) @result{} definition}
+
+@table @var
+@item @var{type}
+A string naming the GObject type
+@item @var{lisp-name-package}
+A package that will be used as a package for generated symbols (type name, accessor names). If not specified, symbols are interned in @code{*package*}
+@item @var{definition}
+A Lisp form that when evaluated defines the GObject.
+@end table
+
+Uses GObject introspection capabilities to automatically produce the definition of GClass. The foreign library that defines the GObject type should be loaded.
+
+See @ref{Generating names for CLOS classes and accessors} for information about used method for generating names.
+
+Example:
+@example
+(get-g-class-definition "GtkButton")
+@result{}
+(DEFINE-G-OBJECT-CLASS "GtkButton" GTK-BUTTON
+                       (:SUPERCLASS GTK-BIN :EXPORT T :INTERFACES
+                        ("AtkImplementorIface" "GtkActivatable" "GtkBuildable")
+                        :TYPE-INITIALIZER "gtk_button_get_type")
+                       ((LABEL GTK-BUTTON-LABEL "label" "gchararray" T T)
+                        (IMAGE GTK-BUTTON-IMAGE "image" "GtkWidget" T T)
+                        (RELIEF GTK-BUTTON-RELIEF "relief" "GtkReliefStyle" T
+                         T)
+                        (USE-UNDERLINE GTK-BUTTON-USE-UNDERLINE "use-underline"
+                         "gboolean" T T)
+                        (USE-STOCK GTK-BUTTON-USE-STOCK "use-stock" "gboolean"
+                         T T)
+                        (FOCUS-ON-CLICK GTK-BUTTON-FOCUS-ON-CLICK
+                         "focus-on-click" "gboolean" T T)
+                        (XALIGN GTK-BUTTON-XALIGN "xalign" "gfloat" T T)
+                        (YALIGN GTK-BUTTON-YALIGN "yalign" "gfloat" T T)
+                        (IMAGE-POSITION GTK-BUTTON-IMAGE-POSITION
+                         "image-position" "GtkPositionType" T T)))
+@end example
+
+@node Specifying additional properties for CLOS classes
+@section Specifying additional properties for CLOS classes
+
+Some properties are not exposed through GObject introspection facilities, but are rather present as a pair of functions (@code{class_get_property}, @code{class_set_property}). @code{gobject-class} metaclass supports such properties. For these properties to be included in automatically generated class definitions, they should be made known to the generator.
+
+Definitions generator uses variable @code{*additional-properties*} to get this information.
+
+Variable @code{*additional-properties*} contains a plist that maps GType names to a list of properties definitions (See @ref{define-g-object-class} for syntax of properties definitions).
+
+To supply the bindings generator with this information, bind @code{*additional-properties*} to such list when the generator is run.
+
+Example:
+@example
+(("GtkTreeViewColumn"
+  (:cffi gtk::tree-view
+         gtk::tree-view-column-tree-view
+         g-object "gtk_tree_view_column_get_tree_view" nil)
+  (:cffi gtk::sort-column-id
+         gtk::tree-view-column-sort-column-id
+         :int "gtk_tree_view_column_get_sort_column_id" "gtk_tree_view_column_set_sort_column_id")
+  (:cffi gtk::cell-renderers
+         gtk::tree-view-column-cell-renderers
+         (glist g-object  :free-from-foreign t) "gtk_tree_view_column_get_cell_renderers" nil))
+ ("GtkTreeSelection"
+  (:cffi gtk::mode
+         gtk::tree-selection-mode
+         gtk::selection-mode "gtk_tree_selection_get_mode" "gtk_tree_selection_set_mode")
+  (:cffi gtk::select-function
+         gtk::tree-selection-select-function
+         nil gtk::tree-selection-get-selection-function gtk::tree-selection-set-select-function)))
+@end example
+
+@node Generating names for CLOS classes and accessors
+@section Generating names for CLOS classes and accessors
+
+Names of types are generated by mapping @code{CamelCaseNames} to @code{dash-separated-names} and interning them in specified package. Additionally, prefix from beginning of the name may be stripped (@code{"GtkWidget"} has prefix @code{"Gtk"}, after stripping it maps to @code{widget}). Some names may require special processing (e.g., @code{"GObject"}, @code{"GInitiallyUnowned"} should map to class names in @code{gobject} package; @code{"GtkWindow"} and @code{"GdkWindow"} should receive different @code{symbol-name}s so that they can both be imported in one package).
+
+Accessors for slots are generated by concatenating class name, dash and slot name, producing names like @code{class-slot}: @code{container-child}, @code{button-label}, etc.
+
+Name generation affected by following variables:
+@itemize
+@item @var{*strip-prefix*}
+A string variable specifying the prefix that should to be stripped from the names to generate symbols (e.g., if @code{(equal "Gtk" *strip-prefix*)}, then type named @code{"GtkWidget"} will map to class named @code{widget}.
+@item @var{*lisp-name-exceptions*}
+A plist mapping from strings (type names) to symbols (class names) that have special name processing.
+Example:
+@example
+`(("GObject" gobject:g-object)
+  ("GtkObject" ,(intern "GTK-OBJECT" (find-package :gtk)))
+  ("GInitiallyUnowned" gobject::g-initially-unowned)
+  ("GtkWindow" ,(intern "GTK-WINDOW" (find-package :gtk)))
+  ("GtkUIManager" ,(intern "UI-MANAGER" (find-package :gtk)))
+  ("GtkUIManagerItemType" ,(intern "UI-MANAGER-ITEM-TYPE" (find-package :gtk))))
+@end example
+@end itemize
+
 @node generate-types-hierarchy-to-file
 @section generate-types-hierarchy-to-file
+
+@example
+(generate-types-hierarchy-to-file file
+                                  root-type
+                                  &key include-referenced
+                                  prefix
+                                  package
+                                  exceptions
+                                  prologue
+                                  interfaces
+                                  enums
+                                  flags
+                                  objects
+                                  exclusions
+                                  additional-properties)
+@end example
+
+@table @var
+@item @var{file}
+A string or pathname naming the file, or a stream.
+@item @var{root-type}
+A GType designator for a root type. All types that inherit from this type will be defined.
+@item @var{&key include-referenced}
+A boolean. Specifies whether referenced types should be included. Type is referenced if it is an interface or a type of property of type included in generation
+@item @var{prefix}
+A string naming the prefix that should be removed from the beginning of names
+@item @var{package}
+A package which will contain generated names of types, slots and accessors. It will also be the current package when the definitions are written to file
+@item @var{exceptions}
+A plist that maps GType names to their Lisp names.
+See @ref{Generating names for CLOS classes and accessors} for more info on exceptions from name generation mechanism
+@item @var{prologue}
+A string that will be included verbatim in generated code file
+@item @var{interfaces}
+Additional list of interfaces that will also be included in generation
+@item @var{enums}
+Additional list of enums that will also be included in generation
+@item @var{flags}
+Additional list of flags that will also be included in generation
+@item @var{objects}
+Additional list of object types that will also be included in generation
+@item @var{exclusions}
+A list of GType names that will be excluded from generation
+@item @var{additional-properties}
+A plist of properties definitions that will be added to generated classes.
+See @ref{Specifying additional properties for CLOS classes} for more information.
+@end table
+
+Generates definitions for all types in a type hierarchy. Recursively scan types hierarchy (starting from @code{root} and @code{objects} and @code{interfaces}) (except types that were specifically excluded) and generate defintion for every mentioned type. Parameters control various aspects of definition generation.
+
+Example of usage:
+@example
+(generate-types-hierarchy-to-file
+ "gtk.generated-classes.lisp"
+ "GtkObject"
+ :include-referenced t
+ :prefix "Gtk"
+ :package (or (find-package :gtk) (make-package :gtk))
+ :exceptions `(("GObject" gobject:g-object)
+               ("GtkObject" ,(intern "GTK-OBJECT" (find-package :gtk)))
+               ("GInitiallyUnowned" gobject::g-initially-unowned)
+               ("GtkWindow" ,(intern "GTK-WINDOW" (find-package :gtk)))
+               ("GtkUIManager" ,(intern "UI-MANAGER" (find-package :gtk)))
+               ("GtkUIManagerItemType" ,(intern "UI-MANAGER-ITEM-TYPE" (find-package :gtk))))
+ :prologue (format nil "(in-package :gtk)")
+ :interfaces '("GtkBuildable" "GtkCellEditable" ...)
+ :objects '("GtkSettings" "GtkRcStyle" ...)
+ :flags '("GtkTextSearchFlags" "GtkAccelFlags" ...)
+ :enums '("GtkTextDirection" "GtkSizeGroupMode" ...)
+ :exclusions '("PangoStretch" "PangoVariant" ...)
+ :additional-properties
+ '(("GtkTreeViewColumn"
+    (:cffi
+     gtk::tree-view
+     gtk::tree-view-column-tree-view
+     g-object
+     "gtk_tree_view_column_get_tree_view"
+     nil)
+    ...)
+   ...))
+@end example
 
 @bye
 
