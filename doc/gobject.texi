@@ -166,6 +166,8 @@ CL-GTK2-GObject defines two packages: @code{gobject} and @code{gobject.ffi}. The
 @menu
 * g-type-string::
 * g-type-numeric::
+* g-type=::
+* g-type/=::
 @end menu
 
 GObject is an object system based on GType type system. Types in it are identified by an integer value of type @code{GType}. In @code{cl-gtk2-gobject}, types are identified by GType designators. GType designator is an integer (equal to corresponding GType identifier) or a string (equal to the name of corresponding type). The important difference between GType and GType designator is that GType values may change between program runs (all GTypes except fundamental GTypes will change values), but string GType designators do not change (because names of types do not change). As such, if ever GType must be saved in a code, string GType designator should be preferred.
@@ -197,7 +199,7 @@ Some of the types are fundamental and have constant integer values. They are ide
 @item @code{+g-type-object+} ("GObject"). The fundamental type for GObject.
 @end itemize
 
-Functions @ref{g-type-string} and @ref{g-type-numeric} return the numeric and string representations of GType designators (given any of them).
+Functions @ref{g-type-string} and @ref{g-type-numeric} return the numeric and string representations of GType designators (given any of them). Functions @ref{g-type=} and @ref{g-type/=} check types for equality.
 
 Invalid type (the GType that does not exist) is identified as a 0 or @code{NIL}.
 
@@ -236,6 +238,34 @@ The numeric identifier of GType
 @end table
 
 Returns the numeric identifier of GType
+
+@node g-type=
+@section g-type=
+
+@code{(g-type= type-1 type-2) @result{} eq}
+
+@table @var
+@item @var{type-1}
+A GType designator
+@item @var{type-2}
+A GType designator
+@item @var{eq}
+A boolean that is true if @code{type-1} and @code{type-2} designate the same type.
+@end table
+
+@node g-type/=
+@section g-type/=
+
+@code{(g-type/= type-1 type-2) @result{} eq}
+
+@table @var
+@item @var{type-1}
+A GType designator
+@item @var{type-2}
+A GType designator
+@item @var{eq}
+A boolean that is true if @code{type-1} and @code{type-2} designate different types.
+@end table
 
 @node Type hierarchy and type relations
 @chapter Type hierarchy and type relations
