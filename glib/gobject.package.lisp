@@ -174,7 +174,10 @@
            #:get-g-flags-definition
            #:get-g-enum-definition
            #:get-g-interface-definition
-           #:get-g-class-definition)
+           #:get-g-class-definition
+           #:*strip-prefix*
+           #:*lisp-name-exceptions*
+           #:*additional-properties*)
   (:documentation
    "CL-GTK2-GOBJECT is a binding to GObject type system.
 For information on GObject, see its @a[http://library.gnome.org/devel/gobject/stable/]{documentation}.
