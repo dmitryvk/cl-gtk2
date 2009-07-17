@@ -1,7 +1,6 @@
 (defpackage :gtk
   (:use :cl :cffi :gobject :gdk :glib)
-  (:export #:register-object-type
-           #:gtk-main
+  (:export #:gtk-main
            #:gtk-main-quit
            #:dialog-run
            #:object-destroy
