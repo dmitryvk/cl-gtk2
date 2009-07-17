@@ -1527,6 +1527,263 @@ This defines the function that returns an instance of GObject class:
 
 @node GBoxed
 @chapter GBoxed
+@menu
+* define-g-boxed-class::
+* define-g-boxed-ref::
+@end menu
+
+GObject manual defines this type in the following way:
+
+``GBoxed is a generic wrapper mechanism for arbitrary C structures. The only thing the type system needs to know about the structures is how to copy and free them, beyond that they are treated as opaque chunks of memory.
+
+Boxed types are useful for simple value-holder structures like rectangles or points. They can also be used for wrapping structures defined in non-GObject based libraries.''
+
+Naturally, it is quite hard to provide support for such structures. At the moment, support for GBoxed is pretty bad.
+
+Basically, two use cases of GBoxed structures are provided:
+@itemize
+@item structure is mapped to Lisp structure defined with @code{defstruct}. This is complex scenario and it supports inheritance between structure. Its main use is to define the @code{GdkEvent} structure wrapper. Macro @code{define-g-boxed-class} supports this use case.
+@item structure is mapped to Lisp wrapper that contains pointer to structure and provides accessor functions (by calling foreign function or calling Lisp function). Macro @code{define-g-boxed-ref} supports this use case.
+@end itemize
+
+In both scenarios, foreign functions and GValue type registrations are provided that provide wrapping and unwrapping behaivour (it yet remains to be proven that the behaviour is correct in all cases with regard to issues of memory management, ownership, lifetime). In both cases it is possible to pass the structure by reference, allowing the foreign function (or the callback code) to change the contents of GBoxed.
+
+It is expected that the support for GBoxed structures will be improved.
+
+@node define-g-boxed-class
+@section define-g-boxed-class
+
+@example
+(define-g-boxed-class g-name-and-c-name name (&optional superclass-and-dispatch (export t))
+  &body slot*)
+
+g-name-and-c-name ::= nil
+g-name-and-c-name ::= (g-name c-name)
+superclass-and-dispatch ::= (&optional superclass dispatch-slot dispatch-values)
+slot ::= slot-name slot-type &key initform parser unparser
+@end example
+
+@table @var
+@item @var{g-name}
+A string naming the type of this GBoxed; for inherited classes, it should be @code{NIL}
+@item @var{c-name}
+A symbol naming the generated CFFI foreign structure definition corresponding to this GBoxed. This name should not conflict with other CFFI types.
+@item @var{name}
+A symbol naming the Lisp structure that will be generated
+@item @var{superclass}
+A symbol naming the structure defined with @code{define-g-boxed-class} that is the superclass of this structure
+@item @var{dispatch-slot}
+A slot of the superclass structure that identifies the specific type of structure (``discriminator'')
+@item @var{dispatch-values}
+A value or a list of values of the @code{dispatch-slot} that correspond to this GBoxed class
+@item @var{slot-name}
+Name of a slot
+@item @var{slot-type}
+CFFI foreign type of a slot
+@item @var{initform}
+An optional initform for @code{defstruct} slot
+@item @var{parser}
+An optional parser function designator for slot. Parser function is called to get the value for slot when the GBoxed is passed to Lisp with the following arguments: @code{(name pointer)} where the @code{name} is the name of a structure being defined and the @code{pointer} is a foreign pointer to the C structure.
+@item @var{unparser}
+An optional unparser function designator for a slot. Unparser function is called to write the slot value to GBoxed structure. It is called with arguments @code{(name pointer object)} where @code{name} is the name of a structure being defined, @code{pointer} is the pointer to the C structure and the @code{object} is object whose slot value should be written to structure.
+@end table
+
+Defines the @code{defstruct} wrapper for GBoxed type. Various parameters control how the structure is converted between C and Lisp representations.
+
+@code{define-g-boxed-class} supports basic single inheritance. This is provided to support ``generic'' C structures like @code{GdkEvent} that contain a ``type'' field and a @code{union} of other substructures. The natural mapping of such structure to Lisp is not one, but several structures that are inherited one from another. This supports e.g. method dispatching on @code{GdkEvent} types (if it is ever necessary).
+
+The only use of @code{define-g-boxed-class} that involves inheritance is the @code{GdkEvent} structure. It is defined as follows.
+@example
+(define-g-boxed-class ("GdkEvent" event-struct) event ()
+  (type event-type)
+  (window (g-object gdk-window))
+  (send-event (:boolean :int8)))
+
+(define-g-boxed-class nil event-key ((event type (:key-press :key-release)))
+  (time :uint32)
+  (state modifier-type)
+  (keyval :uint)
+  (length :int)
+  (string (:string :free-from-foreign nil :free-to-foreign nil))
+  (hardware-keycode :uint16)
+  (group :uint8)
+  (is-modifier :uint))
+
+(define-g-boxed-class nil event-button ((event type (:button-press :2button-press :3button-press :button-release)))
+  (time :uint32)
+  (x :double)
+  (y :double)
+  (axes (fixed-array :double 2))
+  (state :uint)
+  (button :uint)
+  (device (g-object device))
+  (x-root :double)
+  (y-root :double))
+@end example
+
+Some simpler uses include following examples:
+@example
+(define-g-boxed-class "GdkFont" font ()
+  (type font-type :initform :font)
+  (ascent :int :initform 0)
+  (descent :int :initform 0))
+
+(define-g-boxed-class "GdkColor" color ()
+  (pixel :uint32 :initform 0)
+  (red :uint16 :initform 0)
+  (green :uint16 :initform 0)
+  (blue :uint16 :initform 0))
+
+(define-g-boxed-class "GdkGeometry" geometry ()
+  (min-width :int :initform 0)
+  (min-height :int :initform 0)
+  (max-width :int :initform 0)
+  (max-height :int :initform 0)
+  (base-width :int :initform 0)
+  (base-height :int :initform 0)
+  (width-increment :int :initform 0)
+  (height-increment :int :initform 0)
+  (min-aspect :double :initform 0.0d0)
+  (max-aspect :double :initform 0.0d0)
+  (gravity gravity :initform :north-west))
+@end example
+
+@node define-g-boxed-ref
+@section define-g-boxed-ref
+
+@code{g-boxed-ref} class is defined:
+@example
+(defclass g-boxed-ref ()
+  ((pointer :accessor pointer :initarg :pointer)))
+@end example
+
+This class holds the pointer to structure. GBoxed-ref types are subclasses of this class.
+
+@example
+(define-g-boxed-ref g-name name
+  &rest property*)
+
+property ::= (:free-function free-function)
+property ::= (:alloc-function alloc-function)
+property ::= (:slots &rest slot*)
+slot ::= (slot-name &key reader writer type (accessor slot-name))
+@end example
+
+@table @var
+@item @var{g-name}
+A string that names the GBoxed type
+@item @var{name}
+A symbol that is the name for generated class
+@item @var{free-function}
+Mandatory designator for a function that frees the allocated object. This function accepts a single argument - CFFI foreign pointer.
+@item @var{alloc-function}
+Mandatory designator for a function that allocates the object. This function accepts zero arguments and returns CFFI foreign pointer to fresh object.
+@item @var{slot-name}
+A symbol naming the slot
+@item @var{type}
+A CFFI foreign type of a slot
+@item @var{reader}
+@code{NIL} or a string or a function designator. If it is @code{NIL} the the slot is not readable. If it is a string then it names the C function that accepts the pointer to structure and returns the value of a slot of specified CFFI type. If it is a function designator that it designates a function that accepts the Lisp object and returns its slot value.
+@item @var{writer}
+@code{NIL} or string or a function designator. If it is a @code{NIL} then the slot is not writable. If it is a string then it names the C function that accepts the pointer to C structure and a value (of specified CFFI type) and assigns it to the slot of a structure. If it is a function designator then it specifies a function that accepts the new slot value and a Lisp object and assigns it to the slot.
+@item @var{accessor}
+A symbol namin the accessor function for slot.
+@end table
+
+Defines a class corresponding to GBoxed type that is passed by reference (e.g., @code{GtkTextIter}). Class is made a subclass of @code{g-boxed-ref}.
+
+The memory occupied by this class is managed automatically: after the GC collects the Lisp instance, @code{free-function} is used to free the structure.
+
+Example:
+@example
+(defcstruct tree-iter
+  (stamp :int)
+  (user-data :pointer)
+  (user-data-2 :pointer)
+  (user-data-3 :pointer))
+
+(defun tree-iter-get-stamp (i) (foreign-slot-value (pointer i) 'tree-iter 'stamp))
+(defun tree-iter-set-stamp (value i) (setf (foreign-slot-value (pointer i) 'tree-iter 'stamp) value))
+(defun tree-iter-get-user-data (i) (pointer-address (foreign-slot-value (pointer i) 'tree-iter 'user-data)))
+(defun tree-iter-set-user-data (value i) (setf (foreign-slot-value (pointer i) 'tree-iter 'user-data) (make-pointer value)))
+
+(defun tree-iter-alloc () (glib:g-malloc (foreign-type-size 'tree-iter)))
+(defun tree-iter-free (v) (glib:g-free v))
+
+(define-g-boxed-ref "GtkTreeIter" tree-iter
+  (:slots (stamp :reader tree-iter-get-stamp :writer tree-iter-set-stamp :accessor tree-iter-stamp)
+          (user-data :reader tree-iter-get-user-data :writer tree-iter-set-user-data :accessor tree-iter-user-data))
+  (:alloc-function tree-iter-alloc)
+  (:free-function tree-iter-free))
+@end example
+
+Another example:
+@example
+(define-foreign-type unichar ()
+  ()
+  (:actual-type :uint32)
+  (:simple-parser unichar))
+
+(defmethod translate-from-foreign (value (type unichar))
+  (code-char value))
+
+(defmethod translate-to-foreign (value (type unichar))
+  (char-code value))
+
+(define-g-boxed-ref "GtkTextIter" text-iter
+  (:free-function gtk-text-iter-free)
+  (:alloc-function gtk-text-iter-alloc)
+  (:slots (text-iter-buffer :reader "gtk_text_iter_get_buffer" :type (g-object text-buffer))
+          (text-iter-offset :reader "gtk_text_iter_get_offset" :writer "gtk_text_iter_set_offset" :type :int)
+          (text-iter-line :reader "gtk_text_iter_get_line" :writer "gtk_text_iter_set_line" :type :int)
+          (text-iter-line-offset :reader "gtk_text_iter_get_line_offset" :writer "gtk_text_iter_set_line_offset" :type :int)
+          (text-iter-visible-line-offset :reader "gtk_text_iter_get_visible_line_offset" :writer "gtk_text_iter_set_visible_line_offset" :type :int)
+          (text-iter-char :reader "gtk_text_iter_get_char" :type unichar)
+          (text-iter-pixbuf :reader "gtk_text_iter_get_pixbuf" :type (g-object pixbuf))
+          (text-iter-marks :reader "gtk_text_iter_get_marks" :type (gslist (g-object text-mark) :free-from-foreign t))
+          (text-iter-child-anchor :reader "gtk_text_iter_get_child_anchor" :type (g-object text-child-anchor))
+          (text-iter-tags :reader "gtk_text_iter_get_tags" :type (gslist (g-object text-tag) :free-from-foreign t))
+          (text-iter-chars-in-line :reader "gtk_text_iter_get_chars_in_line" :type :int)
+          (text-iter-language :reader "gtk_text_iter_get_language" :type :pointer)
+          (text-iter-is-end :reader "gtk_text_iter_is_end" :type :boolean)
+          (text-iter-is-start :reader "gtk_text_iter_is_start" :type :boolean)
+          (text-iter-can-insert :reader "gtk_text_iter_can_insert" :type :boolean)
+          (text-iter-starts-word :reader "gtk_text_iter_starts_word" :type :boolean)
+          (text-iter-ends-word :reader "gtk_text_iter_ends_word" :type :boolean)
+          (text-iter-inside-word :reader "gtk_text_iter_inside_word" :type :boolean)
+          (text-iter-starts-line :reader "gtk_text_iter_starts_line" :type :boolean)
+          (text-iter-ends-line :reader "gtk_text_iter_ends_line" :type :boolean)
+          (text-iter-starts-sentence :reader "gtk_text_iter_starts_sentence" :type :boolean)
+          (text-iter-ends-sentence :reader "gtk_text_iter_ends_sentence" :type :boolean)
+          (text-iter-inside-sentence :reader "gtk_text_iter_inside_sentence" :type :boolean)
+          (text-iter-is-cursor-position :reader "gtk_text_iter_is_cursor_position" :type :boolean)))
+
+(defcstruct %text-iter
+  (dummy1 :pointer)
+  (dummy2 :pointer)
+  (dummy3 :int)
+  (dummy4 :int)
+  (dummy5 :int)
+  (dummy6 :int)
+  (dummy7 :int)
+  (dummy8 :int)
+  (dummy9 :pointer)
+  (dummy10 :pointer)
+  (dummy11 :int)
+  (dummy12 :int)
+  (dummy13 :int)
+  (dummy14 :pointer))
+
+(defcfun gtk-text-iter-copy :pointer
+  (iter :pointer))
+
+(defcfun gtk-text-iter-free :void
+  (iter :pointer))
+
+(defun gtk-text-iter-alloc ()
+  (with-foreign-object (iter '%text-iter)
+    (gtk-text-iter-copy iter)))
+@end example
 
 @node Generating type definitions by introspection
 @chapter Generating type definitions by introspection
