@@ -32,7 +32,7 @@
 
 (defun gtk-generate (filename)
   (with-open-file (stream filename :direction :output :if-exists :supersede)
-    (gobject::generate-types-hierarchy-to-file
+    (generate-types-hierarchy-to-file
      stream
      "GtkObject"
      :include-referenced t
