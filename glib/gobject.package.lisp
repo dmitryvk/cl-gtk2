@@ -166,7 +166,15 @@
            #:create-g-closure
            #:g-object-call-constructor
            #:g-object-call-get-property
-           #:g-object-call-set-property)
+           #:g-object-call-set-property
+           #:register-enum-type
+           #:register-flags-type
+           #:register-object-type
+           #:generate-types-hierarchy-to-file
+           #:get-g-flags-definition
+           #:get-g-enum-definition
+           #:get-g-interface-definition
+           #:get-g-class-definition)
   (:documentation
    "CL-GTK2-GOBJECT is a binding to GObject type system.
 For information on GObject, see its @a[http://library.gnome.org/devel/gobject/stable/]{documentation}.
