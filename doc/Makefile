@@ -14,3 +14,4 @@ gobject/index.html: gobject.texi
 
 gobject.pdf: gobject.texi
 	pdftex $<
+	pdftex $<
