@@ -47,7 +47,7 @@
         signal-info))))
 
 (defun type-signals (type &key include-inherited)
-  (unless (= (g-type-numeric type) +g-type-invalid+)
+  (unless (g-type= type +g-type-invalid+)
     (let ((signals (with-foreign-object (n-ids :uint)
                      (with-unwind (ids (g-signal-list-ids type n-ids) g-free)
                        (iter (for i from 0 below (mem-ref n-ids :uint))

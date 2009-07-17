@@ -22,12 +22,11 @@
             (warn "Type initializer for class '~A' (GType '~A') is invalid: foreign symbol '~A'"
                   (gobject-class-g-type-name class) (class-name class) (gobject-class-g-type-initializer class))
             (progn
-              (when (= +g-type-invalid+ type)
+              (when (g-type= +g-type-invalid+ type)
                 (warn "Declared GType name '~A' for class '~A' is invalid ('~A' returned 0)"
                       (gobject-class-g-type-name class) (class-name class)
                       (gobject-class-g-type-initializer class)))
-              (unless (string= (gobject-class-g-type-name class)
-                               (g-type-name type))
+              (unless (g-type= (gobject-class-g-type-name class) type)
                 (warn "Declared GType name '~A' for class '~A' does not match actual GType name '~A'"
                       (gobject-class-g-type-name class)
                       (class-name class)

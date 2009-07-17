@@ -243,8 +243,7 @@
          (type-init-name (probable-type-init-name g-name))
          (own-properties
           (remove-if-not (lambda (property)
-                           (= g-type
-                              (g-type-numeric (g-class-property-definition-owner-type property))))
+                           (g-type= g-type (g-class-property-definition-owner-type property)))
                          properties)))
     `(define-g-object-class ,g-name ,name 
          (:superclass ,superclass-name
@@ -275,7 +274,7 @@
                  (cdr (find g-name *additional-properties* :key 'car :test 'string=))))))
 
 (defun get-g-class-definitions-for-root-1 (type)
-  (unless (member (ensure-g-type type) *generation-exclusions* :test '=)
+  (unless (member type *generation-exclusions* :test 'g-type=)
     (cons (get-g-class-definition type)
           (reduce #'append
                   (mapcar #'get-g-class-definitions-for-root-1
@@ -290,23 +289,24 @@
 (defun class-or-interface-properties (type)
   (setf type (ensure-g-type type))
   (cond 
-    ((= (g-type-numeric (g-type-fundamental type)) +g-type-object+) (class-properties type))
-    ((= (g-type-numeric (g-type-fundamental type)) +g-type-interface+) (interface-properties type))))
+    ((g-type= (g-type-fundamental type) +g-type-object+) (class-properties type))
+    ((g-type= (g-type-fundamental type) +g-type-interface+) (interface-properties type))))
 
 (defun get-shallow-referenced-types (type)
   (setf type (ensure-g-type type))
   (remove-duplicates (sort (loop
                               for property in (class-or-interface-properties type)
-                              when (= (g-type-numeric type) (g-type-numeric (g-class-property-definition-owner-type property)))
+                              when (g-type= type (g-class-property-definition-owner-type property))
                               collect (g-class-property-definition-type property))
-                           #'<)
+                           #'<
+                           :key #'g-type-numeric)
                      :test 'equal))
 
 (defun get-referenced-types-1 (type)
   (setf type (ensure-g-type type))
   (loop
      for property-type in (get-shallow-referenced-types type)
-     do (pushnew property-type *referenced-types* :test '=))
+     do (pushnew property-type *referenced-types* :test 'g-type=))
   (loop
      for type in (g-type-children type)
      do (get-referenced-types-1 type)))
@@ -453,24 +453,24 @@ If non-@code{NIL}, specifies the function that initializes the type: string spec
              for interface in interfaces
              do (loop
                    for referenced-type in (get-shallow-referenced-types interface)
-                   do (pushnew referenced-type referenced-types :test 'equal)))
+                   do (pushnew referenced-type referenced-types :test 'g-type=)))
           (loop
              for object in objects
              do (loop
                    for referenced-type in (get-shallow-referenced-types object)
-                   do (pushnew referenced-type referenced-types :test 'equal)))
+                   do (pushnew referenced-type referenced-types :test 'g-type=)))
           (loop
              for enum-type in (filter-types-by-fund-type
                                referenced-types "GEnum")
              for def = (get-g-enum-definition enum-type)
-             unless (member (ensure-g-type enum-type) exclusions :test '=)
+             unless (member enum-type exclusions :test 'g-type=)
              do (format file "~S~%~%" def))
             
           (loop
              for flags-type in (filter-types-by-fund-type
                                 referenced-types "GFlags")
              for def = (get-g-flags-definition flags-type)
-             unless (member (ensure-g-type flags-type) exclusions :test '=)
+             unless (member flags-type exclusions :test 'g-type=)
              do (format file "~S~%~%" def)))
         (loop
            with auto-enums = (and include-referenced
@@ -478,7 +478,7 @@ If non-@code{NIL}, specifies the function that initializes the type: string spec
                                    referenced-types "GEnum"))
            for enum in enums
            for def = (get-g-enum-definition enum)
-           unless (find (ensure-g-type enum) auto-enums :test 'equal)
+           unless (find enum auto-enums :test 'g-type=)
            do (format file "~S~%~%" def))
         (loop
            with auto-flags = (and include-referenced
@@ -486,7 +486,7 @@ If non-@code{NIL}, specifies the function that initializes the type: string spec
                                    referenced-types "GFlags"))
            for flags-type in flags
            for def = (get-g-flags-definition flags-type)
-           unless (find (ensure-g-type flags-type) auto-flags :test 'equal)
+           unless (find flags-type auto-flags :test 'g-type=)
            do (format file "~S~%~%" def))
         (loop
            for interface in interfaces

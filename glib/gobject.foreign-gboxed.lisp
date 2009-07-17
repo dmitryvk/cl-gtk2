@@ -489,12 +489,12 @@ If it is a function designator then it specifies a function that accepts the new
         (t (parse-g-boxed (g-value-get-boxed gvalue) boxed-type))))))
 
 (defmethod parse-g-value-for-type (gvalue-ptr (type-numeric (eql +g-type-boxed+)))
-  (if (= (g-type-numeric (g-value-type gvalue-ptr)) type-numeric)
+  (if (g-type= (g-value-type gvalue-ptr) type-numeric)
       (convert-from-foreign (g-value-get-boxed gvalue-ptr) '(glib:gstrv :free-from-foreign nil))
       (parse-g-value-boxed gvalue-ptr)))
 
 (defmethod set-gvalue-for-type (gvalue-ptr (type-numeric (eql +g-type-boxed+)) value)
-  (if (= (g-type-numeric (g-value-type gvalue-ptr)) type-numeric)
+  (if (g-type= (g-value-type gvalue-ptr) type-numeric)
       (g-value-set-boxed gvalue-ptr (convert-to-foreign value '(glib:gstrv :free-from-foreign nil)))
       (set-gvalue-boxed gvalue-ptr value)))
 

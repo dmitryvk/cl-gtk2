@@ -66,3 +66,11 @@ Example:
 @arg[name]{a string - name of GType}
 @return{an integer}"
   (name :string))
+
+(defun g-type= (type-1 type-2)
+  (= (g-type-numeric type-1)
+     (g-type-numeric type-2)))
+
+(defun g-type/= (type-1 type-2)
+  (/= (g-type-numeric type-1)
+      (g-type-numeric type-2)))

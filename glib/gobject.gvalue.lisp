@@ -26,7 +26,7 @@
 (defgeneric parse-g-value-for-type (gvalue-ptr type-numeric))
 
 (defmethod parse-g-value-for-type (gvalue-ptr type-numeric)
-  (if (= type-numeric (g-type-numeric (g-type-fundamental type-numeric)))
+  (if (g-type= type-numeric (g-type-fundamental type-numeric))
       (call-next-method)
       (parse-g-value-for-type gvalue-ptr (g-type-numeric (g-type-fundamental type-numeric)))))
 
@@ -65,7 +65,7 @@
 (defgeneric set-gvalue-for-type (gvalue-ptr type-numeric value))
 
 (defmethod set-gvalue-for-type (gvalue-ptr type-numeric value)
-  (if (= type-numeric (g-type-numeric (g-type-fundamental type-numeric)))
+  (if (g-type= type-numeric (g-type-fundamental type-numeric))
       (call-next-method)
       (set-gvalue-for-type gvalue-ptr (g-type-numeric (g-type-fundamental type-numeric)) value)))
 

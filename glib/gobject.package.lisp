@@ -177,7 +177,9 @@
            #:get-g-class-definition
            #:*strip-prefix*
            #:*lisp-name-exceptions*
-           #:*additional-properties*)
+           #:*additional-properties*
+           #:g-type=
+           #:g-type/=)
   (:documentation
    "CL-GTK2-GOBJECT is a binding to GObject type system.
 For information on GObject, see its @a[http://library.gnome.org/devel/gobject/stable/]{documentation}.

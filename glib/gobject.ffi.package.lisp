@@ -197,4 +197,6 @@
            #:g-signal-list-ids
            #:g-type-string
            #:g-type-numeric
-           #:g-signal-parse-name))
+           #:g-signal-parse-name
+           #:g-type=
+           #:g-type/=))
