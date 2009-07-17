@@ -817,6 +817,7 @@ Example:
 * g-value-unset::
 * parse-g-value::
 * set-g-value::
+* Registering types::
 @end menu
 
 GValue is a generic container for arbitrary value of type supported by GType system. Refer to GObject documentation for more detailed information.
@@ -909,6 +910,49 @@ A boolean specifying whether to call @code{g-value-init} before assignment
 @end table
 
 Assigns the @code{object} to the @code{gvalue}. When GValue is not used, call @code{g-value-unset} to deinitialize the @code{GValue}.
+
+@node Registering types
+@section Registering types
+
+In order to be able to parse GValues and set them, it is necessary for GValue binding to know type mapping between GObject types and Lisp types. Type registration serves to this purpose.
+
+GEnum and GFlags are mapped to CFFI @code{defcenum} and @code{defbitfield} types. Functions @code{register-enum-type} and @code{register-flags-type} add the type to the mapping.
+
+@subsection
+@code{(register-enum-type name type)}
+@table @var
+@item @var{name}
+A string naming the GEnum type
+@item @var{type}
+A symbol - name of CFFI foreign enum type
+@end table
+
+Registers the @code{type} to be used for passing value of GEnum type @code{name} between GObject and Lisp.
+
+Example:
+@example
+(defcenum text-direction
+  :none :ltr :rtl)
+(register-enum-type "GtkTextDirection" 'text-direction)
+@end example
+
+@subsection
+@code{(register-flags-type name type)}
+@table @var
+@item @var{name}
+A string naming the GFlags type
+@item @var{type}
+A symbol - name of CFFI foreign flags type
+@end table
+
+Registers the @code{type} to be used for passing value of GFlags type @code{name} between GObject and Lisp.
+
+Example:
+@example
+(defcenum state-type
+  :normal :active :prelight :selected :insensitive)
+(register-enum-type "GtkStateType" 'state-type)
+@end example
 
 @node Stable pointers
 @chapter Stable pointers
@@ -1237,6 +1281,8 @@ GObject metaclass @code{gobject-class} bridges two object systems: GObject and C
 
 Classes that correspond to GObject classes are instances of this class.
 
+Defining the class with metaclass @code{gobject-class} registers the type @code{:g-type-name} for conversions using GValue and CFFI foreign type @code{g-object}.
+
 This class has the following slots:
 @itemize
 @item @var{g-type-name} (accessor @code{gobject-class-g-type-name}, initarg @code{:g-type-name})
@@ -1246,35 +1292,75 @@ Specifies the name of GObject class
 
 Name of type initializer function. This function initializes the class and returns its GType. Typically it is named @code{class_get_type}.
 @item @var{interface-p} (accessor @code{gobject-class-interface-p}, initarg @code{:interface-p})
+
+A boolean specifying whether this CLOS class corresponds to GInterface.
 @end itemize
 
 This metaclass defines the GObject classes.
 
-Slots which have @code{:allocation} of @code{:gobject-property} are mapped to GObject properties. This metaclass defines the following attributes for slots:
+Slots which have @code{:allocation} of @code{:gobject-property} are mapped to GObject properties. Such slots have following attributes:
 @itemize
 @item @var{:g-property-type}
 
-A name of a type of property
+A string naming GType of property
 @item @var{:g-property-name}
 
 A name of a property
+@end itemize
+
+Slots which have @code{:allocation} of @code{:gobject-fn} are mapped to a pair of accessor functions (usually named @code{class_get_property} and @code{class_set_property}). This is included because some properties are not exposed as GObject properties. Such slots have following attributes:
+@itemize
+@item @var{:g-property-type}
+A CFFI foreign type of property
+@item @var{:g-getter}
+A string naming foreign getter function of a property or a symbol designating Lisp getter function. Foreign getter function should have signature @code{type class_get_property(object *)}. Lisp function should be of type @code{(function (class) type)}.
+@item @var{:g-setter}
+A string naming foreign setter function of a property or a symbol designating Lisp setter function. Foreign setter function should have signature @code{void class_set_property(object *, type)}. Lisp function should be of type @code{(function (class type))}.
 @end itemize
 
 Initargs of a slot are used to construct the GObject class.
 
 Example:
 @example
-(defclass dialog (gtk-window atk-implementor-iface buildable)
-  ((has-separator :accessor dialog-has-separator
-                  :initarg :has-separator
-                  :allocation :gobject-property
-                  :g-property-type "gboolean"
-                  :g-property-name "has-separator"))
-  (:metaclass gobject-class)
-  (:g-type-name . "GtkDialog")
-  (:g-type-initializer . "gtk_dialog_get_type"))
+(defclass container (widget atk-implementor-iface buildable)
+    ((border-width :allocation :gobject-property
+                   :g-property-type "guint"
+                   :accessor container-border-width
+                   :initarg :border-width
+                   :g-property-name "border-width")
+     (resize-mode :allocation :gobject-property
+                  :g-property-type "GtkResizeMode"
+                  :accessor container-resize-mode
+                  :initarg :resize-mode
+                  :g-property-name "resize-mode")
+     (child :allocation :gobject-property
+            :g-property-type "GtkWidget"
+            :accessor container-child
+            :initarg :child
+            :g-property-name "child")
+     (focus-child :allocation :gobject-fn
+                  :g-property-type g-object
+                  :accessor container-focus-child
+                  :initarg :focus-child
+                  :g-getter "gtk_container_get_focus_child"
+                  :g-setter "gtk_container_set_focus_child")
+     (focus-vadjustment :allocation :gobject-fn
+                        :g-property-type (g-object adjustment)
+                        :accessor container-focus-vadjustment
+                        :initarg :focus-vadjustment
+                        :g-getter "gtk_container_get_focus_vadjustment"
+                        :g-setter "gtk_container_set_focus_vadjustment")
+     (focus-hadjustment :allocation :gobject-fn
+                        :g-property-type (g-object adjustment)
+                        :accessor container-focus-hadjustment
+                        :initarg :focus-hadjustment
+                        :g-getter "gtk_container_get_focus_hadjustment"
+                        :g-setter "gtk_container_set_focus_hadjustment"))
+    (:metaclass gobject-class)
+    (:g-type-name . "GtkContainer")
+    (:g-type-initializer . "gtk_container_get_type"))
 @end example
-(note the dot in @code{(:g-type-name . "GtkDialog")} and in @code{(:g-type-initializer . "gtk_dialog_get_type")}. It should be present)
+(note the dot in @code{(:g-type-name . "GtkContainer")} and in @code{(:g-type-initializer . "gtk_container_get_type")}. It should be present)
 
 @node Using objects
 @section Using objects
@@ -1431,7 +1517,105 @@ This defines the function that returns an instance of GObject class:
 
 @node Generating type definitions by introspection
 @chapter Generating type definitions by introspection
+@menu
+* define-g-object-class::
+* define-g-interface::
+* define-g-enum::
+* define-g-flags::
+* get-g-flags-definition::
+* get-g-enum-definition::
+* get-g-interface-definition::
+* get-g-class-definition::
+* generate-types-hierarchy-to-file::
+@end menu
 
+CL-GTK2-GOBJECT includes facilities for automatically generating parts of bindings for libraries that use GObject type system.
+
+@node define-g-object-class
+@section define-g-object-class
+
+@example
+(define-g-object-class g-type-name name
+  (&key (superclass 'g-object) (export t) interfaces type-initializer)
+  (&rest properties))
+
+property ::= name accessor gname type readable writable
+property ::= :cffi name acessor type reader writer
+@end example
+
+Parameters of @code{define-g-object-class}
+@table @var
+@item @var{superclass}
+A symbol naming the superclass of this class
+@item @var{export}
+Whether to export the name of the class and names of autogenerated properties names from the current package.
+@item @var{interfaces}
+A list of interfaces the this class implements
+@item @var{type-initializer}
+A string naming the type initiliazer function. It is usually named @code{class_get_type}.
+@item @var{properties}
+A list of slots of a class
+@end table
+
+Parameters of @code{property}:
+@table @var
+@item @var{name}
+A symbol naming the slot
+@item @var{accessor}
+A symbol naming the accessor function for this slot
+@item @var{gname}
+A string naming the property of GObject
+@item @var{type}
+A string naming the type of property of GObject (for GObject properties); or a symbol naming CFFI foreign type (for slots mapped to foreign accessors)
+@item @var{readable}
+A boolean specifying whether the slot can be read
+@item @var{writable}
+A boolean specifying whether the slot can be assigned to
+@item @var{reader}
+A string or a symbol naming getter function. See description of @code{gobject-class} metaclass for information.
+@item @var{writter}
+A string or a symbol naming setter function. See description of @code{gobject-class} metaclass for information.
+@end table
+
+Macro that expand to @code{defclass} for specified class. Additionally, exports accessor names and name of a class.
+
+Example:
+@example
+(define-g-object-class "GtkContainer" container
+  (:superclass widget :export t :interfaces
+               ("AtkImplementorIface" "GtkBuildable")
+               :type-initializer "gtk_container_get_type")
+  ((border-width container-border-width "border-width" "guint" t t)
+   (resize-mode container-resize-mode "resize-mode" "GtkResizeMode" t t)
+   (child container-child "child" "GtkWidget" nil t)
+   (:cffi focus-child container-focus-child g-object "gtk_container_get_focus_child" "gtk_container_set_focus_child")
+   (:cffi focus-vadjustment container-focus-vadjustment (g-object adjustment) "gtk_container_get_focus_vadjustment" "gtk_container_set_focus_vadjustment")
+   (:cffi focus-hadjustment container-focus-hadjustment (g-object adjustment) "gtk_container_get_focus_hadjustment" "gtk_container_set_focus_hadjustment")))
+@end example
+
+@node define-g-interface
+@section define-g-interface
+
+@node define-g-enum
+@section define-g-enum
+
+@node define-g-flags
+@section define-g-flags
+
+@node get-g-flags-definition
+@section get-g-flags-definition
+
+@node get-g-enum-definition
+@section get-g-enum-definition
+
+@node get-g-interface-definition
+@section get-g-interface-definition
+
+@node get-g-class-definition
+@section get-g-class-definition
+
+@node generate-types-hierarchy-to-file
+@section generate-types-hierarchy-to-file
 
 @bye
 
