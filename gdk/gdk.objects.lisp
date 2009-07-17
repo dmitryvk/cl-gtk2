@@ -158,10 +158,10 @@
   (y-root :double))
 
 (define-g-boxed-class "GdkRectangle" rectangle ()
-  (x :int)
-  (y :int)
-  (width :int)
-  (height :int))
+  (x :int :initform 0)
+  (y :int :initform 0)
+  (width :int :initform 0)
+  (height :int :initform 0))
 
 (define-g-boxed-class nil event-expose ((event type :expose))
   (area (g-boxed-inline rectangle))
@@ -286,9 +286,9 @@
 (define-g-enum "GdkFontType" font-type () :font :fontset)
 
 (define-g-boxed-class "GdkFont" font ()
-  (type font-type)
-  (ascent :int)
-  (descent :int))
+  (type font-type :initform :font)
+  (ascent :int :initform 0)
+  (descent :int :initform 0))
 
 (define-g-boxed-class "GdkColor" color ()
   (pixel :uint32 :initform 0)
