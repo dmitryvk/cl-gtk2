@@ -243,7 +243,7 @@
          (own-properties
           (remove-if-not (lambda (property)
                            (= g-type
-                              (g-class-property-definition-owner-type property)))
+                              (g-type-numeric (g-class-property-definition-owner-type property))))
                          properties)))
     `(define-g-object-class ,g-name ,name 
          (:superclass ,superclass-name
