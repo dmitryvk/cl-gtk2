@@ -1,6 +1,6 @@
 (in-package :gobject)
 
-(defvar *lisp-name-package* (find-package :gobject)
+(defvar *lisp-name-package* nil
   "For internal use (used by class definitions generator). Specifies the package in which symbols are interned.")
 (defvar *strip-prefix* "")
 (defvar *lisp-name-exceptions* nil)
@@ -231,8 +231,9 @@
           (write-char (char-downcase c) stream))
     (write-string "_get_type" stream)))
 
-(defun get-g-class-definition (type)
-  (let* ((g-type (ensure-g-type type))
+(defun get-g-class-definition (type &optional lisp-name-package)
+  (let* ((*lisp-name-package* (or lisp-name-package *lisp-name-package* *package*))
+         (g-type (ensure-g-type type))
          (g-name (g-type-name g-type))
          (name (g-name->name g-name))
          (superclass-g-type (g-type-parent g-type))
@@ -257,8 +258,9 @@
                   own-properties)
           ,@(cdr (find g-name *additional-properties* :key 'car :test 'string=))))))
 
-(defun get-g-interface-definition (interface)
-  (let* ((type (ensure-g-type interface))
+(defun get-g-interface-definition (interface &optional lisp-name-package)
+  (let* ((*lisp-name-package* (or lisp-name-package *lisp-name-package* *package*))
+         (type (ensure-g-type interface))
          (g-name (g-type-name type))
          (name (g-name->name g-name))
          (properties (interface-properties type))
@@ -288,14 +290,14 @@
 (defun class-or-interface-properties (type)
   (setf type (ensure-g-type type))
   (cond 
-    ((= (g-type-fundamental type) +g-type-object+) (class-properties type))
-    ((= (g-type-fundamental type) +g-type-interface+) (interface-properties type))))
+    ((= (g-type-numeric (g-type-fundamental type)) +g-type-object+) (class-properties type))
+    ((= (g-type-numeric (g-type-fundamental type)) +g-type-interface+) (interface-properties type))))
 
 (defun get-shallow-referenced-types (type)
   (setf type (ensure-g-type type))
   (remove-duplicates (sort (loop
                               for property in (class-or-interface-properties type)
-                              when (= type (g-class-property-definition-owner-type property))
+                              when (= (g-type-numeric type) (g-type-numeric (g-class-property-definition-owner-type property)))
                               collect (g-class-property-definition-type property))
                            #'<)
                      :test 'equal))
@@ -357,8 +359,9 @@ If non-@code{NIL}, specifies the function that initializes the type: string spec
         (numeric-value (enum-item-value enum-value)))
     `(,value-name ,numeric-value)))
 
-(defun get-g-enum-definition (type)
-  (let* ((g-type (ensure-g-type type))
+(defun get-g-enum-definition (type &optional lisp-name-package)
+  (let* ((*lisp-name-package* (or lisp-name-package *lisp-name-package* *package*))
+         (g-type (ensure-g-type type))
          (g-name (g-type-name g-type))
          (name (g-name->name g-name))
          (items (get-enum-items g-type))
@@ -401,8 +404,9 @@ If non-@code{NIL}, specifies the function that initializes the type: string spec
         (numeric-value (flags-item-value flags-value)))
     `(,value-name ,numeric-value)))
 
-(defun get-g-flags-definition (type)
-  (let* ((g-type (ensure-g-type type))
+(defun get-g-flags-definition (type &optional lisp-name-package)
+  (let* ((*lisp-name-package* (or lisp-name-package *lisp-name-package* *package*))
+         (g-type (ensure-g-type type))
          (g-name (g-type-name g-type))
          (name (g-name->name g-name))
          (items (get-flags-items g-type))
