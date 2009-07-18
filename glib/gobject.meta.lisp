@@ -206,7 +206,7 @@
 
 (defmethod slot-boundp-using-class ((class gobject-class) object (slot gobject-property-effective-slot-definition))
   (handler-case
-      (progn (g-object-property-type object (gobject-property-effective-slot-definition-g-property-name slot) :assert-readable t) t)
+      (progn (g-object-property-type (pointer object) (gobject-property-effective-slot-definition-g-property-name slot) :assert-readable t) t)
     (property-unreadable-error () nil)))
 
 (defmethod slot-value-using-class ((class gobject-class) object (slot gobject-property-effective-slot-definition))
