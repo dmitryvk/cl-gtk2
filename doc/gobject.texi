@@ -1722,7 +1722,7 @@ A symbol namin the accessor function for slot.
 
 Defines a class corresponding to GBoxed type that is passed by reference (e.g., @code{GtkTextIter}). Class is made a subclass of @code{g-boxed-ref}.
 
-The memory occupied by this class is managed automatically: after the GC collects the Lisp instance, @code{free-function} is used to free the structure.
+The memory occupied by this class is managed automatically: after the GC collects the Lisp instance, @code{free-function} is used to free the structure (if the instance was created by lisp code).
 
 Example:
 @example
