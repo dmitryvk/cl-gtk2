@@ -5,7 +5,7 @@
 
 (export 'dialog-run)
 
-(defcfun (dialog-respose "gtk_dialog_response") :void
+(defcfun (dialog-response "gtk_dialog_response") :void
   (dialog (g-object dialog))
   (response response-type))
 
