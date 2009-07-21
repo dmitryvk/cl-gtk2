@@ -1,18 +1,5 @@
 (in-package :gtk)
 
-(define-g-enum "GtkResponseType" response-type ()
-  (:none -1)
-  (:reject -2)
-  (:accept -3)
-  (:delete-event -4)
-  (:ok -5)
-  (:cancel -6)
-  (:close -7)
-  (:yes -8)
-  (:no -9)
-  (:apply -10)
-  (:help -11))
-
 (defcfun (dialog-run "gtk_dialog_run") response-type
   (dialog (g-object dialog)))
 
