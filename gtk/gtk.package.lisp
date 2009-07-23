@@ -7,7 +7,20 @@
            #:text-buffer-insert
            #:define-child-property
            #:container-class-child-properties
-           #:generate-child-properties))
+           #:generate-child-properties
+           #:tree-lisp-store
+           #:tree-lisp-store-root
+           #:tree-node
+           #:make-tree-node
+           #:tree-node-tree
+           #:tree-node-parent
+           #:tree-node-id
+           #:tree-node-item
+           #:tree-node-children
+           #:tree-node-insert-at
+           #:tree-node-remove-at
+           #:tree-node-child-at
+           #:tree-lisp-store-add-column))
 
 (defpackage :gtk-examples
   (:use :cl :gtk :gdk :gobject)
