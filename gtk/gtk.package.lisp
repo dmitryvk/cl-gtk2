@@ -1,5 +1,5 @@
 (defpackage :gtk
-  (:use :cl :cffi :gobject :gdk :glib)
+  (:use :cl :cffi :gobject :gdk :glib :iter)
   (:export #:gtk-main
            #:gtk-main-quit
            #:dialog-run

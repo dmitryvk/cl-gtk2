@@ -63,4 +63,4 @@
                                      (:static-file "demo1.ui")
                                      (:static-file "text-editor.glade")
                                      (:static-file "text-editor.ui"))))
-  :depends-on (:cl-gtk2-glib :cffi :cl-gtk2-gdk :bordeaux-threads))
+  :depends-on (:cl-gtk2-glib :cffi :cl-gtk2-gdk :bordeaux-threads :iterate))
