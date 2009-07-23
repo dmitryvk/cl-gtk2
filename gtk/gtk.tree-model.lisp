@@ -11,7 +11,7 @@
   ;;methods
   (tree-model-get-flags-impl tree-model-get-flags-cb tree-model-flags (tree-model g-object))
   (tree-model-get-n-columns-impl tree-model-get-n-columns-cb :int (tree-model g-object))
-  (tree-model-get-column-type-impl tree-model-get-column-type-cb g-type (tree-model g-object) (index :int))
+  (tree-model-get-column-type-impl tree-model-get-column-type-cb g-type-designator (tree-model g-object) (index :int))
   (tree-model-get-iter-impl tree-model-get-iter-cb :boolean (tree-model g-object) (iter (g-boxed-ref tree-iter)) (path (g-boxed-ref tree-path)))
   (tree-model-get-path-impl tree-model-get-path-cb (g-boxed-ref tree-path) (tree-model g-object) (iter (g-boxed-ref tree-iter)))
   (tree-model-get-value-impl tree-model-get-value-cb :void (tree-model g-object) (iter (g-boxed-ref tree-iter)) (n :int) (value (:pointer g-value)))
@@ -72,7 +72,7 @@
 (export 'store-remove-item)
 
 (defun store-add-column (store type getter)
-  (vector-push-extend (ensure-g-type type) (store-types store))
+  (vector-push-extend type (store-types store))
   (vector-push-extend getter (store-getters store))
   (1- (length (store-types store))))
 
@@ -157,7 +157,7 @@
 
 (export 'tree-model-flags)
 
-(defcfun (tree-model-column-type "gtk_tree_model_get_column_type") g-type
+(defcfun (tree-model-column-type "gtk_tree_model_get_column_type") g-type-designator
   (tree-model g-object)
   (index :int))
 
