@@ -203,18 +203,20 @@ Functions @ref{g-type-string} and @ref{g-type-numeric} return the numeric and st
 
 Invalid type (the GType that does not exist) is identified as a 0 or @code{NIL}.
 
-@example
+@lisp
 (g-type-numeric "GObject") @result{} 80
 (g-type-numeric 80) @result{} 80
 (g-type-string "GObject") @result{} "GObject"
 (g-type-string 80) @result{} "GObject"
 (g-type-numeric "GtkWidget") @result{} 6905648 ;;Will be different on each run
-@end example
+@end lisp
 
 @node g-type-string
 @section g-type-string
 
-@code{(g-type-string g-type-designator) @result{} name}
+@lisp
+(g-type-string g-type-designator) @result{} name
+@end lisp
 
 @table @var
 @item @var{g-type-designator}
@@ -228,7 +230,9 @@ Returns the name of GType.
 @node g-type-numeric
 @section g-type-numeric
 
-@code{(g-type-numeric g-type-designator) @result{} GType}
+@lisp
+(g-type-numeric g-type-designator) @result{} GType
+@end lisp
 
 @table @var
 @item @var{g-type-designator}.
@@ -242,7 +246,9 @@ Returns the numeric identifier of GType
 @node g-type=
 @section g-type=
 
-@code{(g-type= type-1 type-2) @result{} eq}
+@lisp
+(g-type= type-1 type-2) @result{} eq
+@end lisp
 
 @table @var
 @item @var{type-1}
@@ -256,7 +262,9 @@ A boolean that is true if @code{type-1} and @code{type-2} designate the same typ
 @node g-type/=
 @section g-type/=
 
-@code{(g-type/= type-1 type-2) @result{} eq}
+@lisp
+(g-type/= type-1 type-2) @result{} eq
+@end lisp
 
 @table @var
 @item @var{type-1}
@@ -290,7 +298,10 @@ There are functions to query some specific information:
 @node g-type-children
 @section g-type-children
 
-@code{(g-type-children type) @result{} children}
+@lisp
+(g-type-children type) @result{} children
+@end lisp
+
 @table @var
 @item @var{type}
 A GType designator
@@ -301,16 +312,18 @@ A list of GType designators
 Returns the list of descendent types.
 
 Example:
-@example
+@lisp
 (g-type-children "GtkButton")
 @result{}
 ("GtkToggleButton" "GtkColorButton" "GtkFontButton" "GtkLinkButton" "GtkScaleButton")
-@end example
+@end lisp
 
 @node g-type-parent
 @section g-type-parent
 
-@code{(g-type-parent type) @result{} parent}
+@lisp
+(g-type-parent type) @result{} parent
+@end lisp
 
 @table @var
 @item @var{type}
@@ -322,15 +335,18 @@ A GType designator
 Returns the parent of @code{type}.
 
 Example:
-@example
+@lisp
 (g-type-parent "GtkToggleButton")
 @result{}
 "GtkButton"
-@end example
+@end lisp
+
 @node g-type-fundamental
 @section g-type-fundamental
 
-@code{(g-type-fundamental type) @result{} fundamental-type}
+@lisp
+(g-type-fundamental type) @result{} fundamental-type
+@end lisp
 
 @table @var
 @item @var{type}
@@ -342,18 +358,20 @@ A GType designator for one of the fundamental types
 Returns the fundamental type that is the ancestor of @code{type}.
 
 Example:
-@example
+@lisp
 (g-type-fundamental "GtkButton") @result{} "GObject"
 
 (g-type-fundamental "GtkWindowType") @result{} "GEnum"
 
 (g-type-fundamental "GdkEvent") @result{} "GBoxed"
-@end example
+@end lisp
 
 @node g-type-depth
 @section g-type-depth
 
-@code{(g-type-depth type) @result{} depth}
+@lisp
+(g-type-depth type) @result{} depth
+@end lisp
 
 @table @var
 @item @var{type}
@@ -365,15 +383,17 @@ An integer
 Returns the depth of the @code{type}. Depth is the number of types between the @code{type} and its fundamental types (including both @code{type} and its fundamental type). Depth of a fundamental type equals to 1.
 
 Example:
-@example
+@lisp
 (g-type-depth "GObject") @result{} 1
 (g-type-depth "GInitiallyUnowned") @result{} 2
-@end example
+@end lisp
 
 @node g-type-next-base
 @section g-type-next-base
 
-@code{(g-type-next-base leaf-type root-type) @result{} base-type}
+@lisp
+(g-type-next-base leaf-type root-type) @result{} base-type
+@end lisp
 
 @table @var
 @item @var{leaf-type}
@@ -385,7 +405,7 @@ A GType designator
 @end table
 
 Returns the next type that should be traversed from @code{root-type} in order to reach @code{leaf-type}. E.g., given type hierarchy:
-@example
+@lisp
 + GObject
  \
   + GInitiallyUnowned
@@ -399,17 +419,17 @@ Returns the next type that should be traversed from @code{root-type} in order to
         + GtkContainer
          \
           + GtkTable
-@end example
+@end lisp
 
 the following will be returned:
 
-@example
+@lisp
 (g-type-next-base "GtkTable" "GObject") @result{} "GInitiallyUnowned"
 (g-type-next-base "GtkTable" "GInitiallyUnowned") @result{} "GtkObject"
 (g-type-next-base "GtkTable" "GtkObject") @result{} "GtkWidget"
 (g-type-next-base "GtkTable" "GtkWidget") @result{} "GtkContainer"
 (g-type-next-base "GtkTable" "GtkContainer") @result{} "GtkTable"
-@end example
+@end lisp
 
 @node Object types information
 @chapter Object types information
@@ -433,7 +453,7 @@ Information about signals can be queries with @code{type-signals}, @code{parse-s
 @node g-class-property-definition
 @section g-class-property-definition
 
-@example
+@lisp
 (defstruct g-class-property-definition
   name
   type
@@ -442,7 +462,7 @@ Information about signals can be queries with @code{type-signals}, @code{parse-s
   constructor
   constructor-only
   owner-type)
-@end example
+@end lisp
 
 @table @var
 @item @var{name}
@@ -464,9 +484,9 @@ A GType designator. Identifies the type on which the property was defined.
 This structure identifies a single property. Its field specify attributes of a property.
 
 Structures of this type have shortened print syntax:
-@example
+@lisp
 #<PROPERTY gchararray GtkButton.label (flags: readable writable constructor)> 
-@end example
+@end lisp
 
 (When @code{*print-readably*} is T, usual @code{defstruct} print syntax is used)
 
@@ -481,7 +501,9 @@ This syntax specifies:
 @node class-properties
 @section class-properties
 
-@code{(class-properties type) @result{} properties}
+@lisp
+(class-properties type) @result{} properties
+@end lisp
 
 @table @var
 @item @var{type}
@@ -493,7 +515,7 @@ A list of @code{g-property-definition} structures.
 This function returns the list of properties that are available in class @code{type}.
 
 Example:
-@example
+@lisp
 (class-properties "GtkWidget")
 @result{}
 (#<PROPERTY gpointer GtkObject.user-data (flags: readable writable)>
@@ -519,11 +541,13 @@ Example:
  #<PROPERTY gchararray GtkWidget.tooltip-markup (flags: readable writable)>
  #<PROPERTY gchararray GtkWidget.tooltip-text (flags: readable writable)>
  #<PROPERTY GdkWindow GtkWidget.window (flags: readable)>)
-@end example
+@end lisp
 
 @node class-property-info
 @section class-property-info
-@code{(class-property-info type property-name) @result{} property}
+@lisp
+(class-property-info type property-name) @result{} property
+@end lisp
 
 @table @var
 @item @var{type}
@@ -537,16 +561,18 @@ An instance of @code{g-property-definition} structure
 Returns the property information for a single property.
 
 Example:
-@example
+@lisp
 (class-property-info "GtkButton" "label")
 @result{}
 #<PROPERTY gchararray GtkButton.label (flags: readable writable constructor)>
-@end example
+@end lisp
 
 @node interface-properties
 @section interface-properties
 
-@code{(interface-properties type) @result{} properties}
+@lisp
+(interface-properties type) @result{} properties
+@end lisp
 
 @table @var
 @item @var{type}
@@ -558,7 +584,7 @@ A list of @code{g-property-definition} structures
 This function returns the list of properties that are available in interface @code{type}.
 
 Example:
-@example
+@lisp
 (interface-properties "GtkFileChooser")
 @result{}
 (#<PROPERTY GtkWidget GtkFileChooser.extra-widget (flags: readable writable)>
@@ -572,12 +598,12 @@ Example:
  #<PROPERTY GtkWidget GtkFileChooser.preview-widget (flags: readable writable)>
  #<PROPERTY gboolean GtkFileChooser.local-only (flags: readable writable)>
  #<PROPERTY gboolean GtkFileChooser.do-overwrite-confirmation (flags: readable writable)>)
-@end example
+@end lisp
 
 @node signal-info
 @section signal-info
 
-@example
+@lisp
 (defstruct signal-info
   id
   name
@@ -586,7 +612,7 @@ Example:
   return-type
   param-types
   detail)
-@end example
+@end lisp
 
 @table @var
 @item @var{id}
@@ -606,12 +632,12 @@ A string. Specifies the "detail" part of a signal name. E.g., @code{"label"} for
 @end table
 
 When @code{*print-readably*} is nil, the following print syntax is used:
-@example
+@lisp
 #<Signal [#1] void GObject.notify::label(GParam) [RUN-FIRST, NO-RECURSE, DETAILED, ACTION, NO-HOOKS]>
 #<Signal [#54] gboolean GtkWidget.proximity-in-event(GdkEvent) [RUN-LAST]>
 #<Signal [#64] void GtkWidget.drag-data-received(GdkDragContext, gint, gint, GtkSelectionData, guint, guint) [RUN-LAST]>
 #<Signal [#8] void GtkObject.destroy() [RUN-CLEANUP, NO-RECURSE, NO-HOOKS]>
-@end example
+@end lisp
 
 This syntax specifies:
 @itemize
@@ -626,7 +652,9 @@ This syntax specifies:
 
 @node type-signals
 @section type-signals
-@code{(type-signals type &key (include-inherited t)) @result{} signals}
+@lisp
+(type-signals type &key (include-inherited t)) @result{} signals
+@end lisp
 @table @var
 @item @var{type}
 A GType designator
@@ -639,18 +667,20 @@ A boolean that specifies whether to include signals defined on this type or also
 Returns the list of signals that are available in type @code{type}.
 
 Example:
-@example
+@lisp
 (type-signals "GtkLabel" :include-inherited nil)
 @result{}
 (#<Signal [#138] void GtkLabel.move-cursor(GtkMovementStep, gint, gboolean) [RUN-LAST, ACTION]>
  #<Signal [#139] void GtkLabel.copy-clipboard() [RUN-LAST, ACTION]>
  #<Signal [#140] void GtkLabel.populate-popup(GtkMenu) [RUN-LAST]>)
-@end example
+@end lisp
 
 @node parse-signal-name
 @section parse-signal-name
 
-@code{(parse-signal-name type signal-name) @result{} signal}
+@lisp
+(parse-signal-name type signal-name) @result{} signal
+@end lisp
 
 @table @var
 @item @var{type}
@@ -664,15 +694,17 @@ A list @code{signal-info} structures.
 Parses the signal name and returns the corresponding information. @code{signal-name} may include the detail part.
 
 Example:
-@example
+@lisp
 (parse-signal-name "GObject" "notify::label")
 @result{}
 #<Signal [#1] void GObject.notify::label(GParam) [RUN-FIRST, NO-RECURSE, DETAILED, ACTION, NO-HOOKS]>
-@end example
+@end lisp
 
 @node query-signal-info
 @section query-signal-info
-@code{(query-signal-info signal-id) @result{} signal}
+@lisp
+(query-signal-info signal-id) @result{} signal
+@end lisp
 @table @var
 @item @var{signal-id}
 An integer identifying the signal
@@ -683,16 +715,18 @@ An instance of @code{signal-info} structure
 Retrieves the signal information by its id.
 
 Example:
-@example
+@lisp
 (query-signal-info 73)
 @result{}
 #<Signal [#73] gboolean GtkWidget.show-help(GtkWidgetHelpType) [RUN-LAST, ACTION]>
-@end example
+@end lisp
 
 @node g-type-interfaces
 @section g-type-interfaces
 
-@code{(g-type-interfaces type) @result{} interfaces}
+@lisp
+(g-type-interfaces type) @result{} interfaces
+@end lisp
 
 @table @var
 @item @var{type}
@@ -704,16 +738,18 @@ A list of GType designators
 Returns the list of interfaces that @code{type} implements.
 
 Example:
-@example
+@lisp
 (g-type-interfaces "GtkButton")
 @result{}
 ("AtkImplementorIface" "GtkBuildable" "GtkActivatable")
-@end example
+@end lisp
 
 @node g-type-interface-prerequisites
 @section g-type-interface-prerequisites
 
-@code{(g-type-interface-prerequisites type) @result{} types}
+@lisp
+(g-type-interface-prerequisites type) @result{} types
+@end lisp
 
 @table @var
 @item @var{type}
@@ -725,11 +761,11 @@ A list of GType designators specifying the interface prerequisites
 Returns the prerequisites of an interface @code{type}. Prerequisite is a type that should be an ancestor of a type implementing interface @code{type}.
 
 Example:
-@example
+@lisp
 (g-type-interface-prerequisites "GtkCellEditable")
 @result{}
 ("GtkObject" "GtkWidget")
-@end example
+@end lisp
 
 @node Enum types information
 @chapter Enum types information
@@ -746,10 +782,10 @@ Flags types (flags is a kind of enum whose values can be combined) have items th
 
 @node enum-item
 @section enum-item
-@example
+@lisp
 (defstruct enum-item
   name value nick)
-@end example
+@end lisp
 
 @table @var
 @item @var{name}
@@ -763,16 +799,16 @@ A string - short name of an enum item
 Structure @code{enum-item} represents a single item of an enumeration type.
 
 Example:
-@example
+@lisp
 #S(ENUM-ITEM :NAME "GTK_WINDOW_TOPLEVEL" :VALUE 0 :NICK "toplevel")
-@end example
+@end lisp
 
 @node flags-item
 @section flags-item
-@example
+@lisp
 (defstruct flags-item
   name value nick)
-@end example
+@end lisp
 
 @table @var
 @item @var{name}
@@ -786,17 +822,19 @@ A string - short name of an flags item
 Structure @code{flags-item} represents a single item of an flags type.
 
 Example:
-@example
+@lisp
 #S(FLAGS-ITEM
    :NAME "GDK_POINTER_MOTION_HINT_MASK"
    :VALUE 8
    :NICK "pointer-motion-hint-mask")
-@end example
+@end lisp
 
 @node get-enum-items
 @section get-enum-items
 
-@code{(get-enum-items type) @result{} items}
+@lisp
+(get-enum-items type) @result{} items
+@end lisp
 
 @table @var
 @item @var{type}
@@ -808,7 +846,7 @@ A list of @code{enum-item} structures
 Returns a list of items in an enumeration
 
 Example:
-@example
+@lisp
 (get-enum-items "GtkScrollType")
 @result{}
 (#S(ENUM-ITEM :NAME "GTK_SCROLL_NONE" :VALUE 0 :NICK "none")
@@ -827,12 +865,14 @@ Example:
  #S(ENUM-ITEM :NAME "GTK_SCROLL_PAGE_RIGHT" :VALUE 13 :NICK "page-right")
  #S(ENUM-ITEM :NAME "GTK_SCROLL_START" :VALUE 14 :NICK "start")
  #S(ENUM-ITEM :NAME "GTK_SCROLL_END" :VALUE 15 :NICK "end"))
-@end example
+@end lisp
 
 @node get-flags-items
 @section get-flags-items
 
-@code{(get-flags-items type) @result{} items}
+@lisp
+(get-flags-items type) @result{} items
+@end lisp
 
 @table @var
 @item @var{type}
@@ -844,13 +884,13 @@ A list of @code{flags-item} structures
 Returns a list of items in an flags type
 
 Example:
-@example
+@lisp
 (get-flags-items "GtkAttachOptions")
 @result{}
 (#S(FLAGS-ITEM :NAME "GTK_EXPAND" :VALUE 1 :NICK "expand")
  #S(FLAGS-ITEM :NAME "GTK_SHRINK" :VALUE 2 :NICK "shrink")
  #S(FLAGS-ITEM :NAME "GTK_FILL" :VALUE 4 :NICK "fill"))
-@end example
+@end lisp
 
 @node Using GValues
 @chapter Using GValues
@@ -874,34 +914,38 @@ GValue is used whenever a value of unkown type should be passed. It is used in:
 @end itemize
 
 Example of usage:
-@example
+@lisp
 (cffi:with-foreign-object (gval 'g-value)
   (set-g-value gval "Hello" "gchararray" :zero-g-value t)
   (format t "~S~%" (parse-g-value gval))
   (g-value-unset gval))
 @result{}
 "Hello"
-@end example
+@end lisp
 
 @node g-value-zero
 @section g-value-zero
-@code{(g-value-zero g-value)}
+@lisp
+(g-value-zero g-value)
+@end lisp
 @table @var
 @item @var{g-value}
 A foreign pointer to GValue structure.
 @end table
 
 Initializes the GValue to "unset" state. Equivalent of the following initializer in C:
-@example
+@lisp
 GValue value = @{ 0 @};
-@end example
+@end lisp
 
 Must be called before other functions that work with GValue (except @code{set-g-value} with keyword argument @code{:zero-g-value} set to true).
 
 @node g-value-init
 @section g-value-init
 
-@code{(g-value-init value type)}
+@lisp
+(g-value-init value type)
+@end lisp
 @table @var
 @item @var{value}
 A foreign pointer to GValue structure
@@ -913,7 +957,9 @@ Initializes the GValue to store instances of type @code{type}. Must be called be
 
 @node g-value-unset
 @section g-value-unset
-@code{(g-value-unset value)}
+@lisp
+(g-value-unset value)
+@end lisp
 @table @var
 @item @var{value}
 A foreign pointer to GValue structure.
@@ -923,7 +969,9 @@ Unsets the GValue. This frees all resources associated with GValue.
 
 @node parse-g-value
 @section parse-g-value
-@code{(parse-g-value value) @result{} object}
+@lisp
+(parse-g-value value) @result{} object
+@end lisp
 @table @var
 @item @var{value}
 A foreign pointer to GValue structure
@@ -935,7 +983,9 @@ Retrieves the object from GValue structure.
 
 @node set-g-value
 @section set-g-value
-@code{(set-g-value gvalue object type &key zero-g-value unset-g-value (g-value-init t))}
+@lisp
+(set-g-value gvalue object type &key zero-g-value unset-g-value (g-value-init t))
+@end lisp
 
 @table @var
 @item @var{gvalue}
@@ -973,11 +1023,11 @@ A symbol - name of CFFI foreign enum type
 Registers the @code{type} to be used for passing value of GEnum type @code{name} between GObject and Lisp.
 
 Example:
-@example
+@lisp
 (defcenum text-direction
   :none :ltr :rtl)
 (register-enum-type "GtkTextDirection" 'text-direction)
-@end example
+@end lisp
 
 @subsection
 @code{(register-flags-type name type)}
@@ -991,11 +1041,11 @@ A symbol - name of CFFI foreign flags type
 Registers the @code{type} to be used for passing value of GFlags type @code{name} between GObject and Lisp.
 
 Example:
-@example
+@lisp
 (defcenum state-type
   :normal :active :prelight :selected :insensitive)
 (register-enum-type "GtkStateType" 'state-type)
-@end example
+@end lisp
 
 @node Stable pointers
 @chapter Stable pointers
@@ -1011,7 +1061,9 @@ Sometimes it is necessary to pass arbitrary Lisp object to C code and then recei
 @node allocate-stable-pointer
 @section allocate-stable-pointer
 
-@code{(allocate-stable-pointer thing) @result{} stable-pointer}
+@lisp
+(allocate-stable-pointer thing) @result{} stable-pointer
+@end lisp
 
 @table @var
 @item @var{thing}
@@ -1025,7 +1077,7 @@ Allocates a stable pointer to @code{thing}.
 (Note: @var{stable-pointer} should not be dereferenced with @code{cffi:mem-ref}. It should only be dereferenced with @code{stable-pointer-value})
 
 Example:
-@example
+@lisp
 (allocate-stable-pointer (lambda (x) (+ x 10)))
 @result{}
 #.(SB-SYS:INT-SAP #X00000002)
@@ -1037,12 +1089,14 @@ Example:
 (free-stable-pointer **)
 @result{}
 NIL
-@end example
+@end lisp
 
 @node free-stable-pointer
 @section free-stable-pointer
 
-@code{(free-stable-pointer stable-pointer)}
+@lisp
+(free-stable-pointer stable-pointer)
+@end lisp
 
 @table @var
 @item @var{stable-pointer}
@@ -1052,7 +1106,7 @@ A foreign pointer that was created with @code{allocate-stable-pointer}.
 Frees the stable pointer, enabling the garbage collector to reclaim the object.
 
 Example:
-@example
+@lisp
 (allocate-stable-pointer (lambda (x) (+ x 10)))
 @result{}
 #.(SB-SYS:INT-SAP #X00000002)
@@ -1064,15 +1118,15 @@ Example:
 (free-stable-pointer **)
 @result{}
 NIL
-@end example
+@end lisp
 
 @node stable-pointer-value
 @section stable-pointer-value
 
-@example
+@lisp
 (stable-pointer-value stable-pointer) @result{} thing
 (setf (stable-pointer-value stable-pointer) thing)
-@end example
+@end lisp
 
 @table @var
 @item @var{stable-pointer}
@@ -1086,7 +1140,9 @@ Dereferences a @code{stable-pointer}, returning the stable pointer value. @code{
 @node with-stable-pointer
 @section with-stable-pointer
 
-@code{(with-stable-pointer (ptr expr) &body body)}
+@lisp
+(with-stable-pointer (ptr expr) &body body)
+@end lisp
 
 @table @var
 @item @var{ptr}
@@ -1098,12 +1154,12 @@ An expression that will be evaluated once and its value will be bound to stable 
 Executes the body with the @code{ptr} variable being bound to a stable pointer whose value is determined by @code{expr}.
 
 Example:
-@example
+@lisp
 (with-stable-pointer (ptr (lambda (x) (+ x 10)))
   (print (stable-pointer-value ptr)))
 ;;Prints:
 #<FUNCTION (LAMBDA (X)) @{1004807E79@}>
-@end example
+@end lisp
 
 @node Closures
 @chapter Closures
@@ -1125,20 +1181,20 @@ A foreign pointer to allocated closure
 Allocates the closure. The closure is destroyed automatically by GObject.
 
 Example:
-@example
+@lisp
 (create-g-closure (lambda (x) (+ x 10)))
 @result{}
 #.(SB-SYS:INT-SAP #X006D7B20)
-@end example
+@end lisp
 
 Example of usage from GObject binding code:
-@example
+@lisp
 (defun connect-signal (object signal handler &key after)
   (g-signal-connect-closure (ensure-object-pointer object)
                             signal
                             (create-g-closure handler)
                             after))
-@end example
+@end lisp
 
 (TODO: GObject defines finer closure API: g_closure_ref, g_closure_unref, g_closure_invoke. It should be bound.)
 
@@ -1158,7 +1214,9 @@ Function @code{g-type-from-object} identifies the type of the object. Function @
 @node g-object-call-constructor
 @section g-object-call-constructor
 
-@code{(g-object-call-constructor object-type args-names args-values &optional args-types) @result{} object-ptr}
+@lisp
+(g-object-call-constructor object-type args-names args-values &optional args-types) @result{} object-ptr
+@end lisp
 
 @table @var
 @item @var{object-type}
@@ -1176,7 +1234,7 @@ A foreign pointer to newly created instance
 Creates the object of type @code{object-type} by calling its constructors with arguments specified by @code{args-names}, @code{args-values}, @code{args-types}.
 
 Example:
-@example
+@lisp
 (g-object-call-constructor "GtkButton" '("label" "use-underline") '("Hello" t) '("gchararray" "gboolean"))
 @result{}
 #.(SB-SYS:INT-SAP #X006D8900)
@@ -1188,12 +1246,14 @@ Example:
 (g-object-call-get-property ** "use-underline")
 @result{}
 T
-@end example
+@end lisp
 
 @node g-type-from-object
 @section g-type-from-object
 
-@code{(g-type-from-object object-ptr) @result{} type}
+@lisp
+(g-type-from-object object-ptr) @result{} type
+@end lisp
 
 @table @var
 @item @var{object-ptr}
@@ -1205,16 +1265,18 @@ A GType designator
 Returns the type of an object by a pointer to its instance
 
 Example:
-@example
+@lisp
 (g-type-from-object (g-object-call-constructor "GtkButton" nil nil))
 @result{}
 "GtkButton"
-@end example
+@end lisp
 
 @node g-object-call-get-property
 @section g-object-call-get-property
 
-@code{(g-object-call-get-property object-ptr property-name &optional property-type) @result{} property-value}
+@lisp
+(g-object-call-get-property object-ptr property-name &optional property-type) @result{} property-value
+@end lisp
 
 @table @var
 @item @var{object-ptr}
@@ -1230,7 +1292,7 @@ The value of a property
 Retrieves the value of a property @code{property-name} of object pointed to by @code{object-ptr}. @code{property-type} specifies the type of a property; it may be omitted.
 
 Example:
-@example
+@lisp
 (g-object-call-constructor "GtkButton" '("label" "use-underline") '("Hello" t) '("gchararray" "gboolean"))
 @result{}
 #.(SB-SYS:INT-SAP #X006D8900)
@@ -1242,12 +1304,14 @@ Example:
 (g-object-call-get-property ** "use-underline")
 @result{}
 T
-@end example
+@end lisp
 
 @node g-object-call-set-property
 @section g-object-call-set-property
 
-@code{(g-object-call-set-property object-ptr property-name new-value &optional property-type)}
+@lisp
+(g-object-call-set-property object-ptr property-name new-value &optional property-type)
+@end lisp
 
 @table @var
 @item @var{object-ptr}
@@ -1263,7 +1327,7 @@ Optional GType designator specifying the type of a property
 Sets the property value of property @code{property-name} of object @code{object-ptr} to @code{new-value}.
 
 Example:
-@example
+@lisp
 (g-object-call-constructor "GtkButton" nil nil)
 @result{}
 #.(SB-SYS:INT-SAP #X006D8B40)
@@ -1275,7 +1339,7 @@ Example:
 (g-object-call-get-property ** "label")
 @result{}
 "Hello"
-@end example
+@end lisp
 
 @node GObject high-level
 @chapter GObject high-level
@@ -1297,7 +1361,7 @@ GObjects are reference counted, and CL-GTK2-GOBJECT manages its own reference to
 To be able to use particular GObject class with CLOS, it should be defined and registered. This is accomplished by @code{defclass}'ing it with @code{gobject-class} metaclass. After GObject class is defined, it may be used as CLOS class.
 
 Example GObject class of definition:
-@example
+@lisp
 (defclass dialog (gtk-window atk-implementor-iface buildable)
   ((has-separator :accessor dialog-has-separator
                   :initarg :has-separator
@@ -1307,7 +1371,7 @@ Example GObject class of definition:
   (:metaclass gobject-class)
   (:g-type-name . "GtkDialog")
   (:g-type-initializer . "gtk_dialog_get_type"))
-@end example
+@end lisp
 
 This example defines the CLOS class @code{dialog} that corresponds to GObject class @code{GtkDialog}. Whenever object of GObject type @code{GtkDialog} are to be received from foreign functions or passed to foreign functions, it will be mapped to CLOS class @code{dialog}. Properties that have @code{:allocation} of @code{:gobject-property} are mapped to GObject properties, and reading or writing this slot reads or writes corresponding GObject class property.
 
@@ -1364,7 +1428,7 @@ A string naming foreign setter function of a property or a symbol designating Li
 Initargs of a slot are used to construct the GObject class.
 
 Example:
-@example
+@lisp
 (defclass container (widget atk-implementor-iface buildable)
     ((border-width :allocation :gobject-property
                    :g-property-type "guint"
@@ -1402,7 +1466,7 @@ Example:
     (:metaclass gobject-class)
     (:g-type-name . "GtkContainer")
     (:g-type-initializer . "gtk_container_get_type"))
-@end example
+@end lisp
 (note the dot in @code{(:g-type-name . "GtkContainer")} and in @code{(:g-type-initializer . "gtk_container_get_type")}. It should be present)
 
 @node Using objects
@@ -1410,7 +1474,7 @@ Example:
 Instances are created with @code{make-instance}. If initargs of GObject properties are supplied, they are passed to constructor. Some slots (properties) may only be set at construction time (e.g., @code{type} property of @code{GtkWindow}). Properties may be accessed (read or assigned) with defined @code{:accessor}, @code{:reader} or @code{:writer} functions.
 
 Example:
-@example
+@lisp
 (make-instance 'gtk:dialog :has-separator t)
 @result{}
 #<GTK:DIALOG @{10036C5A71@}>
@@ -1430,7 +1494,7 @@ NIL
 (gtk:dialog-has-separator *d*)
 @result{}
 NIL
-@end example
+@end lisp
 
 @node Signals
 @section Signals
@@ -1453,7 +1517,7 @@ A boolean specifying whether the handler should be called after the default hand
 Connects the @code{handler} to signal @code{signal} on object @code{object}. Signature of @code{handler} should comply with signature of a signal. @code{handler} will be called with arguments of type specified by signal with the object (on which the signal was emitted) prepended to them and it should return the value of the signal's return type.
 
 Example:
-@example
+@lisp
 (defvar *d* (make-instance 'gtk:dialog))
 @result{}
 *D*
@@ -1473,7 +1537,7 @@ Example:
 ;; Prints:
 #<GTK:DIALOG @{1002D866F1@}>
 14 
-@end example
+@end lisp
 
 Function @code{emit-signal} is used to emit signals on objects.
 
@@ -1493,7 +1557,7 @@ Return value of a signal
 Emits the signal and calls all handlers of the signal. If signal returns a value, it is returned from @code{emit-signal}.
 
 Example:
-@example
+@lisp
 (defvar *d* (make-instance 'gtk:dialog))
 @result{}
 *D*
@@ -1513,7 +1577,7 @@ Example:
 ;; Prints:
 #<GTK:DIALOG @{1002D866F1@}>
 14 
-@end example
+@end lisp
 
 @node GObject foreign class
 @section GObject foreign class
@@ -1528,7 +1592,7 @@ When the @code{g-object} foreign type is specified as a return type of a functio
 When the @code{g-object} foreign type is specified as a type of function's argument, the value is converted to pointer to GObject. If @code{type} is specified then it is checked that the object is of this type.
 
 This defines the function that may be called with instances of types @code{container} and @code{widget}:
-@example
+@lisp
 (defcfun (container-add "gtk_container_add") :void
   (container (g-object container))
   (widget (g-object widget)))
@@ -1536,11 +1600,11 @@ This defines the function that may be called with instances of types @code{conta
 (let ((window (make-instance 'gtk-window))
       (widget (make-instance 'button)))
   (container-add window widget))
-@end example
+@end lisp
 (@code{gtk-window} is a subclass of @code{container}; @code{button} is a subclass of @code{widget})
 
 This defines the function that returns an instance of GObject class:
-@example
+@lisp
 (defcfun (bin-child "gtk_bin_get_child") (g-object widget)
   (bin (g-object bin)))
 
@@ -1550,7 +1614,7 @@ This defines the function that returns an instance of GObject class:
   (bin-child window))
 @result{}
 #<GTK:BUTTON @{1002DE74B1@}>
-@end example
+@end lisp
 
 @node Creating GObjects classes and implementing GInterfaces
 @chapter Creating GObjects classes and implementing GInterfaces
@@ -1575,14 +1639,14 @@ Unfortunately, GObject does not provide information about vtables, and does not 
 @node define-vtable
 @section define-vtable
 
-@example
+@lisp
 (define-vtable (type-name cstruct-name)
   &body item*)
 
 item ::= (name callback-name return-type &rest arg*)
 item ::= (:skip cffi-structure-item)
 arg ::= (arg-name arg-type)
-@end example
+@end lisp
 
 @table @var
 @item @var{type-name}
@@ -1604,7 +1668,7 @@ A CFFI specifier for foreign function argument type
 Macro that specifies the vtable for an interface. This macro defines generic functions (named by @code{name}) that correspond to methods of an interface. On these generic functions methods should be defined that implement the interface method. @code{item}s specify the CFFI foreign structure for vtable. Vtable contains not only function pointers, but other slots. Such slots should be specified here with @code{:skip} prepended to them. This is needed to be able to correctly calculate offsets to function pointers in vtable.
 
 Example:
-@example
+@lisp
 (define-vtable ("GtkTreeModel" c-gtk-tree-model)
   (:skip parent-instance g-type-interface)
   ;;some signals
@@ -1642,12 +1706,14 @@ Example:
     :void (tree-model g-object) (iter (g-boxed-ref tree-iter)))
   (tree-model-unref-node-impl tree-model-unref-node-cb
     :void (tree-model g-object) (iter (g-boxed-ref tree-iter))))
-@end example
+@end lisp
 
 @node register-object-type-implementation
 @section register-object-type-implementation
 
-@code{(register-object-type-implementation name class parent interfaces properties)}
+@lisp
+(register-object-type-implementation name class parent interfaces properties)
+@end lisp
 
 @table @var
 @item @var{name}
@@ -1661,17 +1727,17 @@ A list of names of interfaces that this class implements.
 @item @var{properties}
 A list of properties that this class provides.
 Each property is defined as
-@example
+@lisp
 property ::= (property-name property-type accessor property-get-fn property-set-fn)
-@end example
+@end lisp
 @end table
 
 A macro that creates a new GObject type and registers the Lisp implementation for it.
 
 Example:
-@example
+@lisp
 (register-object-type-implementation "LispArrayListStore" array-list-store "GObject" ("GtkTreeModel") nil)
-@end example
+@end lisp
 
 @node GBoxed
 @chapter GBoxed
@@ -1701,7 +1767,7 @@ It is expected that the support for GBoxed structures will be improved.
 @node define-g-boxed-class
 @section define-g-boxed-class
 
-@example
+@lisp
 (define-g-boxed-class g-name-and-c-name name (&optional superclass-and-dispatch (export t))
   &body slot*)
 
@@ -1709,7 +1775,7 @@ g-name-and-c-name ::= nil
 g-name-and-c-name ::= (g-name c-name)
 superclass-and-dispatch ::= (&optional superclass dispatch-slot dispatch-values)
 slot ::= slot-name slot-type &key initform parser unparser
-@end example
+@end lisp
 
 @table @var
 @item @var{g-name}
@@ -1741,7 +1807,7 @@ Defines the @code{defstruct} wrapper for GBoxed type. Various parameters control
 @code{define-g-boxed-class} supports basic single inheritance. This is provided to support ``generic'' C structures like @code{GdkEvent} that contain a ``type'' field and a @code{union} of other substructures. The natural mapping of such structure to Lisp is not one, but several structures that are inherited one from another. This supports e.g. method dispatching on @code{GdkEvent} types (if it is ever necessary).
 
 The only use of @code{define-g-boxed-class} that involves inheritance is the @code{GdkEvent} structure. It is defined as follows.
-@example
+@lisp
 (define-g-boxed-class ("GdkEvent" event-struct) event ()
   (type event-type)
   (window (g-object gdk-window))
@@ -1767,10 +1833,10 @@ The only use of @code{define-g-boxed-class} that involves inheritance is the @co
   (device (g-object device))
   (x-root :double)
   (y-root :double))
-@end example
+@end lisp
 
 Some simpler uses include following examples:
-@example
+@lisp
 (define-g-boxed-class "GdkFont" font ()
   (type font-type :initform :font)
   (ascent :int :initform 0)
@@ -1794,20 +1860,20 @@ Some simpler uses include following examples:
   (min-aspect :double :initform 0.0d0)
   (max-aspect :double :initform 0.0d0)
   (gravity gravity :initform :north-west))
-@end example
+@end lisp
 
 @node define-g-boxed-ref
 @section define-g-boxed-ref
 
 @code{g-boxed-ref} class is defined:
-@example
+@lisp
 (defclass g-boxed-ref ()
   ((pointer :accessor pointer :initarg :pointer)))
-@end example
+@end lisp
 
 This class holds the pointer to structure. GBoxed-ref types are subclasses of this class.
 
-@example
+@lisp
 (define-g-boxed-ref g-name name
   &rest property*)
 
@@ -1815,7 +1881,7 @@ property ::= (:free-function free-function)
 property ::= (:alloc-function alloc-function)
 property ::= (:slots &rest slot*)
 slot ::= (slot-name &key reader writer type (accessor slot-name))
-@end example
+@end lisp
 
 @table @var
 @item @var{g-name}
@@ -1843,7 +1909,7 @@ Defines a class corresponding to GBoxed type that is passed by reference (e.g., 
 The memory occupied by this class is managed automatically: after the GC collects the Lisp instance, @code{free-function} is used to free the structure (if the instance was created by lisp code).
 
 Example:
-@example
+@lisp
 (defcstruct tree-iter
   (stamp :int)
   (user-data :pointer)
@@ -1863,10 +1929,10 @@ Example:
           (user-data :reader tree-iter-get-user-data :writer tree-iter-set-user-data :accessor tree-iter-user-data))
   (:alloc-function tree-iter-alloc)
   (:free-function tree-iter-free))
-@end example
+@end lisp
 
 Another example:
-@example
+@lisp
 (define-foreign-type unichar ()
   ()
   (:actual-type :uint32)
@@ -1931,7 +1997,7 @@ Another example:
 (defun gtk-text-iter-alloc ()
   (with-foreign-object (iter '%text-iter)
     (gtk-text-iter-copy iter)))
-@end example
+@end lisp
 
 @node Generating type definitions by introspection
 @chapter Generating type definitions by introspection
@@ -1954,14 +2020,14 @@ CL-GTK2-GOBJECT includes facilities for automatically generating parts of bindin
 @node define-g-object-class
 @section define-g-object-class
 
-@example
+@lisp
 (define-g-object-class g-type-name name
   (&key (superclass 'g-object) (export t) interfaces type-initializer)
   (&rest property*))
 
 property ::= (name accessor gname type readable writable)
 property ::= (:cffi name acessor type reader writer)
-@end example
+@end lisp
 
 Parameters of @code{define-g-object-class}
 @table @var
@@ -2000,7 +2066,7 @@ A string or a symbol naming setter function. See description of @code{gobject-cl
 Macro that expands to @code{defclass} for specified class. Additionally, if @code{export} is true, it exports accessor names and name of a class.
 
 Example:
-@example
+@lisp
 (define-g-object-class "GtkContainer" container
   (:superclass widget :export t :interfaces
                ("AtkImplementorIface" "GtkBuildable")
@@ -2011,18 +2077,18 @@ Example:
    (:cffi focus-child container-focus-child g-object "gtk_container_get_focus_child" "gtk_container_set_focus_child")
    (:cffi focus-vadjustment container-focus-vadjustment (g-object adjustment) "gtk_container_get_focus_vadjustment" "gtk_container_set_focus_vadjustment")
    (:cffi focus-hadjustment container-focus-hadjustment (g-object adjustment) "gtk_container_get_focus_hadjustment" "gtk_container_set_focus_hadjustment")))
-@end example
+@end lisp
 
 @node define-g-interface
 @section define-g-interface
 
-@example
+@lisp
 (define-g-interface g-type-name name (&key (export t) type-initializer)
   &body property*)
 
 property ::= (name accessor gname type readable writable)
 property ::= (:cffi name acessor type reader writer)
-@end example
+@end lisp
 
 Parameters of @code{define-g-interface}
 @table @var
@@ -2057,7 +2123,7 @@ A string or a symbol naming setter function. See description of @code{gobject-cl
 Macro that expands to @code{defclass} for specified interface. Additionally, if @code{export} is true, it exports accessor names and name of a interface.
 
 Example:
-@example
+@lisp
 (define-g-interface "GtkFileChooser" file-chooser
   (:export t :type-initializer "gtk_file_chooser_get_type")
   (do-overwrite-confirmation file-chooser-do-overwrite-confirmation "do-overwrite-confirmation" "gboolean" t t)
@@ -2093,17 +2159,17 @@ Example:
   (:cffi preview-uri file-chooser-preview-uri
    (g-string :free-from-foreign t :free-to-foreign t)
    "gtk_file_chooser_get_preview_uri" nil))
-@end example
+@end lisp
 
 @node define-g-enum
 @section define-g-enum
 
-@example
+@lisp
 (define-g-enum g-name name (&key (export t) type-initializer) &body value*)
 
 value ::= :keyword
 value ::= (:keyword integer)
-@end example
+@end lisp
 
 @table @var
 @item @var{g-name}
@@ -2119,7 +2185,7 @@ A string naming the foreign type initializer function. Usually named @code{enum_
 Macro that defines CFFI enumeration, registers it with GValue, and calls the type initializer.
 
 Example:
-@example
+@lisp
 (define-g-enum "GtkTextDirection" text-direction
   (:export t :type-initializer "gtk_text_direction_get_type")
   (:none 0) (:ltr 1) (:rtl 2))
@@ -2127,17 +2193,17 @@ Example:
 (define-g-enum "GtkSizeGroupMode" size-group-mode
  (:export t :type-initializer "gtk_size_group_mode_get_type")
  :none :horizontal :vertical :both)
-@end example
+@end lisp
 
 @node define-g-flags
 @section define-g-flags
 
-@example
+@lisp
 (define-g-flags g-name name (&key (export t) type-initializer) &body value*)
 
 value ::= :keyword
 value ::= (:keyword integer)
-@end example
+@end lisp
 
 @table @var
 @item @var{g-name}
@@ -2153,7 +2219,7 @@ A string naming the foreign type initializer function. Usually named @code{flags
 Macro that defines CFFI bitfield, registers it with GValue, and calls the type initializer.
 
 Example:
-@example
+@lisp
 (define-g-flags "GtkAttachOptions" attach-options
   (:export t :type-initializer "gtk_attach_options_get_type")
   (:expand 1) (:shrink 2) (:fill 4))
@@ -2161,12 +2227,14 @@ Example:
 (define-g-flags "GtkButtonAction" button-action
   (:export t :type-initializer "gtk_button_action_get_type")
   :ignored :selects :drags :expands)
-@end example
+@end lisp
 
 @node get-g-enum-definition
 @section get-g-enum-definition
 
-@code{(get-g-enum-definition type &optional lisp-name-package) @result{} definition}
+@lisp
+(get-g-enum-definition type &optional lisp-name-package) @result{} definition
+@end lisp
 
 @table @var
 @item @var{type}
@@ -2182,19 +2250,21 @@ Uses GObject introspection capabilities to automatically produce the definition 
 See @ref{Generating names for CLOS classes and accessors} for information about used method for generating names.
 
 Example:
-@example
+@lisp
 (get-g-enum-definition "GtkDirectionType")
 @result{}
 (DEFINE-G-ENUM "GtkDirectionType" GTK-DIRECTION-TYPE
                (:EXPORT T :TYPE-INITIALIZER "gtk_direction_type_get_type")
                (:TAB-FORWARD 0) (:TAB-BACKWARD 1) (:UP 2) (:DOWN 3) (:LEFT 4)
                (:RIGHT 5))
-@end example
+@end lisp
 
 @node get-g-flags-definition
 @section get-g-flags-definition
 
-@code{(get-g-flags-definition type &optional lisp-name-package) @result{} definition}
+@lisp
+(get-g-flags-definition type &optional lisp-name-package) @result{} definition
+@end lisp
 
 @table @var
 @item @var{type}
@@ -2210,7 +2280,7 @@ Uses GObject introspection capabilities to automatically produce the definition 
 See @ref{Generating names for CLOS classes and accessors} for information about used method for generating names.
 
 Example:
-@example
+@lisp
 (get-g-flags-definition "GtkCalendarDisplayOptions")
 @result{}
 (DEFINE-G-FLAGS "GtkCalendarDisplayOptions" GTK-CALENDAR-DISPLAY-OPTIONS
@@ -2219,12 +2289,14 @@ Example:
                 (:SHOW-HEADING 1) (:SHOW-DAY-NAMES 2) (:NO-MONTH-CHANGE 4)
                 (:SHOW-WEEK-NUMBERS 8) (:WEEK-START-MONDAY 16)
                 (:SHOW-DETAILS 32))
-@end example
+@end lisp
 
 @node get-g-interface-definition
 @section get-g-interface-definition
 
-@code{get-g-interface-definition type &optional lisp-name-package) @result{} definition}
+@lisp
+get-g-interface-definition type &optional lisp-name-package) @result{} definition
+@end lisp
 
 @table @var
 @item @var{type}
@@ -2240,7 +2312,7 @@ Uses GObject introspection capabilities to automatically produce the definition 
 See @ref{Generating names for CLOS classes and accessors} for information about used method for generating names.
 
 Example:
-@example
+@lisp
 (get-g-interface-definition "GtkActivatable")
 @result{}
 (DEFINE-G-INTERFACE "GtkActivatable" GTK-ACTIVATABLE
@@ -2250,13 +2322,15 @@ Example:
                      "use-action-appearance" "gboolean" T T)
                     (RELATED-ACTION GTK-ACTIVATABLE-RELATED-ACTION
                      "related-action" "GtkAction" T T))
-@end example
+@end lisp
 
 @node get-g-class-definition
 @section get-g-class-definition
 
 
-@code{get-g-class-definition type &optional lisp-name-package) @result{} definition}
+@lisp
+get-g-class-definition type &optional lisp-name-package) @result{} definition
+@end lisp
 
 @table @var
 @item @var{type}
@@ -2272,7 +2346,7 @@ Uses GObject introspection capabilities to automatically produce the definition 
 See @ref{Generating names for CLOS classes and accessors} for information about used method for generating names.
 
 Example:
-@example
+@lisp
 (get-g-class-definition "GtkButton")
 @result{}
 (DEFINE-G-OBJECT-CLASS "GtkButton" GTK-BUTTON
@@ -2293,7 +2367,7 @@ Example:
                         (YALIGN GTK-BUTTON-YALIGN "yalign" "gfloat" T T)
                         (IMAGE-POSITION GTK-BUTTON-IMAGE-POSITION
                          "image-position" "GtkPositionType" T T)))
-@end example
+@end lisp
 
 @node Specifying additional properties for CLOS classes
 @section Specifying additional properties for CLOS classes
@@ -2307,7 +2381,7 @@ Variable @code{*additional-properties*} contains a plist that maps GType names t
 To supply the bindings generator with this information, bind @code{*additional-properties*} to such list when the generator is run.
 
 Example:
-@example
+@lisp
 (("GtkTreeViewColumn"
   (:cffi gtk::tree-view
          gtk::tree-view-column-tree-view
@@ -2325,7 +2399,7 @@ Example:
   (:cffi gtk::select-function
          gtk::tree-selection-select-function
          nil gtk::tree-selection-get-selection-function gtk::tree-selection-set-select-function)))
-@end example
+@end lisp
 
 @node Generating names for CLOS classes and accessors
 @section Generating names for CLOS classes and accessors
@@ -2341,20 +2415,20 @@ A string variable specifying the prefix that should to be stripped from the name
 @item @var{*lisp-name-exceptions*}
 A plist mapping from strings (type names) to symbols (class names) that have special name processing.
 Example:
-@example
+@lisp
 `(("GObject" gobject:g-object)
   ("GtkObject" ,(intern "GTK-OBJECT" (find-package :gtk)))
   ("GInitiallyUnowned" gobject::g-initially-unowned)
   ("GtkWindow" ,(intern "GTK-WINDOW" (find-package :gtk)))
   ("GtkUIManager" ,(intern "UI-MANAGER" (find-package :gtk)))
   ("GtkUIManagerItemType" ,(intern "UI-MANAGER-ITEM-TYPE" (find-package :gtk))))
-@end example
+@end lisp
 @end itemize
 
 @node generate-types-hierarchy-to-file
 @section generate-types-hierarchy-to-file
 
-@example
+@lisp
 (generate-types-hierarchy-to-file file
                                   root-type
                                   &key include-referenced
@@ -2368,7 +2442,7 @@ Example:
                                   objects
                                   exclusions
                                   additional-properties)
-@end example
+@end lisp
 
 @table @var
 @item @var{file}
@@ -2404,7 +2478,7 @@ See @ref{Specifying additional properties for CLOS classes} for more information
 Generates definitions for all types in a type hierarchy. Recursively scan types hierarchy (starting from @code{root} and @code{objects} and @code{interfaces}) (except types that were specifically excluded) and generate defintion for every mentioned type. Parameters control various aspects of definition generation.
 
 Example of usage:
-@example
+@lisp
 (generate-types-hierarchy-to-file
  "gtk.generated-classes.lisp"
  "GtkObject"
@@ -2433,7 +2507,7 @@ Example of usage:
      nil)
     ...)
    ...))
-@end example
+@end lisp
 
 @bye
 
