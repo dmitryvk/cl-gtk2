@@ -136,7 +136,9 @@
 
 (defun type-initializer-call (type-initializer)
   (etypecase type-initializer
-    (string `(foreign-funcall ,type-initializer g-type))
+    (string `(if (foreign-symbol-pointer ,type-initializer)
+                 (foreign-funcall ,type-initializer g-type)
+                 (warn "Type initializer '~A' is not available" ,type-initializer)))
     (symbol `(funcall ',type-initializer))))
 
 (defun meta-property->slot (class-name property)
