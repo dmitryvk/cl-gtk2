@@ -34,6 +34,7 @@
                (:file "gobject.foreign-gobject-subclassing")
 
                (:file "gobject.foreign-gboxed")
+               (:file "gobject.boxed")
                
                #+sbcl (:file "sbcl"))
   :depends-on (:cffi :trivial-garbage :iterate :bordeaux-threads :iterate :closer-mop))
