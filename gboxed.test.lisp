@@ -148,24 +148,29 @@ This call is always paired by call to CREATE-REFERENCE-PROXY."))
                 (slot-value proxy slot)))))
 
 (defmethod translate-to-foreign (proxy (type g-boxed-foreign-type))
-  (let* ((info (g-boxed-foreign-info type)))
-    (values (create-temporary-native info proxy) proxy)))
+  (if proxy
+      (let* ((info (g-boxed-foreign-info type)))
+        (values (create-temporary-native info proxy) proxy))
+      (null-pointer)))
 
 (defmethod free-translated-object (native-structure (type g-boxed-foreign-type) proxy)
-  (free-temporary-native (g-boxed-foreign-info type) proxy native-structure))
+  (when proxy
+    (free-temporary-native (g-boxed-foreign-info type) proxy native-structure)))
 
 (defmethod translate-from-foreign (native-structure (type g-boxed-foreign-type))
-  (let* ((info (g-boxed-foreign-info type)))
-    (cond
-      ((g-boxed-foreign-for-callback type)
-       (create-reference-proxy info native-structure))
-      ((or (g-boxed-foreign-free-to-foreign type)
-           (g-boxed-foreign-free-from-foreign type))
-       (error "Feature not yet handled"))
-      (t (create-proxy-for-native info native-structure)))))
+  (unless (null-pointer-p native-structure)
+    (let* ((info (g-boxed-foreign-info type)))
+      (cond
+        ((g-boxed-foreign-for-callback type)
+         (create-reference-proxy info native-structure))
+        ((or (g-boxed-foreign-free-to-foreign type)
+             (g-boxed-foreign-free-from-foreign type))
+         (error "Feature not yet handled"))
+        (t (create-proxy-for-native info native-structure))))))
 
 (defmethod cleanup-translated-object-for-callback ((type g-boxed-foreign-type) proxy native-structure)
-  (free-reference-proxy (g-boxed-foreign-info type) proxy native-structure))
+  (unless (null-pointer-p native-structure)
+    (free-reference-proxy (g-boxed-foreign-info type) proxy native-structure)))
 
 (defmethod has-callback-cleanup ((type g-boxed-foreign-type))
   t)
