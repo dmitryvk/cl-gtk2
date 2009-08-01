@@ -1,11 +1,5 @@
 (in-package :gobject)
 
-#+nil(define-g-boxed-class "GdkRectangle" rectangle ()
-  (x :int :initform 0)
-  (y :int :initform 0)
-  (width :int :initform 0)
-  (height :int :initform 0))
-
 (define-foreign-type g-boxed-foreign-type ()
   ((info :initarg :info
          :accessor g-boxed-foreign-info
