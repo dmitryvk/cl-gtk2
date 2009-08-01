@@ -207,10 +207,12 @@
 (defun set-gvalue-object (gvalue value)
   (g-value-set-object gvalue (if value (pointer value) (null-pointer))))
 
-(defmethod parse-g-value-for-type (gvalue-ptr (type-numeric (eql +g-type-object+)))
+(defmethod parse-g-value-for-type (gvalue-ptr (type-numeric (eql +g-type-object+)) parse-kind)
+  (declare (ignore parse-kind))
   (parse-g-value-object gvalue-ptr))
 
-(defmethod parse-g-value-for-type (gvalue-ptr (type-numeric (eql +g-type-interface+)))
+(defmethod parse-g-value-for-type (gvalue-ptr (type-numeric (eql +g-type-interface+)) parse-kind)
+  (declare (ignore parse-kind))
   (parse-g-value-object gvalue-ptr))
 
 (defmethod set-gvalue-for-type (gvalue-ptr (type-numeric (eql +g-type-object+)) value)

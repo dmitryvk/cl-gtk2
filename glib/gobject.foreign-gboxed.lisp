@@ -488,7 +488,8 @@ If it is a function designator then it specifies a function that accepts the new
         ((subtypep boxed-type 'g-boxed-ref) (convert-g-boxed-ref-from-pointer (g-value-get-boxed gvalue) boxed-type (make-instance 'g-boxed-ref-type :class-name boxed-type :owner :foreign)))
         (t (parse-g-boxed (g-value-get-boxed gvalue) boxed-type))))))
 
-(defmethod parse-g-value-for-type (gvalue-ptr (type-numeric (eql +g-type-boxed+)))
+(defmethod parse-g-value-for-type (gvalue-ptr (type-numeric (eql +g-type-boxed+)) parse-kind)
+  (declare (ignore parse-kind))
   (if (g-type= (g-value-type gvalue-ptr) (g-strv-get-type))
       (convert-from-foreign (g-value-get-boxed gvalue-ptr) '(glib:gstrv :free-from-foreign nil))
       (parse-g-value-boxed gvalue-ptr)))

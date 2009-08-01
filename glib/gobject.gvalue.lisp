@@ -23,14 +23,14 @@
                     `(t ,@forms)
                     `((equalp ,key ,value) ,@forms)))))))
 
-(defgeneric parse-g-value-for-type (gvalue-ptr type-numeric))
+(defgeneric parse-g-value-for-type (gvalue-ptr type-numeric parse-kind))
 
-(defmethod parse-g-value-for-type (gvalue-ptr type-numeric)
+(defmethod parse-g-value-for-type (gvalue-ptr type-numeric parse-kind)
   (if (g-type= type-numeric (g-type-fundamental type-numeric))
       (call-next-method)
-      (parse-g-value-for-type gvalue-ptr (g-type-numeric (g-type-fundamental type-numeric)))))
+      (parse-g-value-for-type gvalue-ptr (g-type-numeric (g-type-fundamental type-numeric)) parse-kind)))
 
-(defun parse-g-value (gvalue)
+(defun parse-g-value (gvalue &key (parse-kind :get-property))
   "Parses the GValue structure and returns the corresponding Lisp object.
 
 @arg[value]{a C pointer to the GValue structure}
@@ -54,12 +54,14 @@
       (+g-type-float+ (g-value-get-float gvalue))
       (+g-type-double+ (g-value-get-double gvalue))
       (+g-type-string+ (g-value-get-string gvalue))
-      (t (parse-g-value-for-type gvalue type)))))
+      (t (parse-g-value-for-type gvalue type parse-kind)))))
 
-(defmethod parse-g-value-for-type (gvalue-ptr (type-numeric (eql +g-type-pointer+)))
+(defmethod parse-g-value-for-type (gvalue-ptr (type-numeric (eql +g-type-pointer+)) parse-kind)
+  (declare (ignore parse-kind))
   (g-value-get-pointer gvalue-ptr))
 
-(defmethod parse-g-value-for-type (gvalue-ptr (type-numeric (eql +g-type-param+)))
+(defmethod parse-g-value-for-type (gvalue-ptr (type-numeric (eql +g-type-param+)) parse-kind)
+  (declare (ignore parse-kind))
   (parse-g-param-spec (g-value-get-param gvalue-ptr)))
 
 (defgeneric set-gvalue-for-type (gvalue-ptr type-numeric value))
