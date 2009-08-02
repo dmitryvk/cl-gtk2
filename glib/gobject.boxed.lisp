@@ -3,16 +3,7 @@
 (define-foreign-type g-boxed-foreign-type ()
   ((info :initarg :info
          :accessor g-boxed-foreign-info
-         :initform (error "info must be specified"))
-   (free-from-foreign :initarg :free-from-foreign
-                      :initform nil
-                      :accessor g-boxed-foreign-free-from-foreign)
-   (free-to-foreign :initarg :free-to-foreign
-                    :initform nil
-                    :accessor g-boxed-foreign-free-to-foreign)
-   (for-callback :initarg :for-callback
-                 :initform nil
-                 :accessor g-boxed-foreign-for-callback))
+         :initform (error "info must be specified")))
   (:actual-type :pointer))
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
@@ -30,14 +21,43 @@
   (or (gethash (g-type-string g-type-designator) *g-type-name->g-boxed-foreign-info*)
       (error "Unknown GBoxed type '~A'" (g-type-string g-type-designator))))
 
-(define-parse-method g-boxed-foreign (name &key free-from-foreign free-to-foreign for-callback)
+(define-parse-method g-boxed-foreign (name)
   (let ((info (get-g-boxed-foreign-info name)))
     (assert info nil "Unknown foreign GBoxed type ~A" name)
-    (make-instance 'g-boxed-foreign-type
-                   :info info
-                   :free-from-foreign free-from-foreign
-                   :free-to-foreign free-to-foreign
-                   :for-callback for-callback)))
+    (make-instance 'g-boxed-foreign-type :info info)))
+
+(defgeneric boxed-proxy-to-native (type-info proxy))
+
+(defgeneric boxed-read-values-from-native (type-info proxy native))
+
+(defgeneric boxed-native-to-proxy (type-info native))
+
+(defgeneric boxed-write-values-to-native-and-free (type-info proxy native))
+
+(defmethod translate-to-foreign (proxy (type g-boxed-foreign-type))
+  (if proxy
+      (let ((boxed-type-info (g-boxed-foreign-info type)))
+        (values (boxed-proxy-to-native boxed-type-info proxy) proxy))
+      (null-pointer)))
+
+(defmethod free-translated-object (native-structure (type g-boxed-foreign-type) proxy)
+  (when proxy
+    (let ((boxed-type-info (g-boxed-foreign-info type)))
+      (boxed-read-values-from-native boxed-type-info proxy native-structure)
+      (g-boxed-free (g-boxed-info-g-type boxed-type-info) native-structure))))
+
+(defmethod translate-from-foreign (native-structure (type g-boxed-foreign-type))
+  (unless (null-pointer-p native-structure)
+    (let ((info (g-boxed-foreign-info type)))
+      (boxed-native-to-proxy info native-structure))))
+
+(defmethod cleanup-translated-object-for-callback ((type g-boxed-foreign-type) proxy native-structure)
+  (unless (null-pointer-p native-structure)
+    (let ((info (g-boxed-foreign-info type)))
+      (boxed-write-values-to-native-and-free info proxy native-structure))))
+
+(defmethod has-callback-cleanup ((type g-boxed-foreign-type))
+  t)
 
 (eval-when (:load-toplevel :compile-toplevel :execute)
   (defstruct (g-boxed-cstruct-wrapper-info (:include g-boxed-info))
@@ -62,114 +82,35 @@
              (gethash ,g-type-name *g-type-name->g-boxed-foreign-info*)
              (get ',name 'g-boxed-foreign-info)))))
 
-(defgeneric create-temporary-native (type proxy)
-  (:documentation "Creates a native structure (or passes a pointer to copy contained in PROXY)
-that contains the same data that the PROXY contains and returns a pointer to it.
-
-This call is always paired by call to FREE-TEMPORARY-NATIVE and calls may be nested."))
-
-(defgeneric free-temporary-native (type proxy native-ptr)
-  (:documentation "Frees the native structure that was previously created
-by CREATE-TEMPORARY-NATIVE for the same PROXY.
-
-Also reads data from native structure pointer to by NATIVE-PTR
-and sets the PROXY to contain the same data.
-
-This call is always paired by call to CREATE-TEMPORARY-NATIVE and calls may be nested."))
-
-(defgeneric create-proxy-for-native (type native-ptr)
-  (:documentation "Creates a proxy that is initialized by data contained in native
-structured pointed to by NATIVE-PTR.
-
-Created proxy should not be linked to NATIVE-PTR and should have
-indefinite lifetime (until garbage collector collects it). Specifically,
-if proxy need a pointer to native structure, it should make a copy of
-a structure.
-
-If proxy requires finalization, finalizers should be added."))
-
-(defgeneric create-reference-proxy (type native-ptr)
-  (:documentation "Creates a reference proxy for a native structure pointed to by NATIVE-PTR.
-
-Reference proxy's lifetime is bound to duration of a callback. When the
-callback returns the reference proxy is declared invalid and operations on it are errors.
-
-This call is always paired by call to FREE-REFERENCE-PROXY and calls will not nest."))
-
-(defgeneric free-reference-proxy (type proxy native-ptr)
-  (:documentation "Frees a reference proxy PROXY previously created by call to
-CREATE-REFERENCE-PROXY. This call should ensure that all changes on PROXY are
-reflected in native structure pointed to by NATIVE-PTR.
-
-After a call to FREE-REFERENCE-PROXY, PROXY is declared invalid and using it is an error,
-operations on it should signal erros.
-
-This call is always paired by call to CREATE-REFERENCE-PROXY."))
-
-(defmethod create-temporary-native ((type g-boxed-cstruct-wrapper-info) proxy)
-  (format t "create-temporary-native~%")
+(defmethod boxed-proxy-to-native ((type g-boxed-cstruct-wrapper-info) proxy)
   (let* ((native-structure-type (g-boxed-cstruct-wrapper-info-cstruct type))
          (native-structure (foreign-alloc native-structure-type)))
     (iter (for slot in (g-boxed-cstruct-wrapper-info-slots type))
           (setf (foreign-slot-value native-structure native-structure-type slot)
                 (slot-value proxy slot)))
-    native-structure))
+    (prog1 (g-boxed-copy (g-boxed-info-g-type type) native-structure)
+      (foreign-free native-structure))))
 
-(defmethod free-temporary-native ((type g-boxed-cstruct-wrapper-info) proxy native-structure)
-  (format t "free-temporary-native~%")
-  (let ((native-structure-type (g-boxed-cstruct-wrapper-info-cstruct type)))
-    (iter (for slot in (g-boxed-cstruct-wrapper-info-slots type))
-          (setf (slot-value proxy slot)
-                (foreign-slot-value native-structure native-structure-type slot))))
-  (foreign-free native-structure))
-
-(defmethod create-proxy-for-native ((type g-boxed-cstruct-wrapper-info) native-structure)
-  (format t "create-proxy-for-native~%")
+(defmethod boxed-native-to-proxy ((type g-boxed-cstruct-wrapper-info) native-structure)
   (let* ((native-structure-type (g-boxed-cstruct-wrapper-info-cstruct type))
-         (proxy (make-instance (g-boxed-info-name type))))
+         (proxy-structure-type (g-boxed-info-name type))
+         (proxy (make-instance proxy-structure-type)))
     (iter (for slot in (g-boxed-cstruct-wrapper-info-slots type))
           (setf (slot-value proxy slot)
                 (foreign-slot-value native-structure native-structure-type slot)))
     proxy))
 
-(defmethod create-reference-proxy ((type g-boxed-cstruct-wrapper-info) native-structure)
-  (format t "create-reference-proxy~%")
-  (create-proxy-for-native type native-structure))
+(defmethod boxed-read-values-from-native ((type g-boxed-cstruct-wrapper-info) proxy native-structure)
+  (let ((native-structure-type (g-boxed-cstruct-wrapper-info-cstruct type)))
+    (iter (for slot in (g-boxed-cstruct-wrapper-info-slots type))
+          (setf (slot-value proxy slot)
+                (foreign-slot-value native-structure native-structure-type slot)))))
 
-(defmethod free-reference-proxy ((type g-boxed-cstruct-wrapper-info) proxy native-structure)
-  (format t "free-reference-proxy~%")
+(defmethod boxed-write-values-to-native-and-free ((type g-boxed-cstruct-wrapper-info) proxy native-structure)
   (let ((native-structure-type (g-boxed-cstruct-wrapper-info-cstruct type)))
     (iter (for slot in (g-boxed-cstruct-wrapper-info-slots type))
           (setf (foreign-slot-value native-structure native-structure-type slot)
                 (slot-value proxy slot)))))
-
-(defmethod translate-to-foreign (proxy (type g-boxed-foreign-type))
-  (if proxy
-      (let* ((info (g-boxed-foreign-info type)))
-        (values (create-temporary-native info proxy) proxy))
-      (null-pointer)))
-
-(defmethod free-translated-object (native-structure (type g-boxed-foreign-type) proxy)
-  (when proxy
-    (free-temporary-native (g-boxed-foreign-info type) proxy native-structure)))
-
-(defmethod translate-from-foreign (native-structure (type g-boxed-foreign-type))
-  (unless (null-pointer-p native-structure)
-    (let* ((info (g-boxed-foreign-info type)))
-      (cond
-        ((g-boxed-foreign-for-callback type)
-         (create-reference-proxy info native-structure))
-        ((or (g-boxed-foreign-free-to-foreign type)
-             (g-boxed-foreign-free-from-foreign type))
-         (error "Feature not yet handled"))
-        (t (create-proxy-for-native info native-structure))))))
-
-(defmethod cleanup-translated-object-for-callback ((type g-boxed-foreign-type) proxy native-structure)
-  (unless (null-pointer-p native-structure)
-    (free-reference-proxy (g-boxed-foreign-info type) proxy native-structure)))
-
-(defmethod has-callback-cleanup ((type g-boxed-foreign-type))
-  t)
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
   (defstruct (g-boxed-opaque-wrapper-info (:include g-boxed-info))
@@ -180,27 +121,21 @@ This call is always paired by call to CREATE-REFERENCE-PROXY."))
             :initform nil
             :accessor g-boxed-opaque-pointer)))
 
-(defmethod create-temporary-native ((type g-boxed-opaque-wrapper-info) proxy)
-  (declare (ignore type))
-  (g-boxed-opaque-pointer proxy))
+(defmethod boxed-proxy-to-native ((type g-boxed-opaque-wrapper-info) proxy)
+  (g-boxed-copy (g-boxed-info-g-type type) (g-boxed-opaque-pointer proxy)))
 
-(defmethod free-temporary-native ((type g-boxed-opaque-wrapper-info) proxy native-structure)
-  (declare (ignore type proxy native-structure)))
+(defmethod boxed-native-to-proxy ((type g-boxed-opaque-wrapper-info) native)
+  (let ((g-type (g-boxed-info-g-type type)))
+    (flet ((finalizer () (g-boxed-free g-type native)))
+      (let ((proxy (make-instance (g-boxed-info-name type) :pointer native)))
+        (tg:finalize proxy #'finalizer)))))
 
-(defmethod create-reference-proxy ((type g-boxed-opaque-wrapper-info) native-structure)
-  (make-instance (g-boxed-info-g-type type) :pointer native-structure))
+(defmethod boxed-read-values-from-native ((type g-boxed-opaque-wrapper-info) proxy native)
+  (declare (ignore type proxy native)))
 
-(defmethod free-reference-proxy ((type g-boxed-opaque-wrapper-info) proxy native-structure)
-  (declare (ignore type native-structure))
-  (setf (g-boxed-opaque-pointer proxy) nil))
-
-(defmethod create-proxy-for-native ((type g-boxed-opaque-wrapper-info) native-structure)
-  (let* ((g-type (g-boxed-info-g-type type))
-         (native-copy (g-boxed-copy g-type native-structure)))
-    (flet ((finalizer () (g-boxed-free g-type native-copy)))
-      (let ((proxy (make-instance (g-boxed-opaque-wrapper-info-g-type type) :pointer native-copy)))
-        (tg:finalize proxy #'finalizer)
-        proxy))))
+(defmethod boxed-write-values-to-native-and-free ((type g-boxed-opaque-wrapper-info) proxy native)
+  (declare (ignore type native))
+  (tg:cancel-finalization proxy))
 
 (defmacro define-g-boxed-opaque (name g-type-name &key
                                  (alloc (error "Alloc must be specified")))
@@ -416,7 +351,7 @@ This call is always paired by call to CREATE-REFERENCE-PROXY."))
 (defun decide-native-type (info proxy)
   (funcall (g-boxed-variant-cstruct-info-native-type-decision-procedure info) proxy))
 
-(defmethod create-temporary-native ((type g-boxed-variant-cstruct-info) proxy)
+(defmethod boxed-proxy-to-native ((type g-boxed-variant-cstruct-info) proxy)
   (multiple-value-bind (actual-cstruct slots) (decide-native-type type proxy)
     (let ((native-structure (foreign-alloc
                              (generated-cstruct-name
@@ -425,23 +360,24 @@ This call is always paired by call to CREATE-REFERENCE-PROXY."))
       (iter (for slot in slots)
             (setf (foreign-slot-value native-structure actual-cstruct slot)
                   (slot-value proxy slot)))
-      native-structure)))
+      (prog1 (g-boxed-copy (g-boxed-info-g-type type) native-structure)
+        (foreign-free native-structure)))))
 
 (defun decide-proxy-type (info native-structure)
   (funcall (g-boxed-variant-cstruct-info-proxy-type-decision-procedure info) native-structure))
 
-(defmethod free-temporary-native ((type g-boxed-variant-cstruct-info) proxy native-ptr)
+(defmethod boxed-write-values-to-native-and-free ((type g-boxed-variant-cstruct-info) proxy native-ptr)
   (multiple-value-bind (actual-struct slots actual-cstruct) (decide-proxy-type type native-ptr)
     (unless (eq (type-of proxy) actual-struct)
       (restart-case
           (error "Expected type of boxed variant structure ~A and actual type ~A do not match"
                  (type-of proxy) actual-struct)
-        (skip-parsing-values () (return-from free-temporary-native))))
+        (skip-parsing-values () (return-from boxed-write-values-to-native-and-free))))
     (iter (for slot in slots)
           (setf (slot-value proxy slot)
                 (foreign-slot-value native-ptr actual-cstruct slot)))))
 
-(defmethod create-proxy-for-native ((type g-boxed-variant-cstruct-info) native-ptr)
+(defmethod boxed-native-to-proxy ((type g-boxed-variant-cstruct-info) native-ptr)
   (multiple-value-bind (actual-struct slots actual-cstruct) (decide-proxy-type type native-ptr)
     (let ((proxy (make-instance actual-struct)))
       (iter (for slot in slots)
@@ -449,26 +385,30 @@ This call is always paired by call to CREATE-REFERENCE-PROXY."))
                   (foreign-slot-value native-ptr actual-cstruct slot)))
       proxy)))
 
-(defmethod create-reference-proxy ((type g-boxed-variant-cstruct-info) native-ptr)
-  (create-proxy-for-native type native-ptr))
+(defgeneric boxed-native-to-proxy-needs-copy-for-gvalue-get (type))
 
-(defmethod free-reference-proxy ((type g-boxed-variant-cstruct-info) proxy native-ptr)
-  (multiple-value-bind (actual-cstruct slots) (decide-native-type type proxy)
-    (iter (for slot in slots)
-          (setf (foreign-slot-value native-ptr actual-cstruct slot)
-                (slot-value proxy slot)))))
+(defmethod boxed-native-to-proxy-needs-copy-for-gvalue-get ((type g-boxed-cstruct-wrapper-info))
+  nil)
+
+(defmethod boxed-native-to-proxy-needs-copy-for-gvalue-get ((type g-boxed-variant-cstruct-info))
+  nil)
+
+(defmethod boxed-native-to-proxy-needs-copy-for-gvalue-get ((type g-boxed-opaque-wrapper-info))
+  t)
 
 (defmethod parse-g-value-for-type (gvalue-ptr (type-numeric (eql +g-type-boxed+)) parse-kind)
   (declare (ignore parse-kind))
   (if (g-type= (g-value-type gvalue-ptr) (g-strv-get-type))
       (convert-from-foreign (g-value-get-boxed gvalue-ptr) '(glib:gstrv :free-from-foreign nil))
-      (let ((boxed-type (get-g-boxed-foreign-info-for-gtype type-numeric)))
-        (create-proxy-for-native boxed-type (g-value-get-boxed gvalue-ptr)))))
+      (let* ((boxed-type (get-g-boxed-foreign-info-for-gtype type-numeric))
+             (native (if (boxed-native-to-proxy-needs-copy-for-gvalue-get boxed-type)
+                         (g-boxed-copy type-numeric (g-value-get-boxed gvalue-ptr))
+                         (g-value-get-boxed gvalue-ptr))))
+        (create-proxy-for-native boxed-type native))))
 
 (defmethod set-gvalue-for-type (gvalue-ptr (type-numeric (eql +g-type-boxed+)) value)
   (if (g-type= (g-value-type gvalue-ptr) (g-strv-get-type))
       (g-value-set-boxed gvalue-ptr (convert-to-foreign value '(glib:gstrv :free-from-foreign nil)))
       (let* ((boxed-type (get-g-boxed-foreign-info-for-gtype type-numeric))
-             (native (create-temporary-native boxed-type value)))
-        (g-value-take-boxed gvalue-ptr (g-boxed-copy type-numeric native))
-        (free-temporary-native boxed-type value native))))
+             (native (boxed-proxy-to-native boxed-type value)))
+        (g-value-take-boxed gvalue-ptr native))))
