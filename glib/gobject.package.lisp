@@ -179,7 +179,13 @@
            #:*lisp-name-exceptions*
            #:*additional-properties*
            #:g-type=
-           #:g-type/=)
+           #:g-type/=
+           #:define-g-boxed-cstruct
+           #:define-g-boxed-opaque
+           #:g-boxed-opaque
+           #:g-boxed-opaque-pointer
+           #:define-g-boxed-variant-cstruct
+           #:g-boxed-foreign)
   (:documentation
    "CL-GTK2-GOBJECT is a binding to GObject type system.
 For information on GObject, see its @a[http://library.gnome.org/devel/gobject/stable/]{documentation}.

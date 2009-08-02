@@ -24,6 +24,12 @@
   (defun get-g-boxed-foreign-info (name)
     (get name 'g-boxed-foreign-info)))
 
+(defvar *g-type-name->g-boxed-foreign-info* (make-hash-table :test 'equal))
+
+(defun get-g-boxed-foreign-info-for-gtype (g-type-designator)
+  (or (gethash (g-type-string g-type-designator) *g-type-name->g-boxed-foreign-info*)
+      (error "Unknown GBoxed type '~A'" (g-type-string g-type-designator))))
+
 (define-parse-method g-boxed-foreign (name &key free-from-foreign free-to-foreign for-callback)
   (let ((info (get-g-boxed-foreign-info name)))
     (assert info nil "Unknown foreign GBoxed type ~A" name)
@@ -38,21 +44,23 @@
     cstruct
     slots))
 
-(defmacro define-g-boxed-cstruct (name cstruct-name g-type-name &body slots)
+(defmacro define-g-boxed-cstruct (name g-type-name &body slots)
   `(progn
      (defstruct ,name
        ,@(iter (for (name type &key initarg) in slots)
                (collect (list name initarg))))
-     (defcstruct ,cstruct-name
+     (defcstruct ,(generated-cstruct-name name)
        ,@(iter (for (name type &key initarg) in slots)
                (collect `(,name ,type))))
      (eval-when (:compile-toplevel :load-toplevel :execute)
        (setf (get ',name 'g-boxed-foreign-info)
              (make-g-boxed-cstruct-wrapper-info :name ',name
                                                 :g-type ,g-type-name
-                                                :cstruct ',cstruct-name
+                                                :cstruct ',(generated-cstruct-name name)
                                                 :slots ',(iter (for (name type &key initarg) in slots)
-                                                               (collect name)))))))
+                                                               (collect name)))
+             (gethash ,g-type-name *g-type-name->g-boxed-foreign-info*)
+             (get ',name 'g-boxed-foreign-info)))))
 
 (defgeneric create-temporary-native (type proxy)
   (:documentation "Creates a native structure (or passes a pointer to copy contained in PROXY)
@@ -209,7 +217,9 @@ This call is always paired by call to CREATE-REFERENCE-PROXY."))
             (eval-when (:compile-toplevel :load-toplevel :execute)
               (setf (get ',name 'g-boxed-foreign-info)
                     (make-g-boxed-opaque-wrapper-info :name ',name
-                                                      :g-type ,g-type-name))))))
+                                                      :g-type ,g-type-name)
+                    (gethash ,g-type-name *g-type-name->g-boxed-foreign-info*)
+                    (get ',name 'g-boxed-foreign-info))))))
 
 (defstruct var-structure
   name
@@ -269,6 +279,11 @@ This call is always paired by call to CREATE-REFERENCE-PROXY."))
   (destructuring-bind (name type &key count initform) slot
     (make-var-structure-slot :name name :type type :count count :initform initform)))
 
+(defun ensure-list (thing)
+  (if (listp thing)
+      thing
+      (list thing)))
+
 (defun parse-variants (parent variants)
   (iter (for var-descr in variants)
         (for (options variant-name . slots) in variants)
@@ -284,7 +299,7 @@ This call is always paired by call to CREATE-REFERENCE-PROXY."))
 
 (defun generated-cunion-name (symbol)
   (or (get symbol 'generated-cunion-name)
-      (setf (get symbol 'generated-cunion-name) (gensym (format nil "GEN-~A-CSTRUCT-" (symbol-name symbol))))))
+      (setf (get symbol 'generated-cunion-name) (gensym (format nil "GEN-~A-CUNION-" (symbol-name symbol))))))
 
 (defun generate-cstruct-1 (struct)
   `(defcstruct ,(generated-cstruct-name (var-structure-name struct))
@@ -381,7 +396,7 @@ This call is always paired by call to CREATE-REFERENCE-PROXY."))
 (defmethod make-load-form ((object g-boxed-variant-cstruct-info) &optional env)
   (make-load-form-saving-slots object :environment env))
 
-(defmacro define-boxed-variant-cstruct (name g-type-name &body slots)
+(defmacro define-g-boxed-variant-cstruct (name g-type-name &body slots)
   (let* ((structure (parse-variant-structure-definition name slots)))
     `(progn ,@(generate-c-structures structure)
             ,@(generate-unions structure)
@@ -394,7 +409,9 @@ This call is always paired by call to CREATE-REFERENCE-PROXY."))
                                                        :native-type-decision-procedure
                                                        ,(generate-native-type-decision-procedure structure)
                                                        :proxy-type-decision-procedure
-                                                       ,(generate-proxy-type-decision-procedure structure)))))))
+                                                       ,(generate-proxy-type-decision-procedure structure))
+                    (gethash ,g-type-name *g-type-name->g-boxed-foreign-info*)
+                    (get ',name 'g-boxed-foreign-info))))))
 
 (defun decide-native-type (info proxy)
   (funcall (g-boxed-variant-cstruct-info-native-type-decision-procedure info) proxy))
@@ -440,3 +457,18 @@ This call is always paired by call to CREATE-REFERENCE-PROXY."))
     (iter (for slot in slots)
           (setf (foreign-slot-value native-ptr actual-cstruct slot)
                 (slot-value proxy slot)))))
+
+(defmethod parse-g-value-for-type (gvalue-ptr (type-numeric (eql +g-type-boxed+)) parse-kind)
+  (declare (ignore parse-kind))
+  (if (g-type= (g-value-type gvalue-ptr) (g-strv-get-type))
+      (convert-from-foreign (g-value-get-boxed gvalue-ptr) '(glib:gstrv :free-from-foreign nil))
+      (let ((boxed-type (get-g-boxed-foreign-info-for-gtype type-numeric)))
+        (create-proxy-for-native boxed-type (g-value-get-boxed gvalue-ptr)))))
+
+(defmethod set-gvalue-for-type (gvalue-ptr (type-numeric (eql +g-type-boxed+)) value)
+  (if (g-type= (g-value-type gvalue-ptr) (g-strv-get-type))
+      (g-value-set-boxed gvalue-ptr (convert-to-foreign value '(glib:gstrv :free-from-foreign nil)))
+      (let* ((boxed-type (get-g-boxed-foreign-info-for-gtype type-numeric))
+             (native (create-temporary-native boxed-type value)))
+        (g-value-take-boxed gvalue-ptr (g-boxed-copy type-numeric native))
+        (free-temporary-native boxed-type value native))))

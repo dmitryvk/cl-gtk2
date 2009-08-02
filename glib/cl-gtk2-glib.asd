@@ -33,7 +33,6 @@
                (:file "gobject.object-defs")
                (:file "gobject.foreign-gobject-subclassing")
 
-               (:file "gobject.foreign-gboxed")
                (:file "gobject.boxed")
                
                #+sbcl (:file "sbcl"))
