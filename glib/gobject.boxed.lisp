@@ -124,14 +124,18 @@
 (defmethod boxed-proxy-to-native ((type g-boxed-opaque-wrapper-info) proxy)
   (g-boxed-copy (g-boxed-info-g-type type) (g-boxed-opaque-pointer proxy)))
 
+(defun make-boxed-free-finalizer (g-type pointer)
+  (lambda () (g-boxed-free g-type pointer)))
+
 (defmethod boxed-native-to-proxy ((type g-boxed-opaque-wrapper-info) native)
-  (let ((g-type (g-boxed-info-g-type type)))
-    (flet ((finalizer () (g-boxed-free g-type native)))
-      (let ((proxy (make-instance (g-boxed-info-name type) :pointer native)))
-        (tg:finalize proxy #'finalizer)))))
+  (let* ((g-type (g-boxed-info-g-type type))
+         (proxy (make-instance (g-boxed-info-name type) :pointer native)))
+    (tg:finalize proxy (make-boxed-free-finalizer g-type native))))
 
 (defmethod boxed-read-values-from-native ((type g-boxed-opaque-wrapper-info) proxy native)
-  (declare (ignore type proxy native)))
+  (g-boxed-free (g-boxed-info-g-type type) (g-boxed-opaque-pointer proxy))
+  (tg:cancel-finalization proxy)
+  (tg:finalize proxy (make-boxed-free-finalizer (g-boxed-info-g-type type) native)))
 
 (defmethod boxed-write-values-to-native-and-free ((type g-boxed-opaque-wrapper-info) proxy native)
   (declare (ignore type native))
@@ -404,7 +408,7 @@
              (native (if (boxed-native-to-proxy-needs-copy-for-gvalue-get boxed-type)
                          (g-boxed-copy type-numeric (g-value-get-boxed gvalue-ptr))
                          (g-value-get-boxed gvalue-ptr))))
-        (create-proxy-for-native boxed-type native))))
+        (boxed-native-to-proxy boxed-type native))))
 
 (defmethod set-gvalue-for-type (gvalue-ptr (type-numeric (eql +g-type-boxed+)) value)
   (if (g-type= (g-value-type gvalue-ptr) (g-strv-get-type))
