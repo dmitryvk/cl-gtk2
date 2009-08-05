@@ -345,22 +345,19 @@
 
 (defun generate-native-type-decision-procedure-1 (str proxy-var)
   (if (null (var-structure-discriminator-slot str))
-      `(values ',(generated-cstruct-name (var-structure-name str))
-               ',(mapcar #'cstruct-slot-description-name (var-struct-all-slots str)))
+      `(values ',(var-structure-resulting-cstruct-description str))
       `(typecase ,proxy-var
          ,@(iter (for variant in (var-structure-variants str))
                  (for v-str = (var-structure-variant-structure variant))
                  (collect `(,(var-structure-name v-str)
                              ,(generate-native-type-decision-procedure-1 v-str proxy-var))))
          (,(var-structure-name str)
-          (values ',(generated-cstruct-name (var-structure-name str))
-                  ',(mapcar #'cstruct-slot-description-name (var-struct-all-slots str)))))))
+          (values ',(var-structure-resulting-cstruct-description str))))))
 
 (defun generate-proxy-type-decision-procedure-1 (str native-var)
   (if (null (var-structure-discriminator-slot str))
       `(values ',(var-structure-name str)
-               ',(mapcar #'cstruct-slot-description-name (var-struct-all-slots str))
-               ',(generated-cstruct-name (var-structure-name str)))
+               ',(var-structure-resulting-cstruct-description str))
       `(case (foreign-slot-value ,native-var
                                  ',(generated-cstruct-name (var-structure-name str))
                                  ',(var-structure-discriminator-slot str))
@@ -371,8 +368,7 @@
                                v-str
                                native-var))))
          (t (values ',(var-structure-name str)
-                    ',(mapcar #'cstruct-slot-description-name (var-struct-all-slots str))
-                    ',(generated-cstruct-name (var-structure-name str)))))))
+                    ',(var-structure-resulting-cstruct-description str))))))
 
 (defun generate-proxy-type-decision-procedure (str)
   (let ((native (gensym "NATIVE-")))
@@ -438,15 +434,13 @@
 (defmethod translate-to-foreign (proxy (foreign-type boxed-variant-cstruct-foreign-type))
   (if (null proxy)
       (null-pointer)
-      (let ((type (g-boxed-foreign-info foreign-type)))
-        (multiple-value-bind (actual-cstruct slots) (decide-native-type type proxy)
-          (with-foreign-object (native-structure (generated-cstruct-name
-                                                  (var-structure-name
-                                                   (g-boxed-variant-cstruct-info-root type))))
-            (iter (for slot in slots)
-                  (setf (foreign-slot-value native-structure actual-cstruct slot)
-                        (slot-value proxy slot)))
-            (values (boxed-copy-fn type native-structure) proxy))))))
+      (let* ((type (g-boxed-foreign-info foreign-type))
+             (cstruct-description (decide-native-type type proxy)))
+        (with-foreign-object (native-structure (generated-cstruct-name
+                                                (var-structure-name
+                                                 (g-boxed-variant-cstruct-info-root type))))
+          (copy-slots-to-native proxy native-structure cstruct-description)
+          (values (boxed-copy-fn type native-structure) proxy)))))
 
 (defun decide-proxy-type (info native-structure)
   (funcall (g-boxed-variant-cstruct-info-proxy-type-decision-procedure info) native-structure))
@@ -454,24 +448,20 @@
 (defmethod free-translated-object (native (foreign-type boxed-variant-cstruct-foreign-type) proxy)
   (when proxy
     (let ((type (g-boxed-foreign-info foreign-type)))
-      (multiple-value-bind (actual-struct slots actual-cstruct) (decide-proxy-type type native)
-        (unless (eq (type-of proxy) actual-struct)
+      (multiple-value-bind (actual-struct cstruct-description) (decide-proxy-type type native)
+        (unless (eq (type-of proxy) (cstruct-description-name actual-struct))
           (restart-case
               (error "Expected type of boxed variant structure ~A and actual type ~A do not match"
                      (type-of proxy) actual-struct)
             (skip-parsing-values () (return-from free-translated-object))))
-        (iter (for slot in slots)
-              (setf (slot-value proxy slot)
-                    (foreign-slot-value native actual-cstruct slot)))))))
+        (copy-slots-to-proxy proxy native cstruct-description)))))
 
 (defmethod translate-from-foreign (native (foreign-type boxed-variant-cstruct-foreign-type))
   (unless (null-pointer-p native)
     (let ((type (g-boxed-foreign-info foreign-type)))
-      (multiple-value-bind (actual-struct slots actual-cstruct) (decide-proxy-type type native)
+      (multiple-value-bind (actual-struct cstruct-description) (decide-proxy-type type native)
         (let ((proxy (make-instance actual-struct)))
-          (iter (for slot in slots)
-                (setf (slot-value proxy slot)
-                      (foreign-slot-value native actual-cstruct slot)))
+          (copy-slots-to-proxy proxy native cstruct-description)
           (when (g-boxed-foreign-return-p foreign-type)
             (boxed-free-fn type native))
           proxy)))))
@@ -479,10 +469,8 @@
 (defmethod cleanup-translated-object-for-callback ((foreign-type boxed-variant-cstruct-foreign-type) proxy native)
   (when proxy
     (let ((type (g-boxed-foreign-info foreign-type)))
-      (multiple-value-bind (actual-cstruct slots) (decide-native-type type proxy)
-        (iter (for slot in slots)
-              (setf (foreign-slot-value native actual-cstruct slot)
-                    (slot-value proxy slot)))))))
+      (let ((cstruct-description (decide-native-type type proxy)))
+        (copy-slots-to-native proxy native cstruct-description)))))
 
 (defgeneric boxed-parse-g-value (gvalue-ptr info))
 
