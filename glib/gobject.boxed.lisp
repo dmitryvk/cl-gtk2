@@ -223,22 +223,14 @@
   parent
   slots
   discriminator-slot
-  variants)
+  variants
+  resulting-cstruct-description)
 
 (defstruct var-structure-variant
   discriminating-values
   structure)
 
-(defstruct var-structure-slot
-  name
-  type
-  initform
-  count)
-
 (defmethod make-load-form ((object var-structure) &optional env)
-  (make-load-form-saving-slots object :environment env))
-
-(defmethod make-load-form ((object var-structure-slot) &optional env)
   (make-load-form-saving-slots object :environment env))
 
 (defmethod make-load-form ((object var-structure-variant) &optional env)
@@ -267,14 +259,26 @@
                 (error "Structure has more than one discriminator slot"))
               (setf (var-structure-discriminator-slot result) (second slot)
                     (var-structure-variants result) (parse-variants result (nthcdr 2 slot))))
-            (push (parse-slot slot) (var-structure-slots result)))
+            (push (parse-cstruct-slot slot) (var-structure-slots result)))
         (finally (setf (var-structure-slots result)
                        (reverse (var-structure-slots result)))
+                 (unless parent
+                   (set-variant-result-structure result))
                  (return result))))
 
-(defun parse-slot (slot)
-  (destructuring-bind (name type &key count initform) slot
-    (make-var-structure-slot :name name :type type :count count :initform initform)))
+(defun set-variant-result-structure (var-structure)
+  (setf (var-structure-resulting-cstruct-description var-structure)
+        (make-cstruct-description
+         :name
+         (var-structure-name var-structure)
+         :slots
+         (append
+          (when (var-structure-parent var-structure)
+            (cstruct-description-slots (var-structure-resulting-cstruct-description (var-structure-parent var-structure))))
+          (var-structure-slots var-structure))))
+  (iter (for variant in (var-structure-variants var-structure))
+        (for child-var-structure = (var-structure-variant-structure variant))
+        (set-variant-result-structure child-var-structure)))
 
 (defun ensure-list (thing)
   (if (listp thing)
@@ -299,15 +303,16 @@
       (setf (get symbol 'generated-cunion-name) (gensym (format nil "GEN-~A-CUNION-" (symbol-name symbol))))))
 
 (defun generate-cstruct-1 (struct)
-  `(defcstruct ,(generated-cstruct-name (var-structure-name struct))
-     ,@(iter (for slot in (var-struct-all-slots struct))
-             (collect `(,(var-structure-slot-name slot) ,(var-structure-slot-type slot)
-                         ,@(when (var-structure-slot-count slot)
-                                 `(:count ,(var-structure-slot-count slot))))))))
+  `(defcstruct ,(generated-cstruct-name (cstruct-description-name struct))
+     ,@(iter (for slot in (cstruct-description-slots struct))
+             (collect `(,(cstruct-slot-description-name slot) ,(cstruct-slot-description-type slot)
+                         ,@(when (cstruct-slot-description-count slot)
+                                 `(:count ,(cstruct-slot-description-count slot))))))))
 
 (defun generate-c-structures (structure)
   (iter (for str in (all-structures structure))
-        (collect (generate-cstruct-1 str))))
+        (for cstruct = (var-structure-resulting-cstruct-description str))
+        (collect (generate-cstruct-1 cstruct))))
 
 (defun generate-union-1 (struct)
   `(defcunion ,(generated-cunion-name (var-structure-name struct))
@@ -331,8 +336,8 @@
                                                                           :key #'var-structure-variant-structure))))))
                    `,(var-structure-name str))
      ,@(iter (for slot in (var-structure-slots str))
-             (collect `(,(var-structure-slot-name slot)
-                         ,(var-structure-slot-initform slot))))))
+             (collect `(,(cstruct-slot-description-name slot)
+                         ,(cstruct-slot-description-initform slot))))))
 
 (defun generate-structures (str)
   (iter (for variant in (reverse (all-structures str)))
@@ -341,7 +346,7 @@
 (defun generate-native-type-decision-procedure-1 (str proxy-var)
   (if (null (var-structure-discriminator-slot str))
       `(values ',(generated-cstruct-name (var-structure-name str))
-               ',(mapcar #'var-structure-slot-name (var-struct-all-slots str)))
+               ',(mapcar #'cstruct-slot-description-name (var-struct-all-slots str)))
       `(typecase ,proxy-var
          ,@(iter (for variant in (var-structure-variants str))
                  (for v-str = (var-structure-variant-structure variant))
@@ -349,12 +354,12 @@
                              ,(generate-native-type-decision-procedure-1 v-str proxy-var))))
          (,(var-structure-name str)
           (values ',(generated-cstruct-name (var-structure-name str))
-                  ',(mapcar #'var-structure-slot-name (var-struct-all-slots str)))))))
+                  ',(mapcar #'cstruct-slot-description-name (var-struct-all-slots str)))))))
 
 (defun generate-proxy-type-decision-procedure-1 (str native-var)
   (if (null (var-structure-discriminator-slot str))
       `(values ',(var-structure-name str)
-               ',(mapcar #'var-structure-slot-name (var-struct-all-slots str))
+               ',(mapcar #'cstruct-slot-description-name (var-struct-all-slots str))
                ',(generated-cstruct-name (var-structure-name str)))
       `(case (foreign-slot-value ,native-var
                                  ',(generated-cstruct-name (var-structure-name str))
@@ -366,7 +371,7 @@
                                v-str
                                native-var))))
          (t (values ',(var-structure-name str)
-                    ',(mapcar #'var-structure-slot-name (var-struct-all-slots str))
+                    ',(mapcar #'cstruct-slot-description-name (var-struct-all-slots str))
                     ',(generated-cstruct-name (var-structure-name str)))))))
 
 (defun generate-proxy-type-decision-procedure (str)
@@ -393,7 +398,7 @@
 (defmethod make-load-form ((object g-boxed-variant-cstruct-info) &optional env)
   (make-load-form-saving-slots object :environment env))
 
-(define-foreign-type boxed-variant-cstruct-foreign-type () ())
+(define-foreign-type boxed-variant-cstruct-foreign-type (g-boxed-foreign-type) ())
 
 (defmethod make-foreign-type ((info g-boxed-variant-cstruct-info) &key return-p)
   (make-instance 'boxed-variant-cstruct-foreign-type :info info :return-p return-p))
@@ -459,7 +464,7 @@
               (setf (slot-value proxy slot)
                     (foreign-slot-value native actual-cstruct slot)))))))
 
-(defmethod translate-from-foreign (native (foreign-type g-boxed-variant-cstruct-info))
+(defmethod translate-from-foreign (native (foreign-type boxed-variant-cstruct-foreign-type))
   (unless (null-pointer-p native)
     (let ((type (g-boxed-foreign-info foreign-type)))
       (multiple-value-bind (actual-struct slots actual-cstruct) (decide-proxy-type type native)
@@ -467,9 +472,11 @@
           (iter (for slot in slots)
                 (setf (slot-value proxy slot)
                       (foreign-slot-value native actual-cstruct slot)))
+          (when (g-boxed-foreign-return-p foreign-type)
+            (boxed-free-fn type native))
           proxy)))))
 
-(defmethod cleanup-translated-object-for-callback ((foreign-type g-boxed-variant-cstruct-info) proxy native)
+(defmethod cleanup-translated-object-for-callback ((foreign-type boxed-variant-cstruct-foreign-type) proxy native)
   (when proxy
     (let ((type (g-boxed-foreign-info foreign-type)))
       (multiple-value-bind (actual-cstruct slots) (decide-native-type type proxy)
