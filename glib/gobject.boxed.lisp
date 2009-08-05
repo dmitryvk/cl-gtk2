@@ -58,11 +58,11 @@
 (defmacro define-g-boxed-cstruct (name g-type-name &body slots)
   `(progn
      (defstruct ,name
-       ,@(iter (for (name type &key initarg) in slots)
+       ,@(iter (for (name type &key count initarg) in slots)
                (collect (list name initarg))))
      (defcstruct ,(generated-cstruct-name name)
-       ,@(iter (for (name type &key initarg) in slots)
-               (collect `(,name ,type))))
+       ,@(iter (for (name type &key count initarg) in slots)
+               (collect `(,name ,type ,@(when count `(:count ,count))))))
      (eval-when (:compile-toplevel :load-toplevel :execute)
        (setf (get ',name 'g-boxed-foreign-info)
              (make-g-boxed-cstruct-wrapper-info :name ',name
@@ -273,7 +273,7 @@
      ,@(iter (for slot in (var-struct-all-slots struct))
              (collect `(,(var-structure-slot-name slot) ,(var-structure-slot-type slot)
                          ,@(when (var-structure-slot-count slot)
-                                 (list `(:count ,(var-structure-slot-count slot)))))))))
+                                 `(:count ,(var-structure-slot-count slot))))))))
 
 (defun generate-c-structures (structure)
   (iter (for str in (all-structures structure))
