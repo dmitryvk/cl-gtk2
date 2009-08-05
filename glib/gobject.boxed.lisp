@@ -444,12 +444,13 @@
   (when proxy
     (let ((type (g-boxed-foreign-info foreign-type)))
       (multiple-value-bind (actual-struct cstruct-description) (decide-proxy-type type native)
-        (unless (eq (type-of proxy) (cstruct-description-name actual-struct))
+        (unless (eq (type-of proxy) actual-struct)
           (restart-case
               (error "Expected type of boxed variant structure ~A and actual type ~A do not match"
                      (type-of proxy) actual-struct)
             (skip-parsing-values () (return-from free-translated-object))))
-        (copy-slots-to-proxy proxy native cstruct-description)))))
+        (copy-slots-to-proxy proxy native cstruct-description)
+        (boxed-free-fn type native)))))
 
 (defmethod translate-from-foreign (native (foreign-type boxed-variant-cstruct-foreign-type))
   (unless (null-pointer-p native)
