@@ -6,9 +6,8 @@
 
 (defun combo-box-get-active-iter (combo-box)
   (let ((i (make-instance 'tree-iter)))
-    (if (gtk-combo-box-get-active-iter combo-box i)
-        i
-        (release i))))
+    (when (gtk-combo-box-get-active-iter combo-box i)
+      i)))
 
 (defcfun (combo-box-active-text "gtk_combo_box_get_active_text") (:string :free-from-foreign t)
   (combo-box g-object))

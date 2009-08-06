@@ -284,9 +284,7 @@
             (gtk-text-iter-forward-search start-position string flags i1 i2 limit)
             (gtk-text-iter-backward-search start-position string flags i1 i2 limit))
         (values t i1 i2)
-        (progn (release i1)
-               (release i2)
-               (values nil nil nil)))))
+        (values nil nil nil))))
 
 (export 'text-iter-search)
 
@@ -738,9 +736,7 @@
         (i2 (make-instance 'text-iter)))
     (if (gtk-text-buffer-get-selection-bounds buffer i1 i2)
         (values i1 i2)
-        (progn (release i1)
-               (release i2)
-               (values nil nil)))))
+        (values nil nil))))
 
 (export 'text-buffer-get-selection-bounds)
 

@@ -34,9 +34,8 @@
 
 (defun tree-selection-selected (tree-selection)
   (let ((iter (make-instance 'tree-iter)))
-    (if (gtk-tree-selection-get-selected tree-selection (null-pointer) iter)
-        iter
-        (release iter))))
+    (when (gtk-tree-selection-get-selected tree-selection (null-pointer) iter)
+      iter)))
 
 (export 'tree-selection-selected)
 
