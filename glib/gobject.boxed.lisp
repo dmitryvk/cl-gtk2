@@ -215,6 +215,9 @@
             :initform nil
             :accessor g-boxed-opaque-pointer)))
 
+(defmethod pointer ((object g-boxed-opaque))
+  (g-boxed-opaque-pointer object))
+
 (defmethod make-foreign-type ((info g-boxed-opaque-wrapper-info) &key return-p)
   (make-instance 'boxed-opaque-foreign-type :info info :return-p return-p))
 
@@ -242,15 +245,13 @@
 (defmacro define-g-boxed-opaque (name g-type-name &key
                                  (alloc (error "Alloc must be specified")))
   (let ((native-copy (gensym "NATIVE-COPY-"))
-        (instance (gensym "INSTANCE-"))
-        (finalizer (gensym "FINALIZER-")))
+        (instance (gensym "INSTANCE-")))
     `(progn (defclass ,name (g-boxed-opaque) ())
             (defmethod initialize-instance :after ((,instance ,name) &key &allow-other-keys)
               (unless (g-boxed-opaque-pointer ,instance)
                 (let ((,native-copy ,alloc))
-                  (flet ((,finalizer () (boxed-free-fn ,g-type-name ,native-copy)))
-                    (setf (g-boxed-opaque-pointer ,instance) ,native-copy)
-                    (finalize ,instance (make-boxed-free-finalizer (get ',name 'g-boxed-foreign-info) ,native-copy))))))
+                  (setf (g-boxed-opaque-pointer ,instance) ,native-copy)
+                  (finalize ,instance (make-boxed-free-finalizer (get ',name 'g-boxed-foreign-info) ,native-copy)))))
             (eval-when (:compile-toplevel :load-toplevel :execute)
               (setf (get ',name 'g-boxed-foreign-info)
                     (make-g-boxed-opaque-wrapper-info :name ',name
@@ -343,6 +344,10 @@
 (defun generated-cunion-name (symbol)
   (or (get symbol 'generated-cunion-name)
       (setf (get symbol 'generated-cunion-name) (gentemp (format nil "CUNION-~A" (symbol-name symbol)) (find-package :gobject.boxed.generated-names)))))
+
+(defun generated-fn-name (symbol)
+  (or (get symbol 'generated-fn-name)
+      (setf (get symbol 'generated-fn-name) (gentemp (format nil "FN~A" (symbol-name symbol)) (find-package :gobject.boxed.generated-names)))))
 
 (defun generate-cstruct-1 (struct)
   `(defcstruct ,(generated-cstruct-name (cstruct-description-name struct))
@@ -520,13 +525,13 @@
   (declare (ignore parse-kind))
   (if (g-type= (g-value-type gvalue-ptr) (g-strv-get-type))
       (convert-from-foreign (g-value-get-boxed gvalue-ptr) '(glib:gstrv :free-from-foreign nil))
-      (let ((boxed-type (get-g-boxed-foreign-info-for-gtype type-numeric)))
+      (let ((boxed-type (get-g-boxed-foreign-info-for-gtype (g-value-type gvalue-ptr))))
         (boxed-parse-g-value gvalue-ptr boxed-type))))
 
 (defmethod set-gvalue-for-type (gvalue-ptr (type-numeric (eql +g-type-boxed+)) value)
   (if (g-type= (g-value-type gvalue-ptr) (g-strv-get-type))
       (g-value-set-boxed gvalue-ptr (convert-to-foreign value '(glib:gstrv :free-from-foreign nil)))
-      (let ((boxed-type (get-g-boxed-foreign-info-for-gtype type-numeric)))
+      (let ((boxed-type (get-g-boxed-foreign-info-for-gtype (g-value-type gvalue-ptr))))
         (boxed-set-g-value gvalue-ptr boxed-type value))))
 
 (defmethod boxed-parse-g-value (gvalue-ptr (info g-boxed-cstruct-wrapper-info))
@@ -546,3 +551,43 @@
 
 (defmethod boxed-set-g-value (gvalue-ptr (info g-boxed-opaque-wrapper-info) proxy)
   (g-value-set-boxed gvalue-ptr (translate-to-foreign proxy (make-foreign-type info :return-p nil))))
+
+(defun boxed-related-symbols (name)
+  (let ((info (get-g-boxed-foreign-info name)))
+    (etypecase info
+      (g-boxed-cstruct-wrapper-info
+       (append (list name
+                     (intern (format nil "MAKE-~A" (symbol-name name)))
+                     (intern (format nil "COPY-~A" (symbol-name name))))
+               (iter (for slot in (cstruct-description-slots (g-boxed-cstruct-wrapper-info-cstruct-description info)))
+                     (for slot-name = (cstruct-slot-description-name slot))
+                     (collect (intern (format nil "~A-~A" (symbol-name name) (symbol-name slot-name)))))))
+      (g-boxed-opaque-wrapper-info
+       (list name))
+      (g-boxed-variant-cstruct-info
+       (append (list name)
+               (iter (for var-struct in (all-structures (g-boxed-variant-cstruct-info-root info)))
+                     (for s-name = (var-structure-name var-struct))
+                     (for cstruct-description = (var-structure-resulting-cstruct-description var-struct))
+                     (appending (append (list (intern (format nil "MAKE-~A" (symbol-name s-name)))
+                                              (intern (format nil "COPY-~A" (symbol-name s-name))))
+                                        (iter (for slot in (cstruct-description-slots cstruct-description))
+                                              (for slot-name = (cstruct-slot-description-name slot))
+                                              (collect (intern (format nil "~A-~A" (symbol-name s-name)
+                                                                       (symbol-name slot-name)))))))))))))
+
+(defmacro define-boxed-opaque-accessor (boxed-name accessor-name &key type reader writer)
+  (let ((var (gensym))
+        (n-var (gensym)))
+    `(progn ,@(when reader
+                    (list (etypecase reader
+                            (symbol `(defun ,accessor-name (,var)
+                                       (funcall ,reader ,var)))
+                            (string `(defcfun (,accessor-name ,reader) ,type
+                                       (,var (g-boxed-foreign ,boxed-name)))))))
+            ,@(when writer
+                    (list (etypecase reader
+                            (symbol `(defun (setf ,accessor-name) (,n-var ,var)
+                                       (funcall ,reader ,n-var ,var)))
+                            (string `(defun (setf ,accessor-name) (,n-var ,var)
+                                       (foreign-funcall ,writer (g-boxed-foreign ,boxed-name) ,var ,type ,n-var :void)))))))))

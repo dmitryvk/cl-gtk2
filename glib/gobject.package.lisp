@@ -185,7 +185,9 @@
            #:g-boxed-opaque
            #:g-boxed-opaque-pointer
            #:define-g-boxed-variant-cstruct
-           #:g-boxed-foreign)
+           #:g-boxed-foreign
+           #:boxed-related-symbols
+           #:define-boxed-opaque-accessor)
   (:documentation
    "CL-GTK2-GOBJECT is a binding to GObject type system.
 For information on GObject, see its @a[http://library.gnome.org/devel/gobject/stable/]{documentation}.
