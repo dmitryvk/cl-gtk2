@@ -60,7 +60,7 @@
   (:dropdown-menu 8) (:popup-menu 9) (:tooltip 10)
   (:notification 11) (:combo 12) (:dnd 13))
 
-(gobject::define-g-flags "GdkModifierType" modifier-type ()
+(define-g-flags "GdkModifierType" modifier-type ()
   (:shift-mask 1) (:lock-mask 2) (:control-mask 4)
   (:mod1-mask 8) (:mod2-mask 16) (:mod3-mask 32)
   (:mod4-mask 64) (:mod5-mask 128)
@@ -110,83 +110,49 @@
   (:substructure-mask 1048576) (:scroll-mask 2097152)
   (:all-events-mask 4194302))
 
-(define-g-boxed-class ("GdkEvent" event-struct) event ()
-  (type event-type)
-  (window (g-object gdk-window))
-  (send-event (:boolean :int8)))
+(define-g-enum "GdkFontType" font-type () :font :fontset)
 
-(define-g-boxed-class nil event-key ((event type (:key-press :key-release)))
-  (time :uint32)
-  (state modifier-type)
-  (keyval :uint)
-  (length :int)
-  (string (:string :free-from-foreign nil :free-to-foreign nil))
-  (hardware-keycode :uint16)
-  (group :uint8)
-  (is-modifier :uint))
+(define-g-enum "GdkGravity" gravity ()
+  (:north-west 1)
+  :north
+  :north-east
+  :west
+  :center
+  :east
+  :south-west
+  :south
+  :south-east
+  :static)
 
-(define-g-boxed-class nil event-button ((event type (:button-press :2button-press :3button-press :button-release)))
-  (time :uint32)
-  (x :double)
-  (y :double)
-  (axes (fixed-array :double 2))
-  (state :uint)
-  (button :uint)
-  (device (g-object device))
-  (x-root :double)
-  (y-root :double))
-
-(define-g-boxed-class nil event-scroll ((event type :scroll))
-  (time :uint32)
-  (x :double)
-  (y :double)
-  (state modifier-type)
-  (direction scroll-direction)
-  (device (g-object device))
-  (x-root :double)
-  (y-root :double))
-
-(define-g-boxed-class nil event-motion ((event type :motion-notify))
-  (time :uint32)
-  (x :double)
-  (y :double)
-  (axes (fixed-array :double 2))
-  (state modifier-type)
-  (is-hint :int)
-  (device (g-object device))
-  (x-root :double)
-  (y-root :double))
-
-(define-g-boxed-class "GdkRectangle" rectangle ()
+(define-g-boxed-cstruct rectangle "GdkRectangle"
   (x :int :initform 0)
   (y :int :initform 0)
   (width :int :initform 0)
   (height :int :initform 0))
 
-(define-g-boxed-class nil event-expose ((event type :expose))
-  (area (g-boxed-inline rectangle))
-  (region :pointer)
-  (count :int))
+(define-g-boxed-cstruct font "GdkFont"
+  (type font-type :initform :font)
+  (ascent :int :initform 0)
+  (descent :int :initform 0))
 
-(define-g-boxed-class nil event-visibility ((event type :visibility-notify))
-  (state visibility-state))
+(define-g-boxed-cstruct color "GdkColor"
+  (pixel :uint32 :initform 0)
+  (red :uint16 :initform 0)
+  (green :uint16 :initform 0)
+  (blue :uint16 :initform 0))
 
-(define-g-boxed-class nil event-crossing ((event type (:enter-notify :leave-notify)))
-  (sub-window (g-object gdk-window))
-  (time :uint32)
-  (x :double)
-  (y :double)
-  (x-root :double)
-  (y-root :double))
-
-(define-g-boxed-class nil event-focus ((event type :focus-change))
-  (in :int16))
-
-(define-g-boxed-class nil event-configure ((event type :configure))
-  (x :int)
-  (y :int)
-  (width :int)
-  (height :int))
+(define-g-boxed-cstruct geometry "GdkGeometry"
+  (min-width :int :initform 0)
+  (min-height :int :initform 0)
+  (max-width :int :initform 0)
+  (max-height :int :initform 0)
+  (base-width :int :initform 0)
+  (base-height :int :initform 0)
+  (width-increment :int :initform 0)
+  (height-increment :int :initform 0)
+  (min-aspect :double :initform 0.0d0)
+  (max-aspect :double :initform 0.0d0)
+  (gravity gravity :initform :north-west))
 
 (defctype gdk-atom :pointer)
 
@@ -201,125 +167,136 @@
 (defmethod translate-to-foreign (value (type gdk-atom-as-string-type))
   (gdk-atom-intern value nil))
 
-(define-g-boxed-class nil event-property ((event type :property-notify))
-  (atom gdk-atom)
-  (time :uint32)
-  (state property-state))
-
 ;;;FIXME: Check correct type
 (defctype native-window :uint32)
-
-(define-g-boxed-class nil event-selection ((event type (:selection-clear :selection-notify :selection-request)))
-  (selection gdk-atom)
-  (target gdk-atom)
-  (property gdk-atom)
-  (time :uint32)
-  (requestor native-window))
-
-(define-g-object-class "GdkDragContext" drag-context () ())
-
-(define-g-boxed-class nil event-dnd ((event type (:drag-enter :drag-leave :drag-motion :drag-status :drop-start :drop-finished)))
-  (drag-context :pointer)
-  (time :uint32)
-  (x-root :short)
-  (y-root :short))
-
-(define-g-boxed-class nil event-proximity ((event type (:proximity-in :proximity-out)))
-  (time :uint32)
-  (device (g-object device)))
 
 (defcunion event-client-data-union
   (b :char :count 20)
   (s :short :count 10)
   (l :long :count 5))
 
-(define-g-boxed-class nil event-client ((event type :client-event))
-  (message-time gdk-atom)
-  (data-format :ushort)
-  (data event-client-data-union :parser 'event-client-data-union-parser :unparser 'event-client-data-union-unparser))
+(define-g-boxed-variant-cstruct event "GdkEvent"
+  (type event-type)
+  (window (g-object gdk-window))
+  (send-event (:boolean :int8))
+  (:variant type
+            ((:key-press :key-release) event-key
+             (time :uint32)
+             (state modifier-type)
+             (keyval :uint)
+             (length :int)
+             (string (:string :free-from-foreign nil
+                              :free-to-foreign nil))
+             (hardware-keycode :uint16)
+             (group :uint8)
+             (is-modifier :uint))
+            ((:button-prees
+              :2button-press
+              :3button-press
+              :button-release) event-button
+             (time :uint32)
+             (x :double)
+             (y :double)
+             (axes (fixed-array :double 2))
+             (state :uint)
+             (button :uint)
+             (device (g-object device))
+             (x-root :double)
+             (y-root :double))
+            ((:scroll) event-scroll
+             (time :uint32)
+             (x :double)
+             (y :double)
+             (state modifier-type)
+             (direction scroll-direction)
+             (device (g-object device))
+             (x-root :double)
+             (y-root :double))
+            ((:motion-notify) event-motion
+             (time :uint32)
+             (x :double)
+             (y :double)
+             (axes (fixed-array :double 2))
+             (state modifier-type)
+             (is-hint :int)
+             (device (g-object device))
+             (x-root :double)
+             (y-root :double))
+            ((:expose) event-expose
+             (area rectangle :inline t)
+             (region :pointer)
+             (count :int))
+            ((:visibility-notify) event-visibility
+             (state visibility-state))
+            ((:enter-notify :leave-notify) event-crossing
+             (sub-window (g-object gdk-window))
+             (time :uint32)
+             (x :double)
+             (y :double)
+             (x-root :double)
+             (y-root :double))
+            ((:focus-change) event-focus
+             (in :int16))
+            ((:configure) event-configure
+             (x :int)
+             (y :int)
+             (width :int)
+             (height :int))
+            ((:property-notify) event-property
+             (atom gdk-atom)
+             (time :uint32)
+             (state property-state))
+            ((:selection-clear
+              :selection-notify
+              :selection-request) event-selection
+             (selection gdk-atom)
+             (target gdk-atom)
+             (property gdk-atom)
+             (time :uint32)
+             (requestor native-window))
+            ((:drag-enter
+              :drag-leave
+              :drag-motion
+              :drag-status
+              :drop-start
+              :drop-finished) event-drag
+             (drag-context :pointer)
+             (time :uint32)
+             (x-root :short)
+             (y-root :short))
+            ((:proximity-in
+              :proximity-out) event-proximity
+             (time :uint32)
+             (device (g-object device)))
+            ((:client-event) event-client
+             (message-time gdk-atom)
+             (data-format :ushort)
+             (:variant data-format
+                       (8 event-client-8
+                          (data :uchar :count 20))
+                       (16 event-client-16
+                           (data :ushort :count 10))
+                       (32 event-client-32
+                           (data :ulong :count 5))))
+            ((:no-expose) event-no-expose)
+            ((:window-state) event-window-state
+             (changed-mask window-state)
+             (new-window-state window-state))
+            ((:setting) event-setting
+             (action setting-action)
+             (name (:string :free-from-foreign nil :free-to-foreign nil)))
+            ((:owner-change) event-owner-change
+             (owner native-window)
+             (reason owner-change)
+             (selection gdk-atom)
+             (time :uint32)
+             (selection-time :uint32))
+            ((:grab-broken) event-grab-broken
+             (keyboard :boolean)
+             (implicit :boolean)
+             (grab-window (g-object gdk-window)))))
 
-(defun event-client-data-union-parser (name pointer)
-  (declare (ignore name))
-  (ecase (foreign-slot-value pointer 'event-client 'data-format)
-    (8 (convert-from-foreign (foreign-slot-pointer pointer 'event-client 'data) '(fixed-array :uchar 20)))
-    (16 (convert-from-foreign (foreign-slot-pointer pointer 'event-client 'data) '(fixed-array :ushort 20)))
-    (32 (convert-from-foreign (foreign-slot-pointer pointer 'event-client 'data) '(fixed-array :ulong 20)))))
-
-(defun event-client-data-union-unparser (name pointer object)
-  (declare (ignore name))
-  (ecase (event-client-data-format object)
-    (8 (loop
-          with array-ptr = (foreign-slot-pointer pointer 'event-client 'data)
-          for i from 0 below 20
-          do (setf (mem-aref array-ptr :uchar i) (aref (event-client-data object) i))))
-    (16 (loop
-          with array-ptr = (foreign-slot-pointer pointer 'event-client 'data)
-          for i from 0 below 20
-          do (setf (mem-aref array-ptr :ushort i) (aref (event-client-data object) i))))
-    (32 (loop
-          with array-ptr = (foreign-slot-pointer pointer 'event-client 'data)
-          for i from 0 below 20
-          do (setf (mem-aref array-ptr :ulong i) (aref (event-client-data object) i))))))
-
-(define-g-boxed-class nil event-no-expose ((event type :no-expose)))
-
-(define-g-boxed-class nil event-window-state ((event type :window-state))
-  (changed-mask window-state)
-  (new-window-state window-state))
-
-(define-g-boxed-class nil event-setting ((event type :setting))
-  (action setting-action)
-  (name (:string :free-from-foreign nil :free-to-foreign nil)))
-
-(define-g-boxed-class nil event-owner-change ((event type :owner-change))
-  (owner native-window)
-  (reason owner-change)
-  (selection gdk-atom)
-  (time :uint32)
-  (selection-time :uint32))
-
-(define-g-boxed-class nil event-grab-broken ((event type :grab-broken))
-  (keyboard :boolean)
-  (implicit :boolean)
-  (grab-window (g-object gdk-window)))
-
-(define-g-enum "GdkFontType" font-type () :font :fontset)
-
-(define-g-boxed-class "GdkFont" font ()
-  (type font-type :initform :font)
-  (ascent :int :initform 0)
-  (descent :int :initform 0))
-
-(define-g-boxed-class "GdkColor" color ()
-  (pixel :uint32 :initform 0)
-  (red :uint16 :initform 0)
-  (green :uint16 :initform 0)
-  (blue :uint16 :initform 0))
-
-(define-g-enum "GdkGravity" gravity ()
-  (:north-west 1)
-  :north
-  :north-east
-  :west
-  :center
-  :east
-  :south-west
-  :south
-  :south-east
-  :static)
-
-(define-g-boxed-class "GdkGeometry" geometry ()
-  (min-width :int :initform 0)
-  (min-height :int :initform 0)
-  (max-width :int :initform 0)
-  (max-height :int :initform 0)
-  (base-width :int :initform 0)
-  (base-height :int :initform 0)
-  (width-increment :int :initform 0)
-  (height-increment :int :initform 0)
-  (min-aspect :double :initform 0.0d0)
-  (max-aspect :double :initform 0.0d0)
-  (gravity gravity :initform :north-west))
+(define-g-object-class "GdkDragContext" drag-context () ())
 
 (define-g-flags "GdkWindowHints" window-hints ()
   :pos :min-size :max-size :base-size :aspect

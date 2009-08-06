@@ -26,7 +26,7 @@
 
 (defcfun gdk-gc-set-rgb-fg-color :void
   (gc (g-object graphics-context))
-  (color (g-boxed-ptr color)))
+  (color (g-boxed-foreign color)))
 
 (defcfun gdk-drawable-get-size :void
   (drawable (g-object drawable))
