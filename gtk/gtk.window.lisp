@@ -25,7 +25,7 @@
 (defcfun (window-set-geometry-hints "gtk_window_set_geometry_hints") :void
   (window (g-object gtk-window))
   (geometry-widget (g-object widget))
-  (geometry geometry)
+  (geometry (g-boxed-foreign geometry))
   (geometry-mask window-hints))
 
 (export 'window-set-geometry-hints)
@@ -57,13 +57,13 @@
 
 (defcfun (window-activate-key "gtk_window_activate_key") :boolean
   (window (g-object gtk-window))
-  (event (g-boxed-ptr event-key)))
+  (event (g-boxed-foreign event)))
 
 (export 'window-activate-key)
 
 (defcfun (window-propagate-key-event "gtk_window_propagate_key_event") :boolean
   (window (g-object gtk-window))
-  (event (g-boxed-ptr event-key)))
+  (event (g-boxed-foreign event)))
 
 (export 'window-propagate-key-event)
 

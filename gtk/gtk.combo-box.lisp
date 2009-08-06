@@ -2,7 +2,7 @@
 
 (defcfun gtk-combo-box-get-active-iter :boolean
   (combo-box g-object)
-  (iter (g-boxed-ref tree-iter)))
+  (iter (g-boxed-foreign tree-iter)))
 
 (defun combo-box-get-active-iter (combo-box)
   (let ((i (make-instance 'tree-iter)))

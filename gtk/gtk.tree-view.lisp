@@ -68,7 +68,7 @@
 
 (defcfun gtk-tree-view-scroll-to-cell :void
   (tree-view g-object)
-  (path (g-boxed-ref tree-path))
+  (path (g-boxed-foreign tree-path))
   (column g-object)
   (use-align :boolean)
   (row-align :float)
@@ -81,7 +81,7 @@
 
 (defcfun gtk-tree-view-set-cursor :void
   (tree-view g-object)
-  (path (g-boxed-ref tree-path))
+  (path (g-boxed-foreign tree-path))
   (focus-column g-object)
   (start-editing :boolean))
 
@@ -92,7 +92,7 @@
 
 (defcfun gtk-tree-view-set-cursor-on-cell :void
   (tree-view g-object)
-  (path (g-boxed-ref tree-path))
+  (path (g-boxed-foreign tree-path))
   (focus-column g-object)
   (focus-cell g-object)
   (start-editing :boolean))
@@ -110,7 +110,7 @@
 (defun tree-view-get-cursor (tree-view)
   (with-foreign-objects ((path :pointer) (focus-column :pointer))
     (gtk-tree-view-get-cursor tree-view path focus-column)
-    (values (mem-ref path '(g-boxed-ref tree-path :owner :lisp))
+    (values (mem-ref path '(g-boxed-foreign tree-path :return))
             (mem-ref focus-column 'g-object))))
 
 (export 'tree-view-get-cursor)
@@ -127,24 +127,24 @@
 
 (defcfun (tree-view-expand-to-path "gtk_tree_view_expand_to_path") :void
   (tree-view g-object)
-  (path (g-boxed-ref tree-path)))
+  (path (g-boxed-foreign tree-path)))
 
 (export 'tree-view-expand-to-path)
 
 (defcfun (tree-view-expand-row "gtk_tree_view_expand_row") :boolean
   (tree-view g-object)
-  (path (g-boxed-ref tree-path)))
+  (path (g-boxed-foreign tree-path)))
 
 (export 'tree-view-expand-row)
 
 (defcfun (tree-view-collapse-row "gtk_tree_view_collapse_row") :boolean
   (tree-view g-object)
-  (path (g-boxed-ref tree-path)))
+  (path (g-boxed-foreign tree-path)))
 
 (export 'tree-view-collapse-row)
 
 (defcallback gtk-tree-view-mapping-func-callback :void
-    ((tree-view g-object) (path (g-boxed-ref tree-path)) (data :pointer))
+    ((tree-view g-object) (path (g-boxed-foreign tree-path)) (data :pointer))
   (funcall (get-stable-pointer-value data)
            tree-view path))
 
@@ -161,7 +161,7 @@
 
 (defcfun (tree-view-row-expanded-p "gtk_tree_view_row_expanded") :boolean
   (tree-view g-object)
-  (path (g-boxed-ref tree-path)))
+  (path (g-boxed-foreign tree-path)))
 
 (export 'tree-view-row-expanded-p)
 
@@ -177,7 +177,7 @@
 (defun tree-view-get-path-at-pos (tree-view x y)
   (with-foreign-objects ((path :pointer) (column :pointer) (cell-x :int) (cell-y :int))
     (when (gtk-tree-view-get-path-at-pos tree-view x y path column cell-x cell-y)
-      (values (mem-ref path '(g-boxed-ref tree-path :owner :lisp))
+      (values (mem-ref path '(g-boxed-foreign tree-path :return))
               (mem-ref column 'g-object)
               (mem-ref cell-x :int)
               (mem-ref cell-y :int)))))
@@ -186,9 +186,9 @@
 
 (defcfun gtk-tree-view-get-cell-area :void
   (tree-view g-object)
-  (path (g-boxed-ref tree-path))
+  (path (g-boxed-foreign tree-path))
   (column g-object)
-  (rectangle (g-boxed-ptr rectangle)))
+  (rectangle (g-boxed-foreign rectangle)))
 
 (defun tree-view-get-cell-area (tree-view path column)
   (let ((rect (make-rectangle :x 0 :y 0 :width 0 :height 0)))
@@ -199,9 +199,9 @@
 
 (defcfun gtk-tree-view-get-background-area :void
   (tree-view g-object)
-  (path (g-boxed-ref tree-path))
+  (path (g-boxed-foreign tree-path))
   (column g-object)
-  (rectangle (g-boxed-ptr rectangle)))
+  (rectangle (g-boxed-foreign rectangle)))
 
 (defun tree-view-get-background-area (tree-view path column)
   (let ((rect (make-rectangle :x 0 :y 0 :width 0 :height 0)))
@@ -212,7 +212,7 @@
 
 (defcfun gtk-tree-view-get-visible-rect :void
   (tree-view g-object)
-  (rectangle (g-boxed-ptr rectangle)))
+  (rectangle (g-boxed-foreign rectangle)))
 
 (defun tree-view-get-visible-rect (tree-view)
   (let ((rect (make-rectangle :x 0 :y 0 :width 0 :height 0)))
@@ -229,8 +229,8 @@
 (defun tree-view-get-visible-range (tree-view)
   (with-foreign-objects ((start-path :pointer) (end-path :pointer))
     (when (gtk-tree-view-get-visible-range tree-view start-path end-path)
-      (values (mem-ref start-path '(g-boxed-ref tree-path :owner :lisp))
-              (mem-ref end-path '(g-boxed-ref tree-path :owner :lisp))))))
+      (values (mem-ref start-path '(g-boxed-foreign tree-path :return))
+              (mem-ref end-path '(g-boxed-foreign tree-path :return))))))
 
 (export 'tree-view-get-visible-range)
 
@@ -341,7 +341,7 @@
 ; TOOD: gtk_tree_view_create_drag_icon
 
 (defcallback gtk-tree-view-search-equal-func-callback :boolean
-    ((model g-object) (column :int) (key (:string :free-from-foreign nil)) (iter (g-boxed-ref tree-iter)) (data :pointer))
+    ((model g-object) (column :int) (key (:string :free-from-foreign nil)) (iter (g-boxed-foreign tree-iter)) (data :pointer))
   (restart-case
       (funcall (get-stable-pointer-value data)
                model column key iter)
@@ -388,7 +388,7 @@
 ; TODO: gtk_tree_view_set_destroy_count_func
 
 (defcallback gtk-tree-view-row-separator-func-callback :boolean
-    ((tree-model g-object) (iter (g-boxed-ref tree-iter)) (data :pointer))
+    ((tree-model g-object) (iter (g-boxed-foreign tree-iter)) (data :pointer))
   (restart-case
       (funcall (get-stable-pointer-value data)
                tree-model
@@ -418,14 +418,14 @@
 (defcfun (tree-view-set-tooltip-row "gtk_tree_view_set_tooltip_row") :void
   (tree-view g-object)
   (tooltip g-object)
-  (tree-path (g-boxed-ref tree-path)))
+  (tree-path (g-boxed-foreign tree-path)))
 
 (export 'tree-view-set-tooltip-row)
 
 (defcfun (tree-view-set-tooltip-cell "gtk_tree_view_set_tooltip_cell") :void
   (tree-view g-object)
   (tooltip g-object)
-  (path (g-boxed-ref tree-path))
+  (path (g-boxed-foreign tree-path))
   (column g-object)
   (cell g-object))
 
@@ -447,8 +447,8 @@
               (mem-ref y :int)
               (mem-ref keyboard-tip :boolean)
               (mem-ref model 'g-object)
-              (mem-ref path '(g-boxed-ref tree-path :owner :lisp))
-              (mem-ref iter '(g-boxed-ref tree-iter :owner :lisp))))))
+              (mem-ref path '(g-boxed-foreign tree-path :return))
+              (mem-ref iter '(g-boxed-foreign tree-iter :return))))))
 
 (export 'tree-view-get-tooltip-context)
 

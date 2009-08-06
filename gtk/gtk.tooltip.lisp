@@ -54,6 +54,6 @@
 
 (defcfun (tooltip-set-tip-area "gtk_tooltip_set_tip_area") :void
   (tooltip g-object)
-  (rectangle (g-boxed-ptr rectangle)))
+  (rectangle (g-boxed-foreign rectangle)))
 
 (export 'tooltip-set-tip-area)

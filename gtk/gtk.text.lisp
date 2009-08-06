@@ -14,35 +14,46 @@
 (defmethod translate-to-foreign (value (type unichar))
   (char-code value))
 
-(define-g-boxed-ref "GtkTextIter" text-iter
-  (:free-function gtk-text-iter-free)
-  (:alloc-function gtk-text-iter-alloc)
-  (:slots (text-iter-buffer :reader "gtk_text_iter_get_buffer" :type (g-object text-buffer))
-          (text-iter-offset :reader "gtk_text_iter_get_offset" :writer "gtk_text_iter_set_offset" :type :int)
-          (text-iter-line :reader "gtk_text_iter_get_line" :writer "gtk_text_iter_set_line" :type :int)
-          (text-iter-line-offset :reader "gtk_text_iter_get_line_offset" :writer "gtk_text_iter_set_line_offset" :type :int)
-          (text-iter-visible-line-offset :reader "gtk_text_iter_get_visible_line_offset" :writer "gtk_text_iter_set_visible_line_offset" :type :int)
-          (text-iter-char :reader "gtk_text_iter_get_char" :type unichar)
-          (text-iter-pixbuf :reader "gtk_text_iter_get_pixbuf" :type (g-object pixbuf))
-          (text-iter-marks :reader "gtk_text_iter_get_marks" :type (gslist (g-object text-mark) :free-from-foreign t))
-          (text-iter-child-anchor :reader "gtk_text_iter_get_child_anchor" :type (g-object text-child-anchor))
-          (text-iter-tags :reader "gtk_text_iter_get_tags" :type (gslist (g-object text-tag) :free-from-foreign t))
-          (text-iter-chars-in-line :reader "gtk_text_iter_get_chars_in_line" :type :int)
-          (text-iter-language :reader "gtk_text_iter_get_language" :type :pointer)
-          (text-iter-is-end :reader "gtk_text_iter_is_end" :type :boolean)
-          (text-iter-is-start :reader "gtk_text_iter_is_start" :type :boolean)
-          (text-iter-can-insert :reader "gtk_text_iter_can_insert" :type :boolean)
-          (text-iter-starts-word :reader "gtk_text_iter_starts_word" :type :boolean)
-          (text-iter-ends-word :reader "gtk_text_iter_ends_word" :type :boolean)
-          (text-iter-inside-word :reader "gtk_text_iter_inside_word" :type :boolean)
-          (text-iter-starts-line :reader "gtk_text_iter_starts_line" :type :boolean)
-          (text-iter-ends-line :reader "gtk_text_iter_ends_line" :type :boolean)
-          (text-iter-starts-sentence :reader "gtk_text_iter_starts_sentence" :type :boolean)
-          (text-iter-ends-sentence :reader "gtk_text_iter_ends_sentence" :type :boolean)
-          (text-iter-inside-sentence :reader "gtk_text_iter_inside_sentence" :type :boolean)
-          (text-iter-is-cursor-position :reader "gtk_text_iter_is_cursor_position" :type :boolean)
-          ))
-(export '(text-iter text-iter-offset text-iter-line text-iter-line-offset text-iter-visible-line-offset text-iter-char text-iter-pixbuf text-iter-marks text-iter-toggled-tags text-iter-child-anchor text-iter-tags text-iter-chars-in-line text-iter-language))
+(define-g-boxed-opaque text-iter "GtkTextIter"
+  :alloc (gtk-text-iter-alloc))
+
+(define-boxed-opaque-accessor text-iter text-iter-buffer :reader "gtk_text_iter_get_buffer" :type (g-object text-buffer))
+(define-boxed-opaque-accessor text-iter text-iter-offset :reader "gtk_text_iter_get_offset" :writer "gtk_text_iter_set_offset" :type :int)
+(define-boxed-opaque-accessor text-iter text-iter-line :reader "gtk_text_iter_get_line" :writer "gtk_text_iter_set_line" :type :int)
+(define-boxed-opaque-accessor text-iter text-iter-line-offset :reader "gtk_text_iter_get_line_offset" :writer "gtk_text_iter_set_line_offset" :type :int)
+(define-boxed-opaque-accessor text-iter text-iter-visible-line-offset :reader "gtk_text_iter_get_visible_line_offset" :writer "gtk_text_iter_set_visible_line_offset" :type :int)
+(define-boxed-opaque-accessor text-iter text-iter-char :reader "gtk_text_iter_get_char" :type unichar)
+(define-boxed-opaque-accessor text-iter text-iter-pixbuf :reader "gtk_text_iter_get_pixbuf" :type (g-object pixbuf))
+(define-boxed-opaque-accessor text-iter text-iter-marks :reader "gtk_text_iter_get_marks" :type (gslist (g-object text-mark) :free-from-foreign t))
+(define-boxed-opaque-accessor text-iter text-iter-child-anchor :reader "gtk_text_iter_get_child_anchor" :type (g-object text-child-anchor))
+(define-boxed-opaque-accessor text-iter text-iter-tags :reader "gtk_text_iter_get_tags" :type (gslist (g-object text-tag) :free-from-foreign t))
+(define-boxed-opaque-accessor text-iter text-iter-chars-in-line :reader "gtk_text_iter_get_chars_in_line" :type :int)
+(define-boxed-opaque-accessor text-iter text-iter-language :reader "gtk_text_iter_get_language" :type :pointer)
+(define-boxed-opaque-accessor text-iter text-iter-is-end :reader "gtk_text_iter_is_end" :type :boolean)
+(define-boxed-opaque-accessor text-iter text-iter-is-start :reader "gtk_text_iter_is_start" :type :boolean)
+(define-boxed-opaque-accessor text-iter text-iter-can-insert :reader "gtk_text_iter_can_insert" :type :boolean)
+(define-boxed-opaque-accessor text-iter text-iter-starts-word :reader "gtk_text_iter_starts_word" :type :boolean)
+(define-boxed-opaque-accessor text-iter text-iter-ends-word :reader "gtk_text_iter_ends_word" :type :boolean)
+(define-boxed-opaque-accessor text-iter text-iter-inside-word :reader "gtk_text_iter_inside_word" :type :boolean)
+(define-boxed-opaque-accessor text-iter text-iter-starts-line :reader "gtk_text_iter_starts_line" :type :boolean)
+(define-boxed-opaque-accessor text-iter text-iter-ends-line :reader "gtk_text_iter_ends_line" :type :boolean)
+(define-boxed-opaque-accessor text-iter text-iter-starts-sentence :reader "gtk_text_iter_starts_sentence" :type :boolean)
+(define-boxed-opaque-accessor text-iter text-iter-ends-sentence :reader "gtk_text_iter_ends_sentence" :type :boolean)
+(define-boxed-opaque-accessor text-iter text-iter-inside-sentence :reader "gtk_text_iter_inside_sentence" :type :boolean)
+(define-boxed-opaque-accessor text-iter text-iter-is-cursor-position :reader "gtk_text_iter_is_cursor_position" :type :boolean)
+
+(export (boxed-related-symbols 'text-iter))
+(export '(text-iter-buffer text-iter-offset text-iter-line
+          text-iter-line-offset text-iter-visible-line-offset
+          text-iter-char text-iter-pixbuf text-iter-marks
+          text-iter-child-anchor text-iter-tags
+          text-iter-chars-in-line text-iter-language text-iter-is-end
+          text-iter-is-start text-iter-can-insert
+          text-iter-starts-word text-iter-ends-word
+          text-iter-inside-word text-iter-starts-line
+          text-iter-ends-line text-iter-starts-sentence
+          text-iter-ends-sentence text-iter-inside-sentence
+          text-iter-is-cursor-position ))
 
 (defcstruct %text-iter
   (dummy1 :pointer)
@@ -63,75 +74,72 @@
 (defcfun gtk-text-iter-copy :pointer
   (iter :pointer))
 
-(defcfun gtk-text-iter-free :void
-  (iter :pointer))
-
 (defun gtk-text-iter-alloc ()
   (with-foreign-object (iter '%text-iter)
     (gtk-text-iter-copy iter)))
 
 (defcfun (text-iter-slice "gtk_text_iter_get_slice") (:string :free-from-foreign t)
-  (start (g-boxed-ref text-iter))
-  (end (g-boxed-ref text-iter)))
+  (start (g-boxed-foreign text-iter))
+  (end (g-boxed-foreign text-iter)))
 
 (export 'text-iter-slice)
 
 (defcfun (text-iter-text "gtk_text_iter_get_text") (:string :free-from-foreign t)
-  (start (g-boxed-ref text-iter))
-  (end (g-boxed-ref text-iter)))
+  (start (g-boxed-foreign text-iter))
+  (end (g-boxed-foreign text-iter)))
 
 (export 'text-iter-text)
 
 (defcfun (text-iter-visible-slice "gtk_text_iter_get_visible_slice") (:string :free-from-foreign t)
-  (start (g-boxed-ref text-iter))
-  (end (g-boxed-ref text-iter)))
+  (start (g-boxed-foreign text-iter))
+  (end (g-boxed-foreign text-iter)))
 
 (export 'text-iter-visible-slice)
 
 (defcfun (text-iter-visible-text "gtk_text_iter_get_visible_text") (:string :free-from-foreign t)
-  (start (g-boxed-ref text-iter))
-  (end (g-boxed-ref text-iter)))
+  (start (g-boxed-foreign text-iter))
+  (end (g-boxed-foreign text-iter)))
 
 (export 'text-iter-visible-text)
 
 (defcfun (text-iter-toggled-tags "gtk_text_iter_get_toggled_tags") (gslist (g-object text-tag))
-  (iter (g-boxed-ref text-iter))
+  (iter (g-boxed-foreign text-iter))
   (toggled-on :boolean))
 
 (export 'text-iter-toggled-tags)
 
 (defcfun (text-iter-begins-tag "gtk_text_iter_begins_tag") :boolean
-  (iter (g-boxed-ref text-iter))
+  (iter (g-boxed-foreign text-iter))
   (tag (g-object text-tag)))
 
 (export 'text-iter-begins-tag)
 
 (defcfun (text-iter-ends-tag "gtk_text_iter_ends_tag") :boolean
-  (iter (g-boxed-ref text-iter))
+  (iter (g-boxed-foreign text-iter))
   (tag (g-object text-tag)))
 
 (export 'text-iter-ends-tag)
 
 (defcfun (text-iter-toggles-tag "gtk_text_iter_toggles_tag") :boolean
-  (iter (g-boxed-ref text-iter))
+  (iter (g-boxed-foreign text-iter))
   (tag (g-object text-tag)))
 
 (export 'text-iter-toggles-tag)
 
 (defcfun (text-iter-has-tag "gtk_text_iter_has_tag") :boolean
-  (iter (g-boxed-ref text-iter))
+  (iter (g-boxed-foreign text-iter))
   (tag (g-object text-tag)))
 
 (export 'text-iter-has-tag)
 
 (defcfun (text-iter-editable "gtk_text_iter_editable") :boolean
-  (iter (g-boxed-ref text-iter))
+  (iter (g-boxed-foreign text-iter))
   (default :boolean))
 
 (export 'text-iter-editable)
 
 (defcfun gtk-text-iter-get-attributes :boolean
-  (iter (g-boxed-ref text-iter))
+  (iter (g-boxed-foreign text-iter))
   (values (g-object text-attributes)))
 
 (defun text-iter-attributes (iter default-attributes)
@@ -141,47 +149,47 @@
 (export 'text-iter-attributes)
 
 (defcfun gtk-text-iter-forward-chars :boolean
-  (iter (g-boxed-ref text-iter))
+  (iter (g-boxed-foreign text-iter))
   (count :int))
 
 (defcfun gtk-text-iter-forward-lines :boolean
-  (iter (g-boxed-ref text-iter))
+  (iter (g-boxed-foreign text-iter))
   (count :int))
 
 (defcfun gtk-text-iter-forward-word-ends :boolean
-  (iter (g-boxed-ref text-iter))
+  (iter (g-boxed-foreign text-iter))
   (count :int))
 
 (defcfun gtk-text-iter-backward-word-starts :boolean
-  (iter (g-boxed-ref text-iter))
+  (iter (g-boxed-foreign text-iter))
   (count :int))
 
 (defcfun gtk-text-iter-forward-cursor-positions :boolean
-  (iter (g-boxed-ref text-iter))
+  (iter (g-boxed-foreign text-iter))
   (count :int))
 
 (defcfun gtk-text-iter-forward-sentence-ends :boolean
-  (iter (g-boxed-ref text-iter))
+  (iter (g-boxed-foreign text-iter))
   (count :int))
 
 (defcfun gtk-text-iter-backward-sentence-starts :boolean
-  (iter (g-boxed-ref text-iter))
+  (iter (g-boxed-foreign text-iter))
   (count :int))
 
 (defcfun gtk-text-iter-forward-visible-word-ends :boolean
-  (iter (g-boxed-ref text-iter))
+  (iter (g-boxed-foreign text-iter))
   (count :int))
 
 (defcfun gtk-text-iter-backward-visible-word-starts :boolean
-  (iter (g-boxed-ref text-iter))
+  (iter (g-boxed-foreign text-iter))
   (count :int))
 
 (defcfun gtk-text-iter-forward-visible-cursor-positions :boolean
-  (iter (g-boxed-ref text-iter))
+  (iter (g-boxed-foreign text-iter))
   (count :int))
 
 (defcfun gtk-text-iter-forward-visible-lines :boolean
-  (iter (g-boxed-ref text-iter))
+  (iter (g-boxed-foreign text-iter))
   (count :int))
 
 (defun text-iter-move (iter &key (count 1) (by :char) (direction :forward))
@@ -208,21 +216,21 @@
 (export 'text-iter-move)
 
 (defcfun (text-iter-forward-to-end "gtk_text_iter_forward_to_end") :void
-  (iter (g-boxed-ref text-iter)))
+  (iter (g-boxed-foreign text-iter)))
 
 (export 'text-iter-forward-to-end)
 
 (defcfun (text-iter-forward-to-line-end "gtk_text_iter_forward_to_line_end") :boolean
-  (iter (g-boxed-ref text-iter)))
+  (iter (g-boxed-foreign text-iter)))
 
 (export 'text-iter-forward-to-line-end)
 
 (defcfun (text-iter-forward-to-tag-toggle "gtk_text_iter_forward_to_tag_toggle") :boolean
-  (iter (g-boxed-ref text-iter))
+  (iter (g-boxed-foreign text-iter))
   (tag (g-object text-tag)))
 
 (defcfun (text-iter-backward-to-tag-toggle "gtk_text_iter_backward_to_tag_toggle") :boolean
-  (iter (g-boxed-ref text-iter))
+  (iter (g-boxed-foreign text-iter))
   (tag (g-object text-tag)))
 
 (export '(text-iter-forward-to-tag-toggle text-iter-backward-to-tag-toggle))
@@ -232,16 +240,16 @@
     (funcall function char)))
 
 (defcfun gtk-text-iter-forward-find-char :boolean
-  (iter (g-boxed-ref text-iter))
+  (iter (g-boxed-foreign text-iter))
   (pred :pointer)
   (user-data :pointer)
-  (limit (g-boxed-ref text-iter)))
+  (limit (g-boxed-foreign text-iter)))
 
 (defcfun gtk-text-iter-backward-find-char :boolean
-  (iter (g-boxed-ref text-iter))
+  (iter (g-boxed-foreign text-iter))
   (pred :pointer)
   (user-data :pointer)
-  (limit (g-boxed-ref text-iter)))
+  (limit (g-boxed-foreign text-iter)))
 
 (defun text-iter-find-char (iter predicate &key limit (direction :forward))
   (assert (typep direction '(member :forward :backward)))
@@ -253,20 +261,20 @@
 (export 'text-iter-find-char)
 
 (defcfun gtk-text-iter-forward-search :boolean
-  (iter (g-boxed-ref text-iter))
+  (iter (g-boxed-foreign text-iter))
   (str (:string :free-to-foreign t))
   (flags text-search-flags)
-  (match-start (g-boxed-ref text-iter))
-  (match-end (g-boxed-ref text-iter))
-  (limit (g-boxed-ref text-iter)))
+  (match-start (g-boxed-foreign text-iter))
+  (match-end (g-boxed-foreign text-iter))
+  (limit (g-boxed-foreign text-iter)))
 
 (defcfun gtk-text-iter-backward-search :boolean
-  (iter (g-boxed-ref text-iter))
+  (iter (g-boxed-foreign text-iter))
   (str (:string :free-to-foreign t))
   (flags text-search-flags)
-  (match-start (g-boxed-ref text-iter))
-  (match-end (g-boxed-ref text-iter))
-  (limit (g-boxed-ref text-iter)))
+  (match-start (g-boxed-foreign text-iter))
+  (match-end (g-boxed-foreign text-iter))
+  (limit (g-boxed-foreign text-iter)))
 
 (defun text-iter-search (start-position string &key flags limit (direction :forward))
   (assert (typep direction '(member :forward :backward)))
@@ -283,27 +291,27 @@
 (export 'text-iter-search)
 
 (defcfun (text-iter-equal "gtk_text_iter_equal") :boolean
-  (iter-1 (g-boxed-ref text-iter))
-  (iter-2 (g-boxed-ref text-iter)))
+  (iter-1 (g-boxed-foreign text-iter))
+  (iter-2 (g-boxed-foreign text-iter)))
 
 (export 'text-iter-equal)
 
 (defcfun (text-iter-compare "gtk_text_iter_compare") :int
-  (iter-1 (g-boxed-ref text-iter))
-  (iter-2 (g-boxed-ref text-iter)))
+  (iter-1 (g-boxed-foreign text-iter))
+  (iter-2 (g-boxed-foreign text-iter)))
 
 (export 'text-iter-compare)
 
 (defcfun (text-iter-in-range "gtk_text_iter_in_range") :boolean
-  (iter (g-boxed-ref text-iter))
-  (start (g-boxed-ref text-iter))
-  (end (g-boxed-ref text-iter)))
+  (iter (g-boxed-foreign text-iter))
+  (start (g-boxed-foreign text-iter))
+  (end (g-boxed-foreign text-iter)))
 
 (export 'text-iter-in-range)
 
 (defcfun (text-iter-order "gtk_text_iter_order") :void
-  (iter-1 (g-boxed-ref text-iter))
-  (iter-2 (g-boxed-ref text-iter)))
+  (iter-1 (g-boxed-foreign text-iter))
+  (iter-2 (g-boxed-foreign text-iter)))
 
 (export 'text-iter-order)
 
@@ -345,7 +353,7 @@
 
 (defcfun gtk-text-buffer-insert :void
   (buffer (g-object text-buffer))
-  (iter (g-boxed-ref text-iter))
+  (iter (g-boxed-foreign text-iter))
   (text (:string :free-to-foreign t))
   (len :int))
 
@@ -356,7 +364,7 @@
 
 (defcfun gtk-text-buffer-insert-interactive :boolean
   (buffer (g-object text-buffer))
-  (iter (g-boxed-ref text-iter))
+  (iter (g-boxed-foreign text-iter))
   (text (:string :free-to-foreign t))
   (len :int)
   (default-editable :boolean))
@@ -382,15 +390,15 @@
 
 (defcfun gtk-text-buffer-insert-range :void
   (buffer (g-object text-buffer))
-  (iter (g-boxed-ref text-iter))
-  (range-start (g-boxed-ref text-iter))
-  (range-end (g-boxed-ref text-iter)))
+  (iter (g-boxed-foreign text-iter))
+  (range-start (g-boxed-foreign text-iter))
+  (range-end (g-boxed-foreign text-iter)))
 
 (defcfun gtk-text-buffer-insert-range-interactive :boolean
   (buffer (g-object text-buffer))
-  (iter (g-boxed-ref text-iter))
-  (range-start (g-boxed-ref text-iter))
-  (range-end (g-boxed-ref text-iter))
+  (iter (g-boxed-foreign text-iter))
+  (range-start (g-boxed-foreign text-iter))
+  (range-end (g-boxed-foreign text-iter))
   (default-editable :boolean))
 
 (defun text-buffer-insert-range (buffer position range-start range-end &key interactive default-editable)
@@ -403,13 +411,13 @@
 
 (defcfun gtk-text-buffer-delete :void
   (buffer (g-object text-buffer))
-  (range-start (g-boxed-ref text-iter))
-  (range-end (g-boxed-ref text-iter)))
+  (range-start (g-boxed-foreign text-iter))
+  (range-end (g-boxed-foreign text-iter)))
 
 (defcfun gtk-text-buffer-delete-interactive :boolean
   (buffer (g-object text-buffer))
-  (range-start (g-boxed-ref text-iter))
-  (range-end (g-boxed-ref text-iter))
+  (range-start (g-boxed-foreign text-iter))
+  (range-end (g-boxed-foreign text-iter))
   (default-editable :boolean))
 
 (defun text-buffer-delete (buffer range-start range-end &key interactive default-editable)
@@ -422,7 +430,7 @@
 
 (defcfun gtk-text-buffer-backspace :boolean
   (buffer (g-object text-buffer))
-  (iter (g-boxed-ref text-iter))
+  (iter (g-boxed-foreign text-iter))
   (interactive :boolean)
   (default-editable :boolean))
 
@@ -433,8 +441,8 @@
 
 (defcfun gtk-text-buffer-get-slice (:string :free-from-foreign t)
   (buffer (g-object text-buffer))
-  (range-start (g-boxed-ref text-iter))
-  (range-end (g-boxed-ref text-iter))
+  (range-start (g-boxed-foreign text-iter))
+  (range-end (g-boxed-foreign text-iter))
   (include-hidden-chars :boolean))
 
 (defun text-buffer-slice (buffer range-start range-end &key include-hidden-chars)
@@ -444,19 +452,19 @@
 
 (defcfun (text-buffer-insert-pixbuf "gtk_text_buffer_insert_pixbuf") :void
   (buffer (g-object text-buffer))
-  (position (g-boxed-ref text-iter))
+  (position (g-boxed-foreign text-iter))
   (pixbuf (g-object pixbuf)))
 
 (export 'text-buffer-insert-pixbuf)
 
 (defcfun gtk-text-buffer-insert-child-anchor :void
   (buffer (g-object text-buffer))
-  (iter (g-boxed-ref text-iter))
+  (iter (g-boxed-foreign text-iter))
   (anchor (g-object text-child-anchor)))
 
 (defcfun gtk-text-buffer-create-child-anchor (g-object text-child-anchor)
   (buffer (g-object text-buffer))
-  (iter (g-boxed-ref text-iter)))
+  (iter (g-boxed-foreign text-iter)))
 
 (defun text-buffer-insert-child-anchor (buffer position &optional anchor)
   (if anchor
@@ -469,7 +477,7 @@
 (defcfun gtk-text-buffer-create-mark (g-object text-mark)
   (buffer (g-object text-buffer))
   (name (:string :free-to-foreign t))
-  (position (g-boxed-ref text-iter))
+  (position (g-boxed-foreign text-iter))
   (left-gravity :boolean))
 
 (defun text-buffer-create-mark (buffer name position &optional (left-gravity t))
@@ -480,12 +488,12 @@
 (defcfun gtk-text-buffer-move-mark :void
   (buffer (g-object text-buffer))
   (mark (g-object text-mark))
-  (position (g-boxed-ref text-iter)))
+  (position (g-boxed-foreign text-iter)))
 
 (defcfun gtk-text-buffer-move-mark-by-name :void
   (buffer (g-object text-buffer))
   (name (:string :free-to-foreign t))
-  (position (g-boxed-ref text-iter)))
+  (position (g-boxed-foreign text-iter)))
 
 (defun text-buffer-move-mark (buffer mark position)
   (etypecase mark
@@ -497,7 +505,7 @@
 (defcfun (text-buffer-add-mark "gtk_text_buffer_add_mark") :void
   (buffer (g-object text-buffer))
   (mark (g-object text-mark))
-  (position (g-boxed-ref text-iter)))
+  (position (g-boxed-foreign text-iter)))
 
 (export 'text-buffer-add-mark)
 
@@ -535,28 +543,28 @@
 
 (defcfun (text-buffer-place-cursor "gtk_text_buffer_place_cursor") :void
   (buffer (g-object text-buffer))
-  (position (g-boxed-ref text-iter)))
+  (position (g-boxed-foreign text-iter)))
 
 (export 'text-buffer-place-cursor)
 
 (defcfun (text-buffer-select-range "gtk_text_buffer_select_range") :void
   (buffer (g-object text-buffer))
-  (insertion-point (g-boxed-ref text-iter))
-  (selection-bound (g-boxed-ref text-iter)))
+  (insertion-point (g-boxed-foreign text-iter))
+  (selection-bound (g-boxed-foreign text-iter)))
 
 (export 'text-buffer-select-range)
 
 (defcfun gtk-text-buffer-apply-tag :void
   (buffer (g-object text-buffer))
   (tag (g-object text-tag))
-  (start (g-boxed-ref text-iter))
-  (end (g-boxed-ref text-iter)))
+  (start (g-boxed-foreign text-iter))
+  (end (g-boxed-foreign text-iter)))
 
 (defcfun gtk-text-buffer-apply-tag-by-name :void
   (buffer (g-object text-buffer))
   (name (:string :free-to-foreign t))
-  (start (g-boxed-ref text-iter))
-  (end (g-boxed-ref text-iter)))
+  (start (g-boxed-foreign text-iter))
+  (end (g-boxed-foreign text-iter)))
 
 (defun text-buffer-apply-tag (buffer tag start end)
   (etypecase tag
@@ -568,14 +576,14 @@
 (defcfun gtk-text-buffer-remove-tag :void
   (buffer (g-object text-buffer))
   (tag (g-object text-tag))
-  (start (g-boxed-ref text-iter))
-  (end (g-boxed-ref text-iter)))
+  (start (g-boxed-foreign text-iter))
+  (end (g-boxed-foreign text-iter)))
 
 (defcfun gtk-text-buffer-remove-tag-by-name :void
   (buffer (g-object text-buffer))
   (name (:string :free-to-foreign t))
-  (start (g-boxed-ref text-iter))
-  (end (g-boxed-ref text-iter)))
+  (start (g-boxed-foreign text-iter))
+  (end (g-boxed-foreign text-iter)))
 
 (defun text-buffer-remove-tag (buffer tag start end)
   (etypecase tag
@@ -586,12 +594,12 @@
 
 (defcfun (text-buffer-remove-all-tags "gtk_text_buffer_remove_all_tags") :void
   (buffer (g-object text-buffer))
-  (start (g-boxed-ref text-iter))
-  (end (g-boxed-ref text-iter)))
+  (start (g-boxed-foreign text-iter))
+  (end (g-boxed-foreign text-iter)))
 
 (defcfun gtk-text-buffer-get-iter-at-line-offset :void
   (buffer (g-object text-buffer))
-  (iter (g-boxed-ref text-iter))
+  (iter (g-boxed-foreign text-iter))
   (line-number :int)
   (char-offset :int))
 
@@ -604,7 +612,7 @@
 
 (defcfun gtk-text-buffer-get-iter-at-offset :void
   (buffer (g-object text-buffer))
-  (iter (g-boxed-ref text-iter))
+  (iter (g-boxed-foreign text-iter))
   (char-offset :int))
 
 (defun text-buffer-get-iter-at-offset (buffer offset)
@@ -616,7 +624,7 @@
 
 (defcfun gtk-text-buffer-get-iter-at-line :void
   (buffer (g-object text-buffer))
-  (iter (g-boxed-ref text-iter))
+  (iter (g-boxed-foreign text-iter))
   (line-number :int))
 
 (defun text-buffer-get-iter-at-line (buffer line-number)
@@ -628,7 +636,7 @@
 
 (defcfun gtk-text-buffer-get-iter-at-mark :void
   (buffer (g-object text-buffer))
-  (iter (g-boxed-ref text-iter))
+  (iter (g-boxed-foreign text-iter))
   (mark (g-object text-mark)))
 
 (defun text-buffer-get-iter-at-mark (buffer mark)
@@ -642,7 +650,7 @@
 
 (defcfun gtk-text-buffer-get-iter-at-child-anchor :void
   (buffer (g-object text-buffer))
-  (iter (g-boxed-ref text-iter))
+  (iter (g-boxed-foreign text-iter))
   (anchor (g-object text-child-anchor)))
 
 (defun text-buffer-get-iter-at-child-anchor (buffer anchor)
@@ -654,7 +662,7 @@
 
 (defcfun gtk-text-buffer-get-start-iter :void
   (buffer (g-object text-buffer))
-  (iter (g-boxed-ref text-iter)))
+  (iter (g-boxed-foreign text-iter)))
 
 (defun text-buffer-get-start-iter (buffer)
   (let ((iter (make-instance 'text-iter)))
@@ -665,7 +673,7 @@
 
 (defcfun gtk-text-buffer-get-end-iter :void
   (buffer (g-object text-buffer))
-  (iter (g-boxed-ref text-iter)))
+  (iter (g-boxed-foreign text-iter)))
 
 (defun text-buffer-get-end-iter (buffer)
   (let ((iter (make-instance 'text-iter)))
@@ -676,8 +684,8 @@
 
 (defcfun gtk-text-buffer-get-bounds :void
   (buffer (g-object text-buffer))
-  (start (g-boxed-ref text-iter))
-  (end (g-boxed-ref text-iter)))
+  (start (g-boxed-foreign text-iter))
+  (end (g-boxed-foreign text-iter)))
 
 (defun text-buffer-get-bounds (buffer)
   (let ((start (make-instance 'text-iter))
@@ -700,7 +708,7 @@
 (defcfun gtk-text-buffer-paste-clipboard :void
   (buffer (g-object text-buffer))
   (clipboard (g-object clipboard))
-  (override-location (g-boxed-ref text-iter))
+  (override-location (g-boxed-foreign text-iter))
   (default-editable :boolean))
 
 (defun text-buffer-paste-clipboard (buffer clipboard &key position default-editable)
@@ -722,8 +730,8 @@
 
 (defcfun gtk-text-buffer-get-selection-bounds :boolean
   (buffer (g-object text-buffer))
-  (start (g-boxed-ref text-iter))
-  (end (g-boxed-ref text-iter)))
+  (start (g-boxed-foreign text-iter))
+  (end (g-boxed-foreign text-iter)))
 
 (defun text-buffer-get-selection-bounds (buffer)
   (let ((i1 (make-instance 'text-iter))
@@ -918,7 +926,7 @@
 
 (defcfun gtk-text-view-get-visible-rect :void
   (text-view (g-object text-view))
-  (visible-rect (g-boxed-ptr rectangle :in-out)))
+  (visible-rect (g-boxed-foreign rectangle)))
 
 (defun text-view-visible-rect (text-view)
   (let ((rect (make-rectangle :x 0 :y 0 :width 0 :height 0)))
@@ -929,8 +937,8 @@
 
 (defcfun gtk-text-view-get-iter-location :void
   (text-view (g-object text-view))
-  (iter (g-boxed-ref text-iter))
-  (location (g-boxed-ptr rectangle :in-out)))
+  (iter (g-boxed-foreign text-iter))
+  (location (g-boxed-foreign rectangle)))
 
 (defun text-view-iter-location (text-view iter)
   (let ((rect (make-rectangle :x 0 :y 0 :width 0 :height 0)))
@@ -951,7 +959,7 @@
 
 (defcfun gtk-text-view-get-iter-at-location :void
   (text-view (g-object text-view))
-  (iter (g-boxed-ref text-iter))
+  (iter (g-boxed-foreign text-iter))
   (x :int)
   (y :int))
 

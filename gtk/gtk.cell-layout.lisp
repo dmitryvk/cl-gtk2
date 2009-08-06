@@ -48,7 +48,7 @@
 (export 'cell-layout-add-attribute)
 
 (defcallback gtk-cell-layout-cell-data-func-callback :void
-    ((cell-layout g-object) (cell g-object) (tree-model g-object) (iter (g-boxed-ref tree-iter)) (data :pointer))
+    ((cell-layout g-object) (cell g-object) (tree-model g-object) (iter (g-boxed-foreign tree-iter)) (data :pointer))
   (restart-case
       (funcall (get-stable-pointer-value data)
                cell-layout cell tree-model iter)

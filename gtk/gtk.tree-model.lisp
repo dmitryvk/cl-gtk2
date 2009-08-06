@@ -12,17 +12,17 @@
   (tree-model-get-flags-impl tree-model-get-flags-cb tree-model-flags (tree-model g-object))
   (tree-model-get-n-columns-impl tree-model-get-n-columns-cb :int (tree-model g-object))
   (tree-model-get-column-type-impl tree-model-get-column-type-cb g-type-designator (tree-model g-object) (index :int))
-  (tree-model-get-iter-impl tree-model-get-iter-cb :boolean (tree-model g-object) (iter (g-boxed-ref tree-iter)) (path (g-boxed-ref tree-path)))
-  (tree-model-get-path-impl tree-model-get-path-cb (g-boxed-ref tree-path) (tree-model g-object) (iter (g-boxed-ref tree-iter)))
-  (tree-model-get-value-impl tree-model-get-value-cb :void (tree-model g-object) (iter (g-boxed-ref tree-iter)) (n :int) (value (:pointer g-value)))
-  (tree-model-iter-next-impl tree-model-iter-next-cb :boolean (tree-model g-object) (iter (g-boxed-ref tree-iter)))
-  (tree-model-iter-children-impl tree-model-iter-children-cb :boolean (tree-model g-object) (iter (g-boxed-ref tree-iter)) (parent (g-boxed-ref tree-iter)))
-  (tree-model-iter-has-child-impl tree-model-iter-has-child-cb :boolean (tree-model g-object) (iter (g-boxed-ref tree-iter)))
-  (tree-model-iter-n-children-impl tree-model-iter-n-children-cb :int (tree-model g-object) (iter (g-boxed-ref tree-iter)))
-  (tree-model-iter-nth-child-impl tree-model-iter-nth-child-cb :boolean (tree-model g-object) (iter (g-boxed-ref tree-iter)) (parent (g-boxed-ref tree-iter)) (n :int))
-  (tree-model-iter-parent-impl tree-model-iter-parent-cb :boolean (tree-model g-object) (iter (g-boxed-ref tree-iter)) (child (g-boxed-ref tree-iter)))
-  (tree-model-ref-node-impl tree-model-ref-node-cb :void (tree-model g-object) (iter (g-boxed-ref tree-iter)))
-  (tree-model-unref-node-impl tree-model-unref-node-cb :void (tree-model g-object) (iter (g-boxed-ref tree-iter))))
+  (tree-model-get-iter-impl tree-model-get-iter-cb :boolean (tree-model g-object) (iter (g-boxed-foreign tree-iter)) (path (g-boxed-foreign tree-path)))
+  (tree-model-get-path-impl tree-model-get-path-cb (g-boxed-foreign tree-path :return) (tree-model g-object) (iter (g-boxed-foreign tree-iter)))
+  (tree-model-get-value-impl tree-model-get-value-cb :void (tree-model g-object) (iter (g-boxed-foreign tree-iter)) (n :int) (value (:pointer g-value)))
+  (tree-model-iter-next-impl tree-model-iter-next-cb :boolean (tree-model g-object) (iter (g-boxed-foreign tree-iter)))
+  (tree-model-iter-children-impl tree-model-iter-children-cb :boolean (tree-model g-object) (iter (g-boxed-foreign tree-iter)) (parent (g-boxed-foreign tree-iter)))
+  (tree-model-iter-has-child-impl tree-model-iter-has-child-cb :boolean (tree-model g-object) (iter (g-boxed-foreign tree-iter)))
+  (tree-model-iter-n-children-impl tree-model-iter-n-children-cb :int (tree-model g-object) (iter (g-boxed-foreign tree-iter)))
+  (tree-model-iter-nth-child-impl tree-model-iter-nth-child-cb :boolean (tree-model g-object) (iter (g-boxed-foreign tree-iter)) (parent (g-boxed-foreign tree-iter)) (n :int))
+  (tree-model-iter-parent-impl tree-model-iter-parent-cb :boolean (tree-model g-object) (iter (g-boxed-foreign tree-iter)) (child (g-boxed-foreign tree-iter)))
+  (tree-model-ref-node-impl tree-model-ref-node-cb :void (tree-model g-object) (iter (g-boxed-foreign tree-iter)))
+  (tree-model-unref-node-impl tree-model-unref-node-cb :void (tree-model g-object) (iter (g-boxed-foreign tree-iter))))
 
 ; TODO: GtkTreeSortable
 
@@ -117,11 +117,9 @@
       0))
 
 (defmethod tree-model-get-path-impl ((model array-list-store) iter)
-  (using* (iter)
-    (let ((path (make-instance 'tree-path)))
-      (setf (tree-path-indices path) (list (tree-iter-user-data iter)))
-      (disown-boxed-ref path)
-      path)))
+  (let ((path (make-instance 'tree-path)))
+    (setf (tree-path-indices path) (list (tree-iter-user-data iter)))
+    path))
 
 (defmethod tree-model-iter-has-child-impl ((model array-list-store) iter)
   (release iter)
@@ -165,8 +163,8 @@
 
 (defcfun (tree-model-set-iter-to-path "gtk_tree_model_get_iter") :boolean
   (tree-model g-object)
-  (iter (g-boxed-ref tree-iter))
-  (path (g-boxed-ref tree-path)))
+  (iter (g-boxed-foreign tree-iter))
+  (path (g-boxed-foreign tree-path)))
 
 (defun tree-model-iter-by-path (tree-model tree-path)
   (let ((iter (make-instance 'tree-iter)))
@@ -178,7 +176,7 @@
 
 (defcfun (tree-model-set-iter-from-string "gtk_tree_model_get_iter_from_string") :boolean
   (tree-model g-object)
-  (iter (g-boxed-ref tree-iter))
+  (iter (g-boxed-foreign tree-iter))
   (path-string :string))
 
 (defun tree-model-iter-from-string (tree-model path-string)
@@ -191,7 +189,7 @@
 
 (defcfun (tree-model-set-iter-to-first "gtk_tree_model_get_iter_first") :boolean
   (model g-object)
-  (iter (g-boxed-ref tree-iter)))
+  (iter (g-boxed-foreign tree-iter)))
 
 (defun tree-model-iter-first (tree-model)
   (let ((iter (make-instance 'tree-iter)))
@@ -201,15 +199,15 @@
 
 (export 'tree-model-iter-first)
 
-(defcfun (tree-model-path "gtk_tree_model_get_path") (g-boxed-ref tree-path :owner :lisp)
+(defcfun (tree-model-path "gtk_tree_model_get_path") (g-boxed-foreign tree-path :return)
   (tree-model g-object)
-  (iter (g-boxed-ref tree-iter)))
+  (iter (g-boxed-foreign tree-iter)))
 
 (export 'tree-model-path)
 
 (defcfun gtk-tree-model-get-value :void
   (model g-object)
-  (iter (g-boxed-ref tree-iter))
+  (iter (g-boxed-foreign tree-iter))
   (column :int)
   (value (:pointer g-value)))
 
@@ -224,14 +222,14 @@
 
 (defcfun (tree-model-iter-next "gtk_tree_model_iter_next") :boolean
   (tree-model g-object)
-  (iter (g-boxed-ref tree-iter)))
+  (iter (g-boxed-foreign tree-iter)))
 
 (export 'tree-model-iter-next)
 
 (defcfun gtk-tree-model-iter-children :boolean
   (tree-model g-object)
-  (iter (g-boxed-ref tree-iter))
-  (parent (g-boxed-ref tree-iter)))
+  (iter (g-boxed-foreign tree-iter))
+  (parent (g-boxed-foreign tree-iter)))
 
 (defun tree-model-iter-first-child (tree-model parent)
   (let ((iter (make-instance 'tree-iter)))
@@ -243,20 +241,20 @@
 
 (defcfun (tree-model-iter-has-child "gtk_tree_model_iter_has_child") :boolean
   (tree-model g-object)
-  (iter (g-boxed-ref tree-iter)))
+  (iter (g-boxed-foreign tree-iter)))
 
 (export 'tree-model-iter-has-child)
 
 (defcfun (tree-model-iter-n-children "gtk_tree_model_iter_n_children") :int
   (tree-model g-object)
-  (iter (g-boxed-ref tree-iter)))
+  (iter (g-boxed-foreign tree-iter)))
 
 (export 'tree-model-iter-n-children)
 
 (defcfun gtk-tree-model-iter-nth-child :boolean
   (tree-model g-object)
-  (iter (g-boxed-ref tree-iter))
-  (parent (g-boxed-ref tree-iter))
+  (iter (g-boxed-foreign tree-iter))
+  (parent (g-boxed-foreign tree-iter))
   (n :int))
 
 (defun tree-model-iter-nth-child (tree-model parent n)
@@ -269,8 +267,8 @@
 
 (defcfun gtk-tree-model-iter-parent :boolean
   (tree-model g-object)
-  (iter (g-boxed-ref tree-iter))
-  (parent (g-boxed-ref tree-iter)))
+  (iter (g-boxed-foreign tree-iter))
+  (parent (g-boxed-foreign tree-iter)))
 
 (defun tree-model-iter-parent (tree-model iter)
   (let ((parent (make-instance 'tree-iter)))
@@ -282,23 +280,23 @@
 
 (defcfun (tree-model-iter-to-string "gtk_tree_model_get_string_from_iter") (g-string :free-from-foreign t)
   (tree-model g-object)
-  (iter (g-boxed-ref tree-iter)))
+  (iter (g-boxed-foreign tree-iter)))
 
 (export 'tree-model-iter-to-string)
 
 (defcfun (tree-model-ref-node "gtk_tree_model_ref_node") :void
   (tree-model g-object)
-  (iter (g-boxed-ref tree-iter)))
+  (iter (g-boxed-foreign tree-iter)))
 
 (export 'tree-model-ref-node)
 
 (defcfun (tree-model-unref-node "gtk_tree_model_unref_node") :void
   (tree-model g-object)
-  (iter (g-boxed-ref tree-iter)))
+  (iter (g-boxed-foreign tree-iter)))
 
 (export 'tree-model-unref-node)
 
-(defcallback gtk-tree-model-foreach-cb :boolean ((model g-object) (path (g-boxed-ref tree-path)) (iter (g-boxed-ref tree-iter)) (data :pointer))
+(defcallback gtk-tree-model-foreach-cb :boolean ((model g-object) (path (g-boxed-foreign tree-path)) (iter (g-boxed-foreign tree-iter)) (data :pointer))
   (let ((fn (get-stable-pointer-value data)))
     (restart-case
         (funcall fn model path iter)
@@ -450,13 +448,11 @@
   (get-node-by-id tree (tree-iter-user-data iter)))
 
 (defmethod tree-model-get-path-impl ((store array-list-store) iter)
-  (using* (iter)
-    (let* ((path (make-instance 'tree-path))
-           (node (get-node-by-iter store iter))
-           (indices (get-node-path node)))
-      (setf (tree-path-indices path) indices)
-      (disown-boxed-ref path)
-      path)))
+  (let* ((path (make-instance 'tree-path))
+         (node (get-node-by-iter store iter))
+         (indices (get-node-path node)))
+    (setf (tree-path-indices path) indices)
+    path))
 
 (defmethod tree-model-get-value-impl ((store tree-lisp-store) iter n value)
   (using* (iter)

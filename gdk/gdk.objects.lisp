@@ -130,16 +130,22 @@
   (width :int :initform 0)
   (height :int :initform 0))
 
+(export (boxed-related-symbols 'rectangle))
+
 (define-g-boxed-cstruct font "GdkFont"
   (type font-type :initform :font)
   (ascent :int :initform 0)
   (descent :int :initform 0))
+
+(export (boxed-related-symbols 'font))
 
 (define-g-boxed-cstruct color "GdkColor"
   (pixel :uint32 :initform 0)
   (red :uint16 :initform 0)
   (green :uint16 :initform 0)
   (blue :uint16 :initform 0))
+
+(export (boxed-related-symbols 'color))
 
 (define-g-boxed-cstruct geometry "GdkGeometry"
   (min-width :int :initform 0)
@@ -153,6 +159,8 @@
   (min-aspect :double :initform 0.0d0)
   (max-aspect :double :initform 0.0d0)
   (gravity gravity :initform :north-west))
+
+(export (boxed-related-symbols 'geometry))
 
 (defctype gdk-atom :pointer)
 
@@ -169,11 +177,6 @@
 
 ;;;FIXME: Check correct type
 (defctype native-window :uint32)
-
-(defcunion event-client-data-union
-  (b :char :count 20)
-  (s :short :count 10)
-  (l :long :count 5))
 
 (define-g-boxed-variant-cstruct event "GdkEvent"
   (type event-type)
@@ -295,6 +298,8 @@
              (keyboard :boolean)
              (implicit :boolean)
              (grab-window (g-object gdk-window)))))
+
+(export (boxed-related-symbols 'event))
 
 (define-g-object-class "GdkDragContext" drag-context () ())
 

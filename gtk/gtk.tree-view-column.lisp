@@ -37,7 +37,7 @@
     ((tree-column (g-object tree-column))
      (cell (g-object cell-renderer))
      (tree-model (g-object tree-model))
-     (iter (g-boxed-ref tree-iter))
+     (iter (g-boxed-foreign tree-iter))
      (data :pointer))
   (let ((fn (get-stable-pointer-value data)))
     (restart-case
@@ -71,7 +71,7 @@
 (defcfun (tree-view-column-cell-set-cell-data "gtk_tree_view_column_cell_set_cell_data") :void
   (tree-column (g-object tree-view-column))
   (tree-model (g-object tree-model))
-  (iter (g-boxed-ref tree-iter))
+  (iter (g-boxed-foreign tree-iter))
   (is-expander :boolean)
   (is-expanded :boolean))
 

@@ -1152,7 +1152,7 @@
                         (button-sensitivity combo-box-button-sensitivity
                          "button-sensitivity" "GtkSensitivityType" t t)
                         (:cffi active-iter combo-box-active-iter
-                         (g-boxed-ref tree-iter) combo-box-get-active-iter
+                         (g-boxed-foreign tree-iter) combo-box-get-active-iter
                          "gtk_combo_box_set_active_iter")
                         (:cffi row-separator-func combo-box-separator-func nil
                          nil combo-box-set-separator-func)))
@@ -1804,7 +1804,7 @@
                          "background-set" "gboolean" t t)
                         (model cell-view-model "model" "GtkTreeModel" t t)
                         (:cffi displayed-row cell-view-displayed-row
-                         (g-boxed-ref tree-path)
+                         (g-boxed-foreign tree-path)
                          "gtk_cell_view_get_displayed_row"
                          "gtk_cell_view_set_displayed_row")))
 

@@ -194,8 +194,8 @@
 
 (defcfun gtk-widget-intersect :boolean
   (widget g-object)
-  (area (g-boxed-ptr rectangle))
-  (intersection (g-boxed-ptr rectangle :in-out)))
+  (area (g-boxed-foreign rectangle))
+  (intersection (g-boxed-foreign rectangle :in-out)))
 
 (defun widget-intersect (widget rectangle)
   (let ((result (make-rectangle :x 0 :y 0 :width 0 :height 0)))
@@ -447,7 +447,7 @@
          (class (g-type-class-ref type)))
     (unwind-protect
          (let ((g-param-spec (gtk-widget-class-find-style-property class property-name)))
-           (unless g-param-spec (error "Widget ~A has no style-property named '~A'" widget property-name))
+           (when (null-pointer-p g-param-spec) (error "Widget ~A has no style-property named '~A'" widget property-name))
            (foreign-slot-value g-param-spec 'gobject:g-param-spec :value-type))
       (g-type-class-unref class))))
 
@@ -543,7 +543,7 @@
 
 (defcfun gtk-widget-get-snapshot g-object
   (widget g-object)
-  (clip-rectangle (g-boxed-ptr rectangle)))
+  (clip-rectangle (g-boxed-foreign rectangle)))
 
 (defun widget-snapshot (widget &optional clip-rectangle)
   (gtk-widget-get-snapshot widget clip-rectangle))

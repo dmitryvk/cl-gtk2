@@ -41,7 +41,7 @@
 
 ; TODO: gtk_key_snooper_remove
 
-(defcfun (current-event "gtk_get_current_event") (g-boxed-ptr event))
+(defcfun (current-event "gtk_get_current_event") (g-boxed-foreign event :return))
 
 (export 'current-event)
 
@@ -50,13 +50,13 @@
 (export 'current-event-time)
 
 (defcfun (event-widget "gtk_get_event_widget") g-object
-  (event (g-boxed-ptr event)))
+  (event (g-boxed-foreign event)))
 
 (export 'event-widget)
 
 (defcfun (propagate-event "gtk_propagate_event") :void
   (widget g-object)
-  (event (g-boxed-ptr event)))
+  (event (g-boxed-foreign event)))
 
 (export 'propagate-event)
 

@@ -7,7 +7,7 @@
   (destroy-notify :pointer))
 
 (defcallback gtk-tree-selection-select-function-callback :boolean
-    ((selection g-object) (model g-object) (path (g-boxed-ref tree-path)) (path-currently-selected :boolean) (data :pointer))
+    ((selection g-object) (model g-object) (path (g-boxed-foreign tree-path)) (path-currently-selected :boolean) (data :pointer))
   (let ((fn (get-stable-pointer-value data)))
     (restart-case
         (funcall fn selection model path path-currently-selected)
@@ -30,7 +30,7 @@
 (defcfun gtk-tree-selection-get-selected :boolean
   (selection g-object)
   (model :pointer)
-  (iter (g-boxed-ref tree-iter)))
+  (iter (g-boxed-foreign tree-iter)))
 
 (defun tree-selection-selected (tree-selection)
   (let ((iter (make-instance 'tree-iter)))
@@ -46,7 +46,7 @@
   (data :pointer))
 
 (defcallback gtk-tree-selection-foreach-callback :void
-    ((model g-object) (path (g-boxed-ref tree-path)) (iter (g-boxed-ref tree-iter)) (data :pointer))
+    ((model g-object) (path (g-boxed-foreign tree-path)) (iter (g-boxed-foreign tree-iter)) (data :pointer))
   (let ((fn (get-stable-pointer-value data)))
     (funcall fn model path iter)))
 
@@ -56,7 +56,7 @@
 
 (export 'map-tree-selection-rows)
 
-(defcfun gtk-tree-selection-get-selected-rows (glist (g-boxed-ref tree-path) :free-from-foreign t)
+(defcfun gtk-tree-selection-get-selected-rows (glist (g-boxed-foreign tree-path) :free-from-foreign t)
   (selection g-object)
   (model :pointer))
 
@@ -72,37 +72,37 @@
 
 (defcfun (tree-selection-select-path "gtk_tree_selection_select_path") :void
   (selection g-object)
-  (path (g-boxed-ref tree-path)))
+  (path (g-boxed-foreign tree-path)))
 
 (export 'tree-selection-select-path)
 
 (defcfun (tree-selection-unselect-path "gtk_tree_selection_unselect_path") :void
   (selection g-object)
-  (path (g-boxed-ref tree-path)))
+  (path (g-boxed-foreign tree-path)))
 
 (export 'tree-selection-unselect-path)
 
 (defcfun (tree-selection-path-selected-p "gtk_tree_selection_path_is_selected") :boolean
   (selection g-object)
-  (path (g-boxed-ref tree-path)))
+  (path (g-boxed-foreign tree-path)))
 
 (export 'tree-selection-path-selected-p)
 
 (defcfun (tree-selection-select-iter "gtk_tree_selection_select_iter") :void
   (selection g-object)
-  (iter (g-boxed-ref tree-iter)))
+  (iter (g-boxed-foreign tree-iter)))
 
 (export 'tree-selection-select-iter)
 
 (defcfun (tree-selection-unselect-iter "gtk_tree_selection_unselect_iter") :void
   (selection g-object)
-  (iter (g-boxed-ref tree-iter)))
+  (iter (g-boxed-foreign tree-iter)))
 
 (export 'tree-selection-unselect-iter)
 
 (defcfun (tree-selection-iter-selected-p "gtk_tree_selection_iter_is_selected") :boolean
   (selection g-object)
-  (iter (g-boxed-ref tree-iter)))
+  (iter (g-boxed-foreign tree-iter)))
 
 (export 'tree-selection-iter-selected-p)
 
@@ -118,14 +118,14 @@
 
 (defcfun (tree-selection-select-range "gtk_tree_selection_select_range") :void
   (selection g-object)
-  (start-path (g-boxed-ref tree-path))
-  (end-path (g-boxed-ref tree-path)))
+  (start-path (g-boxed-foreign tree-path))
+  (end-path (g-boxed-foreign tree-path)))
 
 (export 'tree-selection-select-range)
 
 (defcfun (tree-selection-unselect-range "gtk_tree_selection_unselect_range") :void
   (selection g-object)
-  (start-path (g-boxed-ref tree-path))
-  (end-path (g-boxed-ref tree-path)))
+  (start-path (g-boxed-foreign tree-path))
+  (end-path (g-boxed-foreign tree-path)))
 
 (export 'tree-selection-unselect-range)

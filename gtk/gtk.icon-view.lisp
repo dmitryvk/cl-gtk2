@@ -17,7 +17,7 @@
 (defun icon-view-get-item-at-pos (icon-view x y)
   (with-foreign-objects ((path :pointer) (cell :pointer))
     (when (gtk-icon-view-get-item-at-pos icon-view x y path cell)
-      (values (mem-ref path '(g-boxed-ref tree-path :owner :lisp))
+      (values (mem-ref path '(g-boxed-foreign tree-path :return))
               (mem-ref cell 'g-object)))))
 
 (export 'icon-view-get-item-at-pos)
@@ -39,7 +39,7 @@
 
 (defcfun (icon-view-set-cursor "gtk_icon_view_set_cursor") :void
   (icon-view g-object)
-  (path (g-boxed-ref tree-path))
+  (path (g-boxed-foreign tree-path))
   (cell g-object)
   (start-editing :boolean))
 
@@ -53,13 +53,13 @@
 (defun icon-view-get-cursor (icon-view)
   (with-foreign-objects ((path :pointer) (cell :pointer))
     (when (gtk-icon-view-get-cursor icon-view path cell)
-      (values (mem-ref path '(g-boxed-ref tree-path))
+      (values (mem-ref path '(g-boxed-foreign tree-path :return))
               (mem-ref cell 'g-object)))))
 
 (export 'icon-view-get-cursor)
 
 (defcallback gtk-icon-view-foreach-func-callback :void
-    ((icon-view g-object) (path (g-boxed-ref tree-path)) (data :pointer))
+    ((icon-view g-object) (path (g-boxed-foreign tree-path)) (data :pointer))
   (restart-case
       (funcall (get-stable-pointer-value data)
                icon-view
@@ -81,23 +81,23 @@
 
 (defcfun (icon-view-select-path "gtk_icon_view_select_path") :void
   (icon-view g-object)
-  (path (g-boxed-ref tree-path)))
+  (path (g-boxed-foreign tree-path)))
 
 (export 'icon-view-select-path)
 
 (defcfun (icon-view-unselect-path "gtk_icon_view_unselect_path") :void
   (icon-view g-object)
-  (path (g-boxed-ref tree-path)))
+  (path (g-boxed-foreign tree-path)))
 
 (export 'icon-view-unselect-path)
 
 (defcfun (icon-view-path-selected-p "gtk_icon_view_path_is_selected") :boolean
   (icon-view g-object)
-  (path (g-boxed-ref tree-path)))
+  (path (g-boxed-foreign tree-path)))
 
 (export 'icon-view-path-selected-p)
 
-(defcfun (icon-view-selected-items "gtk_icon_view_get_selected_items") (glist (g-boxed-ref tree-path) :free-from-foreign t)
+(defcfun (icon-view-selected-items "gtk_icon_view_get_selected_items") (glist (g-boxed-foreign tree-path) :free-from-foreign t)
   (icon-view g-object))
 
 (export 'icon-view-selected-items)
@@ -114,7 +114,7 @@
 
 (defcfun gtk-icon-view-scroll-to-path :void
   (icon-view g-object)
-  (path (g-boxed-ref tree-path))
+  (path (g-boxed-foreign tree-path))
   (use-align :boolean)
   (row-align :float)
   (col-align :float))
@@ -132,8 +132,8 @@
 (defun icon-view-get-visible-range (icon-view)
   (with-foreign-objects ((start-path :pointer) (end-path :pointer))
     (when (gtk-icon-view-get-visible-range icon-view start-path end-path)
-      (values (mem-ref start-path '(g-boxed-ref tree-path :owner :lisp))
-              (mem-ref end-path '(g-boxed-ref tree-path :owner :lisp))))))
+      (values (mem-ref start-path '(g-boxed-foreign tree-path :return))
+              (mem-ref end-path '(g-boxed-foreign tree-path :return))))))
 
 (export 'icon-view-get-visible-range)
 
