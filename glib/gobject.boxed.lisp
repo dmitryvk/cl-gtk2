@@ -92,6 +92,8 @@
                  (for type = (cstruct-slot-description-type slot))
                  (for count = (cstruct-slot-description-count slot))
                  (collect `(,name ,type ,@(when count `(:count ,count))))))
+       (defcunion ,(generated-cunion-name name)
+         (,name ,(generated-cstruct-name name)))
        (eval-when (:compile-toplevel :load-toplevel :execute)
          (setf (get ',name 'g-boxed-foreign-info)
                (make-g-boxed-cstruct-wrapper-info :name ',name
@@ -310,13 +312,15 @@
               :structure (parse-variant-structure-definition variant-name slots parent)))
         (collect variant)))
 
+(defpackage :gobject.boxed.generated-names)
+
 (defun generated-cstruct-name (symbol)
   (or (get symbol 'generated-cstruct-name)
-      (setf (get symbol 'generated-cstruct-name) (gensym (format nil "GEN-~A-CSTRUCT-" (symbol-name symbol))))))
+      (setf (get symbol 'generated-cstruct-name) (gentemp (format nil "CSTRUCT-~A" (symbol-name symbol)) (find-package :gobject.boxed.generated-names)))))
 
 (defun generated-cunion-name (symbol)
   (or (get symbol 'generated-cunion-name)
-      (setf (get symbol 'generated-cunion-name) (gensym (format nil "GEN-~A-CUNION-" (symbol-name symbol))))))
+      (setf (get symbol 'generated-cunion-name) (gentemp (format nil "CUNION-~A" (symbol-name symbol)) (find-package :gobject.boxed.generated-names)))))
 
 (defun generate-cstruct-1 (struct)
   `(defcstruct ,(generated-cstruct-name (cstruct-description-name struct))
