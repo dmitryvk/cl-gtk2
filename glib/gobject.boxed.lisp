@@ -58,9 +58,16 @@
   name
   type
   count
-  initform)
+  initform
+  inline-p)
+
+(defstruct (cstruct-inline-slot-description (:include cstruct-slot-description))
+  boxed-type-name)
 
 (defmethod make-load-form ((object cstruct-slot-description) &optional environment)
+  (make-load-form-saving-slots object :environment environment))
+
+(defmethod make-load-form ((object cstruct-inline-slot-description) &optional environment)
   (make-load-form-saving-slots object :environment environment))
 
 (defstruct cstruct-description
@@ -71,8 +78,13 @@
   (make-load-form-saving-slots object :environment environment))
 
 (defun parse-cstruct-slot (slot)
-  (destructuring-bind (name type &key count initform) slot
-    (make-cstruct-slot-description :name name :type type :count count :initform initform)))
+  (destructuring-bind (name type &key count initform inline) slot
+    (if inline
+        (make-cstruct-inline-slot-description :name name :type (generated-cunion-name type)
+                                       :count count :initform initform :inline-p inline
+                                       :boxed-type-name type)
+        (make-cstruct-inline-slot-description :name name :type type
+                                              :count count :initform initform :inline-p inline))))
 
 (defun parse-cstruct-definition (name slots)
   (make-cstruct-description :name name
@@ -133,6 +145,11 @@
                  (for i from 0 below (cstruct-slot-description-count slot))
                  (setf (mem-aref ptr (cstruct-slot-description-type slot) i)
                        (aref array i))))
+          ((cstruct-slot-description-inline-p slot)
+           (let ((info (get-g-boxed-foreign-info (cstruct-inline-slot-description-boxed-type-name slot))))
+             (copy-slots-to-native (slot-value proxy slot-name)
+                                   (foreign-slot-pointer native cstruct-type slot-name)
+                                   (g-boxed-cstruct-wrapper-info-cstruct-description info))))
           (t
            (setf (foreign-slot-value native cstruct-type slot-name)
                  (slot-value proxy slot-name))))))
@@ -149,6 +166,11 @@
                  (for i from 0 below (cstruct-slot-description-count slot))
                  (setf (aref array i)
                        (mem-aref ptr (cstruct-slot-description-type slot) i))))
+          ((cstruct-slot-description-inline-p slot)
+           (let ((info (get-g-boxed-foreign-info (cstruct-inline-slot-description-boxed-type-name slot))))
+             (copy-slots-to-proxy (slot-value proxy slot-name)
+                                  (foreign-slot-pointer native cstruct-type slot-name)
+                                  (g-boxed-cstruct-wrapper-info-cstruct-description info))))
           (t (setf (slot-value proxy slot-name)
                    (foreign-slot-value native cstruct-type slot-name))))))
 
