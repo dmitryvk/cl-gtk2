@@ -453,7 +453,7 @@
       (null-pointer)
       (let* ((type (g-boxed-foreign-info foreign-type))
              (cstruct-description (decide-native-type type proxy)))
-        (with-foreign-object (native-structure (generated-cstruct-name
+        (with-foreign-object (native-structure (generated-cunion-name
                                                 (var-structure-name
                                                  (g-boxed-variant-cstruct-info-root type))))
           (copy-slots-to-native proxy native-structure cstruct-description)
