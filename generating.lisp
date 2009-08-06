@@ -122,9 +122,9 @@
         (:cffi gtk::search-position-func gtk::tree-view-search-position-func nil nil gtk::tree-view-set-search-position-func)
         (:cffi gtk::row-separator-func gtk::tree-view-row-separator-func nil nil gtk::tree-view-set-row-separartor-func))
        ("GtkCellView"
-        (:cffi gtk::displayed-row gtk::cell-view-displayed-row (g-boxed-ref gtk::tree-path) "gtk_cell_view_get_displayed_row" "gtk_cell_view_set_displayed_row"))
+        (:cffi gtk::displayed-row gtk::cell-view-displayed-row (g-boxed-foreign gtk::tree-path) "gtk_cell_view_get_displayed_row" "gtk_cell_view_set_displayed_row"))
        ("GtkComboBox"
-        (:cffi gtk::active-iter gtk::combo-box-active-iter (g-boxed-ref gtk::tree-iter) gtk::combo-box-get-active-iter "gtk_combo_box_set_active_iter")
+        (:cffi gtk::active-iter gtk::combo-box-active-iter (g-boxed-foreign gtk::tree-iter) gtk::combo-box-get-active-iter "gtk_combo_box_set_active_iter")
         (:cffi gtk::row-separator-func gtk::combo-box-separator-func nil nil gtk::combo-box-set-separator-func))
        ("GtkMenu"
         (:cffi gtk::screen gtk::menu-screen g-object nil "gtk_menu_set_screen"))
