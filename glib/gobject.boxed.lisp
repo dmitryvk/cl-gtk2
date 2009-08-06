@@ -388,11 +388,13 @@
 (defun generate-proxy-type-decision-procedure (str)
   (let ((native (gensym "NATIVE-")))
     `(lambda (,native)
+       (declare (ignorable ,native))
        ,(generate-proxy-type-decision-procedure-1 str native))))
 
 (defun generate-native-type-decision-procedure (str)
   (let ((proxy (gensym "PROXY-")))
     `(lambda (,proxy)
+       (declare (ignorable ,proxy))
        ,(generate-native-type-decision-procedure-1 str proxy))))
 
 (defun compile-proxy-type-decision-procedure (str)
