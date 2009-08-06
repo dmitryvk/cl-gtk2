@@ -52,8 +52,8 @@
 
 (defun store-add-item (store item)
   (vector-push-extend item (store-items store))
-  (using* ((path (make-instance 'tree-path))
-           (iter (make-instance 'tree-iter)))
+  (let* ((path (make-instance 'tree-path))
+         (iter (make-instance 'tree-iter)))
     (setf (tree-path-indices path) (list (1- (length (store-items store)))))
     (setf (tree-iter-stamp iter) 0 (tree-iter-user-data iter) (1- (length (store-items store))))
     (emit-signal store "row-inserted" path iter)))
@@ -65,9 +65,9 @@
     (let ((index (position item items :test test)))
       (unless index (error "No such item~%~A~%in list-store~%~A" item store))
       (setf items (delete item items :test test))
-      (using (path (make-instance 'tree-path))
-             (setf (tree-path-indices path) (list index))
-             (emit-signal store "row-deleted" path)))))
+      (let ((path (make-instance 'tree-path)))
+        (setf (tree-path-indices path) (list index))
+        (emit-signal store "row-deleted" path)))))
 
 (export 'store-remove-item)
 
@@ -88,28 +88,25 @@
   (aref (store-types tree-model) index))
 
 (defmethod tree-model-get-iter-impl ((model array-list-store) iter path)
-  (using* (iter path)
-    (let ((indices (tree-path-indices path)))
-      (when (and (= 1 (length indices))
-                 (< (first indices) (length (store-items model))))
-        (setf (tree-iter-stamp iter) 0 (tree-iter-user-data iter) (first indices))
-        t))))
+  (let ((indices (tree-path-indices path)))
+    (when (and (= 1 (length indices))
+               (< (first indices) (length (store-items model))))
+      (setf (tree-iter-stamp iter) 0 (tree-iter-user-data iter) (first indices))
+      t)))
 
-(defmethod tree-model-ref-node-impl ((model array-list-store) iter) (release iter))
-(defmethod tree-model-unref-node-impl ((model array-list-store) iter) (release iter))
+(defmethod tree-model-ref-node-impl ((model array-list-store) iter))
+(defmethod tree-model-unref-node-impl ((model array-list-store) iter))
 
 (defmethod tree-model-iter-next-impl ((model array-list-store) iter)
-  (using* (iter)
-    (let ((n (tree-iter-user-data iter)))
-      (when (< n (1- (length (store-items model))))
-        (setf (tree-iter-user-data iter) (1+ n))
-        t))))
+  (let ((n (tree-iter-user-data iter)))
+    (when (< n (1- (length (store-items model))))
+      (setf (tree-iter-user-data iter) (1+ n))
+      t)))
 
 (defmethod tree-model-iter-nth-child-impl ((model array-list-store) iter parent n)
-  (using* (iter parent)
-    (setf (tree-iter-stamp iter) 0
-          (tree-iter-user-data iter) n)
-    t))
+  (setf (tree-iter-stamp iter) 0
+        (tree-iter-user-data iter) n)
+  t)
 
 (defmethod tree-model-iter-n-children-impl ((model array-list-store) iter)
   (if (null iter)
@@ -122,7 +119,6 @@
     path))
 
 (defmethod tree-model-iter-has-child-impl ((model array-list-store) iter)
-  (release iter)
   nil)
 
 (defgeneric tree-model-item (model iter-or-path))
@@ -138,12 +134,11 @@
 (export 'tree-model-item)
 
 (defmethod tree-model-get-value-impl ((model array-list-store) iter n value)
-  (using (iter)
-    (let ((n-row (tree-iter-user-data iter)))
-      (set-g-value value
-                   (funcall (aref (store-getters model) n) 
-                            (aref (store-items model) n-row))
-                   (aref (store-types model) n)))))
+  (let ((n-row (tree-iter-user-data iter)))
+    (set-g-value value
+                 (funcall (aref (store-getters model) n) 
+                          (aref (store-items model) n-row))
+                 (aref (store-types model) n))))
 
 (defcfun (tree-model-flags "gtk_tree_model_get_flags") tree-model-flags
   (tree-model g-object))
@@ -170,7 +165,7 @@
   (let ((iter (make-instance 'tree-iter)))
     (if (tree-model-set-iter-to-path tree-model iter tree-path)
         iter
-        (progn (release iter) nil))))
+        nil)))
 
 (export 'tree-model-iter-by-path)
 
@@ -183,7 +178,7 @@
   (let ((iter (make-instance 'tree-iter)))
     (if (tree-model-set-iter-from-string tree-model iter path-string)
         iter
-        (progn (release iter) nil))))
+        nil)))
 
 (export 'tree-model-iter-from-string)
 
@@ -195,7 +190,7 @@
   (let ((iter (make-instance 'tree-iter)))
     (if (tree-model-set-iter-to-first tree-model iter)
         iter
-        (progn (release iter) nil))))
+        nil)))
 
 (export 'tree-model-iter-first)
 
@@ -235,7 +230,7 @@
   (let ((iter (make-instance 'tree-iter)))
     (if (gtk-tree-model-iter-children tree-model iter parent)
         iter
-        (progn (release iter) nil))))
+        nil)))
 
 (export 'tree-model-iter-first-child)
 
@@ -261,7 +256,7 @@
   (let ((iter (make-instance 'tree-iter)))
     (if (gtk-tree-model-iter-nth-child tree-model iter parent n)
         iter
-        (progn (release iter) n))))
+        n)))
 
 (export 'tree-model-iter-nth-child)
 
@@ -274,7 +269,7 @@
   (let ((parent (make-instance 'tree-iter)))
     (if (gtk-tree-model-iter-parent tree-model iter parent)
         parent
-        (progn (release parent) nil))))
+        nil)))
 
 (export 'tree-model-iter-parent)
 
@@ -438,11 +433,10 @@
   (gethash id (tree-lisp-store-id-map tree)))
 
 (defmethod tree-model-get-iter-impl ((store tree-lisp-store) iter path)
-  (using* (iter path)
-    (let* ((node (get-node-by-path store path))
-           (node-idx (get-assigned-id store node)))
-      (setf (tree-iter-stamp iter) 0
-            (tree-iter-user-data iter) node-idx))))
+  (let* ((node (get-node-by-path store path))
+         (node-idx (get-assigned-id store node)))
+    (setf (tree-iter-stamp iter) 0
+          (tree-iter-user-data iter) node-idx)))
 
 (defun get-node-by-iter (tree iter)
   (get-node-by-id tree (tree-iter-user-data iter)))
@@ -455,64 +449,57 @@
     path))
 
 (defmethod tree-model-get-value-impl ((store tree-lisp-store) iter n value)
-  (using* (iter)
-    (let* ((node (get-node-by-iter store iter))
-           (getter (aref (tree-lisp-store-getters store) n))
-           (type (aref (tree-lisp-store-types store) n)))
-      (set-g-value value (funcall getter (tree-node-item node)) type))))
+  (let* ((node (get-node-by-iter store iter))
+         (getter (aref (tree-lisp-store-getters store) n))
+         (type (aref (tree-lisp-store-types store) n)))
+    (set-g-value value (funcall getter (tree-node-item node)) type)))
 
 (defmethod tree-model-iter-next-impl ((store tree-lisp-store) iter)
-  (using* (iter)
-    (let* ((node (get-node-by-iter store iter))
-           (parent (tree-node-parent node))
-           (index (position node (tree-node-children parent))))
-      (when (< (1+ index) (length (tree-node-children parent)))
-        (setf (tree-iter-stamp iter)
-              0
-              (tree-iter-user-data iter)
-              (get-assigned-id store (tree-node-child-at parent (1+ index))))
-        t))))
-
-(defmethod tree-model-iter-children-impl ((store tree-lisp-store) iter parent)
-  (using* (iter parent)
-    (let* ((node (if parent
-                     (get-node-by-iter store parent)
-                     (tree-lisp-store-root store))))
-      (when (plusp (length (tree-node-children node)))
-        (setf (tree-iter-stamp iter)
-              0
-              (tree-iter-user-data iter)
-              (get-assigned-id store (tree-node-child-at node 0)))
-        t))))
-
-(defmethod tree-model-iter-has-child-impl ((store tree-lisp-store) iter)
-  (using* (iter)
-    (let ((node (get-node-by-iter store iter)))
-      (plusp (length (tree-node-children node))))))
-
-(defmethod tree-model-iter-n-children-impl ((store tree-lisp-store) iter)
-  (using* (iter)
-    (let* ((node (if iter
-                     (get-node-by-iter store iter)
-                     (tree-lisp-store-root store))))
-      (length (tree-node-children node)))))
-
-(defmethod tree-model-iter-nth-child-impl ((store tree-lisp-store) iter parent n)
-  (using* (iter parent)
-    (let* ((node (if parent
-                     (get-node-by-iter store parent)
-                     (tree-lisp-store-root store)))
-           (requested-node (tree-node-child-at node n)))
-      (setf (tree-iter-stamp iter) 0
-            (tree-iter-user-data iter) (get-assigned-id store requested-node))
+  (let* ((node (get-node-by-iter store iter))
+         (parent (tree-node-parent node))
+         (index (position node (tree-node-children parent))))
+    (when (< (1+ index) (length (tree-node-children parent)))
+      (setf (tree-iter-stamp iter)
+            0
+            (tree-iter-user-data iter)
+            (get-assigned-id store (tree-node-child-at parent (1+ index))))
       t)))
 
+(defmethod tree-model-iter-children-impl ((store tree-lisp-store) iter parent)
+  (let* ((node (if parent
+                   (get-node-by-iter store parent)
+                   (tree-lisp-store-root store))))
+    (when (plusp (length (tree-node-children node)))
+      (setf (tree-iter-stamp iter)
+            0
+            (tree-iter-user-data iter)
+            (get-assigned-id store (tree-node-child-at node 0)))
+      t)))
+
+(defmethod tree-model-iter-has-child-impl ((store tree-lisp-store) iter)
+  (let ((node (get-node-by-iter store iter)))
+    (plusp (length (tree-node-children node)))))
+
+(defmethod tree-model-iter-n-children-impl ((store tree-lisp-store) iter)
+  (let* ((node (if iter
+                   (get-node-by-iter store iter)
+                   (tree-lisp-store-root store))))
+    (length (tree-node-children node))))
+
+(defmethod tree-model-iter-nth-child-impl ((store tree-lisp-store) iter parent n)
+  (let* ((node (if parent
+                   (get-node-by-iter store parent)
+                   (tree-lisp-store-root store)))
+         (requested-node (tree-node-child-at node n)))
+    (setf (tree-iter-stamp iter) 0
+          (tree-iter-user-data iter) (get-assigned-id store requested-node))
+    t))
+
 (defmethod tree-model-iter-parent-impl ((store tree-lisp-store) iter child)
-  (using* (iter child)
-    (let ((node (get-node-by-iter store child)))
-      (when (tree-node-parent node)
-        (setf (tree-iter-stamp iter) 0
-              (tree-iter-user-data iter) (get-assigned-id store (tree-node-parent node)))))))
+  (let ((node (get-node-by-iter store child)))
+    (when (tree-node-parent node)
+      (setf (tree-iter-stamp iter) 0
+            (tree-iter-user-data iter) (get-assigned-id store (tree-node-parent node))))))
 
 (defmethod tree-model-ref-node-impl ((store tree-lisp-store) iter)
   )
@@ -523,8 +510,8 @@
 (defun notice-tree-node-insertion (tree node child index)
   (declare (ignore node index))
   (when tree
-    (using* ((path (make-instance 'tree-path))
-             (iter (make-instance 'tree-iter)))
+    (let* ((path (make-instance 'tree-path))
+           (iter (make-instance 'tree-iter)))
       (setf (tree-path-indices path) (get-node-path child)
             (tree-iter-stamp iter) 0
             (tree-iter-user-data iter) (get-assigned-id tree child))
@@ -535,12 +522,12 @@
 (defun notice-tree-node-removal (tree node child index)
   (declare (ignore child))
   (when tree
-    (using (path (make-instance 'tree-path))
+    (let ((path (make-instance 'tree-path)))
       (setf (tree-path-indices path) (nconc (get-node-path node) (list index)))
       (emit-signal tree "row-deleted" path))
     (when (zerop (length (tree-node-children node)))
-      (using* ((path (make-instance 'tree-path))
-               (iter (make-instance 'tree-iter)))
+      (let* ((path (make-instance 'tree-path))
+             (iter (make-instance 'tree-iter)))
         (setf (tree-path-indices path) (get-node-path node)
               (tree-iter-stamp iter) 0
               (tree-iter-user-data iter) (get-assigned-id tree node))

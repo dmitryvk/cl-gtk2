@@ -6,11 +6,22 @@
   (top :int :initform 0)
   (bottom :int :initform 0))
 
+(define-foreign-type pointer-as-integer-foreign-type ()
+  ()
+  (:actual-type :pointer)
+  (:simple-parser pointer-as-integer))
+
+(defmethod translate-to-foreign (value (type pointer-as-integer-foreign-type))
+  (make-pointer value))
+
+(defmethod translate-from-foreign (value (type pointer-as-integer-foreign-type))
+  (pointer-address value))
+
 (define-g-boxed-cstruct tree-iter "GtkTreeIter"
   (stamp :int :initform 0)
-  (user-data :pointer :initform (null-pointer))
-  (user-data-2 :pointer :initform (null-pointer))
-  (user-data-3 :pointer :initform (null-pointer)))
+  (user-data pointer-as-integer :initform 0)
+  (user-data-2 pointer-as-integer :initform 0)
+  (user-data-3 pointer-as-integer :initform 0))
 
 (export 'tree-iter)
 (export 'tree-iter-stamp)
