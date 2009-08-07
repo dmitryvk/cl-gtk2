@@ -2,6 +2,12 @@
 
 (define-g-enum "GdkGrabStatus" grab-status () :success :already-grabbed :invalid-time :not-viewable :frozen)
 
+(defcenum crossing-mode :normal :grab :ungrab :gtk-grab :gtk-ungrab :state-changed)
+(export 'crossing-mode)
+
+(defcenum notify-type (:ancestor 0) :virtual :inferior :nonlinear :nonlinear-virtual :unknown)
+(export 'notify-type)
+
 (define-g-object-class "GdkDisplay" display () ())
 
 (define-g-object-class "GdkDisplayManager" display-manager ()
@@ -178,6 +184,25 @@
 ;;;FIXME: Check correct type
 (defctype native-window :uint32)
 
+(define-foreign-type fixed-array ()
+  ((element-type :reader fixed-array-element-type :initarg :element-type :initform (error "Element type must be specified"))
+   (array-size :reader fixed-array-array-size :initarg :array-size :initform (error "Array size must be specified")))
+  (:actual-type :pointer)
+  (:documentation
+   "CFFI foreign type for an array of a fixed length. Slot @code{element-type}@see-slot{fixed-array-element-type} specifies the type of elements and slot @code{array-size}@see-slot{fixed-array-array-size} specifies the size of array (in elements)."))
+
+(define-parse-method fixed-array (element-type array-size)
+  (make-instance 'fixed-array :element-type element-type :array-size array-size))
+
+(defmethod translate-from-foreign (ptr (type fixed-array))
+  (when (not (null-pointer-p ptr))
+    (let ((result (make-array (fixed-array-array-size type)))
+          (el-type (fixed-array-element-type type)))
+      (loop
+         for i from 0 below (fixed-array-array-size type)
+         do (setf (aref result i) (mem-aref ptr el-type i)))
+      result)))
+
 (define-g-boxed-variant-cstruct event "GdkEvent"
   (type event-type)
   (window (g-object gdk-window))
@@ -193,14 +218,14 @@
              (hardware-keycode :uint16)
              (group :uint8)
              (is-modifier :uint))
-            ((:button-prees
+            ((:button-press
               :2button-press
               :3button-press
               :button-release) event-button
              (time :uint32)
              (x :double)
              (y :double)
-             (axes :double :count 2)
+             (axes (fixed-array :double 2))
              (state :uint)
              (button :uint)
              (device (g-object device))
@@ -219,9 +244,9 @@
              (time :uint32)
              (x :double)
              (y :double)
-             (axes :double :count 2)
+             (axes (fixed-array :double 2))
              (state modifier-type)
-             (is-hint :int)
+             (is-hint :int16)
              (device (g-object device))
              (x-root :double)
              (y-root :double))
@@ -237,7 +262,11 @@
              (x :double)
              (y :double)
              (x-root :double)
-             (y-root :double))
+             (y-root :double)
+             (mode crossing-mode)
+             (detail notify-type)
+             (focus :boolean)
+             (state :uint))
             ((:focus-change) event-focus
              (in :int16))
             ((:configure) event-configure
@@ -262,7 +291,7 @@
               :drag-motion
               :drag-status
               :drop-start
-              :drop-finished) event-drag
+              :drop-finished) event-dnd
              (drag-context :pointer)
              (time :uint32)
              (x-root :short)
