@@ -336,19 +336,11 @@
               :structure (parse-variant-structure-definition variant-name slots parent)))
         (collect variant)))
 
-(defpackage :gobject.boxed.generated-names)
-
 (defun generated-cstruct-name (symbol)
-  (or (get symbol 'generated-cstruct-name)
-      (setf (get symbol 'generated-cstruct-name) (gentemp (format nil "CSTRUCT-~A" (symbol-name symbol)) (find-package :gobject.boxed.generated-names)))))
+  (intern (format nil "~A-CSTRUCT-GENERATED-BY-GOBJECT-BOXED" (symbol-name symbol)) (symbol-package symbol)))
 
 (defun generated-cunion-name (symbol)
-  (or (get symbol 'generated-cunion-name)
-      (setf (get symbol 'generated-cunion-name) (gentemp (format nil "CUNION-~A" (symbol-name symbol)) (find-package :gobject.boxed.generated-names)))))
-
-(defun generated-fn-name (symbol)
-  (or (get symbol 'generated-fn-name)
-      (setf (get symbol 'generated-fn-name) (gentemp (format nil "FN~A" (symbol-name symbol)) (find-package :gobject.boxed.generated-names)))))
+  (intern (format nil "~A-CUNION-GENERATED-BY-GOBJECT-BOXED" (symbol-name symbol)) (symbol-package symbol)))
 
 (defun generate-cstruct-1 (struct)
   `(defcstruct ,(generated-cstruct-name (cstruct-description-name struct))
