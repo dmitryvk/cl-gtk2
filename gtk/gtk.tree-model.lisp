@@ -441,7 +441,7 @@
 (defun get-node-by-iter (tree iter)
   (get-node-by-id tree (tree-iter-user-data iter)))
 
-(defmethod tree-model-get-path-impl ((store array-list-store) iter)
+(defmethod tree-model-get-path-impl ((store tree-lisp-store) iter)
   (let* ((path (make-instance 'tree-path))
          (node (get-node-by-iter store iter))
          (indices (get-node-path node)))
