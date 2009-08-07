@@ -243,6 +243,6 @@ GObject uses GValues as a generic way to pass values. It is used when calling cl
 
 (defvar *gobject-debug* nil)
 
-(defun debugf (&rest args)
+(defmacro debugf (&rest args)
   (when *gobject-debug*
     (apply 'format t args)))
