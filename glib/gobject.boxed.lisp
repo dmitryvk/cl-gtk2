@@ -35,10 +35,10 @@
   (:method (type-info native)
     (g-boxed-copy (g-boxed-info-g-type type-info) native)))
 
-(defmethod boxed-copy-fn :before (type-info native)
+#+nil(defmethod boxed-copy-fn :before (type-info native)
   (format t "(boxed-copy-fn ~A ~A)~%" (g-boxed-info-name type-info) native))
 
-(defgeneric boxed-free-fn (type-info native)
+#+nil(defgeneric boxed-free-fn (type-info native)
   (:method (type-info native)
     (g-boxed-free (g-boxed-info-g-type type-info) native)))
 
