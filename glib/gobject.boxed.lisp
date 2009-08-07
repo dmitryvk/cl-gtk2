@@ -168,6 +168,7 @@
                        (mem-aref ptr (cstruct-slot-description-type slot) i))))
           ((cstruct-slot-description-inline-p slot)
            (let ((info (get-g-boxed-foreign-info (cstruct-inline-slot-description-boxed-type-name slot))))
+             (setf (slot-value proxy slot-name) (make-instance (cstruct-inline-slot-description-boxed-type-name slot)))
              (copy-slots-to-proxy (slot-value proxy slot-name)
                                   (foreign-slot-pointer native cstruct-type slot-name)
                                   (g-boxed-cstruct-wrapper-info-cstruct-description info))))
