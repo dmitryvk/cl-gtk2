@@ -125,6 +125,7 @@
 
 (defun interface-init (iface data)
   (destructuring-bind (class-name interface-name) (prog1 (get-stable-pointer-value data) (free-stable-pointer data))
+    (declare (ignorable class-name))
     (let* ((vtable (gethash interface-name *vtables*))
            (vtable-cstruct (vtable-description-cstruct-name vtable)))
       (debugf "interface-init for class ~A and interface ~A~%" class-name interface-name)

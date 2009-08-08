@@ -69,7 +69,8 @@
     (error (e) (format t "Error in dispose: ~A~%" e))))
 
 (defcallback weak-notify-print :void ((data :pointer) (object-pointer :pointer))
-  (declare (ignore data))
+  (declare (ignore data)
+           (ignorable object-pointer))
   (debugf "g-object has finalized ~A ~A~%" (g-type-name (g-type-from-object object-pointer)) object-pointer))
 
 (defun erase-pointer (data object-pointer)
