@@ -78,7 +78,6 @@
            #:g-initially-unowned
            #:define-g-enum
            #:*lisp-name-package*
-           #:define-g-boxed-class
            #:define-g-flags
            #:fixed-array
            #:g-boxed-inline
@@ -87,7 +86,6 @@
            #:release
            #:using
            #:using*
-           #:define-g-boxed-ref
            #:g-boxed-ref
            #:allocate-stable-pointer
            #:free-stable-pointer
