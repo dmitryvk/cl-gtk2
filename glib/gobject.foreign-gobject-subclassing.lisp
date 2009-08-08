@@ -117,7 +117,7 @@
            (make-vtable-description :type-name ,type-name :cstruct-name ',cstruct-name :methods (list ,@(mapcar #'make-load-form (vtable-methods items)))))
      ,@(iter (for method in (vtable-methods items))
              (collect `(defgeneric ,(vtable-method-info-name method) (,@(mapcar #'first (vtable-method-info-args method)))))
-             (collect `(defcallback ,(vtable-method-info-callback-name method) ,(vtable-method-info-return-type method)
+             (collect `(glib-defcallback ,(vtable-method-info-callback-name method) ,(vtable-method-info-return-type method)
                            (,@(vtable-method-info-args method))
                          (restart-case 
                              (,(vtable-method-info-name method) ,@(mapcar #'first (vtable-method-info-args method)))

@@ -31,6 +31,7 @@
                (:file "gobject.meta")
                (:file "gobject.generating")
                (:file "gobject.object-defs")
+               (:file "gobject.cffi-callbacks")
                (:file "gobject.foreign-gobject-subclassing")
 
                (:file "gobject.boxed")
