@@ -287,7 +287,7 @@ span.paren6:hover { color : inherit; background-color : #FFBAFF; }
        (if (> current-position (length string))
            (return-from scan-string
              (progn
-               (format *trace-output* "Scan was called ~S times.~%"
+               #+nil(format *trace-output* "Scan was called ~S times.~%"
                        *scan-calls*)
                (finish-current (length string) nil (constantly nil))
                result))
@@ -1020,7 +1020,7 @@ preprocessing output in a @lisp block before passing to colorize."
                                '("<pre class=\"lisp\">"
                                  "<pre class=\"smalllisp\">"))))
                  (cond (len
-                         (format t "processing ~A~%" line)
+                         #+nil(format t "processing ~A~%" line)
                          (setq line-processor #'process-line-inside-pre)
                          (write-string "<pre class=\"lisp\">" output)
                          (push (subseq line (+ len +indent+)) piece-of-code)
@@ -1036,6 +1036,7 @@ preprocessing output in a @lisp block before passing to colorize."
                                                :name :wild)))
     (let* ((name (namestring html-file))
            (temp-name (strcat name ".temp")))
+      (format t "processing ~A~%" name)
       (process-file name temp-name)
       (system "mv ~A ~A" temp-name name))))
 
