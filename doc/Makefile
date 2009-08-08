@@ -14,7 +14,7 @@ gobject/style.css: style.css
 
 gobject/index.html: gobject.texi
 	makeinfo --html --css-ref=style.css $<
-	sbcl --no-sysinit --no-userinit --load colorize-lisp-examples.lisp $@
+	sbcl --noinform --no-sysinit --no-userinit --load colorize-lisp-examples.lisp $@
 
 gobject.pdf: gobject.texi
 	pdftex $<
