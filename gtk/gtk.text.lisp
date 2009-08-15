@@ -892,20 +892,20 @@
   (y-align :double))
 
 (defun text-view-scroll-to-mark (text-view mark &key (within-margin 0.4) (x-align 0.0 x-align-supplied) (y-align 0.0 y-align-supplied))
-  (gtk-text-view-scroll-to-mark text-view mark within-margin (or x-align-supplied y-align-supplied) (coerce x-align 'double-float) (coerce y-align 'double-float)))
+  (gtk-text-view-scroll-to-mark text-view mark (coerce within-margin 'double-float) (or x-align-supplied y-align-supplied) (coerce x-align 'double-float) (coerce y-align 'double-float)))
 
 (export 'text-view-scroll-to-mark)
 
 (defcfun gtk-text-view-scroll-to-iter :void
   (text-view (g-object text-view))
-  (iter (g-object text-iter))
+  (iter (g-boxed-foreign text-iter))
   (within-margin :double)
   (use-align :boolean)
   (x-align :double)
   (y-align :double))
 
 (defun text-view-scroll-to-iter (text-view iter &key (within-margin 0.4) (x-align 0.0 x-align-supplied) (y-align 0.0 y-align-supplied))
-  (gtk-text-view-scroll-to-iter text-view iter within-margin (or x-align-supplied y-align-supplied) (coerce x-align 'double-float) (coerce y-align 'double-float)))
+  (gtk-text-view-scroll-to-iter text-view iter (coerce within-margin 'double-float) (or x-align-supplied y-align-supplied) (coerce x-align 'double-float) (coerce y-align 'double-float)))
 
 (export 'text-view-scroll-to-iter)
 
