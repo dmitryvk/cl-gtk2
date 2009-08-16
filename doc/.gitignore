@@ -1,0 +1,12 @@
+*.aux
+*.cp
+*.fn
+*.ky
+*.log
+*.pdf
+*.pg
+*.toc
+*.tp
+*.vr
+gobject/
+gtk/
