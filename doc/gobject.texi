@@ -16,6 +16,16 @@
 @end defmac
 @end macro
 
+@macro Struct {args}
+@deftp {Structure} \args\
+@end deftp
+@end macro
+
+@macro Class {args}
+@deftp {Class} \args\
+@end deftp
+@end macro
+
 @macro Accessor {args}
 @deffn {Accessor} \args\
 @end deffn
@@ -214,6 +224,7 @@ Invalid type (the GType that does not exist) is identified as a 0 or @code{NIL}.
 @node g-type-string
 @section g-type-string
 
+@Function g-type-string
 @lisp
 (g-type-string g-type-designator) @result{} name
 @end lisp
@@ -230,6 +241,7 @@ Returns the name of GType.
 @node g-type-numeric
 @section g-type-numeric
 
+@Function g-type-numeric
 @lisp
 (g-type-numeric g-type-designator) @result{} GType
 @end lisp
@@ -246,6 +258,7 @@ Returns the numeric identifier of GType
 @node g-type=
 @section g-type=
 
+@Function g-type=
 @lisp
 (g-type= type-1 type-2) @result{} eq
 @end lisp
@@ -262,6 +275,7 @@ A boolean that is true if @code{type-1} and @code{type-2} designate the same typ
 @node g-type/=
 @section g-type/=
 
+@Function g-type/=
 @lisp
 (g-type/= type-1 type-2) @result{} eq
 @end lisp
@@ -298,6 +312,7 @@ There are functions to query some specific information:
 @node g-type-children
 @section g-type-children
 
+@Function g-type-children
 @lisp
 (g-type-children type) @result{} children
 @end lisp
@@ -321,6 +336,7 @@ Example:
 @node g-type-parent
 @section g-type-parent
 
+@Function g-type-parent
 @lisp
 (g-type-parent type) @result{} parent
 @end lisp
@@ -344,6 +360,7 @@ Example:
 @node g-type-fundamental
 @section g-type-fundamental
 
+@Function g-type-fundamental
 @lisp
 (g-type-fundamental type) @result{} fundamental-type
 @end lisp
@@ -369,6 +386,7 @@ Example:
 @node g-type-depth
 @section g-type-depth
 
+@Function g-type-depth
 @lisp
 (g-type-depth type) @result{} depth
 @end lisp
@@ -391,6 +409,7 @@ Example:
 @node g-type-next-base
 @section g-type-next-base
 
+@Function g-type-next-base
 @lisp
 (g-type-next-base leaf-type root-type) @result{} base-type
 @end lisp
@@ -453,6 +472,7 @@ Information about signals can be queries with @code{type-signals}, @code{parse-s
 @node g-class-property-definition
 @section g-class-property-definition
 
+@Struct g-class-property-definition
 @lisp
 (defstruct g-class-property-definition
   name
@@ -501,6 +521,7 @@ This syntax specifies:
 @node class-properties
 @section class-properties
 
+@Function class-properties
 @lisp
 (class-properties type) @result{} properties
 @end lisp
@@ -545,6 +566,7 @@ Example:
 
 @node class-property-info
 @section class-property-info
+@Function class-property-info
 @lisp
 (class-property-info type property-name) @result{} property
 @end lisp
@@ -570,6 +592,7 @@ Example:
 @node interface-properties
 @section interface-properties
 
+@Function interface-properties
 @lisp
 (interface-properties type) @result{} properties
 @end lisp
@@ -603,6 +626,7 @@ Example:
 @node signal-info
 @section signal-info
 
+@Struct signal-info
 @lisp
 (defstruct signal-info
   id
@@ -652,6 +676,7 @@ This syntax specifies:
 
 @node type-signals
 @section type-signals
+@Function type-signals
 @lisp
 (type-signals type &key (include-inherited t)) @result{} signals
 @end lisp
@@ -678,6 +703,7 @@ Example:
 @node parse-signal-name
 @section parse-signal-name
 
+@Function parse-signal-name
 @lisp
 (parse-signal-name type signal-name) @result{} signal
 @end lisp
@@ -702,6 +728,7 @@ Example:
 
 @node query-signal-info
 @section query-signal-info
+@Function query-signal-info
 @lisp
 (query-signal-info signal-id) @result{} signal
 @end lisp
@@ -724,6 +751,7 @@ Example:
 @node g-type-interfaces
 @section g-type-interfaces
 
+@Function g-type-interfaces
 @lisp
 (g-type-interfaces type) @result{} interfaces
 @end lisp
@@ -747,6 +775,7 @@ Example:
 @node g-type-interface-prerequisites
 @section g-type-interface-prerequisites
 
+@Function g-type-interface-prerequisites
 @lisp
 (g-type-interface-prerequisites type) @result{} types
 @end lisp
@@ -782,6 +811,7 @@ Flags types (flags is a kind of enum whose values can be combined) have items th
 
 @node enum-item
 @section enum-item
+@Struct enum-item
 @lisp
 (defstruct enum-item
   name value nick)
@@ -805,6 +835,7 @@ Example:
 
 @node flags-item
 @section flags-item
+@Struct flags-item
 @lisp
 (defstruct flags-item
   name value nick)
@@ -832,6 +863,7 @@ Example:
 @node get-enum-items
 @section get-enum-items
 
+@Function get-enum-items
 @lisp
 (get-enum-items type) @result{} items
 @end lisp
@@ -870,6 +902,7 @@ Example:
 @node get-flags-items
 @section get-flags-items
 
+@Function get-flags-items
 @lisp
 (get-flags-items type) @result{} items
 @end lisp
@@ -925,6 +958,7 @@ Example of usage:
 
 @node g-value-zero
 @section g-value-zero
+@Function g-value-zero
 @lisp
 (g-value-zero g-value)
 @end lisp
@@ -943,6 +977,7 @@ Must be called before other functions that work with GValue (except @code{set-g-
 @node g-value-init
 @section g-value-init
 
+@Function g-value-init
 @lisp
 (g-value-init value type)
 @end lisp
@@ -957,6 +992,7 @@ Initializes the GValue to store instances of type @code{type}. Must be called be
 
 @node g-value-unset
 @section g-value-unset
+@Function g-value-unset
 @lisp
 (g-value-unset value)
 @end lisp
@@ -969,6 +1005,7 @@ Unsets the GValue. This frees all resources associated with GValue.
 
 @node parse-g-value
 @section parse-g-value
+@Function parse-g-value
 @lisp
 (parse-g-value value) @result{} object
 @end lisp
@@ -983,6 +1020,7 @@ Retrieves the object from GValue structure.
 
 @node set-g-value
 @section set-g-value
+@Function set-g-value
 @lisp
 (set-g-value gvalue object type &key zero-g-value unset-g-value (g-value-init t))
 @end lisp
@@ -1012,7 +1050,10 @@ In order to be able to parse GValues and set them, it is necessary for GValue bi
 GEnum and GFlags are mapped to CFFI @code{defcenum} and @code{defbitfield} types. Functions @code{register-enum-type} and @code{register-flags-type} add the type to the mapping.
 
 @subsection
-@code{(register-enum-type name type)}
+@Function register-enum-type
+@lisp
+(register-enum-type name type)
+@end lisp
 @table @var
 @item @var{name}
 A string naming the GEnum type
@@ -1030,7 +1071,10 @@ Example:
 @end lisp
 
 @subsection
-@code{(register-flags-type name type)}
+@Function register-flags-type
+@lisp
+(register-flags-type name type)
+@end lisp
 @table @var
 @item @var{name}
 A string naming the GFlags type
@@ -1061,6 +1105,7 @@ Sometimes it is necessary to pass arbitrary Lisp object to C code and then recei
 @node allocate-stable-pointer
 @section allocate-stable-pointer
 
+@Function allocate-stable-pointer
 @lisp
 (allocate-stable-pointer thing) @result{} stable-pointer
 @end lisp
@@ -1094,6 +1139,7 @@ NIL
 @node free-stable-pointer
 @section free-stable-pointer
 
+@Function free-stable-pointer
 @lisp
 (free-stable-pointer stable-pointer)
 @end lisp
@@ -1123,6 +1169,7 @@ NIL
 @node stable-pointer-value
 @section stable-pointer-value
 
+@Accessor stable-pointer-value
 @lisp
 (stable-pointer-value stable-pointer) @result{} thing
 (setf (stable-pointer-value stable-pointer) thing)
@@ -1140,6 +1187,7 @@ Dereferences a @code{stable-pointer}, returning the stable pointer value. @code{
 @node with-stable-pointer
 @section with-stable-pointer
 
+@Macro with-stable-pointer
 @lisp
 (with-stable-pointer (ptr expr) &body body)
 @end lisp
@@ -1169,7 +1217,10 @@ Closure are anonymous functions that capture their lexical environment.
 GObject supports using closures (as instances of type GClosure) as signal handlers and in some other places where a function is expected. Function @code{create-g-closure} create closure from lisp function. The GClosure is finalized automatically when GObject no longer needs it (e.g., when GClosure is disconnected from signal).
 
 @section create-g-closure
-@code{(create-g-closure fn) @result{} closure}
+@Function create-g-closure
+@lisp
+(create-g-closure fn) @result{} closure
+@end lisp
 
 @table @var
 @item @var{fn}
@@ -1214,6 +1265,7 @@ Function @code{g-type-from-object} identifies the type of the object. Function @
 @node g-object-call-constructor
 @section g-object-call-constructor
 
+@Function g-object-call-constructor
 @lisp
 (g-object-call-constructor object-type args-names args-values &optional args-types) @result{} object-ptr
 @end lisp
@@ -1251,6 +1303,7 @@ T
 @node g-type-from-object
 @section g-type-from-object
 
+@Function g-type-from-object
 @lisp
 (g-type-from-object object-ptr) @result{} type
 @end lisp
@@ -1274,6 +1327,7 @@ Example:
 @node g-object-call-get-property
 @section g-object-call-get-property
 
+@Function g-object-call-get-property
 @lisp
 (g-object-call-get-property object-ptr property-name &optional property-type) @result{} property-value
 @end lisp
@@ -1309,6 +1363,7 @@ T
 @node g-object-call-set-property
 @section g-object-call-set-property
 
+@Function g-object-call-set-property
 @lisp
 (g-object-call-set-property object-ptr property-name new-value &optional property-type)
 @end lisp
@@ -1501,7 +1556,10 @@ NIL
 
 To connect handler to a signal, @code{connect-signal} function is used.
 
-@code{(connect-signal object signal handler &key after)}
+@Function connect-signals
+@lisp
+(connect-signal object signal handler &key after)
+@end lisp
 
 @table @var
 @item @var{object}
@@ -1639,6 +1697,7 @@ Unfortunately, GObject does not provide information about vtables, and does not 
 @node define-vtable
 @section define-vtable
 
+@Macro define-vtable
 @lisp
 (define-vtable (type-name cstruct-name)
   &body item*)
@@ -1725,6 +1784,7 @@ Example:
 @node register-object-type-implementation
 @section register-object-type-implementation
 
+@Macro register-object-type-implementation
 @lisp
 (register-object-type-implementation name class parent interfaces properties)
 @end lisp
@@ -1782,6 +1842,7 @@ For example, Gdk has structure GdkEvent which is a union of GdkEventAny, GdkEven
 
 @node define-g-boxed-cstruct
 @section define-g-boxed-cstruct
+@Macro define-g-boxed-cstruct
 @lisp
 (define-g-boxed-cstruct name g-type-name
   &body slot*)
@@ -1831,6 +1892,7 @@ Example of usage:
 @node define-g-boxed-variant-cstruct
 @section define-g-boxed-variant-cstruct
 
+@Macro define-g-boxed-variant-cstruct
 @lisp
 (define-g-boxed-variant-cstruct name g-type-name
   &body slot-or-variant-specification*)
@@ -1946,6 +2008,7 @@ This code defines following structures:
 @node define-g-boxed-opaque
 @section define-g-boxed-opaque
 
+@Macro define-g-boxed-opaque
 @lisp
 (define-g-boxed-opaque name g-type-name &key alloc)
 @end lisp
@@ -1970,6 +2033,7 @@ Example:
 @end lisp
 @node g-boxed-opaque
 @section g-boxed-opaque
+@Class g-boxed-opaque
 @lisp
 (defclass g-boxed-opaque ()
   ((pointer :initarg :pointer
@@ -1982,6 +2046,7 @@ A class that is the base class for wrappers of opaque structures. Contains a poi
 Accessor function @code{g-boxed-opaque-pointer} is used to access the pointer. Pointer should not be modified directly, only read.
 @node define-boxed-opaque-accessor
 @section define-boxed-opaque-accessor
+@Macro define-boxed-opaque-accessor
 @lisp
 (define-boxed-opaque-accessor
   boxed-name accessor-name &key type reader writer)
@@ -2024,6 +2089,7 @@ Example:
 @node boxed-related-symbols
 @section boxed-related-symbols
 
+@Function boxed-related-symbols
 @lisp
 (boxed-related-symbols name) @result{} symbols
 @end lisp
@@ -2062,6 +2128,7 @@ Example:
 @node GBoxed foreign type
 @section GBoxed foreign type
 
+@ForeignType g-boxed-foreign
 @lisp
 (g-boxed-foreign name &rest option*)
 
@@ -2131,6 +2198,7 @@ CL-GTK2-GOBJECT includes facilities for automatically generating parts of bindin
 @node define-g-object-class
 @section define-g-object-class
 
+@Macro define-g-object-class
 @lisp
 (define-g-object-class g-type-name name
   (&key (superclass 'g-object) (export t) interfaces type-initializer)
@@ -2193,6 +2261,7 @@ Example:
 @node define-g-interface
 @section define-g-interface
 
+@Macro define-g-interface
 @lisp
 (define-g-interface g-type-name name (&key (export t) type-initializer)
   &body property*)
@@ -2275,6 +2344,7 @@ Example:
 @node define-g-enum
 @section define-g-enum
 
+@Macro define-g-enum
 @lisp
 (define-g-enum g-name name (&key (export t) type-initializer) &body value*)
 
@@ -2309,6 +2379,7 @@ Example:
 @node define-g-flags
 @section define-g-flags
 
+@Macro define-g-flags
 @lisp
 (define-g-flags g-name name (&key (export t) type-initializer) &body value*)
 
@@ -2343,6 +2414,7 @@ Example:
 @node get-g-enum-definition
 @section get-g-enum-definition
 
+@Function get-g-enum-definition
 @lisp
 (get-g-enum-definition type &optional lisp-name-package) @result{} definition
 @end lisp
@@ -2373,6 +2445,7 @@ Example:
 @node get-g-flags-definition
 @section get-g-flags-definition
 
+@Function get-g-flags-definition
 @lisp
 (get-g-flags-definition type &optional lisp-name-package) @result{} definition
 @end lisp
@@ -2405,6 +2478,7 @@ Example:
 @node get-g-interface-definition
 @section get-g-interface-definition
 
+@Function get-g-interface-definition
 @lisp
 get-g-interface-definition type &optional lisp-name-package) @result{} definition
 @end lisp
@@ -2438,9 +2512,9 @@ Example:
 @node get-g-class-definition
 @section get-g-class-definition
 
-
+@Function get-g-class-definition
 @lisp
-get-g-class-definition type &optional lisp-name-package) @result{} definition
+(get-g-class-definition type &optional lisp-name-package) @result{} definition
 @end lisp
 
 @table @var
@@ -2539,6 +2613,7 @@ Example:
 @node generate-types-hierarchy-to-file
 @section generate-types-hierarchy-to-file
 
+@Function generate-types-hierarchy-to-file
 @lisp
 (generate-types-hierarchy-to-file file
                                   root-type
