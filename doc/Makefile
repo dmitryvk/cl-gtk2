@@ -14,14 +14,14 @@ gobject/style.css: style.css
 
 gobject/index.html: gobject.texi gobject/style.css
 	makeinfo --html --css-ref=style.css $<
-	sbcl --noinform --no-sysinit --no-userinit --load colorize-lisp-examples.lisp $@
+	sbcl --noinform --no-sysinit --no-userinit --disable-debugger --load colorize-lisp-examples.lisp $@
 
 gtk/style.css: style.css
 	([ -x gtk ] || mkdir gtk) && cp $< $@
 
 gtk/index.html: gtk.texi gtk/style.css
 	makeinfo --html --css-ref=style.css $<
-	sbcl --noinform --no-sysinit --no-userinit --load colorize-lisp-examples.lisp $@
+	sbcl --noinform --no-sysinit --no-userinit --disable-debugger --load colorize-lisp-examples.lisp $@
 
 gobject.pdf: gobject.texi
 	pdftex $<
