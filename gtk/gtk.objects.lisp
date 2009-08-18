@@ -6,6 +6,10 @@
   (top :int :initform 0)
   (bottom :int :initform 0))
 
+(at-init () (foreign-funcall "gtk_border_get_type" :int))
+
+(export (boxed-related-symbols 'border))
+
 (define-foreign-type pointer-as-integer-foreign-type ()
   ()
   (:actual-type :pointer)
