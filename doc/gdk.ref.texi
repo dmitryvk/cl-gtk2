@@ -1,0 +1,530 @@
+@menu
+* gdk Classes::
+* gdk Enums::
+* gdk Flags::
+@end menu
+
+@node gdk Classes
+@section gdk Classes
+
+@menu
+* display::
+* display-manager::
+* drag-context::
+* drawable::
+* gdk-window::
+* graphics-context::
+* keymap::
+* pango-layout::
+* pixbuf::
+* pixbuf-animation::
+* pixmap::
+* screen::
+@end menu
+
+Reference of classes in package GDK
+
+@node display
+@subsection display
+@Class display
+
+Superclasses: @ref{g-object}
+
+Slots:
+None
+
+Signals:
+@itemize
+@item closed. (@code{boolean}) -> @code{null}  [run-last]
+
+@end itemize
+
+@node display-manager
+@subsection display-manager
+@Class display-manager
+
+Superclasses: @ref{g-object}
+
+Slots:
+@itemize
+@item default-display. Type: @ref{display} (flags: readable writable)
+
+
+
+@end itemize
+Signals:
+@itemize
+@item display-opened. (@ref{display}) -> @code{null}  [run-last]
+
+@end itemize
+
+@node drag-context
+@subsection drag-context
+@Class drag-context
+
+Superclasses: @ref{g-object}
+
+Slots:
+None
+
+Signals:
+None
+
+
+@node drawable
+@subsection drawable
+@Class drawable
+
+Superclasses: @ref{g-object}
+
+Slots:
+None
+
+Signals:
+None
+
+
+@node gdk-window
+@subsection gdk-window
+@Class gdk-window
+
+Superclasses: @ref{drawable}
+
+Slots:
+None
+
+Signals:
+None
+
+
+@node graphics-context
+@subsection graphics-context
+@Class graphics-context
+
+Superclasses: @ref{g-object}
+
+Slots:
+None
+
+Signals:
+None
+
+
+@node keymap
+@subsection keymap
+@Class keymap
+
+Superclasses: @ref{g-object}
+
+Slots:
+None
+
+Signals:
+None
+
+
+@node pango-layout
+@subsection pango-layout
+@Class pango-layout
+
+Superclasses: @ref{g-object}
+
+Slots:
+None
+
+Signals:
+None
+
+
+@node pixbuf
+@subsection pixbuf
+@Class pixbuf
+
+Superclasses: @ref{g-object}
+
+Slots:
+@itemize
+@item bits-per-sample. Type: @code{integer} (flags: readable writable constructor-only)
+
+
+
+@item colorspace. Type: @ref{colorspace} (flags: readable writable constructor-only)
+
+
+
+@item has-alpha. Type: @code{boolean} (flags: readable writable constructor-only)
+
+
+
+@item height. Type: @code{integer} (flags: readable writable constructor-only)
+
+
+
+@item n-channels. Type: @code{integer} (flags: readable writable constructor-only)
+
+
+
+@item pixels. Type: @code{foreign-pointer} (flags: readable writable constructor-only)
+
+
+
+@item rowstride. Type: @code{integer} (flags: readable writable constructor-only)
+
+
+
+@item width. Type: @code{integer} (flags: readable writable constructor-only)
+
+
+
+@end itemize
+Signals:
+None
+
+
+@node pixbuf-animation
+@subsection pixbuf-animation
+@Class pixbuf-animation
+
+Superclasses: @ref{g-object}
+
+Slots:
+None
+
+Signals:
+None
+
+
+@node pixmap
+@subsection pixmap
+@Class pixmap
+
+Superclasses: @ref{drawable}
+
+Slots:
+None
+
+Signals:
+None
+
+
+@node screen
+@subsection screen
+@Class screen
+
+Superclasses: @ref{g-object}
+
+Slots:
+@itemize
+@item font-options. Type: @code{foreign-pointer} (flags: readable writable)
+
+
+
+@item resolution. Type: @code{double-float} (flags: readable writable)
+
+
+
+@end itemize
+Signals:
+@itemize
+@item composited-changed. () -> @code{null}  [run-last]
+
+@item monitors-changed. () -> @code{null}  [run-last]
+
+@item size-changed. () -> @code{null}  [run-last]
+
+@end itemize
+
+@node gdk Enums
+@section gdk Enums
+
+@menu
+* colorspace::
+* event-type::
+* font-type::
+* gdk-extension-mode::
+* gdk-window-type-hint::
+* grab-status::
+* gravity::
+* owner-change::
+* property-state::
+* scroll-direction::
+* setting-action::
+* visibility-state::
+* window-edge::
+@end menu
+
+Reference of enums in package GDK
+
+@node colorspace
+@subsection colorspace
+@Enum colorspace
+Values:
+@itemize
+@item :rgb
+@end itemize
+
+
+@node event-type
+@subsection event-type
+@Enum event-type
+Values:
+@itemize
+@item :nothing
+@item :delete
+@item :destroy
+@item :expose
+@item :motion-notify
+@item :button-press
+@item :2button-press
+@item :3button-press
+@item :button-release
+@item :key-press
+@item :key-release
+@item :enter-notify
+@item :leave-notify
+@item :focus-change
+@item :configure
+@item :map
+@item :unmap
+@item :property-notify
+@item :selection-clear
+@item :selection-request
+@item :selection-notify
+@item :proximity-in
+@item :proximity-out
+@item :drag-enter
+@item :drag-leave
+@item :drag-motion
+@item :drag-status
+@item :drop-start
+@item :drop-finished
+@item :client-event
+@item :visibility-notify
+@item :no-expose
+@item :scroll
+@item :window-state
+@item :setting
+@item :owner-change
+@item :grab-broken
+@item :damage
+@end itemize
+
+
+@node font-type
+@subsection font-type
+@Enum font-type
+Values:
+@itemize
+@item :font
+@item :fontset
+@end itemize
+
+
+@node gdk-extension-mode
+@subsection gdk-extension-mode
+@Enum gdk-extension-mode
+Values:
+@itemize
+@item :none
+@item :all
+@item :cursor
+@end itemize
+
+
+@node gdk-window-type-hint
+@subsection gdk-window-type-hint
+@Enum gdk-window-type-hint
+Values:
+@itemize
+@item :normal
+@item :dialog
+@item :menu
+@item :toolbar
+@item :splashscreen
+@item :utility
+@item :dock
+@item :desktop
+@item :dropdown-menu
+@item :popup-menu
+@item :tooltip
+@item :notification
+@item :combo
+@item :dnd
+@end itemize
+
+
+@node grab-status
+@subsection grab-status
+@Enum grab-status
+Values:
+@itemize
+@item :success
+@item :already-grabbed
+@item :invalid-time
+@item :not-viewable
+@item :frozen
+@end itemize
+
+
+@node gravity
+@subsection gravity
+@Enum gravity
+Values:
+@itemize
+@item :north-west
+@item :north
+@item :north-east
+@item :west
+@item :center
+@item :east
+@item :south-west
+@item :south
+@item :south-east
+@item :static
+@end itemize
+
+
+@node owner-change
+@subsection owner-change
+@Enum owner-change
+Values:
+@itemize
+@item :new-owner
+@item :destroy
+@item :close
+@end itemize
+
+
+@node property-state
+@subsection property-state
+@Enum property-state
+Values:
+@itemize
+@item :new-value
+@item :delete
+@end itemize
+
+
+@node scroll-direction
+@subsection scroll-direction
+@Enum scroll-direction
+Values:
+@itemize
+@item :up
+@item :down
+@item :left
+@item :right
+@end itemize
+
+
+@node setting-action
+@subsection setting-action
+@Enum setting-action
+Values:
+@itemize
+@item :new
+@item :changed
+@item :deleted
+@end itemize
+
+
+@node visibility-state
+@subsection visibility-state
+@Enum visibility-state
+Values:
+@itemize
+@item :unobscured
+@item :partial
+@item :fully-obscured
+@end itemize
+
+
+@node window-edge
+@subsection window-edge
+@Enum window-edge
+Values:
+@itemize
+@item :north-west
+@item :north
+@item :north-east
+@item :west
+@item :east
+@item :south-west
+@item :south
+@item :south-east
+@end itemize
+
+
+@node gdk Flags
+@section gdk Flags
+
+@menu
+* event-mask::
+* window-hints::
+* window-state::
+@end menu
+
+Reference of flags in package GDK
+
+@node event-mask
+@subsection event-mask
+@Flags event-mask
+Values:
+@itemize
+@item :exposure-mask
+@item :pointer-motion-mask
+@item :pointer-motion-hint-mask
+@item :button-motion-mask
+@item :button1-motion-mask
+@item :button2-motion-mask
+@item :button3-motion-mask
+@item :button-press-mask
+@item :button-release-mask
+@item :key-press-mask
+@item :key-release-mask
+@item :enter-notify-mask
+@item :leave-notify-mask
+@item :focus-change-mask
+@item :structure-mask
+@item :property-change-mask
+@item :visibility-notify-mask
+@item :proximity-in-mask
+@item :proximity-out-mask
+@item :substructure-mask
+@item :scroll-mask
+@item :all-events-mask
+@end itemize
+
+
+@node window-hints
+@subsection window-hints
+@Flags window-hints
+Values:
+@itemize
+@item :pos
+@item :min-size
+@item :max-size
+@item :base-size
+@item :aspect
+@item :resize-inc
+@item :win-gravity
+@item :user-pos
+@item :user-size
+@end itemize
+
+
+@node window-state
+@subsection window-state
+@Flags window-state
+Values:
+@itemize
+@item :withdrawn
+@item :iconified
+@item :maximized
+@item :sticky
+@item :fullscreen
+@item :above
+@item :below
+@end itemize
+
+

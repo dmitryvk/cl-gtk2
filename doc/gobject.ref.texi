@@ -1,0 +1,62 @@
+@menu
+* gobject Classes::
+* gobject Enums::
+* gobject Flags::
+@end menu
+
+@node gobject Classes
+@section gobject Classes
+
+@menu
+* g-initially-unowned::
+* g-object::
+@end menu
+
+Reference of classes in package GOBJECT
+
+@node g-initially-unowned
+@subsection g-initially-unowned
+@Class g-initially-unowned
+
+Superclasses: @ref{g-object}
+
+Slots:
+None
+
+Signals:
+None
+
+
+@node g-object
+@subsection g-object
+@Class g-object
+
+Superclasses: @code{standard-object}
+
+Slots:
+@itemize
+@item has-reference
+
+@item pointer
+
+@end itemize
+Signals:
+None
+
+
+@node gobject Enums
+@section gobject Enums
+
+@menu
+@end menu
+
+Reference of enums in package GOBJECT
+
+@node gobject Flags
+@section gobject Flags
+
+@menu
+@end menu
+
+Reference of flags in package GOBJECT
+

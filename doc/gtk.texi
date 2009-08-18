@@ -1,7 +1,7 @@
 \input texinfo  @c -*-texinfo-*-
 @c %**start of header (This is for running texinfo on a region.)
 @setfilename gtk.info
-@settitle CL-Gtk2-GObject
+@settitle CL-Gtk2
 @c %**end of header (This is for running texinfo on a region.)
 
 @c @documentencoding utf-8
@@ -23,6 +23,16 @@
 
 @macro Class {args}
 @deftp {Class} \args\
+@end deftp
+@end macro
+
+@macro Enum {args}
+@deftp {Enum} \args\
+@end deftp
+@end macro
+
+@macro Flags {args}
+@deftp {Flags} \args\
 @end deftp
 @end macro
 
@@ -126,12 +136,88 @@
 @end ifnottex
 
 @menu
-* Introduction::
+* Overview::
+* Installation::
+* GObject Reference::
+* Gdk Reference::
+* Gtk Reference::
 @end menu
 
-@node Introduction
-@chapter Introduction
+@node Overview
+@chapter Overview
 
-CL-GTK2 intro
+@code{cl-gtk2} is the GUI library for Common Lisp. @code{cl-gtk2} is based on @uref{http://www.gtk.org/,,Gtk+} GUI library and is Common Lisp binding for it. @code{cl-gtk2} allows you to create graphical user interfaces for Common Lisp applications.
+
+As @code{Gtk+} is based on object system GObject, @code{cl-gtk2} is based on a binding to this object system called @uref{../gobject/index.html,,cl-gtk2-gobject}.
+
+@code{cl-gtk2} provides a thin wrapper around @code{Gtk+} functionality, mostly retaining the same set of classes, properties and methods.
+
+The important parts of @code{Gtk+} are:
+@itemize
+@item GObject type system
+@itemize
+@item Classes
+@item Objects
+@item Signals
+@end itemize
+@item Events
+@item Layout and composition of widgets
+@item Widget set
+@item Using Gtk+ with threads
+@item Building stand-alone applications
+@end itemize
+
+@node Installation
+@chapter Installation
+
+@code{cl-gtk2} has the following dependencies. They all must be installed before installing @code{cl-gtk2}.
+
+@itemize
+@item @uref{http://common-lisp.net/project/cffi/,,CFFI} (version >= 0.10.4)
+@item @uref{http://www.cliki.net/trivial-garbage,,Trivial-Garbage} (version >= 0.18)
+@item @uref{http://common-lisp.net/project/iterate/,,Iterate} (version >= 1.4.3)
+@item @uref{http://common-lisp.net/project/bordeaux-threads/,,Bordeaux-Threads} (version >= 0.6.0)
+@item @uref{http://common-lisp.net/project/closer/closer-mop.html,,Closer-MOP} (version >= 0.55)
+@end itemize
+
+At first, source code of @code{cl-gtk2} needs to be downloaded. There are two options to download the sources: use @uref{http://git-scm.org/,,Git} or download @code{tar.gz} archive.
+
+To get sources with Git, clone @code{cl-gtk2} repository:
+@example
+git clone git://repo.or.cz/cl-gtk2.git
+@end example
+
+Or download and unpack the @code{tar.gz}-archived @uref{http://repo.or.cz/w/cl-gtk2.git?a=snapshot;h=HEAD;sf=tgz,,snapshot} of @code{cl-gtk2}.
+
+To be able to compile, load and use @code{cl-gtk2}, you should register the @code{ASDF} system definitions.
+
+To do this, either add @code{glib}, @code{gdk} and @code{gtk} directories to @code{asdf:*central-registry*}:
+@lisp
+(push "/path/to/cl-gtk2/glib" asdf:*central-registry*)
+(push "/path/to/cl-gtk2/gdk" asdf:*central-registry*)
+(push "/path/to/cl-gtk2/gtk" asdf:*central-registry*)
+@end lisp
+or create symlinks to @code{cl-gtk2-glib.asd}, @code{cl-gtk2-gdk.asd} and @code{cl-gtk2-gtk.asd} files in a directory where @code{ASDF} systems are located (it might be @code{/usr/share/common-lisp/systems/} for system-wide installation in Gentoo Linux and Debian Linux, @code{~/.sbcl/systems/} for user installation for SBCL compiler):
+@example
+cd ~/.sbcl/systems           # depends on your system
+ln -s /path/to/cl-gtk2/glib/cl-gtk2-glib.asd .
+ln -s /path/to/cl-gtk2/gdk/cl-gtk2-gdk.asd .
+ln -s /path/to/cl-gtk2/gtk/cl-gtk2-gtk.asd .
+@end example
+
+@node GObject Reference
+@chapter GObject Reference
+
+@include gobject.ref.texi
+
+@node Gdk Reference
+@chapter Gdk Reference
+
+@include gdk.ref.texi
+
+@node Gtk Reference
+@chapter Gtk Reference
+
+@include gtk.ref.texi
 
 @bye

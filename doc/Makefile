@@ -1,4 +1,4 @@
-all: doc.html tutorial.html gobject/index.html gobject.pdf gtk/index.html gtk.pdf
+all: doc.html tutorial.html gobject/index.html gtk/index.html
 
 doc.html: doc.xml
 	xsltproc -o $@ /usr/share/sgml/docbook/xsl-stylesheets/html/docbook.xsl $<
@@ -19,9 +19,12 @@ gobject/index.html: gobject.texi gobject/style.css
 gtk/style.css: style.css
 	([ -x gtk ] || mkdir gtk) && cp $< $@
 
-gtk/index.html: gtk.texi gtk/style.css
+gtk/index.html: gtk.texi gtk.ref.texi gdk.ref.texi gobject.ref.texi gtk/style.css
 	makeinfo --html --css-ref=style.css $<
-	sbcl --noinform --no-sysinit --no-userinit --disable-debugger --load colorize-lisp-examples.lisp $@
+	#sbcl --noinform --no-sysinit --no-userinit --disable-debugger --load colorize-lisp-examples.lisp $@
+
+#gtk.ref.texi gdk.ref.texi gobject.ref.texi: introspection.lisp
+#	sbcl --noinfo --no-sysinit --no-user-init --disable-debugger --eval "(asdf:oos 'asdf:load-op :cl-gtk2-gtk)" --load "introspection.lisp" --eval '(gtk-doc-introspection:generate-texinfo-for-packages *default-pathname-defaults* (list :gdk :gobject :gtk))'
 
 gobject.pdf: gobject.texi
 	pdftex $<

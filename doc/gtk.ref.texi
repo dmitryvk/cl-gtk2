@@ -1,0 +1,8002 @@
+@menu
+* gtk Classes::
+* gtk Enums::
+* gtk Flags::
+@end menu
+
+@node gtk Classes
+@section gtk Classes
+
+@menu
+* about-dialog::
+* accel-group::
+* accel-label::
+* accel-map::
+* action::
+* action-group::
+* activatable::
+* adjustment::
+* alignment::
+* array-list-store::
+* arrow::
+* aspect-frame::
+* assistant::
+* atk-implementor-iface::
+* bin::
+* box::
+* buildable::
+* builder::
+* button::
+* button-box::
+* calendar::
+* cell-editable::
+* cell-layout::
+* cell-renderer::
+* cell-renderer-accel::
+* cell-renderer-combo::
+* cell-renderer-pixbuf::
+* cell-renderer-progress::
+* cell-renderer-spin::
+* cell-renderer-text::
+* cell-renderer-toggle::
+* cell-view::
+* check-button::
+* check-menu-item::
+* clipboard::
+* color-button::
+* color-selection::
+* color-selection-dialog::
+* combo-box::
+* combo-box-entry::
+* container::
+* curve::
+* dialog::
+* drawing-area::
+* editable::
+* entry::
+* entry-completion::
+* event-box::
+* expander::
+* file-chooser::
+* file-chooser-button::
+* file-chooser-dialog::
+* file-chooser-embed::
+* file-chooser-widget::
+* file-filter::
+* fixed::
+* font-button::
+* font-selection::
+* font-selection-dialog::
+* frame::
+* gamma-curve::
+* gtk-object::
+* gtk-window::
+* h-box::
+* h-button-box::
+* h-paned::
+* h-ruler::
+* h-s-v::
+* h-scale::
+* h-scrollbar::
+* h-separator::
+* handle-box::
+* i-m-context::
+* icon-factory::
+* icon-theme::
+* icon-view::
+* image::
+* image-menu-item::
+* input-dialog::
+* invisible::
+* item::
+* label::
+* layout::
+* link-button::
+* list-store::
+* menu::
+* menu-bar::
+* menu-item::
+* menu-shell::
+* menu-tool-button::
+* message-dialog::
+* misc::
+* notebook::
+* old-editable::
+* orientable::
+* page-setup::
+* paned::
+* plug::
+* print-context::
+* print-operation::
+* print-operation-preview::
+* print-settings::
+* progress::
+* progress-bar::
+* radio-action::
+* radio-button::
+* radio-menu-item::
+* radio-tool-button::
+* range::
+* rc-style::
+* recent-action::
+* recent-chooser::
+* recent-chooser-dialog::
+* recent-chooser-menu::
+* recent-chooser-widget::
+* recent-filter::
+* recent-manager::
+* ruler::
+* scale::
+* scale-button::
+* scrollbar::
+* scrolled-window::
+* separator::
+* separator-menu-item::
+* separator-tool-item::
+* settings::
+* size-group::
+* socket::
+* spin-button::
+* status-icon::
+* statusbar::
+* style::
+* table::
+* tearoff-menu-item::
+* text::
+* text-buffer::
+* text-child-anchor::
+* text-mark::
+* text-tag::
+* text-tag-table::
+* text-view::
+* toggle-action::
+* toggle-button::
+* toggle-tool-button::
+* tool-button::
+* tool-item::
+* tool-shell::
+* toolbar::
+* tooltip::
+* tooltips::
+* tree::
+* tree-drag-dest::
+* tree-drag-source::
+* tree-item::
+* tree-lisp-store::
+* tree-model::
+* tree-model-filter::
+* tree-model-sort::
+* tree-selection::
+* tree-sortable::
+* tree-store::
+* tree-view::
+* tree-view-column::
+* ui-manager::
+* v-box::
+* v-button-box::
+* v-paned::
+* v-ruler::
+* v-scale::
+* v-scrollbar::
+* v-separator::
+* viewport::
+* volume-button::
+* widget::
+* window-group::
+@end menu
+
+Reference of classes in package GTK
+
+@node about-dialog
+@subsection about-dialog
+@Class about-dialog
+
+Superclasses: @ref{dialog}, @ref{atk-implementor-iface}, @ref{buildable}
+
+Slots:
+@itemize
+@item artists. Type: @code{(list string)} (flags: readable writable)
+
+
+
+@item authors. Type: @code{(list string)} (flags: readable writable)
+
+
+
+@item comments. Type: @code{string} (flags: readable writable)
+
+
+
+@item copyright. Type: @code{string} (flags: readable writable)
+
+
+
+@item documenters. Type: @code{(list string)} (flags: readable writable)
+
+
+
+@item license. Type: @code{string} (flags: readable writable)
+
+
+
+@item logo. Type: @ref{pixbuf} (flags: readable writable)
+
+
+
+@item logo-icon-name. Type: @code{string} (flags: readable writable)
+
+
+
+@item program-name. Type: @code{string} (flags: readable writable)
+
+
+
+@item translator-credits. Type: @code{string} (flags: readable writable)
+
+
+
+@item version. Type: @code{string} (flags: readable writable)
+
+
+
+@item website. Type: @code{string} (flags: readable writable)
+
+
+
+@item website-label. Type: @code{string} (flags: readable writable)
+
+
+
+@item wrap-license. Type: @code{boolean} (flags: readable writable)
+
+
+
+@end itemize
+Signals:
+None
+
+
+@node accel-group
+@subsection accel-group
+@Class accel-group
+
+Superclasses: @ref{g-object}
+
+Slots:
+@itemize
+@item is-locked. Type: @code{boolean} (flags: readable)
+
+
+
+@item modifier-mask. Type: @ref{gdk-modifier-type} (flags: readable)
+
+
+
+@end itemize
+Signals:
+@itemize
+@item accel-activate. (@ref{g-object}, @code{(integer 0)}, @ref{gdk-modifier-type}) -> @code{boolean}  [detailed]
+
+@item accel-changed. (@code{(integer 0)}, @ref{gdk-modifier-type}, GClosure) -> @code{null}  [run-first, detailed]
+
+@end itemize
+
+@node accel-label
+@subsection accel-label
+@Class accel-label
+
+Superclasses: @ref{label}, @ref{atk-implementor-iface}, @ref{buildable}
+
+Slots:
+@itemize
+@item accel-closure. Type: GClosure (flags: readable writable)
+
+
+
+@item accel-widget. Type: @ref{widget} (flags: readable writable)
+
+
+
+@end itemize
+Signals:
+None
+
+
+@node accel-map
+@subsection accel-map
+@Class accel-map
+
+Superclasses: @ref{g-object}
+
+Slots:
+None
+
+Signals:
+None
+
+
+@node action
+@subsection action
+@Class action
+
+Superclasses: @ref{g-object}, @ref{buildable}
+
+Slots:
+@itemize
+@item accel-group
+
+@item accel-path
+
+@item action-group. Type: @ref{action-group} (flags: readable writable)
+
+
+
+@item gicon. Type: GIcon (flags: readable writable)
+
+
+
+@item hide-if-empty. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item icon-name. Type: @code{string} (flags: readable writable)
+
+
+
+@item is-important. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item label. Type: @code{string} (flags: readable writable)
+
+
+
+@item name. Type: @code{string} (flags: readable writable constructor-only)
+
+
+
+@item sensitive. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item short-label. Type: @code{string} (flags: readable writable)
+
+
+
+@item stock-id. Type: @code{string} (flags: readable writable)
+
+
+
+@item tooltip. Type: @code{string} (flags: readable writable)
+
+
+
+@item visible. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item visible-horizontal. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item visible-overflown. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item visible-vertical. Type: @code{boolean} (flags: readable writable)
+
+
+
+@end itemize
+Signals:
+@itemize
+@item activate. () -> @code{null}  [run-first, no-recurse]
+
+@end itemize
+
+@node action-group
+@subsection action-group
+@Class action-group
+
+Superclasses: @ref{g-object}, @ref{buildable}
+
+Slots:
+@itemize
+@item name. Type: @code{string} (flags: readable writable constructor-only)
+
+
+
+@item sensitive. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item translate-function
+
+@item translation-domain
+
+@item visible. Type: @code{boolean} (flags: readable writable)
+
+
+
+@end itemize
+Signals:
+@itemize
+@item connect-proxy. (@ref{action}, @ref{widget}) -> @code{null} 
+
+@item disconnect-proxy. (@ref{action}, @ref{widget}) -> @code{null} 
+
+@item post-activate. (@ref{action}) -> @code{null} 
+
+@item pre-activate. (@ref{action}) -> @code{null} 
+
+@end itemize
+
+@node activatable
+@subsection activatable
+@Class activatable
+
+Superclasses: @code{standard-object}
+
+Slots:
+@itemize
+@item related-action. Type: @ref{action} (flags: readable writable)
+
+
+
+@item use-action-appearance. Type: @code{boolean} (flags: readable writable)
+
+
+
+@end itemize
+Signals:
+None
+
+
+@node adjustment
+@subsection adjustment
+@Class adjustment
+
+Superclasses: @ref{gtk-object}
+
+Slots:
+@itemize
+@item lower. Type: @code{double-float} (flags: readable writable)
+
+
+
+@item page-increment. Type: @code{double-float} (flags: readable writable)
+
+
+
+@item page-size. Type: @code{double-float} (flags: readable writable)
+
+
+
+@item step-increment. Type: @code{double-float} (flags: readable writable)
+
+
+
+@item upper. Type: @code{double-float} (flags: readable writable)
+
+
+
+@item value. Type: @code{double-float} (flags: readable writable)
+
+
+
+@end itemize
+Signals:
+@itemize
+@item changed. () -> @code{null}  [run-first, no-recurse]
+
+@item value-changed. () -> @code{null}  [run-first, no-recurse]
+
+@end itemize
+
+@node alignment
+@subsection alignment
+@Class alignment
+
+Superclasses: @ref{bin}, @ref{atk-implementor-iface}, @ref{buildable}
+
+Slots:
+@itemize
+@item bottom-padding. Type: @code{(integer 0)} (flags: readable writable)
+
+
+
+@item left-padding. Type: @code{(integer 0)} (flags: readable writable)
+
+
+
+@item right-padding. Type: @code{(integer 0)} (flags: readable writable)
+
+
+
+@item top-padding. Type: @code{(integer 0)} (flags: readable writable)
+
+
+
+@item xalign. Type: @code{single-float} (flags: readable writable)
+
+
+
+@item xscale. Type: @code{single-float} (flags: readable writable)
+
+
+
+@item yalign. Type: @code{single-float} (flags: readable writable)
+
+
+
+@item yscale. Type: @code{single-float} (flags: readable writable)
+
+
+
+@end itemize
+Signals:
+None
+
+
+@node array-list-store
+@subsection array-list-store
+@Class array-list-store
+
+Superclasses: @ref{g-object}, @ref{tree-model}
+
+Slots:
+@itemize
+@item columns-getters
+
+@item columns-types
+
+@item items
+
+@end itemize
+Signals:
+None
+
+
+@node arrow
+@subsection arrow
+@Class arrow
+
+Superclasses: @ref{misc}, @ref{atk-implementor-iface}, @ref{buildable}
+
+Slots:
+@itemize
+@item arrow-type. Type: @ref{arrow-type} (flags: readable writable)
+
+
+
+@item shadow-type. Type: @ref{shadow-type} (flags: readable writable)
+
+
+
+@end itemize
+Signals:
+None
+
+
+@node aspect-frame
+@subsection aspect-frame
+@Class aspect-frame
+
+Superclasses: @ref{frame}, @ref{atk-implementor-iface}, @ref{buildable}
+
+Slots:
+@itemize
+@item obey-child. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item ratio. Type: @code{single-float} (flags: readable writable)
+
+
+
+@item xalign. Type: @code{single-float} (flags: readable writable)
+
+
+
+@item yalign. Type: @code{single-float} (flags: readable writable)
+
+
+
+@end itemize
+Signals:
+None
+
+
+@node assistant
+@subsection assistant
+@Class assistant
+
+Superclasses: @ref{gtk-window}, @ref{atk-implementor-iface}, @ref{buildable}
+
+Slots:
+None
+
+Signals:
+None
+
+
+@node atk-implementor-iface
+@subsection atk-implementor-iface
+@Class atk-implementor-iface
+
+Superclasses: @code{standard-object}
+
+Slots:
+None
+
+Signals:
+None
+
+
+@node bin
+@subsection bin
+@Class bin
+
+Superclasses: @ref{container}, @ref{atk-implementor-iface}, @ref{buildable}
+
+Slots:
+None
+
+Signals:
+None
+
+
+@node box
+@subsection box
+@Class box
+
+Superclasses: @ref{container}, @ref{atk-implementor-iface}, @ref{buildable}, @ref{orientable}
+
+Slots:
+@itemize
+@item homogeneous. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item spacing. Type: @code{integer} (flags: readable writable)
+
+
+
+@end itemize
+Signals:
+None
+
+
+@node buildable
+@subsection buildable
+@Class buildable
+
+Superclasses: @code{standard-object}
+
+Slots:
+None
+
+Signals:
+None
+
+
+@node builder
+@subsection builder
+@Class builder
+
+Superclasses: @ref{g-object}
+
+Slots:
+@itemize
+@item translation-domain. Type: @code{string} (flags: readable writable)
+
+
+
+@end itemize
+Signals:
+None
+
+
+@node button
+@subsection button
+@Class button
+
+Superclasses: @ref{bin}, @ref{atk-implementor-iface}, @ref{activatable}, @ref{buildable}
+
+Slots:
+@itemize
+@item focus-on-click. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item image. Type: @ref{widget} (flags: readable writable)
+
+
+
+@item image-position. Type: @ref{position-type} (flags: readable writable)
+
+
+
+@item label. Type: @code{string} (flags: readable writable constructor)
+
+
+
+@item relief. Type: @ref{relief-style} (flags: readable writable)
+
+
+
+@item use-stock. Type: @code{boolean} (flags: readable writable constructor)
+
+
+
+@item use-underline. Type: @code{boolean} (flags: readable writable constructor)
+
+
+
+@item xalign. Type: @code{single-float} (flags: readable writable)
+
+
+
+@item yalign. Type: @code{single-float} (flags: readable writable)
+
+
+
+@end itemize
+Signals:
+@itemize
+@item activate. () -> @code{null}  [run-first, action]
+
+@item clicked. () -> @code{null}  [run-first, action]
+
+@item enter. () -> @code{null}  [run-first]
+
+@item leave. () -> @code{null}  [run-first]
+
+@item pressed. () -> @code{null}  [run-first]
+
+@item released. () -> @code{null}  [run-first]
+
+@end itemize
+
+@node button-box
+@subsection button-box
+@Class button-box
+
+Superclasses: @ref{box}, @ref{atk-implementor-iface}, @ref{buildable}, @ref{orientable}
+
+Slots:
+@itemize
+@item layout-style. Type: @ref{button-box-style} (flags: readable writable)
+
+
+
+@end itemize
+Signals:
+None
+
+
+@node calendar
+@subsection calendar
+@Class calendar
+
+Superclasses: @ref{widget}, @ref{atk-implementor-iface}, @ref{buildable}
+
+Slots:
+@itemize
+@item day. Type: @code{integer} (flags: readable writable)
+
+
+
+@item detail-function
+
+@item detail-height-rows. Type: @code{integer} (flags: readable writable)
+
+
+
+@item detail-width-chars. Type: @code{integer} (flags: readable writable)
+
+
+
+@item month. Type: @code{integer} (flags: readable writable)
+
+
+
+@item no-month-change. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item show-day-names. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item show-details. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item show-heading. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item show-week-numbers. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item year. Type: @code{integer} (flags: readable writable)
+
+
+
+@end itemize
+Signals:
+@itemize
+@item day-selected. () -> @code{null}  [run-first]
+
+@item day-selected-double-click. () -> @code{null}  [run-first]
+
+@item month-changed. () -> @code{null}  [run-first]
+
+@item next-month. () -> @code{null}  [run-first]
+
+@item next-year. () -> @code{null}  [run-first]
+
+@item prev-month. () -> @code{null}  [run-first]
+
+@item prev-year. () -> @code{null}  [run-first]
+
+@end itemize
+
+@node cell-editable
+@subsection cell-editable
+@Class cell-editable
+
+Superclasses: @code{standard-object}
+
+Slots:
+None
+
+Signals:
+@itemize
+@item editing-done. () -> @code{null}  [run-last]
+
+@item remove-widget. () -> @code{null}  [run-last]
+
+@end itemize
+
+@node cell-layout
+@subsection cell-layout
+@Class cell-layout
+
+Superclasses: @code{standard-object}
+
+Slots:
+None
+
+Signals:
+None
+
+
+@node cell-renderer
+@subsection cell-renderer
+@Class cell-renderer
+
+Superclasses: @ref{gtk-object}
+
+Slots:
+@itemize
+@item cell-background. Type: @code{string} (flags: writable)
+
+
+
+@item cell-background-gdk. Type: GdkColor (flags: readable writable)
+
+
+
+@item cell-background-set. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item editing. Type: @code{boolean} (flags: readable)
+
+
+
+@item height. Type: @code{integer} (flags: readable writable)
+
+
+
+@item is-expanded. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item is-expander. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item mode. Type: @ref{cell-renderer-mode} (flags: readable writable)
+
+
+
+@item sensitive. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item visible. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item width. Type: @code{integer} (flags: readable writable)
+
+
+
+@item xalign. Type: @code{single-float} (flags: readable writable)
+
+
+
+@item xpad. Type: @code{(integer 0)} (flags: readable writable)
+
+
+
+@item yalign. Type: @code{single-float} (flags: readable writable)
+
+
+
+@item ypad. Type: @code{(integer 0)} (flags: readable writable)
+
+
+
+@end itemize
+Signals:
+@itemize
+@item editing-canceled. () -> @code{null}  [run-first]
+
+@item editing-started. (@ref{cell-editable}, @code{string}) -> @code{null}  [run-first]
+
+@end itemize
+
+@node cell-renderer-accel
+@subsection cell-renderer-accel
+@Class cell-renderer-accel
+
+Superclasses: @ref{cell-renderer-text}
+
+Slots:
+@itemize
+@item accel-key. Type: @code{(integer 0)} (flags: readable writable)
+
+
+
+@item accel-mode. Type: @ref{cell-renderer-accel-mode} (flags: readable writable)
+
+
+
+@item accel-mods. Type: @ref{gdk-modifier-type} (flags: readable writable)
+
+
+
+@item keycode. Type: @code{(integer 0)} (flags: readable writable)
+
+
+
+@end itemize
+Signals:
+@itemize
+@item accel-cleared. (@code{string}) -> @code{null}  [run-last]
+
+@item accel-edited. (@code{string}, @code{(integer 0)}, @ref{gdk-modifier-type}, @code{(integer 0)}) -> @code{null}  [run-last]
+
+@end itemize
+
+@node cell-renderer-combo
+@subsection cell-renderer-combo
+@Class cell-renderer-combo
+
+Superclasses: @ref{cell-renderer-text}
+
+Slots:
+@itemize
+@item has-entry. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item model. Type: @ref{tree-model} (flags: readable writable)
+
+
+
+@item text-column. Type: @code{integer} (flags: readable writable)
+
+
+
+@end itemize
+Signals:
+@itemize
+@item changed. (@code{string}, GtkTreeIter) -> @code{null}  [run-last]
+
+@end itemize
+
+@node cell-renderer-pixbuf
+@subsection cell-renderer-pixbuf
+@Class cell-renderer-pixbuf
+
+Superclasses: @ref{cell-renderer}
+
+Slots:
+@itemize
+@item follow-state. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item gicon. Type: GIcon (flags: readable writable)
+
+
+
+@item icon-name. Type: @code{string} (flags: readable writable)
+
+
+
+@item pixbuf. Type: @ref{pixbuf} (flags: readable writable)
+
+
+
+@item pixbuf-expander-closed. Type: @ref{pixbuf} (flags: readable writable)
+
+
+
+@item pixbuf-expander-open. Type: @ref{pixbuf} (flags: readable writable)
+
+
+
+@item stock-detail. Type: @code{string} (flags: readable writable)
+
+
+
+@item stock-id. Type: @code{string} (flags: readable writable)
+
+
+
+@item stock-size. Type: @code{(integer 0)} (flags: readable writable)
+
+
+
+@end itemize
+Signals:
+None
+
+
+@node cell-renderer-progress
+@subsection cell-renderer-progress
+@Class cell-renderer-progress
+
+Superclasses: @ref{cell-renderer}
+
+Slots:
+@itemize
+@item orientation. Type: @ref{progress-bar-orientation} (flags: readable writable)
+
+
+
+@item pulse. Type: @code{integer} (flags: readable writable)
+
+
+
+@item text. Type: @code{string} (flags: readable writable)
+
+
+
+@item text-xalign. Type: @code{single-float} (flags: readable writable)
+
+
+
+@item text-yalign. Type: @code{single-float} (flags: readable writable)
+
+
+
+@item value. Type: @code{integer} (flags: readable writable)
+
+
+
+@end itemize
+Signals:
+None
+
+
+@node cell-renderer-spin
+@subsection cell-renderer-spin
+@Class cell-renderer-spin
+
+Superclasses: @ref{cell-renderer-text}
+
+Slots:
+@itemize
+@item adjustment. Type: @ref{adjustment} (flags: readable writable)
+
+
+
+@item climb-rate. Type: @code{double-float} (flags: readable writable)
+
+
+
+@item digits. Type: @code{(integer 0)} (flags: readable writable)
+
+
+
+@end itemize
+Signals:
+None
+
+
+@node cell-renderer-text
+@subsection cell-renderer-text
+@Class cell-renderer-text
+
+Superclasses: @ref{cell-renderer}
+
+Slots:
+@itemize
+@item align-set. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item alignment. Type: PangoAlignment (flags: readable writable)
+
+
+
+@item attributes. Type: PangoAttrList (flags: readable writable)
+
+
+
+@item background. Type: @code{string} (flags: writable)
+
+
+
+@item background-gdk. Type: GdkColor (flags: readable writable)
+
+
+
+@item background-set. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item editable. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item editable-set. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item ellipsize. Type: PangoEllipsizeMode (flags: readable writable)
+
+
+
+@item ellipsize-set. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item family. Type: @code{string} (flags: readable writable)
+
+
+
+@item family-set. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item font. Type: @code{string} (flags: readable writable)
+
+
+
+@item font-desc. Type: PangoFontDescription (flags: readable writable)
+
+
+
+@item foreground. Type: @code{string} (flags: writable)
+
+
+
+@item foreground-gdk. Type: GdkColor (flags: readable writable)
+
+
+
+@item foreground-set. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item language. Type: @code{string} (flags: readable writable)
+
+
+
+@item language-set. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item markup. Type: @code{string} (flags: writable)
+
+
+
+@item rise. Type: @code{integer} (flags: readable writable)
+
+
+
+@item rise-set. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item scale. Type: @code{double-float} (flags: readable writable)
+
+
+
+@item scale-set. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item single-paragraph-mode. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item size. Type: @code{integer} (flags: readable writable)
+
+
+
+@item size-points. Type: @code{double-float} (flags: readable writable)
+
+
+
+@item size-set. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item stretch. Type: PangoStretch (flags: readable writable)
+
+
+
+@item stretch-set. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item strikethrough. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item strikethrough-set. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item style. Type: PangoStyle (flags: readable writable)
+
+
+
+@item style-set. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item text. Type: @code{string} (flags: readable writable)
+
+
+
+@item underline. Type: PangoUnderline (flags: readable writable)
+
+
+
+@item underline-set. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item variant. Type: PangoVariant (flags: readable writable)
+
+
+
+@item variant-set. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item weight. Type: @code{integer} (flags: readable writable)
+
+
+
+@item weight-set. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item width-chars. Type: @code{integer} (flags: readable writable)
+
+
+
+@item wrap-mode. Type: PangoWrapMode (flags: readable writable)
+
+
+
+@item wrap-width. Type: @code{integer} (flags: readable writable)
+
+
+
+@end itemize
+Signals:
+@itemize
+@item edited. (@code{string}, @code{string}) -> @code{null}  [run-last]
+
+@end itemize
+
+@node cell-renderer-toggle
+@subsection cell-renderer-toggle
+@Class cell-renderer-toggle
+
+Superclasses: @ref{cell-renderer}
+
+Slots:
+@itemize
+@item activatable. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item active. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item inconsistent. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item indicator-size. Type: @code{integer} (flags: readable writable)
+
+
+
+@item radio. Type: @code{boolean} (flags: readable writable)
+
+
+
+@end itemize
+Signals:
+@itemize
+@item toggled. (@code{string}) -> @code{null}  [run-last]
+
+@end itemize
+
+@node cell-view
+@subsection cell-view
+@Class cell-view
+
+Superclasses: @ref{widget}, @ref{atk-implementor-iface}, @ref{buildable}, @ref{cell-layout}
+
+Slots:
+@itemize
+@item background. Type: @code{string} (flags: writable)
+
+
+
+@item background-gdk. Type: GdkColor (flags: readable writable)
+
+
+
+@item background-set. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item displayed-row
+
+@item model. Type: @ref{tree-model} (flags: readable writable)
+
+
+
+@end itemize
+Signals:
+None
+
+
+@node check-button
+@subsection check-button
+@Class check-button
+
+Superclasses: @ref{toggle-button}, @ref{atk-implementor-iface}, @ref{activatable}, @ref{buildable}
+
+Slots:
+None
+
+Signals:
+None
+
+
+@node check-menu-item
+@subsection check-menu-item
+@Class check-menu-item
+
+Superclasses: @ref{menu-item}, @ref{atk-implementor-iface}, @ref{activatable}, @ref{buildable}
+
+Slots:
+@itemize
+@item active. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item draw-as-radio. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item inconsistent. Type: @code{boolean} (flags: readable writable)
+
+
+
+@end itemize
+Signals:
+@itemize
+@item toggled. () -> @code{null}  [run-first]
+
+@end itemize
+
+@node clipboard
+@subsection clipboard
+@Class clipboard
+
+Superclasses: @ref{g-object}
+
+Slots:
+None
+
+Signals:
+None
+
+
+@node color-button
+@subsection color-button
+@Class color-button
+
+Superclasses: @ref{button}, @ref{atk-implementor-iface}, @ref{activatable}, @ref{buildable}
+
+Slots:
+@itemize
+@item alpha. Type: @code{(integer 0)} (flags: readable writable)
+
+
+
+@item color. Type: GdkColor (flags: readable writable)
+
+
+
+@item title. Type: @code{string} (flags: readable writable)
+
+
+
+@item use-alpha. Type: @code{boolean} (flags: readable writable)
+
+
+
+@end itemize
+Signals:
+@itemize
+@item color-set. () -> @code{null}  [run-first]
+
+@end itemize
+
+@node color-selection
+@subsection color-selection
+@Class color-selection
+
+Superclasses: @ref{v-box}, @ref{atk-implementor-iface}, @ref{buildable}, @ref{orientable}
+
+Slots:
+@itemize
+@item current-alpha. Type: @code{(integer 0)} (flags: readable writable)
+
+
+
+@item current-color. Type: GdkColor (flags: readable writable)
+
+
+
+@item has-opacity-control. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item has-palette. Type: @code{boolean} (flags: readable writable)
+
+
+
+@end itemize
+Signals:
+@itemize
+@item color-changed. () -> @code{null}  [run-first]
+
+@end itemize
+
+@node color-selection-dialog
+@subsection color-selection-dialog
+@Class color-selection-dialog
+
+Superclasses: @ref{dialog}, @ref{atk-implementor-iface}, @ref{buildable}
+
+Slots:
+@itemize
+@item cancel-button. Type: @ref{widget} (flags: readable)
+
+
+
+@item color-selection. Type: @ref{widget} (flags: readable)
+
+
+
+@item help-button. Type: @ref{widget} (flags: readable)
+
+
+
+@item ok-button. Type: @ref{widget} (flags: readable)
+
+
+
+@end itemize
+Signals:
+None
+
+
+@node combo-box
+@subsection combo-box
+@Class combo-box
+
+Superclasses: @ref{bin}, @ref{atk-implementor-iface}, @ref{buildable}, @ref{cell-editable}, @ref{cell-layout}
+
+Slots:
+@itemize
+@item active. Type: @code{integer} (flags: readable writable)
+
+
+
+@item active-iter
+
+@item add-tearoffs. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item button-sensitivity. Type: @ref{sensitivity-type} (flags: readable writable)
+
+
+
+@item column-span-column. Type: @code{integer} (flags: readable writable)
+
+
+
+@item focus-on-click. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item has-frame. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item model. Type: @ref{tree-model} (flags: readable writable)
+
+
+
+@item popup-shown. Type: @code{boolean} (flags: readable)
+
+
+
+@item row-separator-func
+
+@item row-span-column. Type: @code{integer} (flags: readable writable)
+
+
+
+@item tearoff-title. Type: @code{string} (flags: readable writable)
+
+
+
+@item wrap-width. Type: @code{integer} (flags: readable writable)
+
+
+
+@end itemize
+Signals:
+@itemize
+@item changed. () -> @code{null}  [run-last]
+
+@item move-active. (@ref{scroll-type}) -> @code{null}  [run-last, action]
+
+@item popdown. () -> @code{boolean}  [run-last, action]
+
+@item popup. () -> @code{null}  [run-last, action]
+
+@end itemize
+
+@node combo-box-entry
+@subsection combo-box-entry
+@Class combo-box-entry
+
+Superclasses: @ref{combo-box}, @ref{atk-implementor-iface}, @ref{buildable}, @ref{cell-editable}, @ref{cell-layout}
+
+Slots:
+@itemize
+@item text-column. Type: @code{integer} (flags: readable writable)
+
+
+
+@end itemize
+Signals:
+None
+
+
+@node container
+@subsection container
+@Class container
+
+Superclasses: @ref{widget}, @ref{atk-implementor-iface}, @ref{buildable}
+
+Slots:
+@itemize
+@item border-width. Type: @code{(integer 0)} (flags: readable writable)
+
+
+
+@item child. Type: @ref{widget} (flags: writable)
+
+
+
+@item focus-child
+
+@item focus-hadjustment
+
+@item focus-vadjustment
+
+@item resize-mode. Type: @ref{resize-mode} (flags: readable writable)
+
+
+
+@end itemize
+Signals:
+@itemize
+@item add. (@ref{widget}) -> @code{null}  [run-first]
+
+@item check-resize. () -> @code{null}  [run-last]
+
+@item remove. (@ref{widget}) -> @code{null}  [run-first]
+
+@item set-focus-child. (@ref{widget}) -> @code{null}  [run-first]
+
+@end itemize
+
+@node curve
+@subsection curve
+@Class curve
+
+Superclasses: @ref{drawing-area}, @ref{atk-implementor-iface}, @ref{buildable}
+
+Slots:
+@itemize
+@item curve-type. Type: @ref{curve-type} (flags: readable writable)
+
+
+
+@item max-x. Type: @code{single-float} (flags: readable writable)
+
+
+
+@item max-y. Type: @code{single-float} (flags: readable writable)
+
+
+
+@item min-x. Type: @code{single-float} (flags: readable writable)
+
+
+
+@item min-y. Type: @code{single-float} (flags: readable writable)
+
+
+
+@end itemize
+Signals:
+@itemize
+@item curve-type-changed. () -> @code{null}  [run-first]
+
+@end itemize
+
+@node dialog
+@subsection dialog
+@Class dialog
+
+Superclasses: @ref{gtk-window}, @ref{atk-implementor-iface}, @ref{buildable}
+
+Slots:
+@itemize
+@item has-separator. Type: @code{boolean} (flags: readable writable)
+
+
+
+@end itemize
+Signals:
+@itemize
+@item close. () -> @code{null}  [run-last, action]
+
+@item response. (@code{integer}) -> @code{null}  [run-last]
+
+@end itemize
+
+@node drawing-area
+@subsection drawing-area
+@Class drawing-area
+
+Superclasses: @ref{widget}, @ref{atk-implementor-iface}, @ref{buildable}
+
+Slots:
+None
+
+Signals:
+None
+
+
+@node editable
+@subsection editable
+@Class editable
+
+Superclasses: @code{standard-object}
+
+Slots:
+None
+
+Signals:
+@itemize
+@item changed. () -> @code{null}  [run-last]
+
+@item delete-text. (@code{integer}, @code{integer}) -> @code{null}  [run-last]
+
+@item insert-text. (@code{string}, @code{integer}, @code{foreign-pointer}) -> @code{null}  [run-last]
+
+@end itemize
+
+@node entry
+@subsection entry
+@Class entry
+
+Superclasses: @ref{widget}, @ref{atk-implementor-iface}, @ref{buildable}, @ref{cell-editable}, @ref{editable}
+
+Slots:
+@itemize
+@item activates-default. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item caps-lock-warning. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item cursor-position. Type: @code{integer} (flags: readable)
+
+
+
+@item editable. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item has-frame. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item im-module. Type: @code{string} (flags: readable writable)
+
+
+
+@item inner-border. Type: GtkBorder (flags: readable writable)
+
+
+
+@item invisible-char. Type: @code{(integer 0)} (flags: readable writable)
+
+
+
+@item invisible-char-set. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item max-length. Type: @code{integer} (flags: readable writable)
+
+
+
+@item overwrite-mode. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item primary-icon-activatable. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item primary-icon-gicon. Type: GIcon (flags: readable writable)
+
+
+
+@item primary-icon-name. Type: @code{string} (flags: readable writable)
+
+
+
+@item primary-icon-pixbuf. Type: @ref{pixbuf} (flags: readable writable)
+
+
+
+@item primary-icon-sensitive. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item primary-icon-stock. Type: @code{string} (flags: readable writable)
+
+
+
+@item primary-icon-storage-type. Type: @ref{image-type} (flags: readable)
+
+
+
+@item primary-icon-tooltip-markup. Type: @code{string} (flags: readable writable)
+
+
+
+@item primary-icon-tooltip-text. Type: @code{string} (flags: readable writable)
+
+
+
+@item progress-fraction. Type: @code{double-float} (flags: readable writable)
+
+
+
+@item progress-pulse-step. Type: @code{double-float} (flags: readable writable)
+
+
+
+@item scroll-offset. Type: @code{integer} (flags: readable)
+
+
+
+@item secondary-icon-activatable. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item secondary-icon-gicon. Type: GIcon (flags: readable writable)
+
+
+
+@item secondary-icon-name. Type: @code{string} (flags: readable writable)
+
+
+
+@item secondary-icon-pixbuf. Type: @ref{pixbuf} (flags: readable writable)
+
+
+
+@item secondary-icon-sensitive. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item secondary-icon-stock. Type: @code{string} (flags: readable writable)
+
+
+
+@item secondary-icon-storage-type. Type: @ref{image-type} (flags: readable)
+
+
+
+@item secondary-icon-tooltip-markup. Type: @code{string} (flags: readable writable)
+
+
+
+@item secondary-icon-tooltip-text. Type: @code{string} (flags: readable writable)
+
+
+
+@item selection-bound. Type: @code{integer} (flags: readable)
+
+
+
+@item shadow-type. Type: @ref{shadow-type} (flags: readable writable)
+
+
+
+@item text. Type: @code{string} (flags: readable writable)
+
+
+
+@item text-length. Type: @code{(integer 0)} (flags: readable)
+
+
+
+@item truncate-multiline. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item visibility. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item width-chars. Type: @code{integer} (flags: readable writable)
+
+
+
+@item xalign. Type: @code{single-float} (flags: readable writable)
+
+
+
+@end itemize
+Signals:
+@itemize
+@item activate. () -> @code{null}  [run-last, action]
+
+@item backspace. () -> @code{null}  [run-last, action]
+
+@item copy-clipboard. () -> @code{null}  [run-last, action]
+
+@item cut-clipboard. () -> @code{null}  [run-last, action]
+
+@item delete-from-cursor. (@ref{delete-type}, @code{integer}) -> @code{null}  [run-last, action]
+
+@item icon-press. (GtkEntryIconPosition, GdkEvent) -> @code{null}  [run-last]
+
+@item icon-release. (GtkEntryIconPosition, GdkEvent) -> @code{null}  [run-last]
+
+@item insert-at-cursor. (@code{string}) -> @code{null}  [run-last, action]
+
+@item move-cursor. (@ref{movement-step}, @code{integer}, @code{boolean}) -> @code{null}  [run-last, action]
+
+@item paste-clipboard. () -> @code{null}  [run-last, action]
+
+@item populate-popup. (@ref{menu}) -> @code{null}  [run-last]
+
+@item toggle-overwrite. () -> @code{null}  [run-last, action]
+
+@end itemize
+
+@node entry-completion
+@subsection entry-completion
+@Class entry-completion
+
+Superclasses: @ref{g-object}, @ref{buildable}, @ref{cell-layout}
+
+Slots:
+@itemize
+@item inline-completion. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item inline-selection. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item minimum-key-length. Type: @code{integer} (flags: readable writable)
+
+
+
+@item model. Type: @ref{tree-model} (flags: readable writable)
+
+
+
+@item popup-completion. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item popup-set-width. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item popup-single-match. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item text-column. Type: @code{integer} (flags: readable writable)
+
+
+
+@end itemize
+Signals:
+@itemize
+@item action-activated. (@code{integer}) -> @code{null}  [run-last]
+
+@item cursor-on-match. (@ref{tree-model}, GtkTreeIter) -> @code{boolean}  [run-last]
+
+@item insert-prefix. (@code{string}) -> @code{boolean}  [run-last]
+
+@item match-selected. (@ref{tree-model}, GtkTreeIter) -> @code{boolean}  [run-last]
+
+@end itemize
+
+@node event-box
+@subsection event-box
+@Class event-box
+
+Superclasses: @ref{bin}, @ref{atk-implementor-iface}, @ref{buildable}
+
+Slots:
+@itemize
+@item above-child. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item visible-window. Type: @code{boolean} (flags: readable writable)
+
+
+
+@end itemize
+Signals:
+None
+
+
+@node expander
+@subsection expander
+@Class expander
+
+Superclasses: @ref{bin}, @ref{atk-implementor-iface}, @ref{buildable}
+
+Slots:
+@itemize
+@item expanded. Type: @code{boolean} (flags: readable writable constructor)
+
+
+
+@item label. Type: @code{string} (flags: readable writable constructor)
+
+
+
+@item label-widget. Type: @ref{widget} (flags: readable writable)
+
+
+
+@item spacing. Type: @code{integer} (flags: readable writable)
+
+
+
+@item use-markup. Type: @code{boolean} (flags: readable writable constructor)
+
+
+
+@item use-underline. Type: @code{boolean} (flags: readable writable constructor)
+
+
+
+@end itemize
+Signals:
+@itemize
+@item activate. () -> @code{null}  [run-last, action]
+
+@end itemize
+
+@node file-chooser
+@subsection file-chooser
+@Class file-chooser
+
+Superclasses: @code{standard-object}
+
+Slots:
+@itemize
+@item action. Type: @ref{file-chooser-action} (flags: readable writable)
+
+
+
+@item current-folder
+
+@item current-folder-uri
+
+@item current-name
+
+@item do-overwrite-confirmation. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item extra-widget. Type: @ref{widget} (flags: readable writable)
+
+
+
+@item file-system-backend. Type: @code{string} (flags: writable constructor-only)
+
+
+
+@item filename
+
+@item filter. Type: @ref{file-filter} (flags: readable writable)
+
+
+
+@item local-only. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item preview-filename
+
+@item preview-uri
+
+@item preview-widget. Type: @ref{widget} (flags: readable writable)
+
+
+
+@item preview-widget-active. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item select-multiple. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item show-hidden. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item uri
+
+@item use-preview-label. Type: @code{boolean} (flags: readable writable)
+
+
+
+@end itemize
+Signals:
+@itemize
+@item confirm-overwrite. () -> @ref{file-chooser-confirmation}  [run-last]
+
+@item current-folder-changed. () -> @code{null}  [run-last]
+
+@item file-activated. () -> @code{null}  [run-last]
+
+@item selection-changed. () -> @code{null}  [run-last]
+
+@item update-preview. () -> @code{null}  [run-last]
+
+@end itemize
+
+@node file-chooser-button
+@subsection file-chooser-button
+@Class file-chooser-button
+
+Superclasses: @ref{h-box}, @ref{atk-implementor-iface}, @ref{buildable}, @ref{file-chooser}, @ref{orientable}
+
+Slots:
+@itemize
+@item dialog. Type: @ref{file-chooser} (flags: writable constructor-only)
+
+
+
+@item focus-on-click. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item title. Type: @code{string} (flags: readable writable)
+
+
+
+@item width-chars. Type: @code{integer} (flags: readable writable)
+
+
+
+@end itemize
+Signals:
+@itemize
+@item file-set. () -> @code{null}  [run-first]
+
+@end itemize
+
+@node file-chooser-dialog
+@subsection file-chooser-dialog
+@Class file-chooser-dialog
+
+Superclasses: @ref{dialog}, @ref{atk-implementor-iface}, @ref{buildable}, @ref{file-chooser}
+
+Slots:
+None
+
+Signals:
+None
+
+
+@node file-chooser-embed
+@subsection file-chooser-embed
+@Class file-chooser-embed
+
+Superclasses: @code{standard-object}
+
+Slots:
+None
+
+Signals:
+None
+
+
+@node file-chooser-widget
+@subsection file-chooser-widget
+@Class file-chooser-widget
+
+Superclasses: @ref{v-box}, @ref{atk-implementor-iface}, @ref{buildable}, @ref{file-chooser}, @ref{file-chooser-embed}, @ref{orientable}
+
+Slots:
+None
+
+Signals:
+None
+
+
+@node file-filter
+@subsection file-filter
+@Class file-filter
+
+Superclasses: @ref{gtk-object}
+
+Slots:
+@itemize
+@item name
+
+@end itemize
+Signals:
+None
+
+
+@node fixed
+@subsection fixed
+@Class fixed
+
+Superclasses: @ref{container}, @ref{atk-implementor-iface}, @ref{buildable}
+
+Slots:
+@itemize
+@item has-window
+
+@end itemize
+Signals:
+None
+
+
+@node font-button
+@subsection font-button
+@Class font-button
+
+Superclasses: @ref{button}, @ref{atk-implementor-iface}, @ref{activatable}, @ref{buildable}
+
+Slots:
+@itemize
+@item font-name. Type: @code{string} (flags: readable writable)
+
+
+
+@item show-size. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item show-style. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item title. Type: @code{string} (flags: readable writable)
+
+
+
+@item use-font. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item use-size. Type: @code{boolean} (flags: readable writable)
+
+
+
+@end itemize
+Signals:
+@itemize
+@item font-set. () -> @code{null}  [run-first]
+
+@end itemize
+
+@node font-selection
+@subsection font-selection
+@Class font-selection
+
+Superclasses: @ref{v-box}, @ref{atk-implementor-iface}, @ref{buildable}, @ref{orientable}
+
+Slots:
+@itemize
+@item font. Type: GdkFont (flags: readable)
+
+
+
+@item font-name. Type: @code{string} (flags: readable writable)
+
+
+
+@item preview-text. Type: @code{string} (flags: readable writable)
+
+
+
+@end itemize
+Signals:
+None
+
+
+@node font-selection-dialog
+@subsection font-selection-dialog
+@Class font-selection-dialog
+
+Superclasses: @ref{dialog}, @ref{atk-implementor-iface}, @ref{buildable}
+
+Slots:
+@itemize
+@item apply-button
+
+@item cancel-button
+
+@item font-name
+
+@item ok-button
+
+@item preview-text
+
+@end itemize
+Signals:
+None
+
+
+@node frame
+@subsection frame
+@Class frame
+
+Superclasses: @ref{bin}, @ref{atk-implementor-iface}, @ref{buildable}
+
+Slots:
+@itemize
+@item label. Type: @code{string} (flags: readable writable)
+
+
+
+@item label-widget. Type: @ref{widget} (flags: readable writable)
+
+
+
+@item label-xalign. Type: @code{single-float} (flags: readable writable)
+
+
+
+@item label-yalign. Type: @code{single-float} (flags: readable writable)
+
+
+
+@item shadow. Type: @ref{shadow-type} (flags: readable writable)
+
+
+
+@item shadow-type. Type: @ref{shadow-type} (flags: readable writable)
+
+
+
+@end itemize
+Signals:
+None
+
+
+@node gamma-curve
+@subsection gamma-curve
+@Class gamma-curve
+
+Superclasses: @ref{v-box}, @ref{atk-implementor-iface}, @ref{buildable}, @ref{orientable}
+
+Slots:
+None
+
+Signals:
+None
+
+
+@node gtk-object
+@subsection gtk-object
+@Class gtk-object
+
+Superclasses: @ref{g-initially-unowned}
+
+Slots:
+@itemize
+@item user-data. Type: @code{foreign-pointer} (flags: readable writable)
+
+
+
+@end itemize
+Signals:
+@itemize
+@item destroy. () -> @code{null}  [run-cleanup, no-recurse, no-hooks]
+
+@end itemize
+
+@node gtk-window
+@subsection gtk-window
+@Class gtk-window
+
+Superclasses: @ref{bin}, @ref{atk-implementor-iface}, @ref{buildable}
+
+Slots:
+@itemize
+@item accept-focus. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item allow-grow. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item allow-shrink. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item decorated. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item default-height. Type: @code{integer} (flags: readable writable)
+
+
+
+@item default-width. Type: @code{integer} (flags: readable writable)
+
+
+
+@item deletable. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item destroy-with-parent. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item focus-on-map. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item gravity. Type: @ref{gravity} (flags: readable writable)
+
+
+
+@item has-toplevel-focus. Type: @code{boolean} (flags: readable)
+
+
+
+@item icon. Type: @ref{pixbuf} (flags: readable writable)
+
+
+
+@item icon-name. Type: @code{string} (flags: readable writable)
+
+
+
+@item is-active. Type: @code{boolean} (flags: readable)
+
+
+
+@item modal. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item opacity. Type: @code{double-float} (flags: readable writable)
+
+
+
+@item resizable. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item role. Type: @code{string} (flags: readable writable)
+
+
+
+@item screen. Type: @ref{screen} (flags: readable writable)
+
+
+
+@item skip-pager-hint. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item skip-taskbar-hint. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item startup-id. Type: @code{string} (flags: writable)
+
+
+
+@item title. Type: @code{string} (flags: readable writable)
+
+
+
+@item transient-for. Type: @ref{gtk-window} (flags: readable writable constructor)
+
+
+
+@item type. Type: @ref{window-type} (flags: readable writable constructor-only)
+
+
+
+@item type-hint. Type: @ref{gdk-window-type-hint} (flags: readable writable)
+
+
+
+@item urgency-hint. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item window-position. Type: @ref{window-position} (flags: readable writable)
+
+
+
+@end itemize
+Signals:
+@itemize
+@item activate-default. () -> @code{null}  [run-last, action]
+
+@item activate-focus. () -> @code{null}  [run-last, action]
+
+@item frame-event. (GdkEvent) -> @code{boolean}  [run-last]
+
+@item keys-changed. () -> @code{null}  [run-first]
+
+@item set-focus. (@ref{widget}) -> @code{null}  [run-last]
+
+@end itemize
+
+@node h-box
+@subsection h-box
+@Class h-box
+
+Superclasses: @ref{box}, @ref{atk-implementor-iface}, @ref{buildable}, @ref{orientable}
+
+Slots:
+None
+
+Signals:
+None
+
+
+@node h-button-box
+@subsection h-button-box
+@Class h-button-box
+
+Superclasses: @ref{button-box}, @ref{atk-implementor-iface}, @ref{buildable}, @ref{orientable}
+
+Slots:
+None
+
+Signals:
+None
+
+
+@node h-paned
+@subsection h-paned
+@Class h-paned
+
+Superclasses: @ref{paned}, @ref{atk-implementor-iface}, @ref{buildable}, @ref{orientable}
+
+Slots:
+None
+
+Signals:
+None
+
+
+@node h-ruler
+@subsection h-ruler
+@Class h-ruler
+
+Superclasses: @ref{ruler}, @ref{atk-implementor-iface}, @ref{buildable}, @ref{orientable}
+
+Slots:
+None
+
+Signals:
+None
+
+
+@node h-s-v
+@subsection h-s-v
+@Class h-s-v
+
+Superclasses: @ref{widget}, @ref{atk-implementor-iface}, @ref{buildable}
+
+Slots:
+None
+
+Signals:
+None
+
+
+@node h-scale
+@subsection h-scale
+@Class h-scale
+
+Superclasses: @ref{scale}, @ref{atk-implementor-iface}, @ref{buildable}, @ref{orientable}
+
+Slots:
+None
+
+Signals:
+None
+
+
+@node h-scrollbar
+@subsection h-scrollbar
+@Class h-scrollbar
+
+Superclasses: @ref{scrollbar}, @ref{atk-implementor-iface}, @ref{buildable}, @ref{orientable}
+
+Slots:
+None
+
+Signals:
+None
+
+
+@node h-separator
+@subsection h-separator
+@Class h-separator
+
+Superclasses: @ref{separator}, @ref{atk-implementor-iface}, @ref{buildable}, @ref{orientable}
+
+Slots:
+None
+
+Signals:
+None
+
+
+@node handle-box
+@subsection handle-box
+@Class handle-box
+
+Superclasses: @ref{bin}, @ref{atk-implementor-iface}, @ref{buildable}
+
+Slots:
+@itemize
+@item child-detached. Type: @code{boolean} (flags: readable)
+
+
+
+@item handle-position. Type: @ref{position-type} (flags: readable writable)
+
+
+
+@item shadow. Type: @ref{shadow-type} (flags: readable writable)
+
+
+
+@item shadow-type. Type: @ref{shadow-type} (flags: readable writable)
+
+
+
+@item snap-edge. Type: @ref{position-type} (flags: readable writable)
+
+
+
+@item snap-edge-set. Type: @code{boolean} (flags: readable writable)
+
+
+
+@end itemize
+Signals:
+@itemize
+@item child-attached. (@ref{widget}) -> @code{null}  [run-first]
+
+@item child-detached. (@ref{widget}) -> @code{null}  [run-first]
+
+@end itemize
+
+@node i-m-context
+@subsection i-m-context
+@Class i-m-context
+
+Superclasses: @ref{g-object}
+
+Slots:
+None
+
+Signals:
+None
+
+
+@node icon-factory
+@subsection icon-factory
+@Class icon-factory
+
+Superclasses: @ref{g-object}, @ref{buildable}
+
+Slots:
+None
+
+Signals:
+None
+
+
+@node icon-theme
+@subsection icon-theme
+@Class icon-theme
+
+Superclasses: @ref{g-object}
+
+Slots:
+None
+
+Signals:
+None
+
+
+@node icon-view
+@subsection icon-view
+@Class icon-view
+
+Superclasses: @ref{container}, @ref{atk-implementor-iface}, @ref{buildable}, @ref{cell-layout}
+
+Slots:
+@itemize
+@item column-spacing. Type: @code{integer} (flags: readable writable)
+
+
+
+@item columns. Type: @code{integer} (flags: readable writable)
+
+
+
+@item item-width. Type: @code{integer} (flags: readable writable)
+
+
+
+@item margin. Type: @code{integer} (flags: readable writable)
+
+
+
+@item markup-column. Type: @code{integer} (flags: readable writable)
+
+
+
+@item model. Type: @ref{tree-model} (flags: readable writable)
+
+
+
+@item orientation. Type: @ref{orientation} (flags: readable writable)
+
+
+
+@item pixbuf-column. Type: @code{integer} (flags: readable writable)
+
+
+
+@item reorderable. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item row-spacing. Type: @code{integer} (flags: readable writable)
+
+
+
+@item selection-mode. Type: @ref{selection-mode} (flags: readable writable)
+
+
+
+@item spacing. Type: @code{integer} (flags: readable writable)
+
+
+
+@item text-column. Type: @code{integer} (flags: readable writable)
+
+
+
+@item tooltip-column. Type: @code{integer} (flags: readable writable)
+
+
+
+@end itemize
+Signals:
+@itemize
+@item activate-cursor-item. () -> @code{boolean}  [run-last, action]
+
+@item item-activated. (GtkTreePath) -> @code{null}  [run-last]
+
+@item move-cursor. (@ref{movement-step}, @code{integer}) -> @code{boolean}  [run-last, action]
+
+@item select-all. () -> @code{null}  [run-last, action]
+
+@item select-cursor-item. () -> @code{null}  [run-last, action]
+
+@item selection-changed. () -> @code{null}  [run-first]
+
+@item set-scroll-adjustments. (@ref{adjustment}, @ref{adjustment}) -> @code{null}  [run-last]
+
+@item toggle-cursor-item. () -> @code{null}  [run-last, action]
+
+@item unselect-all. () -> @code{null}  [run-last, action]
+
+@end itemize
+
+@node image
+@subsection image
+@Class image
+
+Superclasses: @ref{misc}, @ref{atk-implementor-iface}, @ref{buildable}
+
+Slots:
+@itemize
+@item file. Type: @code{string} (flags: readable writable)
+
+
+
+@item gicon. Type: GIcon (flags: readable writable)
+
+
+
+@item icon-name. Type: @code{string} (flags: readable writable)
+
+
+
+@item icon-set. Type: GtkIconSet (flags: readable writable)
+
+
+
+@item icon-size. Type: @code{integer} (flags: readable writable)
+
+
+
+@item image. Type: GdkImage (flags: readable writable)
+
+
+
+@item mask. Type: @ref{pixmap} (flags: readable writable)
+
+
+
+@item pixbuf. Type: @ref{pixbuf} (flags: readable writable)
+
+
+
+@item pixbuf-animation. Type: @ref{pixbuf-animation} (flags: readable writable)
+
+
+
+@item pixel-size. Type: @code{integer} (flags: readable writable)
+
+
+
+@item pixmap. Type: @ref{pixmap} (flags: readable writable)
+
+
+
+@item stock. Type: @code{string} (flags: readable writable)
+
+
+
+@item storage-type. Type: @ref{image-type} (flags: readable)
+
+
+
+@end itemize
+Signals:
+None
+
+
+@node image-menu-item
+@subsection image-menu-item
+@Class image-menu-item
+
+Superclasses: @ref{menu-item}, @ref{atk-implementor-iface}, @ref{activatable}, @ref{buildable}
+
+Slots:
+@itemize
+@item accel-group. Type: @ref{accel-group} (flags: writable)
+
+
+
+@item always-show-image. Type: @code{boolean} (flags: readable writable constructor)
+
+
+
+@item image. Type: @ref{widget} (flags: readable writable)
+
+
+
+@item use-stock. Type: @code{boolean} (flags: readable writable constructor)
+
+
+
+@end itemize
+Signals:
+None
+
+
+@node input-dialog
+@subsection input-dialog
+@Class input-dialog
+
+Superclasses: @ref{dialog}, @ref{atk-implementor-iface}, @ref{buildable}
+
+Slots:
+None
+
+Signals:
+None
+
+
+@node invisible
+@subsection invisible
+@Class invisible
+
+Superclasses: @ref{widget}, @ref{atk-implementor-iface}, @ref{buildable}
+
+Slots:
+@itemize
+@item screen. Type: @ref{screen} (flags: readable writable)
+
+
+
+@end itemize
+Signals:
+None
+
+
+@node item
+@subsection item
+@Class item
+
+Superclasses: @ref{bin}, @ref{atk-implementor-iface}, @ref{buildable}
+
+Slots:
+None
+
+Signals:
+@itemize
+@item deselect. () -> @code{null}  [run-first]
+
+@item select. () -> @code{null}  [run-first]
+
+@item toggle. () -> @code{null}  [run-first]
+
+@end itemize
+
+@node label
+@subsection label
+@Class label
+
+Superclasses: @ref{misc}, @ref{atk-implementor-iface}, @ref{buildable}
+
+Slots:
+@itemize
+@item angle. Type: @code{double-float} (flags: readable writable)
+
+
+
+@item attributes. Type: PangoAttrList (flags: readable writable)
+
+
+
+@item cursor-position. Type: @code{integer} (flags: readable)
+
+
+
+@item ellipsize. Type: PangoEllipsizeMode (flags: readable writable)
+
+
+
+@item justify. Type: @ref{justification} (flags: readable writable)
+
+
+
+@item label. Type: @code{string} (flags: readable writable)
+
+
+
+@item max-width-chars. Type: @code{integer} (flags: readable writable)
+
+
+
+@item mnemonic-keyval. Type: @code{(integer 0)} (flags: readable)
+
+
+
+@item mnemonic-widget. Type: @ref{widget} (flags: readable writable)
+
+
+
+@item pattern. Type: @code{string} (flags: writable)
+
+
+
+@item selectable. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item selection-bound. Type: @code{integer} (flags: readable)
+
+
+
+@item single-line-mode. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item use-markup. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item use-underline. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item width-chars. Type: @code{integer} (flags: readable writable)
+
+
+
+@item wrap. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item wrap-mode. Type: PangoWrapMode (flags: readable writable)
+
+
+
+@end itemize
+Signals:
+@itemize
+@item copy-clipboard. () -> @code{null}  [run-last, action]
+
+@item move-cursor. (@ref{movement-step}, @code{integer}, @code{boolean}) -> @code{null}  [run-last, action]
+
+@item populate-popup. (@ref{menu}) -> @code{null}  [run-last]
+
+@end itemize
+
+@node layout
+@subsection layout
+@Class layout
+
+Superclasses: @ref{container}, @ref{atk-implementor-iface}, @ref{buildable}
+
+Slots:
+@itemize
+@item bin-window
+
+@item hadjustment. Type: @ref{adjustment} (flags: readable writable)
+
+
+
+@item height. Type: @code{(integer 0)} (flags: readable writable)
+
+
+
+@item vadjustment. Type: @ref{adjustment} (flags: readable writable)
+
+
+
+@item width. Type: @code{(integer 0)} (flags: readable writable)
+
+
+
+@end itemize
+Signals:
+@itemize
+@item set-scroll-adjustments. (@ref{adjustment}, @ref{adjustment}) -> @code{null}  [run-last, action]
+
+@end itemize
+
+@node link-button
+@subsection link-button
+@Class link-button
+
+Superclasses: @ref{button}, @ref{atk-implementor-iface}, @ref{activatable}, @ref{buildable}
+
+Slots:
+@itemize
+@item uri. Type: @code{string} (flags: readable writable)
+
+
+
+@item visited. Type: @code{boolean} (flags: readable writable)
+
+
+
+@end itemize
+Signals:
+None
+
+
+@node list-store
+@subsection list-store
+@Class list-store
+
+Superclasses: @ref{g-object}, @ref{buildable}, @ref{tree-drag-dest}, @ref{tree-drag-source}, @ref{tree-model}, @ref{tree-sortable}
+
+Slots:
+None
+
+Signals:
+None
+
+
+@node menu
+@subsection menu
+@Class menu
+
+Superclasses: @ref{menu-shell}, @ref{atk-implementor-iface}, @ref{buildable}
+
+Slots:
+@itemize
+@item accel-group. Type: @ref{accel-group} (flags: readable writable)
+
+
+
+@item accel-path. Type: @code{string} (flags: readable writable)
+
+
+
+@item active. Type: @code{integer} (flags: readable writable)
+
+
+
+@item attach-widget. Type: @ref{widget} (flags: readable writable)
+
+
+
+@item monitor. Type: @code{integer} (flags: readable writable)
+
+
+
+@item screen
+
+@item tearoff-state. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item tearoff-title. Type: @code{string} (flags: readable writable)
+
+
+
+@end itemize
+Signals:
+@itemize
+@item move-scroll. (@ref{scroll-type}) -> @code{null}  [run-last, action]
+
+@end itemize
+
+@node menu-bar
+@subsection menu-bar
+@Class menu-bar
+
+Superclasses: @ref{menu-shell}, @ref{atk-implementor-iface}, @ref{buildable}
+
+Slots:
+@itemize
+@item child-pack-direction. Type: @ref{pack-direction} (flags: readable writable)
+
+
+
+@item pack-direction. Type: @ref{pack-direction} (flags: readable writable)
+
+
+
+@end itemize
+Signals:
+None
+
+
+@node menu-item
+@subsection menu-item
+@Class menu-item
+
+Superclasses: @ref{item}, @ref{atk-implementor-iface}, @ref{activatable}, @ref{buildable}
+
+Slots:
+@itemize
+@item accel-path. Type: @code{string} (flags: readable writable)
+
+
+
+@item label. Type: @code{string} (flags: readable writable)
+
+
+
+@item right-justified. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item submenu. Type: @ref{menu} (flags: readable writable)
+
+
+
+@item use-underline. Type: @code{boolean} (flags: readable writable)
+
+
+
+@end itemize
+Signals:
+@itemize
+@item activate. () -> @code{null}  [run-first, action]
+
+@item activate-item. () -> @code{null}  [run-first]
+
+@item toggle-size-allocate. (@code{integer}) -> @code{null}  [run-first]
+
+@item toggle-size-request. (@code{foreign-pointer}) -> @code{null}  [run-first]
+
+@end itemize
+
+@node menu-shell
+@subsection menu-shell
+@Class menu-shell
+
+Superclasses: @ref{container}, @ref{atk-implementor-iface}, @ref{buildable}
+
+Slots:
+@itemize
+@item take-focus. Type: @code{boolean} (flags: readable writable)
+
+
+
+@end itemize
+Signals:
+@itemize
+@item activate-current. (@code{boolean}) -> @code{null}  [run-last, action]
+
+@item cancel. () -> @code{null}  [run-last, action]
+
+@item cycle-focus. (@ref{direction-type}) -> @code{null}  [run-last, action]
+
+@item deactivate. () -> @code{null}  [run-first]
+
+@item move-current. (@ref{menu-direction-type}) -> @code{null}  [run-last, action]
+
+@item move-selected. (@code{integer}) -> @code{boolean}  [run-last]
+
+@item selection-done. () -> @code{null}  [run-first]
+
+@end itemize
+
+@node menu-tool-button
+@subsection menu-tool-button
+@Class menu-tool-button
+
+Superclasses: @ref{tool-button}, @ref{atk-implementor-iface}, @ref{activatable}, @ref{buildable}
+
+Slots:
+@itemize
+@item arrow-tooltip-markup
+
+@item arrow-tooltip-text
+
+@item menu. Type: @ref{menu} (flags: readable writable)
+
+
+
+@end itemize
+Signals:
+@itemize
+@item show-menu. () -> @code{null}  [run-first]
+
+@end itemize
+
+@node message-dialog
+@subsection message-dialog
+@Class message-dialog
+
+Superclasses: @ref{dialog}, @ref{atk-implementor-iface}, @ref{buildable}
+
+Slots:
+@itemize
+@item buttons. Type: @ref{buttons-type} (flags: writable constructor-only)
+
+
+
+@item image. Type: @ref{widget} (flags: readable writable)
+
+
+
+@item message-type. Type: @ref{message-type} (flags: readable writable constructor)
+
+
+
+@item secondary-text. Type: @code{string} (flags: readable writable)
+
+
+
+@item secondary-use-markup. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item text. Type: @code{string} (flags: readable writable)
+
+
+
+@item use-markup. Type: @code{boolean} (flags: readable writable)
+
+
+
+@end itemize
+Signals:
+None
+
+
+@node misc
+@subsection misc
+@Class misc
+
+Superclasses: @ref{widget}, @ref{atk-implementor-iface}, @ref{buildable}
+
+Slots:
+@itemize
+@item xalign. Type: @code{single-float} (flags: readable writable)
+
+
+
+@item xpad. Type: @code{integer} (flags: readable writable)
+
+
+
+@item yalign. Type: @code{single-float} (flags: readable writable)
+
+
+
+@item ypad. Type: @code{integer} (flags: readable writable)
+
+
+
+@end itemize
+Signals:
+None
+
+
+@node notebook
+@subsection notebook
+@Class notebook
+
+Superclasses: @ref{container}, @ref{atk-implementor-iface}, @ref{buildable}
+
+Slots:
+@itemize
+@item enable-popup. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item group. Type: @code{foreign-pointer} (flags: readable writable)
+
+
+
+@item group-id. Type: @code{integer} (flags: readable writable)
+
+
+
+@item homogeneous. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item page. Type: @code{integer} (flags: readable writable)
+
+
+
+@item scrollable. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item show-border. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item show-tabs. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item tab-border. Type: @code{(integer 0)} (flags: writable)
+
+
+
+@item tab-hborder. Type: @code{(integer 0)} (flags: readable writable)
+
+
+
+@item tab-pos. Type: @ref{position-type} (flags: readable writable)
+
+
+
+@item tab-vborder. Type: @code{(integer 0)} (flags: readable writable)
+
+
+
+@end itemize
+Signals:
+@itemize
+@item change-current-page. (@code{integer}) -> @code{boolean}  [run-last, action]
+
+@item create-window. (@ref{widget}, @code{integer}, @code{integer}) -> @ref{notebook}  [run-last]
+
+@item focus-tab. (@ref{notebook-tab}) -> @code{boolean}  [run-last, action]
+
+@item move-focus-out. (@ref{direction-type}) -> @code{null}  [run-last, action]
+
+@item page-added. (@ref{widget}, @code{(integer 0)}) -> @code{null}  [run-last]
+
+@item page-removed. (@ref{widget}, @code{(integer 0)}) -> @code{null}  [run-last]
+
+@item page-reordered. (@ref{widget}, @code{(integer 0)}) -> @code{null}  [run-last]
+
+@item reorder-tab. (@ref{direction-type}, @code{boolean}) -> @code{boolean}  [run-last, action]
+
+@item select-page. (@code{boolean}) -> @code{boolean}  [run-last, action]
+
+@item switch-page. (@code{foreign-pointer}, @code{(integer 0)}) -> @code{null}  [run-last]
+
+@end itemize
+
+@node old-editable
+@subsection old-editable
+@Class old-editable
+
+Superclasses: @ref{widget}, @ref{atk-implementor-iface}, @ref{buildable}, @ref{editable}
+
+Slots:
+@itemize
+@item editable. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item text-position. Type: @code{integer} (flags: readable writable)
+
+
+
+@end itemize
+Signals:
+@itemize
+@item activate. () -> @code{null}  [run-last, action]
+
+@item copy-clipboard. () -> @code{null}  [run-last, action]
+
+@item cut-clipboard. () -> @code{null}  [run-last, action]
+
+@item kill-char. (@code{integer}) -> @code{null}  [run-last, action]
+
+@item kill-line. (@code{integer}) -> @code{null}  [run-last, action]
+
+@item kill-word. (@code{integer}) -> @code{null}  [run-last, action]
+
+@item move-cursor. (@code{integer}, @code{integer}) -> @code{null}  [run-last, action]
+
+@item move-page. (@code{integer}, @code{integer}) -> @code{null}  [run-last, action]
+
+@item move-to-column. (@code{integer}) -> @code{null}  [run-last, action]
+
+@item move-to-row. (@code{integer}) -> @code{null}  [run-last, action]
+
+@item move-word. (@code{integer}) -> @code{null}  [run-last, action]
+
+@item paste-clipboard. () -> @code{null}  [run-last, action]
+
+@item set-editable. (@code{boolean}) -> @code{null}  [run-last, action]
+
+@end itemize
+
+@node orientable
+@subsection orientable
+@Class orientable
+
+Superclasses: @code{standard-object}
+
+Slots:
+@itemize
+@item orientation. Type: @ref{orientation} (flags: readable writable)
+
+
+
+@end itemize
+Signals:
+None
+
+
+@node page-setup
+@subsection page-setup
+@Class page-setup
+
+Superclasses: @ref{g-object}
+
+Slots:
+None
+
+Signals:
+None
+
+
+@node paned
+@subsection paned
+@Class paned
+
+Superclasses: @ref{container}, @ref{atk-implementor-iface}, @ref{buildable}, @ref{orientable}
+
+Slots:
+@itemize
+@item max-position. Type: @code{integer} (flags: readable)
+
+
+
+@item min-position. Type: @code{integer} (flags: readable)
+
+
+
+@item position. Type: @code{integer} (flags: readable writable)
+
+
+
+@item position-set. Type: @code{boolean} (flags: readable writable)
+
+
+
+@end itemize
+Signals:
+@itemize
+@item accept-position. () -> @code{boolean}  [run-last, action]
+
+@item cancel-position. () -> @code{boolean}  [run-last, action]
+
+@item cycle-child-focus. (@code{boolean}) -> @code{boolean}  [run-last, action]
+
+@item cycle-handle-focus. (@code{boolean}) -> @code{boolean}  [run-last, action]
+
+@item move-handle. (@ref{scroll-type}) -> @code{boolean}  [run-last, action]
+
+@item toggle-handle-focus. () -> @code{boolean}  [run-last, action]
+
+@end itemize
+
+@node plug
+@subsection plug
+@Class plug
+
+Superclasses: @ref{gtk-window}, @ref{atk-implementor-iface}, @ref{buildable}
+
+Slots:
+@itemize
+@item embedded. Type: @code{boolean} (flags: readable)
+
+
+
+@item socket-window. Type: @ref{gdk-window} (flags: readable)
+
+
+
+@end itemize
+Signals:
+@itemize
+@item embedded. () -> @code{null}  [run-last]
+
+@end itemize
+
+@node print-context
+@subsection print-context
+@Class print-context
+
+Superclasses: @ref{g-object}
+
+Slots:
+None
+
+Signals:
+None
+
+
+@node print-operation
+@subsection print-operation
+@Class print-operation
+
+Superclasses: @ref{g-object}, @ref{print-operation-preview}
+
+Slots:
+@itemize
+@item allow-async. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item current-page. Type: @code{integer} (flags: readable writable)
+
+
+
+@item custom-tab-label. Type: @code{string} (flags: readable writable)
+
+
+
+@item default-page-setup. Type: @ref{page-setup} (flags: readable writable)
+
+
+
+@item export-filename. Type: @code{string} (flags: readable writable)
+
+
+
+@item job-name. Type: @code{string} (flags: readable writable)
+
+
+
+@item n-pages. Type: @code{integer} (flags: readable writable)
+
+
+
+@item print-settings. Type: @ref{print-settings} (flags: readable writable)
+
+
+
+@item show-progress. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item status. Type: @ref{print-status} (flags: readable)
+
+
+
+@item status-string. Type: @code{string} (flags: readable)
+
+
+
+@item track-print-status. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item unit. Type: @ref{unit} (flags: readable writable)
+
+
+
+@item use-full-page. Type: @code{boolean} (flags: readable writable)
+
+
+
+@end itemize
+Signals:
+@itemize
+@item begin-print. (@ref{print-context}) -> @code{null}  [run-last]
+
+@item create-custom-widget. () -> @ref{g-object}  [run-last]
+
+@item custom-widget-apply. (@ref{widget}) -> @code{null}  [run-last]
+
+@item done. (@ref{print-operation-result}) -> @code{null}  [run-last]
+
+@item draw-page. (@ref{print-context}, @code{integer}) -> @code{null}  [run-last]
+
+@item end-print. (@ref{print-context}) -> @code{null}  [run-last]
+
+@item paginate. (@ref{print-context}) -> @code{boolean}  [run-last]
+
+@item preview. (@ref{print-operation-preview}, @ref{print-context}, @ref{gtk-window}) -> @code{boolean}  [run-last]
+
+@item request-page-setup. (@ref{print-context}, @code{integer}, @ref{page-setup}) -> @code{null}  [run-last]
+
+@item status-changed. () -> @code{null}  [run-last]
+
+@end itemize
+
+@node print-operation-preview
+@subsection print-operation-preview
+@Class print-operation-preview
+
+Superclasses: @code{standard-object}
+
+Slots:
+None
+
+Signals:
+@itemize
+@item got-page-size. (@ref{print-context}, @ref{page-setup}) -> @code{null}  [run-last]
+
+@item ready. (@ref{print-context}) -> @code{null}  [run-last]
+
+@end itemize
+
+@node print-settings
+@subsection print-settings
+@Class print-settings
+
+Superclasses: @ref{g-object}
+
+Slots:
+None
+
+Signals:
+None
+
+
+@node progress
+@subsection progress
+@Class progress
+
+Superclasses: @ref{widget}, @ref{atk-implementor-iface}, @ref{buildable}
+
+Slots:
+@itemize
+@item activity-mode. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item show-text. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item text-xalign. Type: @code{single-float} (flags: readable writable)
+
+
+
+@item text-yalign. Type: @code{single-float} (flags: readable writable)
+
+
+
+@end itemize
+Signals:
+None
+
+
+@node progress-bar
+@subsection progress-bar
+@Class progress-bar
+
+Superclasses: @ref{progress}, @ref{atk-implementor-iface}, @ref{buildable}
+
+Slots:
+@itemize
+@item activity-blocks. Type: @code{(integer 0)} (flags: readable writable)
+
+
+
+@item activity-step. Type: @code{(integer 0)} (flags: readable writable)
+
+
+
+@item adjustment. Type: @ref{adjustment} (flags: readable writable)
+
+
+
+@item bar-style. Type: @ref{progress-bar-style} (flags: readable writable)
+
+
+
+@item discrete-blocks. Type: @code{(integer 0)} (flags: readable writable)
+
+
+
+@item ellipsize. Type: PangoEllipsizeMode (flags: readable writable)
+
+
+
+@item fraction. Type: @code{double-float} (flags: readable writable)
+
+
+
+@item orientation. Type: @ref{progress-bar-orientation} (flags: readable writable)
+
+
+
+@item pulse-step. Type: @code{double-float} (flags: readable writable)
+
+
+
+@item text. Type: @code{string} (flags: readable writable)
+
+
+
+@end itemize
+Signals:
+None
+
+
+@node radio-action
+@subsection radio-action
+@Class radio-action
+
+Superclasses: @ref{toggle-action}, @ref{buildable}
+
+Slots:
+@itemize
+@item current-value. Type: @code{integer} (flags: readable writable)
+
+
+
+@item group. Type: @ref{radio-action} (flags: writable)
+
+
+
+@item value. Type: @code{integer} (flags: readable writable)
+
+
+
+@end itemize
+Signals:
+@itemize
+@item changed. (@ref{radio-action}) -> @code{null}  [run-first, no-recurse]
+
+@end itemize
+
+@node radio-button
+@subsection radio-button
+@Class radio-button
+
+Superclasses: @ref{check-button}, @ref{atk-implementor-iface}, @ref{activatable}, @ref{buildable}
+
+Slots:
+@itemize
+@item group. Type: @ref{radio-button} (flags: writable)
+
+
+
+@end itemize
+Signals:
+@itemize
+@item group-changed. () -> @code{null}  [run-first]
+
+@end itemize
+
+@node radio-menu-item
+@subsection radio-menu-item
+@Class radio-menu-item
+
+Superclasses: @ref{check-menu-item}, @ref{atk-implementor-iface}, @ref{activatable}, @ref{buildable}
+
+Slots:
+@itemize
+@item group. Type: @ref{radio-menu-item} (flags: writable)
+
+
+
+@end itemize
+Signals:
+@itemize
+@item group-changed. () -> @code{null}  [run-first]
+
+@end itemize
+
+@node radio-tool-button
+@subsection radio-tool-button
+@Class radio-tool-button
+
+Superclasses: @ref{toggle-tool-button}, @ref{atk-implementor-iface}, @ref{activatable}, @ref{buildable}
+
+Slots:
+@itemize
+@item group. Type: @ref{radio-tool-button} (flags: writable)
+
+
+
+@end itemize
+Signals:
+None
+
+
+@node range
+@subsection range
+@Class range
+
+Superclasses: @ref{widget}, @ref{atk-implementor-iface}, @ref{buildable}, @ref{orientable}
+
+Slots:
+@itemize
+@item adjustment. Type: @ref{adjustment} (flags: readable writable constructor)
+
+
+
+@item fill-level. Type: @code{double-float} (flags: readable writable)
+
+
+
+@item inverted. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item lower-stepper-sensitivity. Type: @ref{sensitivity-type} (flags: readable writable)
+
+
+
+@item restrict-to-fill-level. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item show-fill-level. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item update-policy. Type: @ref{update-type} (flags: readable writable)
+
+
+
+@item upper-stepper-sensitivity. Type: @ref{sensitivity-type} (flags: readable writable)
+
+
+
+@end itemize
+Signals:
+@itemize
+@item adjust-bounds. (@code{double-float}) -> @code{null}  [run-last]
+
+@item change-value. (@ref{scroll-type}, @code{double-float}) -> @code{boolean}  [run-last]
+
+@item move-slider. (@ref{scroll-type}) -> @code{null}  [run-last, action]
+
+@item value-changed. () -> @code{null}  [run-last]
+
+@end itemize
+
+@node rc-style
+@subsection rc-style
+@Class rc-style
+
+Superclasses: @ref{g-object}
+
+Slots:
+None
+
+Signals:
+None
+
+
+@node recent-action
+@subsection recent-action
+@Class recent-action
+
+Superclasses: @ref{action}, @ref{buildable}, @ref{recent-chooser}
+
+Slots:
+@itemize
+@item show-numbers. Type: @code{boolean} (flags: readable writable)
+
+
+
+@end itemize
+Signals:
+None
+
+
+@node recent-chooser
+@subsection recent-chooser
+@Class recent-chooser
+
+Superclasses: @code{standard-object}
+
+Slots:
+@itemize
+@item filter. Type: @ref{recent-filter} (flags: readable writable)
+
+
+
+@item limit. Type: @code{integer} (flags: readable writable)
+
+
+
+@item local-only. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item recent-manager. Type: @ref{recent-manager} (flags: writable constructor-only)
+
+
+
+@item select-multiple. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item show-icons. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item show-not-found. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item show-private. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item show-tips. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item sort-type. Type: @ref{recent-sort-type} (flags: readable writable)
+
+
+
+@end itemize
+Signals:
+@itemize
+@item item-activated. () -> @code{null}  [run-last]
+
+@item selection-changed. () -> @code{null}  [run-last]
+
+@end itemize
+
+@node recent-chooser-dialog
+@subsection recent-chooser-dialog
+@Class recent-chooser-dialog
+
+Superclasses: @ref{dialog}, @ref{atk-implementor-iface}, @ref{buildable}, @ref{recent-chooser}
+
+Slots:
+None
+
+Signals:
+None
+
+
+@node recent-chooser-menu
+@subsection recent-chooser-menu
+@Class recent-chooser-menu
+
+Superclasses: @ref{menu}, @ref{atk-implementor-iface}, @ref{activatable}, @ref{buildable}, @ref{recent-chooser}
+
+Slots:
+@itemize
+@item show-numbers. Type: @code{boolean} (flags: readable writable)
+
+
+
+@end itemize
+Signals:
+None
+
+
+@node recent-chooser-widget
+@subsection recent-chooser-widget
+@Class recent-chooser-widget
+
+Superclasses: @ref{v-box}, @ref{atk-implementor-iface}, @ref{buildable}, @ref{orientable}, @ref{recent-chooser}
+
+Slots:
+None
+
+Signals:
+None
+
+
+@node recent-filter
+@subsection recent-filter
+@Class recent-filter
+
+Superclasses: @ref{gtk-object}
+
+Slots:
+None
+
+Signals:
+None
+
+
+@node recent-manager
+@subsection recent-manager
+@Class recent-manager
+
+Superclasses: @ref{g-object}
+
+Slots:
+@itemize
+@item filename. Type: @code{string} (flags: readable writable constructor-only)
+
+
+
+@item limit. Type: @code{integer} (flags: readable writable)
+
+
+
+@item size. Type: @code{integer} (flags: readable)
+
+
+
+@end itemize
+Signals:
+@itemize
+@item changed. () -> @code{null}  [run-first]
+
+@end itemize
+
+@node ruler
+@subsection ruler
+@Class ruler
+
+Superclasses: @ref{widget}, @ref{atk-implementor-iface}, @ref{buildable}, @ref{orientable}
+
+Slots:
+@itemize
+@item lower. Type: @code{double-float} (flags: readable writable)
+
+
+
+@item max-size. Type: @code{double-float} (flags: readable writable)
+
+
+
+@item metric. Type: @ref{metric-type} (flags: readable writable)
+
+
+
+@item position. Type: @code{double-float} (flags: readable writable)
+
+
+
+@item upper. Type: @code{double-float} (flags: readable writable)
+
+
+
+@end itemize
+Signals:
+None
+
+
+@node scale
+@subsection scale
+@Class scale
+
+Superclasses: @ref{range}, @ref{atk-implementor-iface}, @ref{buildable}, @ref{orientable}
+
+Slots:
+@itemize
+@item digits. Type: @code{integer} (flags: readable writable)
+
+
+
+@item draw-value. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item value-pos. Type: @ref{position-type} (flags: readable writable)
+
+
+
+@end itemize
+Signals:
+@itemize
+@item format-value. (@code{double-float}) -> @code{string}  [run-last]
+
+@end itemize
+
+@node scale-button
+@subsection scale-button
+@Class scale-button
+
+Superclasses: @ref{button}, @ref{atk-implementor-iface}, @ref{activatable}, @ref{buildable}, @ref{orientable}
+
+Slots:
+@itemize
+@item adjustment. Type: @ref{adjustment} (flags: readable writable)
+
+
+
+@item icons. Type: @code{(list string)} (flags: readable writable)
+
+
+
+@item size. Type: @ref{icon-size} (flags: readable writable)
+
+
+
+@item value. Type: @code{double-float} (flags: readable writable)
+
+
+
+@end itemize
+Signals:
+@itemize
+@item popdown. () -> @code{null}  [run-last, action]
+
+@item popup. () -> @code{null}  [run-last, action]
+
+@item value-changed. (@code{double-float}) -> @code{null}  [run-last]
+
+@end itemize
+
+@node scrollbar
+@subsection scrollbar
+@Class scrollbar
+
+Superclasses: @ref{range}, @ref{atk-implementor-iface}, @ref{buildable}, @ref{orientable}
+
+Slots:
+None
+
+Signals:
+None
+
+
+@node scrolled-window
+@subsection scrolled-window
+@Class scrolled-window
+
+Superclasses: @ref{bin}, @ref{atk-implementor-iface}, @ref{buildable}
+
+Slots:
+@itemize
+@item hadjustment. Type: @ref{adjustment} (flags: readable writable constructor)
+
+
+
+@item hscrollbar-policy. Type: @ref{policy-type} (flags: readable writable)
+
+
+
+@item shadow-type. Type: @ref{shadow-type} (flags: readable writable)
+
+
+
+@item vadjustment. Type: @ref{adjustment} (flags: readable writable constructor)
+
+
+
+@item vscrollbar-policy. Type: @ref{policy-type} (flags: readable writable)
+
+
+
+@item window-placement. Type: @ref{corner-type} (flags: readable writable)
+
+
+
+@item window-placement-set. Type: @code{boolean} (flags: readable writable)
+
+
+
+@end itemize
+Signals:
+@itemize
+@item move-focus-out. (@ref{direction-type}) -> @code{null}  [run-last, action]
+
+@item scroll-child. (@ref{scroll-type}, @code{boolean}) -> @code{boolean}  [run-last, action]
+
+@end itemize
+
+@node separator
+@subsection separator
+@Class separator
+
+Superclasses: @ref{widget}, @ref{atk-implementor-iface}, @ref{buildable}, @ref{orientable}
+
+Slots:
+None
+
+Signals:
+None
+
+
+@node separator-menu-item
+@subsection separator-menu-item
+@Class separator-menu-item
+
+Superclasses: @ref{menu-item}, @ref{atk-implementor-iface}, @ref{activatable}, @ref{buildable}
+
+Slots:
+None
+
+Signals:
+None
+
+
+@node separator-tool-item
+@subsection separator-tool-item
+@Class separator-tool-item
+
+Superclasses: @ref{tool-item}, @ref{atk-implementor-iface}, @ref{activatable}, @ref{buildable}
+
+Slots:
+@itemize
+@item draw. Type: @code{boolean} (flags: readable writable)
+
+
+
+@end itemize
+Signals:
+None
+
+
+@node settings
+@subsection settings
+@Class settings
+
+Superclasses: @ref{g-object}
+
+Slots:
+@itemize
+@item color-hash. Type: GHashTable (flags: readable)
+
+
+
+@item gtk-alternative-button-order. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item gtk-alternative-sort-arrows. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item gtk-button-images. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item gtk-can-change-accels. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item gtk-color-palette. Type: @code{string} (flags: readable writable)
+
+
+
+@item gtk-color-scheme. Type: @code{string} (flags: readable writable)
+
+
+
+@item gtk-cursor-blink. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item gtk-cursor-blink-time. Type: @code{integer} (flags: readable writable)
+
+
+
+@item gtk-cursor-blink-timeout. Type: @code{integer} (flags: readable writable)
+
+
+
+@item gtk-cursor-theme-name. Type: @code{string} (flags: readable writable)
+
+
+
+@item gtk-cursor-theme-size. Type: @code{integer} (flags: readable writable)
+
+
+
+@item gtk-dnd-drag-threshold. Type: @code{integer} (flags: readable writable)
+
+
+
+@item gtk-double-click-distance. Type: @code{integer} (flags: readable writable)
+
+
+
+@item gtk-double-click-time. Type: @code{integer} (flags: readable writable)
+
+
+
+@item gtk-enable-accels. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item gtk-enable-animations. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item gtk-enable-event-sounds. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item gtk-enable-input-feedback-sounds. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item gtk-enable-mnemonics. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item gtk-enable-tooltips. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item gtk-entry-password-hint-timeout. Type: @code{(integer 0)} (flags: readable writable)
+
+
+
+@item gtk-entry-select-on-focus. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item gtk-error-bell. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item gtk-fallback-icon-theme. Type: @code{string} (flags: readable writable)
+
+
+
+@item gtk-file-chooser-backend. Type: @code{string} (flags: readable writable)
+
+
+
+@item gtk-font-name. Type: @code{string} (flags: readable writable)
+
+
+
+@item gtk-fontconfig-timestamp. Type: @code{(integer 0)} (flags: readable writable)
+
+
+
+@item gtk-icon-sizes. Type: @code{string} (flags: readable writable)
+
+
+
+@item gtk-icon-theme-name. Type: @code{string} (flags: readable writable)
+
+
+
+@item gtk-im-module. Type: @code{string} (flags: readable writable)
+
+
+
+@item gtk-key-theme-name. Type: @code{string} (flags: readable writable)
+
+
+
+@item gtk-keynav-cursor-only. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item gtk-keynav-wrap-around. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item gtk-label-select-on-focus. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item gtk-menu-bar-accel. Type: @code{string} (flags: readable writable)
+
+
+
+@item gtk-menu-bar-popup-delay. Type: @code{integer} (flags: readable writable)
+
+
+
+@item gtk-menu-images. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item gtk-menu-popdown-delay. Type: @code{integer} (flags: readable writable)
+
+
+
+@item gtk-menu-popup-delay. Type: @code{integer} (flags: readable writable)
+
+
+
+@item gtk-modules. Type: @code{string} (flags: readable writable)
+
+
+
+@item gtk-print-backends. Type: @code{string} (flags: readable writable)
+
+
+
+@item gtk-print-preview-command. Type: @code{string} (flags: readable writable)
+
+
+
+@item gtk-recent-files-limit. Type: @code{integer} (flags: readable writable)
+
+
+
+@item gtk-recent-files-max-age. Type: @code{integer} (flags: readable writable)
+
+
+
+@item gtk-scrolled-window-placement. Type: @ref{corner-type} (flags: readable writable)
+
+
+
+@item gtk-show-input-method-menu. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item gtk-show-unicode-menu. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item gtk-sound-theme-name. Type: @code{string} (flags: readable writable)
+
+
+
+@item gtk-split-cursor. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item gtk-theme-name. Type: @code{string} (flags: readable writable)
+
+
+
+@item gtk-timeout-expand. Type: @code{integer} (flags: readable writable)
+
+
+
+@item gtk-timeout-initial. Type: @code{integer} (flags: readable writable)
+
+
+
+@item gtk-timeout-repeat. Type: @code{integer} (flags: readable writable)
+
+
+
+@item gtk-toolbar-icon-size. Type: @ref{icon-size} (flags: readable writable)
+
+
+
+@item gtk-toolbar-style. Type: @ref{toolbar-style} (flags: readable writable)
+
+
+
+@item gtk-tooltip-browse-mode-timeout. Type: @code{integer} (flags: readable writable)
+
+
+
+@item gtk-tooltip-browse-timeout. Type: @code{integer} (flags: readable writable)
+
+
+
+@item gtk-tooltip-timeout. Type: @code{integer} (flags: readable writable)
+
+
+
+@item gtk-touchscreen-mode. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item gtk-xft-antialias. Type: @code{integer} (flags: readable writable)
+
+
+
+@item gtk-xft-dpi. Type: @code{integer} (flags: readable writable)
+
+
+
+@item gtk-xft-hinting. Type: @code{integer} (flags: readable writable)
+
+
+
+@item gtk-xft-hintstyle. Type: @code{string} (flags: readable writable)
+
+
+
+@item gtk-xft-rgba. Type: @code{string} (flags: readable writable)
+
+
+
+@end itemize
+Signals:
+None
+
+
+@node size-group
+@subsection size-group
+@Class size-group
+
+Superclasses: @ref{g-object}, @ref{buildable}
+
+Slots:
+@itemize
+@item ignore-hidden. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item mode. Type: @ref{size-group-mode} (flags: readable writable)
+
+
+
+@end itemize
+Signals:
+None
+
+
+@node socket
+@subsection socket
+@Class socket
+
+Superclasses: @ref{container}, @ref{atk-implementor-iface}, @ref{buildable}
+
+Slots:
+None
+
+Signals:
+None
+
+
+@node spin-button
+@subsection spin-button
+@Class spin-button
+
+Superclasses: @ref{entry}, @ref{atk-implementor-iface}, @ref{buildable}, @ref{cell-editable}, @ref{editable}
+
+Slots:
+@itemize
+@item adjustment. Type: @ref{adjustment} (flags: readable writable)
+
+
+
+@item climb-rate. Type: @code{double-float} (flags: readable writable)
+
+
+
+@item digits. Type: @code{(integer 0)} (flags: readable writable)
+
+
+
+@item numeric. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item snap-to-ticks. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item update-policy. Type: @ref{spin-button-update-policy} (flags: readable writable)
+
+
+
+@item value. Type: @code{double-float} (flags: readable writable)
+
+
+
+@item wrap. Type: @code{boolean} (flags: readable writable)
+
+
+
+@end itemize
+Signals:
+@itemize
+@item change-value. (@ref{scroll-type}) -> @code{null}  [run-last, action]
+
+@item input. (@code{foreign-pointer}) -> @code{integer}  [run-last]
+
+@item output. () -> @code{boolean}  [run-last]
+
+@item value-changed. () -> @code{null}  [run-last]
+
+@item wrapped. () -> @code{null}  [run-last]
+
+@end itemize
+
+@node status-icon
+@subsection status-icon
+@Class status-icon
+
+Superclasses: @ref{g-object}
+
+Slots:
+@itemize
+@item blinking. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item embedded. Type: @code{boolean} (flags: readable)
+
+
+
+@item file. Type: @code{string} (flags: writable)
+
+
+
+@item gicon. Type: GIcon (flags: readable writable)
+
+
+
+@item has-tooltip. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item icon-name. Type: @code{string} (flags: readable writable)
+
+
+
+@item orientation. Type: @ref{orientation} (flags: readable)
+
+
+
+@item pixbuf. Type: @ref{pixbuf} (flags: readable writable)
+
+
+
+@item screen. Type: @ref{screen} (flags: readable writable)
+
+
+
+@item size. Type: @code{integer} (flags: readable)
+
+
+
+@item stock. Type: @code{string} (flags: readable writable)
+
+
+
+@item storage-type. Type: @ref{image-type} (flags: readable)
+
+
+
+@item tooltip-markup. Type: @code{string} (flags: readable writable)
+
+
+
+@item tooltip-text. Type: @code{string} (flags: readable writable)
+
+
+
+@item visible. Type: @code{boolean} (flags: readable writable)
+
+
+
+@end itemize
+Signals:
+@itemize
+@item activate. () -> @code{null}  [run-first, action]
+
+@item button-press-event. (GdkEvent) -> @code{boolean}  [run-last]
+
+@item button-release-event. (GdkEvent) -> @code{boolean}  [run-last]
+
+@item popup-menu. (@code{(integer 0)}, @code{(integer 0)}) -> @code{null}  [run-first, action]
+
+@item query-tooltip. (@code{integer}, @code{integer}, @code{boolean}, @ref{tooltip}) -> @code{boolean}  [run-last]
+
+@item scroll-event. (GdkEvent) -> @code{boolean}  [run-last]
+
+@item size-changed. (@code{integer}) -> @code{boolean}  [run-last]
+
+@end itemize
+
+@node statusbar
+@subsection statusbar
+@Class statusbar
+
+Superclasses: @ref{h-box}, @ref{atk-implementor-iface}, @ref{buildable}, @ref{orientable}
+
+Slots:
+@itemize
+@item has-resize-grip. Type: @code{boolean} (flags: readable writable)
+
+
+
+@end itemize
+Signals:
+@itemize
+@item text-popped. (@code{(integer 0)}, @code{string}) -> @code{null}  [run-last]
+
+@item text-pushed. (@code{(integer 0)}, @code{string}) -> @code{null}  [run-last]
+
+@end itemize
+
+@node style
+@subsection style
+@Class style
+
+Superclasses: @ref{g-object}
+
+Slots:
+None
+
+Signals:
+None
+
+
+@node table
+@subsection table
+@Class table
+
+Superclasses: @ref{container}, @ref{atk-implementor-iface}, @ref{buildable}
+
+Slots:
+@itemize
+@item column-spacing. Type: @code{(integer 0)} (flags: readable writable)
+
+
+
+@item homogeneous. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item n-columns. Type: @code{(integer 0)} (flags: readable writable)
+
+
+
+@item n-rows. Type: @code{(integer 0)} (flags: readable writable)
+
+
+
+@item row-spacing. Type: @code{(integer 0)} (flags: readable writable)
+
+
+
+@end itemize
+Signals:
+None
+
+
+@node tearoff-menu-item
+@subsection tearoff-menu-item
+@Class tearoff-menu-item
+
+Superclasses: @ref{menu-item}, @ref{atk-implementor-iface}, @ref{activatable}, @ref{buildable}
+
+Slots:
+None
+
+Signals:
+None
+
+
+@node text
+@subsection text
+@Class text
+
+Superclasses: @ref{old-editable}, @ref{atk-implementor-iface}, @ref{buildable}, @ref{editable}
+
+Slots:
+@itemize
+@item hadjustment. Type: @ref{adjustment} (flags: readable writable)
+
+
+
+@item line-wrap. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item vadjustment. Type: @ref{adjustment} (flags: readable writable)
+
+
+
+@item word-wrap. Type: @code{boolean} (flags: readable writable)
+
+
+
+@end itemize
+Signals:
+@itemize
+@item set-scroll-adjustments. (@ref{adjustment}, @ref{adjustment}) -> @code{null}  [run-last]
+
+@end itemize
+
+@node text-buffer
+@subsection text-buffer
+@Class text-buffer
+
+Superclasses: @ref{g-object}
+
+Slots:
+@itemize
+@item copy-target-list. Type: GtkTargetList (flags: readable)
+
+
+
+@item cursor-position. Type: @code{integer} (flags: readable)
+
+
+
+@item has-selection. Type: @code{boolean} (flags: readable)
+
+
+
+@item paste-target-list. Type: GtkTargetList (flags: readable)
+
+
+
+@item tag-table. Type: @ref{text-tag-table} (flags: readable writable constructor-only)
+
+
+
+@item text. Type: @code{string} (flags: readable writable)
+
+
+
+@end itemize
+Signals:
+@itemize
+@item apply-tag. (@ref{text-tag}, GtkTextIter, GtkTextIter) -> @code{null}  [run-last]
+
+@item begin-user-action. () -> @code{null}  [run-last]
+
+@item changed. () -> @code{null}  [run-last]
+
+@item delete-range. (GtkTextIter, GtkTextIter) -> @code{null}  [run-last]
+
+@item end-user-action. () -> @code{null}  [run-last]
+
+@item insert-child-anchor. (GtkTextIter, @ref{text-child-anchor}) -> @code{null}  [run-last]
+
+@item insert-pixbuf. (GtkTextIter, @ref{pixbuf}) -> @code{null}  [run-last]
+
+@item insert-text. (GtkTextIter, @code{string}, @code{integer}) -> @code{null}  [run-last]
+
+@item mark-deleted. (@ref{text-mark}) -> @code{null}  [run-last]
+
+@item mark-set. (GtkTextIter, @ref{text-mark}) -> @code{null}  [run-last]
+
+@item modified-changed. () -> @code{null}  [run-last]
+
+@item paste-done. (@ref{clipboard}) -> @code{null}  [run-last]
+
+@item remove-tag. (@ref{text-tag}, GtkTextIter, GtkTextIter) -> @code{null}  [run-last]
+
+@end itemize
+
+@node text-child-anchor
+@subsection text-child-anchor
+@Class text-child-anchor
+
+Superclasses: @ref{g-object}
+
+Slots:
+None
+
+Signals:
+None
+
+
+@node text-mark
+@subsection text-mark
+@Class text-mark
+
+Superclasses: @ref{g-object}
+
+Slots:
+@itemize
+@item left-gravity. Type: @code{boolean} (flags: readable writable constructor-only)
+
+
+
+@item name. Type: @code{string} (flags: readable writable constructor-only)
+
+
+
+@end itemize
+Signals:
+None
+
+
+@node text-tag
+@subsection text-tag
+@Class text-tag
+
+Superclasses: @ref{g-object}
+
+Slots:
+@itemize
+@item accumulative-margin. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item background. Type: @code{string} (flags: writable)
+
+
+
+@item background-full-height. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item background-full-height-set. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item background-gdk. Type: GdkColor (flags: readable writable)
+
+
+
+@item background-set. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item background-stipple. Type: @ref{pixmap} (flags: readable writable)
+
+
+
+@item background-stipple-set. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item direction. Type: @ref{text-direction} (flags: readable writable)
+
+
+
+@item editable. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item editable-set. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item family. Type: @code{string} (flags: readable writable)
+
+
+
+@item family-set. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item font. Type: @code{string} (flags: readable writable)
+
+
+
+@item font-desc. Type: PangoFontDescription (flags: readable writable)
+
+
+
+@item foreground. Type: @code{string} (flags: writable)
+
+
+
+@item foreground-gdk. Type: GdkColor (flags: readable writable)
+
+
+
+@item foreground-set. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item foreground-stipple. Type: @ref{pixmap} (flags: readable writable)
+
+
+
+@item foreground-stipple-set. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item indent. Type: @code{integer} (flags: readable writable)
+
+
+
+@item indent-set. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item invisible. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item invisible-set. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item justification. Type: @ref{justification} (flags: readable writable)
+
+
+
+@item justification-set. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item language. Type: @code{string} (flags: readable writable)
+
+
+
+@item language-set. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item left-margin. Type: @code{integer} (flags: readable writable)
+
+
+
+@item left-margin-set. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item name. Type: @code{string} (flags: readable writable constructor-only)
+
+
+
+@item paragraph-background. Type: @code{string} (flags: writable)
+
+
+
+@item paragraph-background-gdk. Type: GdkColor (flags: readable writable)
+
+
+
+@item paragraph-background-set. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item pixels-above-lines. Type: @code{integer} (flags: readable writable)
+
+
+
+@item pixels-above-lines-set. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item pixels-below-lines. Type: @code{integer} (flags: readable writable)
+
+
+
+@item pixels-below-lines-set. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item pixels-inside-wrap. Type: @code{integer} (flags: readable writable)
+
+
+
+@item pixels-inside-wrap-set. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item priority
+
+@item right-margin. Type: @code{integer} (flags: readable writable)
+
+
+
+@item right-margin-set. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item rise. Type: @code{integer} (flags: readable writable)
+
+
+
+@item rise-set. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item scale. Type: @code{double-float} (flags: readable writable)
+
+
+
+@item scale-set. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item size. Type: @code{integer} (flags: readable writable)
+
+
+
+@item size-points. Type: @code{double-float} (flags: readable writable)
+
+
+
+@item size-set. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item stretch. Type: PangoStretch (flags: readable writable)
+
+
+
+@item stretch-set. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item strikethrough. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item strikethrough-set. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item style. Type: PangoStyle (flags: readable writable)
+
+
+
+@item style-set. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item tabs. Type: PangoTabArray (flags: readable writable)
+
+
+
+@item tabs-set. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item underline. Type: PangoUnderline (flags: readable writable)
+
+
+
+@item underline-set. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item variant. Type: PangoVariant (flags: readable writable)
+
+
+
+@item variant-set. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item weight. Type: @code{integer} (flags: readable writable)
+
+
+
+@item weight-set. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item wrap-mode. Type: @ref{wrap-mode} (flags: readable writable)
+
+
+
+@item wrap-mode-set. Type: @code{boolean} (flags: readable writable)
+
+
+
+@end itemize
+Signals:
+@itemize
+@item event. (@ref{g-object}, GdkEvent, GtkTextIter) -> @code{boolean}  [run-last]
+
+@end itemize
+
+@node text-tag-table
+@subsection text-tag-table
+@Class text-tag-table
+
+Superclasses: @ref{g-object}
+
+Slots:
+None
+
+Signals:
+None
+
+
+@node text-view
+@subsection text-view
+@Class text-view
+
+Superclasses: @ref{container}, @ref{atk-implementor-iface}, @ref{buildable}
+
+Slots:
+@itemize
+@item accepts-tab. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item buffer. Type: @ref{text-buffer} (flags: readable writable)
+
+
+
+@item cursor-visible. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item editable. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item im-module. Type: @code{string} (flags: readable writable)
+
+
+
+@item indent. Type: @code{integer} (flags: readable writable)
+
+
+
+@item justification. Type: @ref{justification} (flags: readable writable)
+
+
+
+@item left-margin. Type: @code{integer} (flags: readable writable)
+
+
+
+@item overwrite. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item pixels-above-lines. Type: @code{integer} (flags: readable writable)
+
+
+
+@item pixels-below-lines. Type: @code{integer} (flags: readable writable)
+
+
+
+@item pixels-inside-wrap. Type: @code{integer} (flags: readable writable)
+
+
+
+@item right-margin. Type: @code{integer} (flags: readable writable)
+
+
+
+@item tabs. Type: PangoTabArray (flags: readable writable)
+
+
+
+@item wrap-mode. Type: @ref{wrap-mode} (flags: readable writable)
+
+
+
+@end itemize
+Signals:
+@itemize
+@item backspace. () -> @code{null}  [run-last, action]
+
+@item copy-clipboard. () -> @code{null}  [run-last, action]
+
+@item cut-clipboard. () -> @code{null}  [run-last, action]
+
+@item delete-from-cursor. (@ref{delete-type}, @code{integer}) -> @code{null}  [run-last, action]
+
+@item insert-at-cursor. (@code{string}) -> @code{null}  [run-last, action]
+
+@item move-cursor. (@ref{movement-step}, @code{integer}, @code{boolean}) -> @code{null}  [run-last, action]
+
+@item move-viewport. (@ref{scroll-step}, @code{integer}) -> @code{null}  [run-last, action]
+
+@item page-horizontally. (@code{integer}, @code{boolean}) -> @code{null}  [run-last, action]
+
+@item paste-clipboard. () -> @code{null}  [run-last, action]
+
+@item populate-popup. (@ref{menu}) -> @code{null}  [run-last]
+
+@item select-all. (@code{boolean}) -> @code{null}  [run-last, action]
+
+@item set-anchor. () -> @code{null}  [run-last, action]
+
+@item set-scroll-adjustments. (@ref{adjustment}, @ref{adjustment}) -> @code{null}  [run-last, action]
+
+@item toggle-cursor-visible. () -> @code{null}  [run-last, action]
+
+@item toggle-overwrite. () -> @code{null}  [run-last, action]
+
+@end itemize
+
+@node toggle-action
+@subsection toggle-action
+@Class toggle-action
+
+Superclasses: @ref{action}, @ref{buildable}
+
+Slots:
+@itemize
+@item active. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item draw-as-radio. Type: @code{boolean} (flags: readable writable)
+
+
+
+@end itemize
+Signals:
+@itemize
+@item toggled. () -> @code{null}  [run-first]
+
+@end itemize
+
+@node toggle-button
+@subsection toggle-button
+@Class toggle-button
+
+Superclasses: @ref{button}, @ref{atk-implementor-iface}, @ref{activatable}, @ref{buildable}
+
+Slots:
+@itemize
+@item active. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item draw-indicator. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item inconsistent. Type: @code{boolean} (flags: readable writable)
+
+
+
+@end itemize
+Signals:
+@itemize
+@item toggled. () -> @code{null}  [run-first]
+
+@end itemize
+
+@node toggle-tool-button
+@subsection toggle-tool-button
+@Class toggle-tool-button
+
+Superclasses: @ref{tool-button}, @ref{atk-implementor-iface}, @ref{activatable}, @ref{buildable}
+
+Slots:
+@itemize
+@item active. Type: @code{boolean} (flags: readable writable)
+
+
+
+@end itemize
+Signals:
+@itemize
+@item toggled. () -> @code{null}  [run-first]
+
+@end itemize
+
+@node tool-button
+@subsection tool-button
+@Class tool-button
+
+Superclasses: @ref{tool-item}, @ref{atk-implementor-iface}, @ref{activatable}, @ref{buildable}
+
+Slots:
+@itemize
+@item icon-name. Type: @code{string} (flags: readable writable)
+
+
+
+@item icon-widget. Type: @ref{widget} (flags: readable writable)
+
+
+
+@item label. Type: @code{string} (flags: readable writable)
+
+
+
+@item label-widget. Type: @ref{widget} (flags: readable writable)
+
+
+
+@item stock-id. Type: @code{string} (flags: readable writable)
+
+
+
+@item use-underline. Type: @code{boolean} (flags: readable writable)
+
+
+
+@end itemize
+Signals:
+@itemize
+@item clicked. () -> @code{null}  [run-first, action]
+
+@end itemize
+
+@node tool-item
+@subsection tool-item
+@Class tool-item
+
+Superclasses: @ref{bin}, @ref{atk-implementor-iface}, @ref{activatable}, @ref{buildable}
+
+Slots:
+@itemize
+@item expand
+
+@item icon-size
+
+@item is-important. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item orientation
+
+@item relief-style
+
+@item toolbar-style
+
+@item use-drag-window
+
+@item visible-horizontal. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item visible-vertical. Type: @code{boolean} (flags: readable writable)
+
+
+
+@end itemize
+Signals:
+@itemize
+@item create-menu-proxy. () -> @code{boolean}  [run-last]
+
+@item set-tooltip. (@ref{tooltips}, @code{string}, @code{string}) -> @code{boolean}  [run-last]
+
+@item toolbar-reconfigured. () -> @code{null}  [run-last]
+
+@end itemize
+
+@node tool-shell
+@subsection tool-shell
+@Class tool-shell
+
+Superclasses: @code{standard-object}
+
+Slots:
+None
+
+Signals:
+None
+
+
+@node toolbar
+@subsection toolbar
+@Class toolbar
+
+Superclasses: @ref{container}, @ref{atk-implementor-iface}, @ref{buildable}, @ref{orientable}, @ref{tool-shell}
+
+Slots:
+@itemize
+@item icon-size. Type: @code{integer} (flags: readable writable)
+
+
+
+@item icon-size-set. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item show-arrow. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item toolbar-style. Type: @ref{toolbar-style} (flags: readable writable)
+
+
+
+@item tooltips. Type: @code{boolean} (flags: readable writable)
+
+
+
+@end itemize
+Signals:
+@itemize
+@item focus-home-or-end. (@code{boolean}) -> @code{boolean}  [run-last, action]
+
+@item orientation-changed. (@ref{orientation}) -> @code{null}  [run-first]
+
+@item popup-context-menu. (@code{integer}, @code{integer}, @code{integer}) -> @code{boolean}  [run-last]
+
+@item style-changed. (@ref{toolbar-style}) -> @code{null}  [run-first]
+
+@end itemize
+
+@node tooltip
+@subsection tooltip
+@Class tooltip
+
+Superclasses: @ref{g-object}
+
+Slots:
+None
+
+Signals:
+None
+
+
+@node tooltips
+@subsection tooltips
+@Class tooltips
+
+Superclasses: @ref{gtk-object}
+
+Slots:
+None
+
+Signals:
+None
+
+
+@node tree
+@subsection tree
+@Class tree
+
+Superclasses: @ref{container}, @ref{atk-implementor-iface}, @ref{buildable}
+
+Slots:
+None
+
+Signals:
+None
+
+
+@node tree-drag-dest
+@subsection tree-drag-dest
+@Class tree-drag-dest
+
+Superclasses: @code{standard-object}
+
+Slots:
+None
+
+Signals:
+None
+
+
+@node tree-drag-source
+@subsection tree-drag-source
+@Class tree-drag-source
+
+Superclasses: @code{standard-object}
+
+Slots:
+None
+
+Signals:
+None
+
+
+@node tree-item
+@subsection tree-item
+@Class tree-item
+
+Superclasses: @ref{item}, @ref{atk-implementor-iface}, @ref{buildable}
+
+Slots:
+None
+
+Signals:
+None
+
+
+@node tree-lisp-store
+@subsection tree-lisp-store
+@Class tree-lisp-store
+
+Superclasses: @ref{g-object}, @ref{tree-model}
+
+Slots:
+@itemize
+@item columns-getters
+
+@item columns-types
+
+@item id-map
+
+@item next-id-value
+
+@item root
+
+@end itemize
+Signals:
+None
+
+
+@node tree-model
+@subsection tree-model
+@Class tree-model
+
+Superclasses: @code{standard-object}
+
+Slots:
+None
+
+Signals:
+@itemize
+@item row-changed. (GtkTreePath, GtkTreeIter) -> @code{null}  [run-last]
+
+@item row-deleted. (GtkTreePath) -> @code{null}  [run-first]
+
+@item row-has-child-toggled. (GtkTreePath, GtkTreeIter) -> @code{null}  [run-last]
+
+@item row-inserted. (GtkTreePath, GtkTreeIter) -> @code{null}  [run-first]
+
+@item rows-reordered. (GtkTreePath, GtkTreeIter, @code{foreign-pointer}) -> @code{null}  [run-first]
+
+@end itemize
+
+@node tree-model-filter
+@subsection tree-model-filter
+@Class tree-model-filter
+
+Superclasses: @ref{g-object}, @ref{tree-drag-source}, @ref{tree-model}
+
+Slots:
+@itemize
+@item child-model. Type: @ref{tree-model} (flags: readable writable constructor-only)
+
+
+
+@item virtual-root. Type: GtkTreePath (flags: readable writable constructor-only)
+
+
+
+@end itemize
+Signals:
+None
+
+
+@node tree-model-sort
+@subsection tree-model-sort
+@Class tree-model-sort
+
+Superclasses: @ref{g-object}, @ref{tree-drag-source}, @ref{tree-model}, @ref{tree-sortable}
+
+Slots:
+@itemize
+@item model. Type: @ref{tree-model} (flags: readable writable constructor-only)
+
+
+
+@end itemize
+Signals:
+None
+
+
+@node tree-selection
+@subsection tree-selection
+@Class tree-selection
+
+Superclasses: @ref{g-object}
+
+Slots:
+@itemize
+@item mode
+
+@item select-function
+
+@end itemize
+Signals:
+None
+
+
+@node tree-sortable
+@subsection tree-sortable
+@Class tree-sortable
+
+Superclasses: @code{standard-object}
+
+Slots:
+None
+
+Signals:
+@itemize
+@item sort-column-changed. () -> @code{null}  [run-last]
+
+@end itemize
+
+@node tree-store
+@subsection tree-store
+@Class tree-store
+
+Superclasses: @ref{g-object}, @ref{buildable}, @ref{tree-drag-dest}, @ref{tree-drag-source}, @ref{tree-model}, @ref{tree-sortable}
+
+Slots:
+None
+
+Signals:
+None
+
+
+@node tree-view
+@subsection tree-view
+@Class tree-view
+
+Superclasses: @ref{container}, @ref{atk-implementor-iface}, @ref{buildable}
+
+Slots:
+@itemize
+@item bin-window
+
+@item column-drag-function
+
+@item enable-grid-lines. Type: @ref{tree-view-grid-lines} (flags: readable writable)
+
+
+
+@item enable-search. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item enable-tree-lines. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item expander-column. Type: @ref{tree-view-column} (flags: readable writable)
+
+
+
+@item fixed-height-mode. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item hadjustment. Type: @ref{adjustment} (flags: readable writable)
+
+
+
+@item headers-clickable. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item headers-visible. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item hover-expand. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item hover-selection. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item level-indentation. Type: @code{integer} (flags: readable writable)
+
+
+
+@item model. Type: @ref{tree-model} (flags: readable writable)
+
+
+
+@item reorderable. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item row-separator-func
+
+@item rubber-banding. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item rules-hint. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item search-column. Type: @code{integer} (flags: readable writable)
+
+
+
+@item search-entry
+
+@item search-equal-func
+
+@item search-position-func
+
+@item selection
+
+@item show-expanders. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item tooltip-column. Type: @code{integer} (flags: readable writable)
+
+
+
+@item vadjustment. Type: @ref{adjustment} (flags: readable writable)
+
+
+
+@end itemize
+Signals:
+@itemize
+@item columns-changed. () -> @code{null}  [run-last]
+
+@item cursor-changed. () -> @code{null}  [run-last]
+
+@item expand-collapse-cursor-row. (@code{boolean}, @code{boolean}, @code{boolean}) -> @code{boolean}  [run-last, action]
+
+@item move-cursor. (@ref{movement-step}, @code{integer}) -> @code{boolean}  [run-last, action]
+
+@item row-activated. (GtkTreePath, @ref{tree-view-column}) -> @code{null}  [run-last, action]
+
+@item row-collapsed. (GtkTreeIter, GtkTreePath) -> @code{null}  [run-last]
+
+@item row-expanded. (GtkTreeIter, GtkTreePath) -> @code{null}  [run-last]
+
+@item select-all. () -> @code{boolean}  [run-last, action]
+
+@item select-cursor-parent. () -> @code{boolean}  [run-last, action]
+
+@item select-cursor-row. (@code{boolean}) -> @code{boolean}  [run-last, action]
+
+@item set-scroll-adjustments. (@ref{adjustment}, @ref{adjustment}) -> @code{null}  [run-last, action]
+
+@item start-interactive-search. () -> @code{boolean}  [run-last, action]
+
+@item test-collapse-row. (GtkTreeIter, GtkTreePath) -> @code{boolean}  [run-last]
+
+@item test-expand-row. (GtkTreeIter, GtkTreePath) -> @code{boolean}  [run-last]
+
+@item toggle-cursor-row. () -> @code{boolean}  [run-last, action]
+
+@item unselect-all. () -> @code{boolean}  [run-last, action]
+
+@end itemize
+
+@node tree-view-column
+@subsection tree-view-column
+@Class tree-view-column
+
+Superclasses: @ref{gtk-object}, @ref{buildable}, @ref{cell-layout}
+
+Slots:
+@itemize
+@item alignment. Type: @code{single-float} (flags: readable writable)
+
+
+
+@item cell-renderers
+
+@item clickable. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item expand. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item fixed-width. Type: @code{integer} (flags: readable writable)
+
+
+
+@item max-width. Type: @code{integer} (flags: readable writable)
+
+
+
+@item min-width. Type: @code{integer} (flags: readable writable)
+
+
+
+@item reorderable. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item resizable. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item sizing. Type: @ref{tree-view-column-sizing} (flags: readable writable)
+
+
+
+@item sort-column-id
+
+@item sort-indicator. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item sort-order. Type: @ref{sort-type} (flags: readable writable)
+
+
+
+@item spacing. Type: @code{integer} (flags: readable writable)
+
+
+
+@item title. Type: @code{string} (flags: readable writable)
+
+
+
+@item tree-view
+
+@item visible. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item widget. Type: @ref{widget} (flags: readable writable)
+
+
+
+@item width. Type: @code{integer} (flags: readable)
+
+
+
+@end itemize
+Signals:
+@itemize
+@item clicked. () -> @code{null}  [run-last]
+
+@end itemize
+
+@node ui-manager
+@subsection ui-manager
+@Class ui-manager
+
+Superclasses: @ref{g-object}, @ref{buildable}
+
+Slots:
+@itemize
+@item accel-group
+
+@item add-tearoffs
+
+@item ui
+
+@end itemize
+Signals:
+None
+
+
+@node v-box
+@subsection v-box
+@Class v-box
+
+Superclasses: @ref{box}, @ref{atk-implementor-iface}, @ref{buildable}, @ref{orientable}
+
+Slots:
+None
+
+Signals:
+None
+
+
+@node v-button-box
+@subsection v-button-box
+@Class v-button-box
+
+Superclasses: @ref{button-box}, @ref{atk-implementor-iface}, @ref{buildable}, @ref{orientable}
+
+Slots:
+None
+
+Signals:
+None
+
+
+@node v-paned
+@subsection v-paned
+@Class v-paned
+
+Superclasses: @ref{paned}, @ref{atk-implementor-iface}, @ref{buildable}, @ref{orientable}
+
+Slots:
+None
+
+Signals:
+None
+
+
+@node v-ruler
+@subsection v-ruler
+@Class v-ruler
+
+Superclasses: @ref{ruler}, @ref{atk-implementor-iface}, @ref{buildable}, @ref{orientable}
+
+Slots:
+None
+
+Signals:
+None
+
+
+@node v-scale
+@subsection v-scale
+@Class v-scale
+
+Superclasses: @ref{scale}, @ref{atk-implementor-iface}, @ref{buildable}, @ref{orientable}
+
+Slots:
+None
+
+Signals:
+None
+
+
+@node v-scrollbar
+@subsection v-scrollbar
+@Class v-scrollbar
+
+Superclasses: @ref{scrollbar}, @ref{atk-implementor-iface}, @ref{buildable}, @ref{orientable}
+
+Slots:
+None
+
+Signals:
+None
+
+
+@node v-separator
+@subsection v-separator
+@Class v-separator
+
+Superclasses: @ref{separator}, @ref{atk-implementor-iface}, @ref{buildable}, @ref{orientable}
+
+Slots:
+None
+
+Signals:
+None
+
+
+@node viewport
+@subsection viewport
+@Class viewport
+
+Superclasses: @ref{bin}, @ref{atk-implementor-iface}, @ref{buildable}
+
+Slots:
+@itemize
+@item hadjustment. Type: @ref{adjustment} (flags: readable writable constructor)
+
+
+
+@item shadow-type. Type: @ref{shadow-type} (flags: readable writable)
+
+
+
+@item vadjustment. Type: @ref{adjustment} (flags: readable writable constructor)
+
+
+
+@end itemize
+Signals:
+@itemize
+@item set-scroll-adjustments. (@ref{adjustment}, @ref{adjustment}) -> @code{null}  [run-last, action]
+
+@end itemize
+
+@node volume-button
+@subsection volume-button
+@Class volume-button
+
+Superclasses: @ref{scale-button}, @ref{atk-implementor-iface}, @ref{activatable}, @ref{buildable}, @ref{orientable}
+
+Slots:
+None
+
+Signals:
+None
+
+
+@node widget
+@subsection widget
+@Class widget
+
+Superclasses: @ref{gtk-object}, @ref{atk-implementor-iface}, @ref{buildable}
+
+Slots:
+@itemize
+@item accessible
+
+@item app-paintable. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item can-default. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item can-focus. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item composite-child. Type: @code{boolean} (flags: readable)
+
+
+
+@item composite-name
+
+@item direction
+
+@item events. Type: @ref{event-mask} (flags: readable writable)
+
+
+
+@item extension-events. Type: @ref{gdk-extension-mode} (flags: readable writable)
+
+
+
+@item has-default. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item has-focus. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item has-tooltip. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item height-request. Type: @code{integer} (flags: readable writable)
+
+
+
+@item is-focus. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item name. Type: @code{string} (flags: readable writable)
+
+
+
+@item no-show-all. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item parent. Type: @ref{container} (flags: readable writable)
+
+
+
+@item receives-default. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item redraw-on-allocate
+
+@item sensitive. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item style. Type: @ref{style} (flags: readable writable)
+
+
+
+@item tooltip-markup. Type: @code{string} (flags: readable writable)
+
+
+
+@item tooltip-text. Type: @code{string} (flags: readable writable)
+
+
+
+@item tooltip-window
+
+@item visible. Type: @code{boolean} (flags: readable writable)
+
+
+
+@item width-request. Type: @code{integer} (flags: readable writable)
+
+
+
+@item window. Type: @ref{gdk-window} (flags: readable)
+
+
+
+@end itemize
+Signals:
+@itemize
+@item accel-closures-changed. () -> @code{null} 
+
+@item button-press-event. (GdkEvent) -> @code{boolean}  [run-last]
+
+@item button-release-event. (GdkEvent) -> @code{boolean}  [run-last]
+
+@item can-activate-accel. (@code{(integer 0)}) -> @code{boolean}  [run-last]
+
+@item child-notify. (@code{class-property-info}) -> @code{null}  [run-first, no-recurse, detailed, no-hooks]
+
+@item client-event. (GdkEvent) -> @code{boolean}  [run-last]
+
+@item composited-changed. () -> @code{null}  [run-last, action]
+
+@item configure-event. (GdkEvent) -> @code{boolean}  [run-last]
+
+@item damage-event. (GdkEvent) -> @code{boolean}  [run-last]
+
+@item delete-event. (GdkEvent) -> @code{boolean}  [run-last]
+
+@item destroy-event. (GdkEvent) -> @code{boolean}  [run-last]
+
+@item direction-changed. (@ref{text-direction}) -> @code{null}  [run-first]
+
+@item drag-begin. (@ref{drag-context}) -> @code{null}  [run-last]
+
+@item drag-data-delete. (@ref{drag-context}) -> @code{null}  [run-last]
+
+@item drag-data-get. (@ref{drag-context}, GtkSelectionData, @code{(integer 0)}, @code{(integer 0)}) -> @code{null}  [run-last]
+
+@item drag-data-received. (@ref{drag-context}, @code{integer}, @code{integer}, GtkSelectionData, @code{(integer 0)}, @code{(integer 0)}) -> @code{null}  [run-last]
+
+@item drag-drop. (@ref{drag-context}, @code{integer}, @code{integer}, @code{(integer 0)}) -> @code{boolean}  [run-last]
+
+@item drag-end. (@ref{drag-context}) -> @code{null}  [run-last]
+
+@item drag-failed. (@ref{drag-context}, @ref{drag-result}) -> @code{boolean}  [run-last]
+
+@item drag-leave. (@ref{drag-context}, @code{(integer 0)}) -> @code{null}  [run-last]
+
+@item drag-motion. (@ref{drag-context}, @code{integer}, @code{integer}, @code{(integer 0)}) -> @code{boolean}  [run-last]
+
+@item enter-notify-event. (GdkEvent) -> @code{boolean}  [run-last]
+
+@item event. (GdkEvent) -> @code{boolean}  [run-last]
+
+@item event-after. (GdkEvent) -> @code{null} 
+
+@item expose-event. (GdkEvent) -> @code{boolean}  [run-last]
+
+@item focus. (@ref{direction-type}) -> @code{boolean}  [run-last]
+
+@item focus-in-event. (GdkEvent) -> @code{boolean}  [run-last]
+
+@item focus-out-event. (GdkEvent) -> @code{boolean}  [run-last]
+
+@item grab-broken-event. (GdkEvent) -> @code{boolean}  [run-last]
+
+@item grab-focus. () -> @code{null}  [run-last, action]
+
+@item grab-notify. (@code{boolean}) -> @code{null}  [run-first]
+
+@item hide. () -> @code{null}  [run-first]
+
+@item hierarchy-changed. (@ref{widget}) -> @code{null}  [run-last]
+
+@item key-press-event. (GdkEvent) -> @code{boolean}  [run-last]
+
+@item key-release-event. (GdkEvent) -> @code{boolean}  [run-last]
+
+@item keynav-failed. (@ref{direction-type}) -> @code{boolean}  [run-last]
+
+@item leave-notify-event. (GdkEvent) -> @code{boolean}  [run-last]
+
+@item map. () -> @code{null}  [run-first]
+
+@item map-event. (GdkEvent) -> @code{boolean}  [run-last]
+
+@item mnemonic-activate. (@code{boolean}) -> @code{boolean}  [run-last]
+
+@item motion-notify-event. (GdkEvent) -> @code{boolean}  [run-last]
+
+@item move-focus. (@ref{direction-type}) -> @code{null}  [run-last, action]
+
+@item no-expose-event. (GdkEvent) -> @code{boolean}  [run-last]
+
+@item parent-set. (@ref{widget}) -> @code{null}  [run-first]
+
+@item popup-menu. () -> @code{boolean}  [run-last, action]
+
+@item property-notify-event. (GdkEvent) -> @code{boolean}  [run-last]
+
+@item proximity-in-event. (GdkEvent) -> @code{boolean}  [run-last]
+
+@item proximity-out-event. (GdkEvent) -> @code{boolean}  [run-last]
+
+@item query-tooltip. (@code{integer}, @code{integer}, @code{boolean}, @ref{tooltip}) -> @code{boolean}  [run-last]
+
+@item realize. () -> @code{null}  [run-first]
+
+@item screen-changed. (@ref{screen}) -> @code{null}  [run-last]
+
+@item scroll-event. (GdkEvent) -> @code{boolean}  [run-last]
+
+@item selection-clear-event. (GdkEvent) -> @code{boolean}  [run-last]
+
+@item selection-get. (GtkSelectionData, @code{(integer 0)}, @code{(integer 0)}) -> @code{null}  [run-last]
+
+@item selection-notify-event. (GdkEvent) -> @code{boolean}  [run-last]
+
+@item selection-received. (GtkSelectionData, @code{(integer 0)}) -> @code{null}  [run-last]
+
+@item selection-request-event. (GdkEvent) -> @code{boolean}  [run-last]
+
+@item show. () -> @code{null}  [run-first]
+
+@item show-help. (@ref{widget-help-type}) -> @code{boolean}  [run-last, action]
+
+@item size-allocate. (GdkRectangle) -> @code{null}  [run-first]
+
+@item size-request. (GtkRequisition) -> @code{null}  [run-first]
+
+@item state-changed. (@ref{state-type}) -> @code{null}  [run-first]
+
+@item style-set. (@ref{style}) -> @code{null}  [run-first]
+
+@item unmap. () -> @code{null}  [run-first]
+
+@item unmap-event. (GdkEvent) -> @code{boolean}  [run-last]
+
+@item unrealize. () -> @code{null}  [run-last]
+
+@item visibility-notify-event. (GdkEvent) -> @code{boolean}  [run-last]
+
+@item window-state-event. (GdkEvent) -> @code{boolean}  [run-last]
+
+@end itemize
+
+@node window-group
+@subsection window-group
+@Class window-group
+
+Superclasses: @ref{g-object}
+
+Slots:
+None
+
+Signals:
+None
+
+
+@node gtk Enums
+@section gtk Enums
+
+@menu
+* anchor-type::
+* arrow-type::
+* assistant-page-type::
+* builder-error::
+* button-box-style::
+* buttons-type::
+* c-list-drag-pos::
+* c-tree-expander-style::
+* c-tree-expansion-type::
+* c-tree-line-style::
+* c-tree-pos::
+* cell-renderer-accel-mode::
+* cell-renderer-mode::
+* cell-type::
+* corner-type::
+* curve-type::
+* delete-type::
+* direction-type::
+* drag-result::
+* expander-style::
+* file-chooser-action::
+* file-chooser-confirmation::
+* file-chooser-error::
+* i-m-preedit-style::
+* i-m-status-style::
+* icon-size::
+* icon-theme-error::
+* icon-view-drop-position::
+* image-type::
+* justification::
+* match-type::
+* menu-direction-type::
+* message-type::
+* metric-type::
+* movement-step::
+* notebook-tab::
+* number-up-layout::
+* orientation::
+* pack-direction::
+* pack-type::
+* page-orientation::
+* page-set::
+* path-priority-type::
+* path-type::
+* policy-type::
+* position-type::
+* preview-type::
+* print-duplex::
+* print-error::
+* print-operation-action::
+* print-operation-result::
+* print-pages::
+* print-quality::
+* print-status::
+* progress-bar-orientation::
+* progress-bar-style::
+* rc-token-type::
+* recent-chooser-error::
+* recent-manager-error::
+* recent-sort-type::
+* relief-style::
+* resize-mode::
+* response-type::
+* scroll-step::
+* scroll-type::
+* selection-mode::
+* sensitivity-type::
+* shadow-type::
+* side-type::
+* size-group-mode::
+* sort-type::
+* spin-button-update-policy::
+* spin-type::
+* state-type::
+* submenu-direction::
+* submenu-placement::
+* text-buffer-target-info::
+* text-direction::
+* text-window-type::
+* toolbar-child-type::
+* toolbar-space-style::
+* toolbar-style::
+* tree-view-column-sizing::
+* tree-view-drop-position::
+* tree-view-grid-lines::
+* tree-view-mode::
+* unit::
+* update-type::
+* visibility::
+* widget-help-type::
+* window-position::
+* window-type::
+* wrap-mode::
+@end menu
+
+Reference of enums in package GTK
+
+@node anchor-type
+@subsection anchor-type
+@Enum anchor-type
+Values:
+@itemize
+@item :center
+@item :north
+@item :north-west
+@item :north-east
+@item :south
+@item :south-west
+@item :south-east
+@item :west
+@item :east
+@item :n
+@item :nw
+@item :ne
+@item :s
+@item :sw
+@item :se
+@item :w
+@item :e
+@end itemize
+
+
+@node arrow-type
+@subsection arrow-type
+@Enum arrow-type
+Values:
+@itemize
+@item :up
+@item :down
+@item :left
+@item :right
+@item :none
+@end itemize
+
+
+@node assistant-page-type
+@subsection assistant-page-type
+@Enum assistant-page-type
+Values:
+@itemize
+@item :content
+@item :intro
+@item :confirm
+@item :summary
+@item :progress
+@end itemize
+
+
+@node builder-error
+@subsection builder-error
+@Enum builder-error
+Values:
+@itemize
+@item :invalid-type-function
+@item :unhandled-tag
+@item :missing-attribute
+@item :invalid-attribute
+@item :invalid-tag
+@item :missing-property-value
+@item :invalid-value
+@item :version-mismatch
+@item :duplicate-id
+@end itemize
+
+
+@node button-box-style
+@subsection button-box-style
+@Enum button-box-style
+Values:
+@itemize
+@item :default-style
+@item :spread
+@item :edge
+@item :start
+@item :end
+@item :center
+@end itemize
+
+
+@node buttons-type
+@subsection buttons-type
+@Enum buttons-type
+Values:
+@itemize
+@item :none
+@item :ok
+@item :close
+@item :cancel
+@item :yes-no
+@item :ok-cancel
+@end itemize
+
+
+@node c-list-drag-pos
+@subsection c-list-drag-pos
+@Enum c-list-drag-pos
+Values:
+@itemize
+@item :none
+@item :before
+@item :into
+@item :after
+@end itemize
+
+
+@node c-tree-expander-style
+@subsection c-tree-expander-style
+@Enum c-tree-expander-style
+Values:
+@itemize
+@item :none
+@item :square
+@item :triangle
+@item :circular
+@end itemize
+
+
+@node c-tree-expansion-type
+@subsection c-tree-expansion-type
+@Enum c-tree-expansion-type
+Values:
+@itemize
+@item :expand
+@item :expand-recursive
+@item :collapse
+@item :collapse-recursive
+@item :toggle
+@item :toggle-recursive
+@end itemize
+
+
+@node c-tree-line-style
+@subsection c-tree-line-style
+@Enum c-tree-line-style
+Values:
+@itemize
+@item :none
+@item :solid
+@item :dotted
+@item :tabbed
+@end itemize
+
+
+@node c-tree-pos
+@subsection c-tree-pos
+@Enum c-tree-pos
+Values:
+@itemize
+@item :before
+@item :as-child
+@item :after
+@end itemize
+
+
+@node cell-renderer-accel-mode
+@subsection cell-renderer-accel-mode
+@Enum cell-renderer-accel-mode
+Values:
+@itemize
+@item :gtk
+@item :other
+@end itemize
+
+
+@node cell-renderer-mode
+@subsection cell-renderer-mode
+@Enum cell-renderer-mode
+Values:
+@itemize
+@item :inert
+@item :activatable
+@item :editable
+@end itemize
+
+
+@node cell-type
+@subsection cell-type
+@Enum cell-type
+Values:
+@itemize
+@item :empty
+@item :text
+@item :pixmap
+@item :pixtext
+@item :widget
+@end itemize
+
+
+@node corner-type
+@subsection corner-type
+@Enum corner-type
+Values:
+@itemize
+@item :top-left
+@item :bottom-left
+@item :top-right
+@item :bottom-right
+@end itemize
+
+
+@node curve-type
+@subsection curve-type
+@Enum curve-type
+Values:
+@itemize
+@item :linear
+@item :spline
+@item :free
+@end itemize
+
+
+@node delete-type
+@subsection delete-type
+@Enum delete-type
+Values:
+@itemize
+@item :chars
+@item :word-ends
+@item :words
+@item :display-lines
+@item :display-line-ends
+@item :paragraph-ends
+@item :paragraphs
+@item :whitespace
+@end itemize
+
+
+@node direction-type
+@subsection direction-type
+@Enum direction-type
+Values:
+@itemize
+@item :tab-forward
+@item :tab-backward
+@item :up
+@item :down
+@item :left
+@item :right
+@end itemize
+
+
+@node drag-result
+@subsection drag-result
+@Enum drag-result
+Values:
+@itemize
+@item :success
+@item :no-target
+@item :user-cancelled
+@item :timeout-expired
+@item :grab-broken
+@item :error
+@end itemize
+
+
+@node expander-style
+@subsection expander-style
+@Enum expander-style
+Values:
+@itemize
+@item :collapsed
+@item :semi-collapsed
+@item :semi-expanded
+@item :expanded
+@end itemize
+
+
+@node file-chooser-action
+@subsection file-chooser-action
+@Enum file-chooser-action
+Values:
+@itemize
+@item :open
+@item :save
+@item :select-folder
+@item :create-folder
+@end itemize
+
+
+@node file-chooser-confirmation
+@subsection file-chooser-confirmation
+@Enum file-chooser-confirmation
+Values:
+@itemize
+@item :confirm
+@item :accept-filename
+@item :select-again
+@end itemize
+
+
+@node file-chooser-error
+@subsection file-chooser-error
+@Enum file-chooser-error
+Values:
+@itemize
+@item :nonexistent
+@item :bad-filename
+@item :already-exists
+@item :incomplete-hostname
+@end itemize
+
+
+@node i-m-preedit-style
+@subsection i-m-preedit-style
+@Enum i-m-preedit-style
+Values:
+@itemize
+@item :nothing
+@item :callback
+@item :none
+@end itemize
+
+
+@node i-m-status-style
+@subsection i-m-status-style
+@Enum i-m-status-style
+Values:
+@itemize
+@item :nothing
+@item :callback
+@item :none
+@end itemize
+
+
+@node icon-size
+@subsection icon-size
+@Enum icon-size
+Values:
+@itemize
+@item :invalid
+@item :menu
+@item :small-toolbar
+@item :large-toolbar
+@item :button
+@item :dnd
+@item :dialog
+@end itemize
+
+
+@node icon-theme-error
+@subsection icon-theme-error
+@Enum icon-theme-error
+Values:
+@itemize
+@item :not-found
+@item :failed
+@end itemize
+
+
+@node icon-view-drop-position
+@subsection icon-view-drop-position
+@Enum icon-view-drop-position
+Values:
+@itemize
+@item :no-drop
+@item :drop-into
+@item :drop-left
+@item :drop-right
+@item :drop-above
+@item :drop-below
+@end itemize
+
+
+@node image-type
+@subsection image-type
+@Enum image-type
+Values:
+@itemize
+@item :empty
+@item :pixmap
+@item :image
+@item :pixbuf
+@item :stock
+@item :icon-set
+@item :animation
+@item :icon-name
+@item :gicon
+@end itemize
+
+
+@node justification
+@subsection justification
+@Enum justification
+Values:
+@itemize
+@item :left
+@item :right
+@item :center
+@item :fill
+@end itemize
+
+
+@node match-type
+@subsection match-type
+@Enum match-type
+Values:
+@itemize
+@item :all
+@item :all-tail
+@item :head
+@item :tail
+@item :exact
+@item :last
+@end itemize
+
+
+@node menu-direction-type
+@subsection menu-direction-type
+@Enum menu-direction-type
+Values:
+@itemize
+@item :parent
+@item :child
+@item :next
+@item :prev
+@end itemize
+
+
+@node message-type
+@subsection message-type
+@Enum message-type
+Values:
+@itemize
+@item :info
+@item :warning
+@item :question
+@item :error
+@item :other
+@end itemize
+
+
+@node metric-type
+@subsection metric-type
+@Enum metric-type
+Values:
+@itemize
+@item :pixels
+@item :inches
+@item :centimeters
+@end itemize
+
+
+@node movement-step
+@subsection movement-step
+@Enum movement-step
+Values:
+@itemize
+@item :logical-positions
+@item :visual-positions
+@item :words
+@item :display-lines
+@item :display-line-ends
+@item :paragraphs
+@item :paragraph-ends
+@item :pages
+@item :buffer-ends
+@item :horizontal-pages
+@end itemize
+
+
+@node notebook-tab
+@subsection notebook-tab
+@Enum notebook-tab
+Values:
+@itemize
+@item :first
+@item :last
+@end itemize
+
+
+@node number-up-layout
+@subsection number-up-layout
+@Enum number-up-layout
+Values:
+@itemize
+@item :lrtb
+@item :lrbt
+@item :rltb
+@item :rlbt
+@item :tblr
+@item :tbrl
+@item :btlr
+@item :btrl
+@end itemize
+
+
+@node orientation
+@subsection orientation
+@Enum orientation
+Values:
+@itemize
+@item :horizontal
+@item :vertical
+@end itemize
+
+
+@node pack-direction
+@subsection pack-direction
+@Enum pack-direction
+Values:
+@itemize
+@item :ltr
+@item :rtl
+@item :ttb
+@item :btt
+@end itemize
+
+
+@node pack-type
+@subsection pack-type
+@Enum pack-type
+Values:
+@itemize
+@item :start
+@item :end
+@end itemize
+
+
+@node page-orientation
+@subsection page-orientation
+@Enum page-orientation
+Values:
+@itemize
+@item :portrait
+@item :landscape
+@item :reverse-portrait
+@item :reverse-landscape
+@end itemize
+
+
+@node page-set
+@subsection page-set
+@Enum page-set
+Values:
+@itemize
+@item :all
+@item :even
+@item :odd
+@end itemize
+
+
+@node path-priority-type
+@subsection path-priority-type
+@Enum path-priority-type
+Values:
+@itemize
+@item :lowest
+@item :gtk
+@item :application
+@item :theme
+@item :rc
+@item :highest
+@end itemize
+
+
+@node path-type
+@subsection path-type
+@Enum path-type
+Values:
+@itemize
+@item :widget
+@item :widget-class
+@item :class
+@end itemize
+
+
+@node policy-type
+@subsection policy-type
+@Enum policy-type
+Values:
+@itemize
+@item :always
+@item :automatic
+@item :never
+@end itemize
+
+
+@node position-type
+@subsection position-type
+@Enum position-type
+Values:
+@itemize
+@item :left
+@item :right
+@item :top
+@item :bottom
+@end itemize
+
+
+@node preview-type
+@subsection preview-type
+@Enum preview-type
+Values:
+@itemize
+@item :color
+@item :grayscale
+@end itemize
+
+
+@node print-duplex
+@subsection print-duplex
+@Enum print-duplex
+Values:
+@itemize
+@item :simplex
+@item :horizontal
+@item :vertical
+@end itemize
+
+
+@node print-error
+@subsection print-error
+@Enum print-error
+Values:
+@itemize
+@item :general
+@item :internal-error
+@item :nomem
+@item :invalid-file
+@end itemize
+
+
+@node print-operation-action
+@subsection print-operation-action
+@Enum print-operation-action
+Values:
+@itemize
+@item :print-dialog
+@item :print
+@item :preview
+@item :export
+@end itemize
+
+
+@node print-operation-result
+@subsection print-operation-result
+@Enum print-operation-result
+Values:
+@itemize
+@item :error
+@item :apply
+@item :cancel
+@item :in-progress
+@end itemize
+
+
+@node print-pages
+@subsection print-pages
+@Enum print-pages
+Values:
+@itemize
+@item :all
+@item :current
+@item :ranges
+@end itemize
+
+
+@node print-quality
+@subsection print-quality
+@Enum print-quality
+Values:
+@itemize
+@item :low
+@item :normal
+@item :high
+@item :draft
+@end itemize
+
+
+@node print-status
+@subsection print-status
+@Enum print-status
+Values:
+@itemize
+@item :initial
+@item :preparing
+@item :generating-data
+@item :sending-data
+@item :pending
+@item :pending-issue
+@item :printing
+@item :finished
+@item :finished-aborted
+@end itemize
+
+
+@node progress-bar-orientation
+@subsection progress-bar-orientation
+@Enum progress-bar-orientation
+Values:
+@itemize
+@item :left-to-right
+@item :right-to-left
+@item :bottom-to-top
+@item :top-to-bottom
+@end itemize
+
+
+@node progress-bar-style
+@subsection progress-bar-style
+@Enum progress-bar-style
+Values:
+@itemize
+@item :continuous
+@item :discrete
+@end itemize
+
+
+@node rc-token-type
+@subsection rc-token-type
+@Enum rc-token-type
+Values:
+@itemize
+@item :invalid
+@item :include
+@item :normal
+@item :active
+@item :prelight
+@item :selected
+@item :insensitive
+@item :fg
+@item :bg
+@item :text
+@item :base
+@item :xthickness
+@item :ythickness
+@item :font
+@item :fontset
+@item :font-name
+@item :bg-pixmap
+@item :pixmap-path
+@item :style
+@item :binding
+@item :bind
+@item :widget
+@item :widget-class
+@item :class
+@item :lowest
+@item :gtk
+@item :application
+@item :theme
+@item :rc
+@item :highest
+@item :engine
+@item :module-path
+@item :im-module-path
+@item :im-module-file
+@item :stock
+@item :ltr
+@item :rtl
+@item :color
+@item :unbind
+@item :last
+@end itemize
+
+
+@node recent-chooser-error
+@subsection recent-chooser-error
+@Enum recent-chooser-error
+Values:
+@itemize
+@item :not-found
+@item :invalid-uri
+@end itemize
+
+
+@node recent-manager-error
+@subsection recent-manager-error
+@Enum recent-manager-error
+Values:
+@itemize
+@item :not-found
+@item :invalid-uri
+@item :invalid-encoding
+@item :not-registered
+@item :read
+@item :write
+@item :unknown
+@end itemize
+
+
+@node recent-sort-type
+@subsection recent-sort-type
+@Enum recent-sort-type
+Values:
+@itemize
+@item :none
+@item :mru
+@item :lru
+@item :custom
+@end itemize
+
+
+@node relief-style
+@subsection relief-style
+@Enum relief-style
+Values:
+@itemize
+@item :normal
+@item :half
+@item :none
+@end itemize
+
+
+@node resize-mode
+@subsection resize-mode
+@Enum resize-mode
+Values:
+@itemize
+@item :parent
+@item :queue
+@item :immediate
+@end itemize
+
+
+@node response-type
+@subsection response-type
+@Enum response-type
+Values:
+@itemize
+@item :none
+@item :reject
+@item :accept
+@item :delete-event
+@item :ok
+@item :cancel
+@item :close
+@item :yes
+@item :no
+@item :apply
+@item :help
+@end itemize
+
+
+@node scroll-step
+@subsection scroll-step
+@Enum scroll-step
+Values:
+@itemize
+@item :steps
+@item :pages
+@item :ends
+@item :horizontal-steps
+@item :horizontal-pages
+@item :horizontal-ends
+@end itemize
+
+
+@node scroll-type
+@subsection scroll-type
+@Enum scroll-type
+Values:
+@itemize
+@item :none
+@item :jump
+@item :step-backward
+@item :step-forward
+@item :page-backward
+@item :page-forward
+@item :step-up
+@item :step-down
+@item :page-up
+@item :page-down
+@item :step-left
+@item :step-right
+@item :page-left
+@item :page-right
+@item :start
+@item :end
+@end itemize
+
+
+@node selection-mode
+@subsection selection-mode
+@Enum selection-mode
+Values:
+@itemize
+@item :none
+@item :single
+@item :browse
+@item :multiple
+@item :extended
+@end itemize
+
+
+@node sensitivity-type
+@subsection sensitivity-type
+@Enum sensitivity-type
+Values:
+@itemize
+@item :auto
+@item :on
+@item :off
+@end itemize
+
+
+@node shadow-type
+@subsection shadow-type
+@Enum shadow-type
+Values:
+@itemize
+@item :none
+@item :in
+@item :out
+@item :etched-in
+@item :etched-out
+@end itemize
+
+
+@node side-type
+@subsection side-type
+@Enum side-type
+Values:
+@itemize
+@item :top
+@item :bottom
+@item :left
+@item :right
+@end itemize
+
+
+@node size-group-mode
+@subsection size-group-mode
+@Enum size-group-mode
+Values:
+@itemize
+@item :none
+@item :horizontal
+@item :vertical
+@item :both
+@end itemize
+
+
+@node sort-type
+@subsection sort-type
+@Enum sort-type
+Values:
+@itemize
+@item :ascending
+@item :descending
+@end itemize
+
+
+@node spin-button-update-policy
+@subsection spin-button-update-policy
+@Enum spin-button-update-policy
+Values:
+@itemize
+@item :always
+@item :if-valid
+@end itemize
+
+
+@node spin-type
+@subsection spin-type
+@Enum spin-type
+Values:
+@itemize
+@item :step-forward
+@item :step-backward
+@item :page-forward
+@item :page-backward
+@item :home
+@item :end
+@item :user-defined
+@end itemize
+
+
+@node state-type
+@subsection state-type
+@Enum state-type
+Values:
+@itemize
+@item :normal
+@item :active
+@item :prelight
+@item :selected
+@item :insensitive
+@end itemize
+
+
+@node submenu-direction
+@subsection submenu-direction
+@Enum submenu-direction
+Values:
+@itemize
+@item :left
+@item :right
+@end itemize
+
+
+@node submenu-placement
+@subsection submenu-placement
+@Enum submenu-placement
+Values:
+@itemize
+@item :top-bottom
+@item :left-right
+@end itemize
+
+
+@node text-buffer-target-info
+@subsection text-buffer-target-info
+@Enum text-buffer-target-info
+Values:
+@itemize
+@item :buffer-contents
+@item :rich-text
+@item :text
+@end itemize
+
+
+@node text-direction
+@subsection text-direction
+@Enum text-direction
+Values:
+@itemize
+@item :none
+@item :ltr
+@item :rtl
+@end itemize
+
+
+@node text-window-type
+@subsection text-window-type
+@Enum text-window-type
+Values:
+@itemize
+@item :private
+@item :widget
+@item :text
+@item :left
+@item :right
+@item :top
+@item :bottom
+@end itemize
+
+
+@node toolbar-child-type
+@subsection toolbar-child-type
+@Enum toolbar-child-type
+Values:
+@itemize
+@item :space
+@item :button
+@item :togglebutton
+@item :radiobutton
+@item :widget
+@end itemize
+
+
+@node toolbar-space-style
+@subsection toolbar-space-style
+@Enum toolbar-space-style
+Values:
+@itemize
+@item :empty
+@item :line
+@end itemize
+
+
+@node toolbar-style
+@subsection toolbar-style
+@Enum toolbar-style
+Values:
+@itemize
+@item :icons
+@item :text
+@item :both
+@item :both-horiz
+@end itemize
+
+
+@node tree-view-column-sizing
+@subsection tree-view-column-sizing
+@Enum tree-view-column-sizing
+Values:
+@itemize
+@item :grow-only
+@item :autosize
+@item :fixed
+@end itemize
+
+
+@node tree-view-drop-position
+@subsection tree-view-drop-position
+@Enum tree-view-drop-position
+Values:
+@itemize
+@item :before
+@item :after
+@item :into-or-before
+@item :into-or-after
+@end itemize
+
+
+@node tree-view-grid-lines
+@subsection tree-view-grid-lines
+@Enum tree-view-grid-lines
+Values:
+@itemize
+@item :none
+@item :horizontal
+@item :vertical
+@item :both
+@end itemize
+
+
+@node tree-view-mode
+@subsection tree-view-mode
+@Enum tree-view-mode
+Values:
+@itemize
+@item :line
+@item :item
+@end itemize
+
+
+@node unit
+@subsection unit
+@Enum unit
+Values:
+@itemize
+@item :pixel
+@item :points
+@item :inch
+@item :mm
+@end itemize
+
+
+@node update-type
+@subsection update-type
+@Enum update-type
+Values:
+@itemize
+@item :continuous
+@item :discontinuous
+@item :delayed
+@end itemize
+
+
+@node visibility
+@subsection visibility
+@Enum visibility
+Values:
+@itemize
+@item :none
+@item :partial
+@item :full
+@end itemize
+
+
+@node widget-help-type
+@subsection widget-help-type
+@Enum widget-help-type
+Values:
+@itemize
+@item :tooltip
+@item :whats-this
+@end itemize
+
+
+@node window-position
+@subsection window-position
+@Enum window-position
+Values:
+@itemize
+@item :none
+@item :center
+@item :mouse
+@item :center-always
+@item :center-on-parent
+@end itemize
+
+
+@node window-type
+@subsection window-type
+@Enum window-type
+Values:
+@itemize
+@item :toplevel
+@item :popup
+@end itemize
+
+
+@node wrap-mode
+@subsection wrap-mode
+@Enum wrap-mode
+Values:
+@itemize
+@item :none
+@item :char
+@item :word
+@item :word-char
+@end itemize
+
+
+@node gtk Flags
+@section gtk Flags
+
+@menu
+* accel-flags::
+* arg-flags::
+* attach-options::
+* button-action::
+* calendar-display-options::
+* cell-renderer-state::
+* debug-flag::
+* dest-defaults::
+* dialog-flags::
+* file-filter-flags::
+* gdk-modifier-type::
+* icon-lookup-flags::
+* object-flags::
+* private-flags::
+* rc-flags::
+* recent-filter-flags::
+* signal-run-type::
+* target-flags::
+* text-search-flags::
+* tree-model-flags::
+* ui-manager-item-type::
+* widget-flags::
+@end menu
+
+Reference of flags in package GTK
+
+@node accel-flags
+@subsection accel-flags
+@Flags accel-flags
+Values:
+@itemize
+@item :visible
+@item :locked
+@item :mask
+@end itemize
+
+
+@node arg-flags
+@subsection arg-flags
+@Flags arg-flags
+Values:
+@itemize
+@item :readable
+@item :writable
+@item :construct
+@item :construct-only
+@item :child-arg
+@end itemize
+
+
+@node attach-options
+@subsection attach-options
+@Flags attach-options
+Values:
+@itemize
+@item :expand
+@item :shrink
+@item :fill
+@end itemize
+
+
+@node button-action
+@subsection button-action
+@Flags button-action
+Values:
+@itemize
+@item :ignored
+@item :selects
+@item :drags
+@item :expands
+@end itemize
+
+
+@node calendar-display-options
+@subsection calendar-display-options
+@Flags calendar-display-options
+Values:
+@itemize
+@item :show-heading
+@item :show-day-names
+@item :no-month-change
+@item :show-week-numbers
+@item :week-start-monday
+@item :show-details
+@end itemize
+
+
+@node cell-renderer-state
+@subsection cell-renderer-state
+@Flags cell-renderer-state
+Values:
+@itemize
+@item :selected
+@item :prelit
+@item :insensitive
+@item :sorted
+@item :focused
+@end itemize
+
+
+@node debug-flag
+@subsection debug-flag
+@Flags debug-flag
+Values:
+@itemize
+@item :misc
+@item :plugsocket
+@item :text
+@item :tree
+@item :updates
+@item :keybindings
+@item :multihead
+@item :modules
+@item :geometry
+@item :icontheme
+@item :printing
+@item :builder
+@end itemize
+
+
+@node dest-defaults
+@subsection dest-defaults
+@Flags dest-defaults
+Values:
+@itemize
+@item :motion
+@item :highlight
+@item :drop
+@item :all
+@end itemize
+
+
+@node dialog-flags
+@subsection dialog-flags
+@Flags dialog-flags
+Values:
+@itemize
+@item :modal
+@item :destroy-with-parent
+@item :no-separator
+@end itemize
+
+
+@node file-filter-flags
+@subsection file-filter-flags
+@Flags file-filter-flags
+Values:
+@itemize
+@item :filename
+@item :uri
+@item :display-name
+@item :mime-type
+@end itemize
+
+
+@node gdk-modifier-type
+@subsection gdk-modifier-type
+@Flags gdk-modifier-type
+Values:
+@itemize
+@item :shift-mask
+@item :lock-mask
+@item :control-mask
+@item :mod1-mask
+@item :mod2-mask
+@item :mod3-mask
+@item :mod4-mask
+@item :mod5-mask
+@item :button1-mask
+@item :button2-mask
+@item :button3-mask
+@item :button4-mask
+@item :button5-mask
+@item :super-mask
+@item :hyper-mask
+@item :meta-mask
+@item :release-mask
+@item :modifier-mask
+@end itemize
+
+
+@node icon-lookup-flags
+@subsection icon-lookup-flags
+@Flags icon-lookup-flags
+Values:
+@itemize
+@item :no-svg
+@item :force-svg
+@item :use-builtin
+@item :generic-fallback
+@item :force-size
+@end itemize
+
+
+@node object-flags
+@subsection object-flags
+@Flags object-flags
+Values:
+@itemize
+@item :in-destruction
+@item :floating
+@item :reserved-1
+@item :reserved-2
+@end itemize
+
+
+@node private-flags
+@subsection private-flags
+@Flags private-flags
+Values:
+@itemize
+@item :user-style
+@item :resize-pending
+@item :has-pointer
+@item :shadowed
+@item :has-shape-mask
+@item :in-reparent
+@item :direction-set
+@item :direction-ltr
+@item :anchored
+@item :child-visible
+@item :redraw-on-alloc
+@item :alloc-needed
+@item :request-needed
+@end itemize
+
+
+@node rc-flags
+@subsection rc-flags
+@Flags rc-flags
+Values:
+@itemize
+@item :fg
+@item :bg
+@item :text
+@item :base
+@end itemize
+
+
+@node recent-filter-flags
+@subsection recent-filter-flags
+@Flags recent-filter-flags
+Values:
+@itemize
+@item :uri
+@item :display-name
+@item :mime-type
+@item :application
+@item :group
+@item :age
+@end itemize
+
+
+@node signal-run-type
+@subsection signal-run-type
+@Flags signal-run-type
+Values:
+@itemize
+@item :first
+@item :last
+@item :both
+@item :no-recurse
+@item :action
+@item :no-hooks
+@end itemize
+
+
+@node target-flags
+@subsection target-flags
+@Flags target-flags
+Values:
+@itemize
+@item :same-app
+@item :same-widget
+@item :other-app
+@item :other-widget
+@end itemize
+
+
+@node text-search-flags
+@subsection text-search-flags
+@Flags text-search-flags
+Values:
+@itemize
+@item :visible-only
+@item :text-only
+@end itemize
+
+
+@node tree-model-flags
+@subsection tree-model-flags
+@Flags tree-model-flags
+Values:
+@itemize
+@item :iters-persist
+@item :list-only
+@end itemize
+
+
+@node ui-manager-item-type
+@subsection ui-manager-item-type
+@Flags ui-manager-item-type
+Values:
+@itemize
+@item :auto
+@item :menubar
+@item :menu
+@item :toolbar
+@item :placeholder
+@item :popup
+@item :menuitem
+@item :toolitem
+@item :separator
+@item :accelerator
+@item :popup-with-accels
+@end itemize
+
+
+@node widget-flags
+@subsection widget-flags
+@Flags widget-flags
+Values:
+@itemize
+@item :toplevel
+@item :no-window
+@item :realized
+@item :mapped
+@item :visible
+@item :sensitive
+@item :parent-sensitive
+@item :can-focus
+@item :has-focus
+@item :can-default
+@item :has-default
+@item :has-grab
+@item :rc-style
+@item :composite-child
+@item :no-reparent
+@item :app-paintable
+@item :receives-default
+@item :double-buffered
+@item :no-show-all
+@end itemize
+
+
