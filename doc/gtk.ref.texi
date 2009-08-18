@@ -1,5 +1,7 @@
 @menu
 * gtk Classes::
+* gtk Structs::
+* gtk Opaque Boxeds::
 * gtk Enums::
 * gtk Flags::
 @end menu
@@ -886,7 +888,7 @@ Slots:
 
 
 
-@item cell-background-gdk. Type: GdkColor (flags: readable writable)
+@item cell-background-gdk. Type: @ref{color} (flags: readable writable)
 
 
 
@@ -1007,7 +1009,7 @@ Slots:
 @end itemize
 Signals:
 @itemize
-@item changed. (@code{string}, GtkTreeIter) -> @code{null}  [run-last]
+@item changed. (@code{string}, @ref{tree-iter}) -> @code{null}  [run-last]
 
 @end itemize
 
@@ -1146,7 +1148,7 @@ Slots:
 
 
 
-@item background-gdk. Type: GdkColor (flags: readable writable)
+@item background-gdk. Type: @ref{color} (flags: readable writable)
 
 
 
@@ -1190,7 +1192,7 @@ Slots:
 
 
 
-@item foreground-gdk. Type: GdkColor (flags: readable writable)
+@item foreground-gdk. Type: @ref{color} (flags: readable writable)
 
 
 
@@ -1360,7 +1362,7 @@ Slots:
 
 
 
-@item background-gdk. Type: GdkColor (flags: readable writable)
+@item background-gdk. Type: @ref{color} (flags: readable writable)
 
 
 
@@ -1444,7 +1446,7 @@ Slots:
 
 
 
-@item color. Type: GdkColor (flags: readable writable)
+@item color. Type: @ref{color} (flags: readable writable)
 
 
 
@@ -1475,7 +1477,7 @@ Slots:
 
 
 
-@item current-color. Type: GdkColor (flags: readable writable)
+@item current-color. Type: @ref{color} (flags: readable writable)
 
 
 
@@ -1768,7 +1770,7 @@ Slots:
 
 
 
-@item inner-border. Type: GtkBorder (flags: readable writable)
+@item inner-border. Type: @ref{border} (flags: readable writable)
 
 
 
@@ -1917,9 +1919,9 @@ Signals:
 
 @item delete-from-cursor. (@ref{delete-type}, @code{integer}) -> @code{null}  [run-last, action]
 
-@item icon-press. (GtkEntryIconPosition, GdkEvent) -> @code{null}  [run-last]
+@item icon-press. (GtkEntryIconPosition, @ref{event}) -> @code{null}  [run-last]
 
-@item icon-release. (GtkEntryIconPosition, GdkEvent) -> @code{null}  [run-last]
+@item icon-release. (GtkEntryIconPosition, @ref{event}) -> @code{null}  [run-last]
 
 @item insert-at-cursor. (@code{string}) -> @code{null}  [run-last, action]
 
@@ -1978,11 +1980,11 @@ Signals:
 @itemize
 @item action-activated. (@code{integer}) -> @code{null}  [run-last]
 
-@item cursor-on-match. (@ref{tree-model}, GtkTreeIter) -> @code{boolean}  [run-last]
+@item cursor-on-match. (@ref{tree-model}, @ref{tree-iter}) -> @code{boolean}  [run-last]
 
 @item insert-prefix. (@code{string}) -> @code{boolean}  [run-last]
 
-@item match-selected. (@ref{tree-model}, GtkTreeIter) -> @code{boolean}  [run-last]
+@item match-selected. (@ref{tree-model}, @ref{tree-iter}) -> @code{boolean}  [run-last]
 
 @end itemize
 
@@ -2274,7 +2276,7 @@ Superclasses: @ref{v-box}, @ref{atk-implementor-iface}, @ref{buildable}, @ref{or
 
 Slots:
 @itemize
-@item font. Type: GdkFont (flags: readable)
+@item font. Type: @ref{font} (flags: readable)
 
 
 
@@ -2510,7 +2512,7 @@ Signals:
 
 @item activate-focus. () -> @code{null}  [run-last, action]
 
-@item frame-event. (GdkEvent) -> @code{boolean}  [run-last]
+@item frame-event. (@ref{event}) -> @code{boolean}  [run-last]
 
 @item keys-changed. () -> @code{null}  [run-first]
 
@@ -2771,7 +2773,7 @@ Signals:
 @itemize
 @item activate-cursor-item. () -> @code{boolean}  [run-last, action]
 
-@item item-activated. (GtkTreePath) -> @code{null}  [run-last]
+@item item-activated. (@ref{tree-path}) -> @code{null}  [run-last]
 
 @item move-cursor. (@ref{movement-step}, @code{integer}) -> @code{boolean}  [run-last, action]
 
@@ -4693,15 +4695,15 @@ Signals:
 @itemize
 @item activate. () -> @code{null}  [run-first, action]
 
-@item button-press-event. (GdkEvent) -> @code{boolean}  [run-last]
+@item button-press-event. (@ref{event}) -> @code{boolean}  [run-last]
 
-@item button-release-event. (GdkEvent) -> @code{boolean}  [run-last]
+@item button-release-event. (@ref{event}) -> @code{boolean}  [run-last]
 
 @item popup-menu. (@code{(integer 0)}, @code{(integer 0)}) -> @code{null}  [run-first, action]
 
 @item query-tooltip. (@code{integer}, @code{integer}, @code{boolean}, @ref{tooltip}) -> @code{boolean}  [run-last]
 
-@item scroll-event. (GdkEvent) -> @code{boolean}  [run-last]
+@item scroll-event. (@ref{event}) -> @code{boolean}  [run-last]
 
 @item size-changed. (@code{integer}) -> @code{boolean}  [run-last]
 
@@ -4853,31 +4855,31 @@ Slots:
 @end itemize
 Signals:
 @itemize
-@item apply-tag. (@ref{text-tag}, GtkTextIter, GtkTextIter) -> @code{null}  [run-last]
+@item apply-tag. (@ref{text-tag}, @ref{text-iter}, @ref{text-iter}) -> @code{null}  [run-last]
 
 @item begin-user-action. () -> @code{null}  [run-last]
 
 @item changed. () -> @code{null}  [run-last]
 
-@item delete-range. (GtkTextIter, GtkTextIter) -> @code{null}  [run-last]
+@item delete-range. (@ref{text-iter}, @ref{text-iter}) -> @code{null}  [run-last]
 
 @item end-user-action. () -> @code{null}  [run-last]
 
-@item insert-child-anchor. (GtkTextIter, @ref{text-child-anchor}) -> @code{null}  [run-last]
+@item insert-child-anchor. (@ref{text-iter}, @ref{text-child-anchor}) -> @code{null}  [run-last]
 
-@item insert-pixbuf. (GtkTextIter, @ref{pixbuf}) -> @code{null}  [run-last]
+@item insert-pixbuf. (@ref{text-iter}, @ref{pixbuf}) -> @code{null}  [run-last]
 
-@item insert-text. (GtkTextIter, @code{string}, @code{integer}) -> @code{null}  [run-last]
+@item insert-text. (@ref{text-iter}, @code{string}, @code{integer}) -> @code{null}  [run-last]
 
 @item mark-deleted. (@ref{text-mark}) -> @code{null}  [run-last]
 
-@item mark-set. (GtkTextIter, @ref{text-mark}) -> @code{null}  [run-last]
+@item mark-set. (@ref{text-iter}, @ref{text-mark}) -> @code{null}  [run-last]
 
 @item modified-changed. () -> @code{null}  [run-last]
 
 @item paste-done. (@ref{clipboard}) -> @code{null}  [run-last]
 
-@item remove-tag. (@ref{text-tag}, GtkTextIter, GtkTextIter) -> @code{null}  [run-last]
+@item remove-tag. (@ref{text-tag}, @ref{text-iter}, @ref{text-iter}) -> @code{null}  [run-last]
 
 @end itemize
 
@@ -4939,7 +4941,7 @@ Slots:
 
 
 
-@item background-gdk. Type: GdkColor (flags: readable writable)
+@item background-gdk. Type: @ref{color} (flags: readable writable)
 
 
 
@@ -4987,7 +4989,7 @@ Slots:
 
 
 
-@item foreground-gdk. Type: GdkColor (flags: readable writable)
+@item foreground-gdk. Type: @ref{color} (flags: readable writable)
 
 
 
@@ -5051,7 +5053,7 @@ Slots:
 
 
 
-@item paragraph-background-gdk. Type: GdkColor (flags: readable writable)
+@item paragraph-background-gdk. Type: @ref{color} (flags: readable writable)
 
 
 
@@ -5188,7 +5190,7 @@ Slots:
 @end itemize
 Signals:
 @itemize
-@item event. (@ref{g-object}, GdkEvent, GtkTextIter) -> @code{boolean}  [run-last]
+@item event. (@ref{g-object}, @ref{event}, @ref{text-iter}) -> @code{boolean}  [run-last]
 
 @end itemize
 
@@ -5625,15 +5627,15 @@ None
 
 Signals:
 @itemize
-@item row-changed. (GtkTreePath, GtkTreeIter) -> @code{null}  [run-last]
+@item row-changed. (@ref{tree-path}, @ref{tree-iter}) -> @code{null}  [run-last]
 
-@item row-deleted. (GtkTreePath) -> @code{null}  [run-first]
+@item row-deleted. (@ref{tree-path}) -> @code{null}  [run-first]
 
-@item row-has-child-toggled. (GtkTreePath, GtkTreeIter) -> @code{null}  [run-last]
+@item row-has-child-toggled. (@ref{tree-path}, @ref{tree-iter}) -> @code{null}  [run-last]
 
-@item row-inserted. (GtkTreePath, GtkTreeIter) -> @code{null}  [run-first]
+@item row-inserted. (@ref{tree-path}, @ref{tree-iter}) -> @code{null}  [run-first]
 
-@item rows-reordered. (GtkTreePath, GtkTreeIter, @code{foreign-pointer}) -> @code{null}  [run-first]
+@item rows-reordered. (@ref{tree-path}, @ref{tree-iter}, @code{foreign-pointer}) -> @code{null}  [run-first]
 
 @end itemize
 
@@ -5649,7 +5651,7 @@ Slots:
 
 
 
-@item virtual-root. Type: GtkTreePath (flags: readable writable constructor-only)
+@item virtual-root. Type: @ref{tree-path} (flags: readable writable constructor-only)
 
 
 
@@ -5829,11 +5831,11 @@ Signals:
 
 @item move-cursor. (@ref{movement-step}, @code{integer}) -> @code{boolean}  [run-last, action]
 
-@item row-activated. (GtkTreePath, @ref{tree-view-column}) -> @code{null}  [run-last, action]
+@item row-activated. (@ref{tree-path}, @ref{tree-view-column}) -> @code{null}  [run-last, action]
 
-@item row-collapsed. (GtkTreeIter, GtkTreePath) -> @code{null}  [run-last]
+@item row-collapsed. (@ref{tree-iter}, @ref{tree-path}) -> @code{null}  [run-last]
 
-@item row-expanded. (GtkTreeIter, GtkTreePath) -> @code{null}  [run-last]
+@item row-expanded. (@ref{tree-iter}, @ref{tree-path}) -> @code{null}  [run-last]
 
 @item select-all. () -> @code{boolean}  [run-last, action]
 
@@ -5845,9 +5847,9 @@ Signals:
 
 @item start-interactive-search. () -> @code{boolean}  [run-last, action]
 
-@item test-collapse-row. (GtkTreeIter, GtkTreePath) -> @code{boolean}  [run-last]
+@item test-collapse-row. (@ref{tree-iter}, @ref{tree-path}) -> @code{boolean}  [run-last]
 
-@item test-expand-row. (GtkTreeIter, GtkTreePath) -> @code{boolean}  [run-last]
+@item test-expand-row. (@ref{tree-iter}, @ref{tree-path}) -> @code{boolean}  [run-last]
 
 @item toggle-cursor-row. () -> @code{boolean}  [run-last, action]
 
@@ -6201,25 +6203,25 @@ Signals:
 @itemize
 @item accel-closures-changed. () -> @code{null} 
 
-@item button-press-event. (GdkEvent) -> @code{boolean}  [run-last]
+@item button-press-event. (@ref{event}) -> @code{boolean}  [run-last]
 
-@item button-release-event. (GdkEvent) -> @code{boolean}  [run-last]
+@item button-release-event. (@ref{event}) -> @code{boolean}  [run-last]
 
 @item can-activate-accel. (@code{(integer 0)}) -> @code{boolean}  [run-last]
 
 @item child-notify. (@code{class-property-info}) -> @code{null}  [run-first, no-recurse, detailed, no-hooks]
 
-@item client-event. (GdkEvent) -> @code{boolean}  [run-last]
+@item client-event. (@ref{event}) -> @code{boolean}  [run-last]
 
 @item composited-changed. () -> @code{null}  [run-last, action]
 
-@item configure-event. (GdkEvent) -> @code{boolean}  [run-last]
+@item configure-event. (@ref{event}) -> @code{boolean}  [run-last]
 
-@item damage-event. (GdkEvent) -> @code{boolean}  [run-last]
+@item damage-event. (@ref{event}) -> @code{boolean}  [run-last]
 
-@item delete-event. (GdkEvent) -> @code{boolean}  [run-last]
+@item delete-event. (@ref{event}) -> @code{boolean}  [run-last]
 
-@item destroy-event. (GdkEvent) -> @code{boolean}  [run-last]
+@item destroy-event. (@ref{event}) -> @code{boolean}  [run-last]
 
 @item direction-changed. (@ref{text-direction}) -> @code{null}  [run-first]
 
@@ -6241,21 +6243,21 @@ Signals:
 
 @item drag-motion. (@ref{drag-context}, @code{integer}, @code{integer}, @code{(integer 0)}) -> @code{boolean}  [run-last]
 
-@item enter-notify-event. (GdkEvent) -> @code{boolean}  [run-last]
+@item enter-notify-event. (@ref{event}) -> @code{boolean}  [run-last]
 
-@item event. (GdkEvent) -> @code{boolean}  [run-last]
+@item event. (@ref{event}) -> @code{boolean}  [run-last]
 
-@item event-after. (GdkEvent) -> @code{null} 
+@item event-after. (@ref{event}) -> @code{null} 
 
-@item expose-event. (GdkEvent) -> @code{boolean}  [run-last]
+@item expose-event. (@ref{event}) -> @code{boolean}  [run-last]
 
 @item focus. (@ref{direction-type}) -> @code{boolean}  [run-last]
 
-@item focus-in-event. (GdkEvent) -> @code{boolean}  [run-last]
+@item focus-in-event. (@ref{event}) -> @code{boolean}  [run-last]
 
-@item focus-out-event. (GdkEvent) -> @code{boolean}  [run-last]
+@item focus-out-event. (@ref{event}) -> @code{boolean}  [run-last]
 
-@item grab-broken-event. (GdkEvent) -> @code{boolean}  [run-last]
+@item grab-broken-event. (@ref{event}) -> @code{boolean}  [run-last]
 
 @item grab-focus. () -> @code{null}  [run-last, action]
 
@@ -6265,35 +6267,35 @@ Signals:
 
 @item hierarchy-changed. (@ref{widget}) -> @code{null}  [run-last]
 
-@item key-press-event. (GdkEvent) -> @code{boolean}  [run-last]
+@item key-press-event. (@ref{event}) -> @code{boolean}  [run-last]
 
-@item key-release-event. (GdkEvent) -> @code{boolean}  [run-last]
+@item key-release-event. (@ref{event}) -> @code{boolean}  [run-last]
 
 @item keynav-failed. (@ref{direction-type}) -> @code{boolean}  [run-last]
 
-@item leave-notify-event. (GdkEvent) -> @code{boolean}  [run-last]
+@item leave-notify-event. (@ref{event}) -> @code{boolean}  [run-last]
 
 @item map. () -> @code{null}  [run-first]
 
-@item map-event. (GdkEvent) -> @code{boolean}  [run-last]
+@item map-event. (@ref{event}) -> @code{boolean}  [run-last]
 
 @item mnemonic-activate. (@code{boolean}) -> @code{boolean}  [run-last]
 
-@item motion-notify-event. (GdkEvent) -> @code{boolean}  [run-last]
+@item motion-notify-event. (@ref{event}) -> @code{boolean}  [run-last]
 
 @item move-focus. (@ref{direction-type}) -> @code{null}  [run-last, action]
 
-@item no-expose-event. (GdkEvent) -> @code{boolean}  [run-last]
+@item no-expose-event. (@ref{event}) -> @code{boolean}  [run-last]
 
 @item parent-set. (@ref{widget}) -> @code{null}  [run-first]
 
 @item popup-menu. () -> @code{boolean}  [run-last, action]
 
-@item property-notify-event. (GdkEvent) -> @code{boolean}  [run-last]
+@item property-notify-event. (@ref{event}) -> @code{boolean}  [run-last]
 
-@item proximity-in-event. (GdkEvent) -> @code{boolean}  [run-last]
+@item proximity-in-event. (@ref{event}) -> @code{boolean}  [run-last]
 
-@item proximity-out-event. (GdkEvent) -> @code{boolean}  [run-last]
+@item proximity-out-event. (@ref{event}) -> @code{boolean}  [run-last]
 
 @item query-tooltip. (@code{integer}, @code{integer}, @code{boolean}, @ref{tooltip}) -> @code{boolean}  [run-last]
 
@@ -6301,23 +6303,23 @@ Signals:
 
 @item screen-changed. (@ref{screen}) -> @code{null}  [run-last]
 
-@item scroll-event. (GdkEvent) -> @code{boolean}  [run-last]
+@item scroll-event. (@ref{event}) -> @code{boolean}  [run-last]
 
-@item selection-clear-event. (GdkEvent) -> @code{boolean}  [run-last]
+@item selection-clear-event. (@ref{event}) -> @code{boolean}  [run-last]
 
 @item selection-get. (GtkSelectionData, @code{(integer 0)}, @code{(integer 0)}) -> @code{null}  [run-last]
 
-@item selection-notify-event. (GdkEvent) -> @code{boolean}  [run-last]
+@item selection-notify-event. (@ref{event}) -> @code{boolean}  [run-last]
 
 @item selection-received. (GtkSelectionData, @code{(integer 0)}) -> @code{null}  [run-last]
 
-@item selection-request-event. (GdkEvent) -> @code{boolean}  [run-last]
+@item selection-request-event. (@ref{event}) -> @code{boolean}  [run-last]
 
 @item show. () -> @code{null}  [run-first]
 
 @item show-help. (@ref{widget-help-type}) -> @code{boolean}  [run-last, action]
 
-@item size-allocate. (GdkRectangle) -> @code{null}  [run-first]
+@item size-allocate. (@ref{rectangle}) -> @code{null}  [run-first]
 
 @item size-request. (GtkRequisition) -> @code{null}  [run-first]
 
@@ -6327,13 +6329,13 @@ Signals:
 
 @item unmap. () -> @code{null}  [run-first]
 
-@item unmap-event. (GdkEvent) -> @code{boolean}  [run-last]
+@item unmap-event. (@ref{event}) -> @code{boolean}  [run-last]
 
 @item unrealize. () -> @code{null}  [run-last]
 
-@item visibility-notify-event. (GdkEvent) -> @code{boolean}  [run-last]
+@item visibility-notify-event. (@ref{event}) -> @code{boolean}  [run-last]
 
-@item window-state-event. (GdkEvent) -> @code{boolean}  [run-last]
+@item window-state-event. (@ref{event}) -> @code{boolean}  [run-last]
 
 @end itemize
 
@@ -6347,6 +6349,151 @@ Slots:
 None
 
 Signals:
+None
+
+
+@node gtk Structs
+@section gtk Structs
+
+@menu
+* border::
+* progress-display::
+* progress-window::
+* tree-iter::
+* tree-node::
+@end menu
+
+Reference of structs in package GTK
+
+@node border
+@subsection border
+@Class border
+
+Superclasses: @code{structure-object}
+
+Subclasses: None
+
+Slots:
+@itemize
+@item bottom
+
+@item left
+
+@item right
+
+@item top
+
+@end itemize
+
+@node progress-display
+@subsection progress-display
+@Class progress-display
+
+Superclasses: @code{structure-object}
+
+Subclasses: @ref{progress-window}
+
+Slots:
+@itemize
+@item bar
+
+@item count
+
+@item current
+
+@item name
+
+@item parent
+
+@item time-started
+
+@end itemize
+
+@node progress-window
+@subsection progress-window
+@Class progress-window
+
+Superclasses: @ref{progress-display}
+
+Subclasses: None
+
+Slots:
+@itemize
+@item box
+
+@item window
+
+@end itemize
+
+@node tree-iter
+@subsection tree-iter
+@Class tree-iter
+
+Superclasses: @code{structure-object}
+
+Subclasses: None
+
+Slots:
+@itemize
+@item stamp
+
+@item user-data
+
+@item user-data-2
+
+@item user-data-3
+
+@end itemize
+
+@node tree-node
+@subsection tree-node
+@Class tree-node
+
+Superclasses: @code{structure-object}
+
+Subclasses: None
+
+Slots:
+@itemize
+@item children
+
+@item id
+
+@item item
+
+@item parent
+
+@item tree
+
+@end itemize
+
+@node gtk Opaque Boxeds
+@section gtk Opaque Boxeds
+
+@menu
+* text-iter::
+* tree-path::
+@end menu
+
+Reference of opaque boxeds in package GTK
+
+@node text-iter
+@subsection text-iter
+@Class text-iter
+
+Superclasses: @ref{g-boxed-opaque}
+
+Slots:
+None
+
+
+@node tree-path
+@subsection tree-path
+@Class tree-path
+
+Superclasses: @ref{g-boxed-opaque}
+
+Slots:
 None
 
 

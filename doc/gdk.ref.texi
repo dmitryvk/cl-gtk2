@@ -1,5 +1,7 @@
 @menu
 * gdk Classes::
+* gdk Structs::
+* gdk Opaque Boxeds::
 * gdk Enums::
 * gdk Flags::
 @end menu
@@ -233,6 +235,635 @@ Signals:
 @item size-changed. () -> @code{null}  [run-last]
 
 @end itemize
+
+@node gdk Structs
+@section gdk Structs
+
+@menu
+* color::
+* event::
+* event-button::
+* event-client::
+* event-client-16::
+* event-client-32::
+* event-client-8::
+* event-configure::
+* event-crossing::
+* event-dnd::
+* event-expose::
+* event-focus::
+* event-grab-broken::
+* event-key::
+* event-motion::
+* event-no-expose::
+* event-owner-change::
+* event-property::
+* event-proximity::
+* event-scroll::
+* event-selection::
+* event-setting::
+* event-visibility::
+* event-window-state::
+* font::
+* geometry::
+* rectangle::
+@end menu
+
+Reference of structs in package GDK
+
+@node color
+@subsection color
+@Class color
+
+Superclasses: @code{structure-object}
+
+Subclasses: None
+
+Slots:
+@itemize
+@item blue
+
+@item green
+
+@item pixel
+
+@item red
+
+@end itemize
+
+@node event
+@subsection event
+@Class event
+
+Superclasses: @code{structure-object}
+
+Subclasses: @ref{event-key}, @ref{event-button}, @ref{event-scroll}, @ref{event-motion}, @ref{event-expose}, @ref{event-visibility}, @ref{event-crossing}, @ref{event-focus}, @ref{event-configure}, @ref{event-property}, @ref{event-selection}, @ref{event-dnd}, @ref{event-proximity}, @ref{event-client}, @ref{event-no-expose}, @ref{event-window-state}, @ref{event-setting}, @ref{event-owner-change}, @ref{event-grab-broken}
+
+Slots:
+@itemize
+@item send-event
+
+@item type
+
+@item window
+
+@end itemize
+
+@node event-button
+@subsection event-button
+@Class event-button
+
+Superclasses: @ref{event}
+
+Subclasses: None
+
+Slots:
+@itemize
+@item axes
+
+@item button
+
+@item device
+
+@item state
+
+@item time
+
+@item type
+
+@item x
+
+@item x-root
+
+@item y
+
+@item y-root
+
+@end itemize
+
+@node event-client
+@subsection event-client
+@Class event-client
+
+Superclasses: @ref{event}
+
+Subclasses: @ref{event-client-8}, @ref{event-client-16}, @ref{event-client-32}
+
+Slots:
+@itemize
+@item data-format
+
+@item message-time
+
+@item type
+
+@end itemize
+
+@node event-client-16
+@subsection event-client-16
+@Class event-client-16
+
+Superclasses: @ref{event-client}
+
+Subclasses: None
+
+Slots:
+@itemize
+@item data
+
+@item data-format
+
+@end itemize
+
+@node event-client-32
+@subsection event-client-32
+@Class event-client-32
+
+Superclasses: @ref{event-client}
+
+Subclasses: None
+
+Slots:
+@itemize
+@item data
+
+@item data-format
+
+@end itemize
+
+@node event-client-8
+@subsection event-client-8
+@Class event-client-8
+
+Superclasses: @ref{event-client}
+
+Subclasses: None
+
+Slots:
+@itemize
+@item data
+
+@item data-format
+
+@end itemize
+
+@node event-configure
+@subsection event-configure
+@Class event-configure
+
+Superclasses: @ref{event}
+
+Subclasses: None
+
+Slots:
+@itemize
+@item height
+
+@item type
+
+@item width
+
+@item x
+
+@item y
+
+@end itemize
+
+@node event-crossing
+@subsection event-crossing
+@Class event-crossing
+
+Superclasses: @ref{event}
+
+Subclasses: None
+
+Slots:
+@itemize
+@item detail
+
+@item focus
+
+@item mode
+
+@item state
+
+@item sub-window
+
+@item time
+
+@item type
+
+@item x
+
+@item x-root
+
+@item y
+
+@item y-root
+
+@end itemize
+
+@node event-dnd
+@subsection event-dnd
+@Class event-dnd
+
+Superclasses: @ref{event}
+
+Subclasses: None
+
+Slots:
+@itemize
+@item drag-context
+
+@item time
+
+@item type
+
+@item x-root
+
+@item y-root
+
+@end itemize
+
+@node event-expose
+@subsection event-expose
+@Class event-expose
+
+Superclasses: @ref{event}
+
+Subclasses: None
+
+Slots:
+@itemize
+@item area
+
+@item count
+
+@item region
+
+@item type
+
+@end itemize
+
+@node event-focus
+@subsection event-focus
+@Class event-focus
+
+Superclasses: @ref{event}
+
+Subclasses: None
+
+Slots:
+@itemize
+@item in
+
+@item type
+
+@end itemize
+
+@node event-grab-broken
+@subsection event-grab-broken
+@Class event-grab-broken
+
+Superclasses: @ref{event}
+
+Subclasses: None
+
+Slots:
+@itemize
+@item grab-window
+
+@item implicit
+
+@item keyboard
+
+@item type
+
+@end itemize
+
+@node event-key
+@subsection event-key
+@Class event-key
+
+Superclasses: @ref{event}
+
+Subclasses: None
+
+Slots:
+@itemize
+@item group
+
+@item hardware-keycode
+
+@item is-modifier
+
+@item keyval
+
+@item length
+
+@item state
+
+@item string
+
+@item time
+
+@item type
+
+@end itemize
+
+@node event-motion
+@subsection event-motion
+@Class event-motion
+
+Superclasses: @ref{event}
+
+Subclasses: None
+
+Slots:
+@itemize
+@item axes
+
+@item device
+
+@item is-hint
+
+@item state
+
+@item time
+
+@item type
+
+@item x
+
+@item x-root
+
+@item y
+
+@item y-root
+
+@end itemize
+
+@node event-no-expose
+@subsection event-no-expose
+@Class event-no-expose
+
+Superclasses: @ref{event}
+
+Subclasses: None
+
+Slots:
+@itemize
+@item type
+
+@end itemize
+
+@node event-owner-change
+@subsection event-owner-change
+@Class event-owner-change
+
+Superclasses: @ref{event}
+
+Subclasses: None
+
+Slots:
+@itemize
+@item owner
+
+@item reason
+
+@item selection
+
+@item selection-time
+
+@item time
+
+@item type
+
+@end itemize
+
+@node event-property
+@subsection event-property
+@Class event-property
+
+Superclasses: @ref{event}
+
+Subclasses: None
+
+Slots:
+@itemize
+@item atom
+
+@item state
+
+@item time
+
+@item type
+
+@end itemize
+
+@node event-proximity
+@subsection event-proximity
+@Class event-proximity
+
+Superclasses: @ref{event}
+
+Subclasses: None
+
+Slots:
+@itemize
+@item device
+
+@item time
+
+@item type
+
+@end itemize
+
+@node event-scroll
+@subsection event-scroll
+@Class event-scroll
+
+Superclasses: @ref{event}
+
+Subclasses: None
+
+Slots:
+@itemize
+@item device
+
+@item direction
+
+@item state
+
+@item time
+
+@item type
+
+@item x
+
+@item x-root
+
+@item y
+
+@item y-root
+
+@end itemize
+
+@node event-selection
+@subsection event-selection
+@Class event-selection
+
+Superclasses: @ref{event}
+
+Subclasses: None
+
+Slots:
+@itemize
+@item property
+
+@item requestor
+
+@item selection
+
+@item target
+
+@item time
+
+@item type
+
+@end itemize
+
+@node event-setting
+@subsection event-setting
+@Class event-setting
+
+Superclasses: @ref{event}
+
+Subclasses: None
+
+Slots:
+@itemize
+@item action
+
+@item name
+
+@item type
+
+@end itemize
+
+@node event-visibility
+@subsection event-visibility
+@Class event-visibility
+
+Superclasses: @ref{event}
+
+Subclasses: None
+
+Slots:
+@itemize
+@item state
+
+@item type
+
+@end itemize
+
+@node event-window-state
+@subsection event-window-state
+@Class event-window-state
+
+Superclasses: @ref{event}
+
+Subclasses: None
+
+Slots:
+@itemize
+@item changed-mask
+
+@item new-window-state
+
+@item type
+
+@end itemize
+
+@node font
+@subsection font
+@Class font
+
+Superclasses: @code{structure-object}
+
+Subclasses: None
+
+Slots:
+@itemize
+@item ascent
+
+@item descent
+
+@item type
+
+@end itemize
+
+@node geometry
+@subsection geometry
+@Class geometry
+
+Superclasses: @code{structure-object}
+
+Subclasses: None
+
+Slots:
+@itemize
+@item base-height
+
+@item base-width
+
+@item gravity
+
+@item height-increment
+
+@item max-aspect
+
+@item max-height
+
+@item max-width
+
+@item min-aspect
+
+@item min-height
+
+@item min-width
+
+@item width-increment
+
+@end itemize
+
+@node rectangle
+@subsection rectangle
+@Class rectangle
+
+Superclasses: @code{structure-object}
+
+Subclasses: None
+
+Slots:
+@itemize
+@item height
+
+@item width
+
+@item x
+
+@item y
+
+@end itemize
+
+@node gdk Opaque Boxeds
+@section gdk Opaque Boxeds
+
+@menu
+@end menu
+
+Reference of opaque boxeds in package GDK
 
 @node gdk Enums
 @section gdk Enums

@@ -1,5 +1,7 @@
 @menu
 * gobject Classes::
+* gobject Structs::
+* gobject Opaque Boxeds::
 * gobject Enums::
 * gobject Flags::
 @end menu
@@ -43,6 +45,127 @@ Slots:
 Signals:
 None
 
+
+@node gobject Structs
+@section gobject Structs
+
+@menu
+* enum-item::
+* flags-item::
+* g-class-property-definition::
+* signal-info::
+@end menu
+
+Reference of structs in package GOBJECT
+
+@node enum-item
+@subsection enum-item
+@Class enum-item
+
+Superclasses: @code{structure-object}
+
+Subclasses: None
+
+Slots:
+@itemize
+@item name
+
+@item nick
+
+@item value
+
+@end itemize
+
+@node flags-item
+@subsection flags-item
+@Class flags-item
+
+Superclasses: @code{structure-object}
+
+Subclasses: None
+
+Slots:
+@itemize
+@item name
+
+@item nick
+
+@item value
+
+@end itemize
+
+@node g-class-property-definition
+@subsection g-class-property-definition
+@Class g-class-property-definition
+
+Superclasses: @code{structure-object}
+
+Subclasses: None
+
+Slots:
+@itemize
+@item constructor
+
+@item constructor-only
+
+@item name
+
+@item owner-type
+
+@item readable
+
+@item type
+
+@item writable
+
+@end itemize
+
+@node signal-info
+@subsection signal-info
+@Class signal-info
+
+Superclasses: @code{structure-object}
+
+Subclasses: None
+
+Slots:
+@itemize
+@item detail
+
+@item flags
+
+@item id
+
+@item name
+
+@item owner-type
+
+@item param-types
+
+@item return-type
+
+@end itemize
+
+@node gobject Opaque Boxeds
+@section gobject Opaque Boxeds
+
+@menu
+* g-boxed-opaque::
+@end menu
+
+Reference of opaque boxeds in package GOBJECT
+
+@node g-boxed-opaque
+@subsection g-boxed-opaque
+@Class g-boxed-opaque
+
+Superclasses: @code{standard-object}
+
+Slots:
+@itemize
+@item pointer
+
+@end itemize
 
 @node gobject Enums
 @section gobject Enums

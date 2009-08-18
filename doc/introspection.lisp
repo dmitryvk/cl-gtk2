@@ -7,7 +7,10 @@
            #:generate-texinfo-for-package
            #:get-enums
            #:generate-texinfo-for-enum
-           #:generate-texinfo-for-packages))
+           #:generate-texinfo-for-packages
+           #:get-flags
+           #:get-structs
+           #:get-opaque-boxeds))
 
 (in-package :gtk-doc-introspection)
 
@@ -31,6 +34,20 @@
         (when (eq (symbol-package type) package)
           (collect type))))
 
+(defun get-structs (package)
+  (when (symbolp package) (setf package (find-package package)))
+  (iter (for symbol in-package package :external-only t)
+        (for class = (find-class symbol nil))
+        (when (and class (typep class 'structure-class))
+          (collect class))))
+
+(defun get-opaque-boxeds (package)
+  (when (symbolp package) (setf package (find-package package)))
+  (iter (for symbol in-package package :external-only t)
+        (for class = (find-class symbol nil))
+        (when (and class (subtypep class 'g-boxed-opaque))
+          (collect class))))
+
 (defvar *doc-packages* nil)
 
 (defun generate-texinfo-for-packages (directory packages)
@@ -51,12 +68,17 @@
   (with-open-file (stream file :direction :output :if-exists :supersede)
     (let ((classes (sort (copy-list (get-gobject-classes package)) #'string< :key #'class-name))
           (enums (sort (copy-list (get-enums package)) #'string<))
-          (flags (sort (copy-list (get-flags package)) #'string<)))
+          (flags (sort (copy-list (get-flags package)) #'string<))
+          (structs (sort (copy-list (get-structs package)) #'string< :key #'class-name))
+          (opaque-boxeds (sort (copy-list (get-opaque-boxeds package)) #'string< :key #'class-name)))
       (format stream "@menu~%")
       (format stream "* ~A Classes::~%" (string-downcase (package-name package)))
+      (format stream "* ~A Structs::~%" (string-downcase (package-name package)))
+      (format stream "* ~A Opaque Boxeds::~%" (string-downcase (package-name package)))
       (format stream "* ~A Enums::~%" (string-downcase (package-name package)))
       (format stream "* ~A Flags::~%" (string-downcase (package-name package)))
       (format stream "@end menu~%~%")
+      
       (format stream "@node ~A Classes~%" (string-downcase (package-name package)))
       (format stream "@section ~A Classes~%~%" (string-downcase (package-name package)))
       (format stream "@menu~%")
@@ -66,6 +88,28 @@
       (format stream "Reference of classes in package ~A~%~%" (package-name package))
       (iter (for class in classes)
             (generate-texinfo-for-class class stream)
+            (format stream "~%"))
+
+      (format stream "@node ~A Structs~%" (string-downcase (package-name package)))
+      (format stream "@section ~A Structs~%~%" (string-downcase (package-name package)))
+      (format stream "@menu~%")
+      (iter (for struct in structs)
+            (format stream "* ~A::~%" (string-downcase (symbol-name (class-name struct)))))
+      (format stream "@end menu~%~%")
+      (format stream "Reference of structs in package ~A~%~%" (package-name package))
+      (iter (for struct in structs)
+            (generate-texinfo-for-struct struct stream)
+            (format stream "~%"))
+
+      (format stream "@node ~A Opaque Boxeds~%" (string-downcase (package-name package)))
+      (format stream "@section ~A Opaque Boxeds~%~%" (string-downcase (package-name package)))
+      (format stream "@menu~%")
+      (iter (for boxed in opaque-boxeds)
+            (format stream "* ~A::~%" (string-downcase (symbol-name (class-name boxed)))))
+      (format stream "@end menu~%~%")
+      (format stream "Reference of opaque boxeds in package ~A~%~%" (package-name package))
+      (iter (for boxed in opaque-boxeds)
+            (generate-texinfo-for-opaque-boxed boxed stream)
             (format stream "~%"))
 
       (format stream "@node ~A Enums~%" (string-downcase (package-name package)))
@@ -131,6 +175,10 @@
     ((g-type= +g-type-string+ type) "@code{string}")
     ((g-type= +g-type-boolean+ type) "@code{boolean}")
     ((g-type= +g-type-pointer+ type) "@code{foreign-pointer}")
+    ((and (g-type= (g-type-fundamental type) "GBoxed")
+          (gethash (g-type-string type) gobject::*g-type-name->g-boxed-foreign-info*))
+     (symbol-texi-ref (gobject::g-boxed-info-name (gethash (g-type-string type)
+                                                           gobject::*g-type-name->g-boxed-foreign-info*))))
     ((and (g-type= (g-type-fundamental type) "GEnum")
           (gethash (g-type-string type) gobject::*registered-enum-types*))
      (symbol-texi-ref (gethash (g-type-string type) gobject::*registered-enum-types*)))
@@ -166,6 +214,42 @@
           (format stream "@itemize~%")
           (iter (for signal in signals)
                 (generate-texinfo-for-signal class signal stream))
+          (format stream "@end itemize~%")))))
+
+(defun generate-texinfo-for-struct (class stream)
+  (when (symbolp class) (setf class (find-class class)))
+  (format stream "@node ~A~%" (string-downcase (symbol-name (class-name class))))
+  (format stream "@subsection ~A~%"(string-downcase (symbol-name (class-name class))))
+  (format stream "@Class ~A~%~%" (string-downcase (symbol-name (class-name class))))
+  (format stream "Superclasses: ~{~A~^, ~}~%~%" (mapcar #'texi-ref (class-direct-superclasses class)))
+  (format stream "Subclasses: ")
+  (if (class-direct-subclasses class)
+      (format stream "~{~A~^, ~}~%~%" (mapcar #'texi-ref (class-direct-subclasses class)))
+      (format stream "None~%~%"))
+  (format stream "Slots:~%")
+  (let ((slots (sort (copy-list (class-direct-slots class)) #'string< :key #'slot-definition-name)))
+    (if (null slots)
+        (format stream "None~%~%")
+        (progn
+          (format stream "@itemize~%")
+          (iter (for slot in slots)
+                (generate-texinfo-for-slot class slot stream))
+          (format stream "@end itemize~%")))))
+
+(defun generate-texinfo-for-opaque-boxed (class stream)
+  (when (symbolp class) (setf class (find-class class)))
+  (format stream "@node ~A~%" (string-downcase (symbol-name (class-name class))))
+  (format stream "@subsection ~A~%"(string-downcase (symbol-name (class-name class))))
+  (format stream "@Class ~A~%~%" (string-downcase (symbol-name (class-name class))))
+  (format stream "Superclasses: ~{~A~^, ~}~%~%" (mapcar #'texi-ref (class-direct-superclasses class)))
+  (format stream "Slots:~%")
+  (let ((slots (sort (copy-list (class-direct-slots class)) #'string< :key #'slot-definition-name)))
+    (if (null slots)
+        (format stream "None~%~%")
+        (progn
+          (format stream "@itemize~%")
+          (iter (for slot in slots)
+                (generate-texinfo-for-slot class slot stream))
           (format stream "@end itemize~%")))))
 
 (defun generate-texinfo-for-slot (class slot stream)
