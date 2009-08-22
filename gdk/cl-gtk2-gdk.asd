@@ -5,5 +5,6 @@
   :serial t
   :components ((:file "gdk.package")
                (:file "gdk.objects")
-               (:file "gdk.functions"))
+               (:file "gdk.functions")
+               (:file "gdk.general"))
   :depends-on (:cl-gtk2-glib :cffi))

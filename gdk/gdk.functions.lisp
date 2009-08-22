@@ -1,5 +1,8 @@
 (in-package :gdk)
 
+(defcfun (default-screen "gdk_screen_get_default") (g-object gdk-window))
+(export 'default-screen)
+
 (defcfun gdk-window-get-events event-mask
   (window (g-object gdk-window)))
 
