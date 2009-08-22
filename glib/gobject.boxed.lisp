@@ -112,7 +112,9 @@
                                                   :g-type ,g-type-name
                                                   :cstruct-description ,cstruct-description)
                (gethash ,g-type-name *g-type-name->g-boxed-foreign-info*)
-               (get ',name 'g-boxed-foreign-info))))))
+               (get ',name 'g-boxed-foreign-info)
+               (get ',name 'structure-constructor)
+               ',(intern (format nil "MAKE-~A" (symbol-name name)) (symbol-package name)))))))
 
 (defmethod make-foreign-type ((info g-boxed-cstruct-wrapper-info) &key return-p)
   (make-instance 'boxed-cstruct-foreign-type :info info :return-p return-p))
@@ -154,6 +156,11 @@
            (setf (foreign-slot-value native cstruct-type slot-name)
                  (slot-value proxy slot-name))))))
 
+(defun create-structure (structure-name)
+  (let ((constructor (get structure-name 'structure-constructor)))
+    (assert constructor nil "Don't know how to create structure of type ~A" structure-name)
+    (funcall constructor)))
+
 (defun copy-slots-to-proxy (proxy native cstruct-description)
   (iter (with cstruct-type = (generated-cstruct-name (cstruct-description-name cstruct-description)))
         (for slot in (cstruct-description-slots cstruct-description))
@@ -168,7 +175,7 @@
                        (mem-aref ptr (cstruct-slot-description-type slot) i))))
           ((cstruct-slot-description-inline-p slot)
            (let ((info (get-g-boxed-foreign-info (cstruct-inline-slot-description-boxed-type-name slot))))
-             (setf (slot-value proxy slot-name) (make-instance (cstruct-inline-slot-description-boxed-type-name slot)))
+             (setf (slot-value proxy slot-name) (create-structure (cstruct-inline-slot-description-boxed-type-name slot)))
              (copy-slots-to-proxy (slot-value proxy slot-name)
                                   (foreign-slot-pointer native cstruct-type slot-name)
                                   (g-boxed-cstruct-wrapper-info-cstruct-description info))))
@@ -194,7 +201,7 @@
   (unless (null-pointer-p native-structure)
     (let* ((info (g-boxed-foreign-info type))
            (proxy-structure-type (g-boxed-info-name info))
-           (proxy (make-instance proxy-structure-type)))
+           (proxy (create-structure proxy-structure-type)))
       (copy-slots-to-proxy proxy native-structure (g-boxed-cstruct-wrapper-info-cstruct-description info))
       (when (g-boxed-foreign-return-p type)
         (boxed-free-fn info native-structure))
@@ -361,18 +368,22 @@
                          ,(generated-cstruct-name (var-structure-name str)))))))
 
 (defun generate-structure-1 (str)
-  `(defstruct ,(if (var-structure-parent str)
-                   `(,(var-structure-name str) (:include ,(var-structure-name (var-structure-parent str))
-                                                         (,(var-structure-discriminator-slot (var-structure-parent str))
-                                                           ,(first (var-structure-variant-discriminating-values
-                                                                    (find str
-                                                                          (var-structure-variants
-                                                                           (var-structure-parent str))
-                                                                          :key #'var-structure-variant-structure))))))
-                   `,(var-structure-name str))
-     ,@(iter (for slot in (var-structure-slots str))
-             (collect `(,(cstruct-slot-description-name slot)
-                         ,(cstruct-slot-description-initform slot))))))
+  (let ((name (var-structure-name str)))
+    `(progn
+       (defstruct ,(if (var-structure-parent str)
+                       `(,(var-structure-name str) (:include ,(var-structure-name (var-structure-parent str))
+                                                             (,(var-structure-discriminator-slot (var-structure-parent str))
+                                                               ,(first (var-structure-variant-discriminating-values
+                                                                        (find str
+                                                                              (var-structure-variants
+                                                                               (var-structure-parent str))
+                                                                              :key #'var-structure-variant-structure))))))
+                       `,(var-structure-name str))
+         ,@(iter (for slot in (var-structure-slots str))
+                 (collect `(,(cstruct-slot-description-name slot)
+                             ,(cstruct-slot-description-initform slot)))))
+       (setf (get ',name 'structure-constructor)
+             ',(intern (format nil "MAKE-~A" (symbol-name name)) (symbol-package name))))))
 
 (defun generate-structures (str)
   (iter (for variant in (reverse (all-structures str)))
@@ -498,7 +509,7 @@
   (unless (null-pointer-p native)
     (let ((type (g-boxed-foreign-info foreign-type)))
       (multiple-value-bind (actual-struct cstruct-description) (decide-proxy-type type native)
-        (let ((proxy (make-instance actual-struct)))
+        (let ((proxy (create-structure actual-struct)))
           (copy-slots-to-proxy proxy native cstruct-description)
           (when (g-boxed-foreign-return-p foreign-type)
             (boxed-free-fn type native))
