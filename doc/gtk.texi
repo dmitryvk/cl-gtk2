@@ -21,9 +21,13 @@
 @end deftp
 @end macro
 
-@macro Class {args}
-@deftp {Class} \args\
+@macro Class {name}
+@deftp {Class} \name\
 @end deftp
+@end macro
+
+@macro Superclass {name}
+Superclass: @ref{\name\}
 @end macro
 
 @macro Enum {args}
@@ -38,6 +42,14 @@
 
 @macro Accessor {args}
 @deffn {Accessor} \args\
+@end deffn
+@end macro
+
+@macro TypedAccessor {name, class, type}
+@deffn {Accessor} \name\ \class\
+For class: @ref{\class\}
+
+Type: \type\
 @end deffn
 @end macro
 
@@ -140,7 +152,6 @@
 * Installation::
 * GObject Reference::
 * Gdk Reference::
-* Gtk Reference::
 @end menu
 
 @node Overview
@@ -208,16 +219,15 @@ ln -s /path/to/cl-gtk2/gtk/cl-gtk2-gtk.asd .
 @node GObject Reference
 @chapter GObject Reference
 
+@lowersections
+
 @include gobject.ref.texi
+
+@raisesections
 
 @node Gdk Reference
 @chapter Gdk Reference
 
 @include gdk.ref.texi
-
-@node Gtk Reference
-@chapter Gtk Reference
-
-@include gtk.ref.texi
 
 @bye

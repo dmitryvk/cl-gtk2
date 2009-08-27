@@ -1049,7 +1049,7 @@ In order to be able to parse GValues and set them, it is necessary for GValue bi
 
 GEnum and GFlags are mapped to CFFI @code{defcenum} and @code{defbitfield} types. Functions @code{register-enum-type} and @code{register-flags-type} add the type to the mapping.
 
-@subsection
+@subsection register-enum-type
 @Function register-enum-type
 @lisp
 (register-enum-type name type)
@@ -1070,7 +1070,7 @@ Example:
 (register-enum-type "GtkTextDirection" 'text-direction)
 @end lisp
 
-@subsection
+@subsection register-flags-type
 @Function register-flags-type
 @lisp
 (register-flags-type name type)
