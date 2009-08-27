@@ -8,7 +8,15 @@
 (defcenum notify-type (:ancestor 0) :virtual :inferior :nonlinear :nonlinear-virtual :unknown)
 (export 'notify-type)
 
-(define-g-object-class "GdkDisplay" display () ())
+(define-g-object-class "GdkDisplay" display ()
+  ((:cffi name display-name (glib:g-string :free-from-foreign nil)
+          "gdk_display_get_name" nil)
+   (:cffi n-screens display-n-screens :int
+          "gdk_display_get_n_screens" nil)
+   (:cffi default-screen display-default-screen (g-object screen)
+          "gdk_display_get_default_screen" nil)))
+
+;gdk_display_get_screen
 
 (define-g-object-class "GdkDisplayManager" display-manager ()
   ((default-display display-manager-default-display "default-display" "GdkDisplay" t t)))
