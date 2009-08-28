@@ -45,6 +45,9 @@
 #+nil(defmethod boxed-free-fn :before (type-info native)
   (format t "(boxed-free-fn ~A ~A)~%" (g-boxed-info-name type-info) native))
 
+(defgeneric has-callback-cleanup (foreign-type))
+(defgeneric cleanup-translated-object-for-callback (foreign-type converted-object native-object))
+
 (defmethod has-callback-cleanup ((type g-boxed-foreign-type))
   t)
 
