@@ -20,7 +20,8 @@
            #:tree-node-insert-at
            #:tree-node-remove-at
            #:tree-node-child-at
-           #:tree-lisp-store-add-column))
+           #:tree-lisp-store-add-column
+           #:gtk-main-add-timeout))
 
 (defpackage :gtk-examples
   (:use :cl :gtk :gdk :gobject)

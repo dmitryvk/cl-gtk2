@@ -24,6 +24,20 @@
 
 (export 'call-from-gtk-main-loop)
 
+(defcallback call-timeout-from-main-loop-callback :boolean
+    ((data :pointer))
+  (restart-case
+      (progn (funcall (get-stable-pointer-value data)))
+    (return-from-callback () nil)))
+
+(defun gtk-main-add-timeout (milliseconds function &key (priority +g-priority-default+))
+  (g-timeout-add-full priority milliseconds
+                      (callback call-timeout-from-main-loop-callback)
+                      (allocate-stable-pointer function)
+                      (callback stable-pointer-free-destroy-notify-callback)))
+
+(export 'gtk-main-add-timeout)
+
 (defmacro within-main-loop (&body body)
   `(call-from-gtk-main-loop (lambda () ,@body)))
 
