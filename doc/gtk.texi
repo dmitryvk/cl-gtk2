@@ -197,6 +197,10 @@ To get sources with Git, clone @code{cl-gtk2} repository:
 @example
 git clone git://repo.or.cz/cl-gtk2.git
 @end example
+or the mirror:
+@example
+git clone git://github.com/dmitryvk/cl-gtk2.git
+@end example
 
 Or download and unpack the @code{tar.gz}-archived @uref{http://repo.or.cz/w/cl-gtk2.git?a=snapshot;h=HEAD;sf=tgz,,snapshot} of @code{cl-gtk2}.
 
