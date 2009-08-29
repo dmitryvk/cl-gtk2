@@ -40,7 +40,7 @@
 				 :default-height 240))
           (v-box (make-instance 'v-box))
           (label (make-instance 'label :label "Click me!"))
-	  (drawing (make-instance 'gl-drawing-area :on-draw #'draw)))
+	  (drawing (make-instance 'gl-drawing-area :on-expose #'draw)))
       (box-pack-start v-box drawing)
       (box-pack-start v-box label :expand nil)
       (container-add window v-box)
