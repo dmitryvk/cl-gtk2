@@ -23,7 +23,8 @@
            #:test-builder
            #:demo-text-editor
            #:demo-class-browser
-           #:demo-treeview-tree))
+           #:demo-treeview-tree
+           #:test-custom-window))
 
 (in-package :gtk-demo)
 
@@ -765,3 +766,33 @@
         (print (tree-view-column-tree-view column))
         (print (tree-view-column-cell-renderers column)))
       (widget-show window))))
+
+(defclass custom-window (gtk-window)
+  ((label :initform (make-instance 'label :label "A label text") :reader custom-window-label)
+   (button :initform (make-instance 'button :label "Click me!") :reader custom-window-button))
+  (:metaclass gobject-class)
+  (:default-initargs :title "Custom window with default initargs" :default-width 320 :default-height 240))
+
+(defun custom-window-label-text (w)
+  (label-label (custom-window-label w)))
+
+(defun (setf custom-window-label-text) (new-value w)
+  (setf (label-label (custom-window-label w)) new-value))
+
+(defmethod initialize-instance :after ((w custom-window) &key &allow-other-keys)
+  (let ((box (make-instance 'v-box)))
+    (box-pack-start box (custom-window-label w))
+    (box-pack-start box (custom-window-button w) :expand nil)
+    (container-add w box))
+  (connect-signal (custom-window-button w) "clicked" (lambda (b)
+                                                       (declare (ignore b))
+                                                       (custom-window-button-clicked w))))
+
+(defun custom-window-button-clicked (w)
+  (setf (custom-window-label-text w)
+        (format nil "Now is: ~A~%" (get-internal-run-time))))
+
+(defun test-custom-window ()
+  (within-main-loop
+    (let ((w (make-instance 'custom-window)))
+      (widget-show w))))
