@@ -266,17 +266,6 @@
 (define-child-property "GtkStatusbar" statusbar-child-position "position"
                        "gint" t t t)
 
-(define-child-property "GtkCombo" combo-child-expand "expand" "gboolean" t t t)
-
-(define-child-property "GtkCombo" combo-child-fill "fill" "gboolean" t t t)
-
-(define-child-property "GtkCombo" combo-child-padding "padding" "guint" t t t)
-
-(define-child-property "GtkCombo" combo-child-pack-type "pack-type"
-                       "GtkPackType" t t t)
-
-(define-child-property "GtkCombo" combo-child-position "position" "gint" t t t)
-
 (define-child-property "GtkFixed" fixed-child-x "x" "gint" t t t)
 
 (define-child-property "GtkFixed" fixed-child-y "y" "gint" t t t)
