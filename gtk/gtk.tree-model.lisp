@@ -34,7 +34,9 @@
 (defclass array-list-store (g-object tree-model)
   ((items :initform (make-array 0 :adjustable t :fill-pointer t) :reader store-items)
    (columns-getters :initform (make-array 0 :adjustable t :fill-pointer t) :reader store-getters)
-   (columns-types :initform (make-array 0 :adjustable t :fill-pointer t) :reader store-types)))
+   (columns-types :initform (make-array 0 :adjustable t :fill-pointer t) :reader store-types))
+  (:metaclass gobject-class)
+  (:g-type-name . "LispArrayListStore"))
 
 (export 'array-list-store)
 
@@ -331,7 +333,9 @@
    (columns-types :initform (make-array 0 :adjustable t :fill-pointer t) :reader tree-lisp-store-types)
    (root :initform (make-tree-node) :reader tree-lisp-store-root)
    (id-map :initform (make-hash-table) :reader tree-lisp-store-id-map)
-   (next-id-value :initform 0 :accessor tree-lisp-store-next-id-value)))
+   (next-id-value :initform 0 :accessor tree-lisp-store-next-id-value))
+  (:metaclass gobject-class)
+  (:g-type-name . "LispTreeStore"))
 
 (defmethod initialize-instance :after ((object tree-lisp-store) &key &allow-other-keys)
   (setf (tree-node-tree (tree-lisp-store-root object)) object))
