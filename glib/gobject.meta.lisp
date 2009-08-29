@@ -1,9 +1,9 @@
 (in-package :gobject)
 
 (defclass gobject-class (standard-class)
-  ((g-type-name :initform (error "G-TYPE-NAME must be specified")
+  ((g-type-name :initform nil
                 :initarg :g-type-name
-                :reader gobject-class-g-type-name)
+                :accessor gobject-class-g-type-name)
    (g-type-initializer :initform nil
                        :initarg :g-type-initializer
                        :reader gobject-class-g-type-initializer)
@@ -36,8 +36,17 @@
               (gobject-class-g-type-name class) (class-name class)))))
 
 (defmethod initialize-instance :after ((object gobject-class) &key &allow-other-keys)
-  (register-object-type (gobject-class-g-type-name object) (class-name object))
+  (when (gobject-class-g-type-name object)
+    (register-object-type (gobject-class-g-type-name object) (class-name object)))
   (at-init (object) (initialize-gobject-class-g-type object)))
+
+(defmethod finalize-inheritance :after ((class gobject-class))
+  (unless (gobject-class-g-type-name class)
+    (let ((gobject-superclass (iter (for superclass in (class-direct-superclasses class))
+                                    (finding superclass such-that (typep superclass 'gobject-class)))))
+      (assert gobject-superclass)
+      (setf (gobject-class-g-type-name class)
+            (gobject-class-g-type-name gobject-superclass)))))
 
 (defclass gobject-direct-slot-definition (standard-direct-slot-definition)
   ((g-property-type :initform nil
@@ -80,9 +89,6 @@
                 :accessor gobject-fn-effective-slot-definition-g-setter-fn)))
 
 (defmethod validate-superclass ((class gobject-class) (superclass standard-class))
-  t)
-
-(defmethod validate-superclass ((class standard-class) (superclass gobject-class))
   t)
 
 (defmethod compute-class-precedence-list ((class gobject-class))
