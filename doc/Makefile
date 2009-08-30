@@ -22,7 +22,7 @@ gtk/style.css: style.css
 
 gtk/index.html: gtk.texi gtk.ref.texi gdk.ref.texi gobject.ref.texi glib.ref.texi gtk/style.css
 	makeinfo --html --css-ref=style.css $<
-	sbcl --noinform --no-sysinit --no-userinit --disable-debugger --load colorize-lisp-examples.lisp $@
+	#sbcl --noinform --no-sysinit --no-userinit --disable-debugger --load colorize-lisp-examples.lisp $@
 	./fix-tex-references.sh gtk
 
 #gtk.ref.texi gdk.ref.texi gobject.ref.texi: introspection.lisp

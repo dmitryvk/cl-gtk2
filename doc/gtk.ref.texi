@@ -1,5 +1,6 @@
 @menu
 * Gtk+ Main loop::
+* Widgets::
 @end menu
 
 All symbols of Gtk+ binding in cl-gtk2 reside in @code{gtk} package.
@@ -7,140 +8,9 @@ All symbols of Gtk+ binding in cl-gtk2 reside in @code{gtk} package.
 @node Gtk+ Main loop
 @chapter Gtk+ Main loop
 
-Gtk+ is an event-driven toolkit and it naturally is built around the event dispatching loop. The Gtk+ Main loop is a @ref{GLib Main loop}. This section describes Gtk+-specific usage of the main loop.
+@include gtk.main_loop.texi
 
-Gtk+ main loop is run in a background thread that is launched by @ref{ensure-gtk-main} (however it is also possible to launch Gtk+ main loop with @ref{gtk-main} that does not spawn threads). This allows interactive development: while the Gtk+ thread is blocked by waiting for events or processing them, REPL thread is alive.
+@node Widgets
+@chapter Widgets
 
-Gtk+ is not thread-safe, but thread-aware. This means that any access to Gtk+ from the thread different from the thread running the main loop must be explicitly synchronized with Gtk+. There are two ways to call Gtk+ from another thread:
-@itemize
-@item Use @code{gdk_threads_enter}, @code{gdk_threads_leave}. This is unsupported at this time on cl-gtk2.
-@item Use @ref{within-main-loop} and related macros and functions.
-@end itemize
-
-@RFunction gtk-main
-@lisp
-(gtk-main)
-@end lisp
-This function runs the main loop and returns when the main loop is terminated. (see @ref{gtk-main-quit} and @ref{ensure-gtk-main})
-
-@RFunction gtk-main-quit
-@lisp
-(gtk-main-quit)
-@end lisp
-This function causes the main loop to terminate and causes @ref{gtk-main} to return.
-
-@RFunction ensure-gtk-main
-@lisp
-(ensure-gtk-main)
-@end lisp
-This function ensures that the Gtk+ main loop is started in background thread. If the loop has not been started or if had been terminated, restarts the background thread.
-
-@RFunction join-main-thread
-@lisp
-(join-main-thread)
-@end lisp
-This function waits for the background thread that runs the Gtk+ main loop to quit.
-
-@RFunction gtk-main-iteration
-@lisp
-(gtk-main-iteration) @result{} boolean
-@end lisp
-Runs a single iteration of the mainloop. If no events are waiting to be processed Gtk+ will block until the next event is noticed. If you don't want to block look at @ref{gtk-main-iteration-do} or check if any events are pending with @ref{gtk-events-pending} first.
-
-Returns a boolean that is true if @ref{gtk-main-quit} has been called for the innermost mainloop.
-
-@RFunction gtk-main-iteration-do
-@lisp
-(gtk-main-iteration-do blocking) @result{} boolean
-@end lisp
-
-@table @var
-@item @var{blocking}
-True if you want Gtk+ to block if no events are pending
-@end table
-
-Runs a single iteration of the mainloop. If no events are available either return or block dependent on the value of @var{blocking}.
-
-Returns a boolean that is true if @ref{gtk-main-quit} has been called for the innermost mainloop.
-
-
-@RFunction gtk-events-pending
-@lisp
-(gtk-events-pending) @result{} boolean
-@end lisp
-Checks if any events are pending. This can be used to update the GUI and invoke timeouts etc. while doing some time intensive computation. Note that this is not the best way to have a responsive GUI - it is usually better to do work in background thread.
-
-@RFunction gtk-main-add-timeout
-@lisp
-(gtk-main-add-timeout milliseconds function &key (priority +g-priority-default+)) @result{} source-id
-@end lisp
-
-@table @var
-@item @var{milliseconds}
-An integer specifying the time between calls to the function, in milliseconds (1/1000ths of a second.)
-@item @var{function}
-The function to call periodically. This function accepts zero arguments and returns a boolean.
-@item @var{priority}
-An integer specifying the priority of the timeout. Typically this will be in the range between @ref{+g-priority-default+} and @ref{+g-priority-high+}.
-@item @var{source-id}
-An integer identifier of GLib event source.
-@end table
-
-Registers a @var{function} to be called periodically. The function will be called repeatedly after once per @var{milliseconds} until it returns False at which point the timeout is destroyed and will not be called again. Timeout can also be removed by passing @var{source-id} to @ref{g-source-remove}.
-@RMacro within-main-loop
-@lisp
-(within-main-loop &body body)
-@end lisp
-Schedules the @var{body} to be evaluated within the main loop. Expression inside @var{body} are run inside the main loop, so they can call any Gtk+ functions. This expression may be evaluated in any thread.
-
-Returns immediately. If the main loop was not started, uses @ref{ensure-gtk-main} to start it.
-
-@RMacro within-main-loop-and-wait
-@lisp
-(within-main-loop-and-wait &body body) @result{} results
-@end lisp
-Schedules the @var{body} to be evaluated within the main loop. Expression inside @var{body} are run inside the main loop, so they can call any Gtk+ functions. This expression may be evaluated in any thread.
-
-Returns the values produced by evaluating @var{body}. If the evaluation of @var{body} results in unhandled error, the @ref{gtk-call-aborted} error condition is signaled.
-
-If the main loop was not started, uses @ref{ensure-gtk-main} to start it.
-
-@RFunction call-from-gtk-main-loop
-@lisp
-(call-from-gtk-main-loop function &key (priority +g-priority-default-idle+))
-@end lisp
-
-@table @var
-@item @var{function}
-The function to be called. Accepts zero arguments.
-@item @var{priority}
-An integer specifying the priority of the call.
-@end table
-
-Schedules the @var{function} to be called within the main loop. @var{function} is evaluated inside the main loop, so it can call any Gtk+ functions. This function may be called from any thread.
-
-If the main loop was not started, uses @ref{ensure-gtk-main} to start it.
-
-@RFunction call-within-main-loop-and-wait
-@lisp
-(call-from-gtk-main-loop-and-wait function)
-@end lisp
-
-@table @var
-@item @var{function}
-The function to be called. Accepts zero arguments and returns zero, one or more values.
-@end table
-
-Schedules the @var{function} to be called within the main loop. @var{function} is evaluated inside the main loop, so it can call any Gtk+ functions. This function may be called from any thread.
-
-Returns the values produced by calling @var{function}. If the evaluation of @var{function} results in unhandled error, the @ref{gtk-call-aborted} error condition is signaled.
-
-If the main loop was not started, uses @ref{ensure-gtk-main} to start it.
-
-@RCondition gtk-call-aborted
-
-A condition inheriting from @code{error} that is used to signal the fact that the evaluation of expression or function in main loop by @ref{within-main-loop}, @ref{within-main-loop-and-wait}, @ref{call-from-gtk-main-loop}, @ref{call-within-main-loop-and-wait} was interrupted by error.
-
-@RFunction gtk-call-aborted-condition
-
-Returns the error that caused call to aborted.
+@include gtk.widgets.texi
