@@ -1,0 +1,35 @@
+@menu
+* GLib Main loop::
+@end menu
+
+This is a stub for documentation
+
+@node GLib Main loop
+@chapter GLib Main loop
+
+@RFunction g-source-remove
+@lisp
+(g-source-remove source-id)
+@end lisp
+@table @var
+@item @var{source-id}
+An integer identifier of the source.
+@end table
+
+Removes the source with the given @var{source-id} from the default main context.
+
+@RConstant +g-priority-high+
+Use this for high priority event sources. It is not used within GLib or GTK+.
+
+@RConstant +g-priority-default+
+Use this for default priority event sources. In GLib this priority is used when adding timeout functions with g_timeout_add(). In GDK this priority is used for events from the X server.
+
+@RConstant +g-priority-high-idle+
+Use this for high priority idle functions. GTK+ uses @code{(+ 10 +g-priority-high-idle+)} for resizing operations, and @code{(+ 20 +g-priority-high-idle+)} for redrawing operations. (This is done to ensure that any pending resizes are processed before any pending redraws, so that widgets are not redrawn twice unnecessarily.)
+
+@RConstant +g-priority-default-idle+
+Use this for default priority idle functions. In GLib this priority is used when adding idle functions with g_idle_add().
+
+@RConstant +g-priority-low+
+Use this for very low priority background tasks. It is not used within GLib or GTK+.
+

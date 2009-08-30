@@ -6,18 +6,18 @@
 
 @c @documentencoding utf-8
 
-@macro Function {args}
-@defun \args\
+@macro Function {name}
+@defun \name\
 @end defun
 @end macro
 
-@macro Macro {args}
-@defmac \args\
+@macro Macro {name}
+@defmac \name\
 @end defmac
 @end macro
 
-@macro Struct {args}
-@deftp {Structure} \args\
+@macro Struct {name}
+@deftp {Structure} \name\
 @end deftp
 @end macro
 
@@ -30,18 +30,18 @@
 Superclass: @ref{\name\}
 @end macro
 
-@macro Enum {args}
-@deftp {Enum} \args\
+@macro Enum {name}
+@deftp {Enum} \name\
 @end deftp
 @end macro
 
-@macro Flags {args}
-@deftp {Flags} \args\
+@macro Flags {name}
+@deftp {Flags} \name\
 @end deftp
 @end macro
 
-@macro Accessor {args}
-@deffn {Accessor} \args\
+@macro Accessor {name}
+@deffn {Accessor} \name\
 @end deffn
 @end macro
 
@@ -53,24 +53,101 @@ Type: \type\
 @end deffn
 @end macro
 
-@macro GenericFunction {args}
-@deffn {Generic Function} \args\
+@macro GenericFunction {name}
+@deffn {Generic Function} \name\
 @end deffn
 @end macro
 
-@macro ForeignType {args}
-@deftp {Foreign Type} \args\
+@macro ForeignType {name}
+@deftp {Foreign Type} \name\
 @end deftp
 @end macro
 
-@macro Variable {args}
-@defvr {Special Variable} \args\
+@macro Variable {name}
+@defvr {Special Variable} \name\
 @end defvr
 @end macro
 
-@macro Condition {args}
-@deftp {Condition Type} \args\
+@macro Condition {name}
+@deftp {Condition Type} \name\
 @end deftp
+@end macro
+
+@macro Constant {name}
+@defvr {Constant} \name\
+@end defvr
+@end macro
+
+@macro RFunction {name}
+@anchor{\name\}@defun \name\
+@end defun
+@end macro
+
+@macro RMacro {name}
+@anchor{\name\}@defmac \name\
+@end defmac
+@end macro
+
+@macro RStruct {name}
+@anchor{\name\}@deftp {Structure} \name\
+@end deftp
+@end macro
+
+@macro RClass {name}
+@anchor{\name\}@deftp {Class} \name\
+@end deftp
+@end macro
+
+@macro RSuperclass {name}
+@anchor{\name\}Superclass: @ref{\name\}
+@end macro
+
+@macro REnum {name}
+@anchor{\name\}@deftp {Enum} \name\
+@end deftp
+@end macro
+
+@macro RFlags {name}
+@anchor{\name\}@deftp {Flags} \name\
+@end deftp
+@end macro
+
+@macro RAccessor {name}
+@anchor{\name\}@deffn {Accessor} \name\
+@end deffn
+@end macro
+
+@macro RTypedAccessor {name, class, type}
+@anchor{\name\}@deffn {Accessor} \name\ \class\
+For class: @ref{\class\}
+
+Type: \type\
+@end deffn
+@end macro
+
+@macro RGenericFunction {name}
+@anchor{\name\}@deffn {Generic Function} \name\
+@end deffn
+@end macro
+
+@macro RForeignType {name}
+@anchor{\name\}@deftp {Foreign Type} \name\
+@end deftp
+@end macro
+
+@macro RVariable {name}
+@anchor{\name\}@defvr {Special Variable} \name\
+@end defvr
+@end macro
+
+@macro RCondition {name}
+@anchor{\name\}@deftp {Condition Type} \name\
+@end deftp
+@end macro
+
+@macro RConstant {name}
+@anchor{\name\}@defvr {Constant} \name\
+@end defvr
 @end macro
 
 @macro cffi
@@ -93,17 +170,17 @@ Type: \type\
 @end macro
 @end ifinfo
 
-@ifnotinfo
-@alias seealso = ref
-@end ifnotinfo
+@c @ifnotinfo
+@c @alias seealso = ref
+@c @end ifnotinfo
 
 @c Typeset comments in roman font for the TeX output.
-@iftex
-@alias lispcmt = r
-@end iftex
-@ifnottex
-@alias lispcmt = asis
-@end ifnottex
+@c @iftex
+@c @alias lispcmt = r
+@c @end iftex
+@c @ifnottex
+@c @alias lispcmt = asis
+@c @end ifnottex
 
 @c My copy of makeinfo is not generating any HTML for @result{} for
 @c some odd reason. (It certainly used to...)
@@ -150,8 +227,10 @@ Type: \type\
 @menu
 * Overview::
 * Installation::
+* GLib Reference::
 * GObject Reference::
 * Gdk Reference::
+* Gtk Reference::
 @end menu
 
 @node Overview
@@ -220,6 +299,13 @@ ln -s /path/to/cl-gtk2/gdk/cl-gtk2-gdk.asd .
 ln -s /path/to/cl-gtk2/gtk/cl-gtk2-gtk.asd .
 @end example
 
+@node GLib Reference
+@chapter GLib Reference
+
+@lowersections
+@include glib.ref.texi
+@raisesections
+
 @node GObject Reference
 @chapter GObject Reference
 
@@ -233,5 +319,12 @@ ln -s /path/to/cl-gtk2/gtk/cl-gtk2-gtk.asd .
 @chapter Gdk Reference
 
 @include gdk.ref.texi
+
+@node Gtk Reference
+@chapter Gtk Reference
+
+@lowersections
+@include gtk.ref.texi
+@raisesections
 
 @bye

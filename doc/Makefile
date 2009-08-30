@@ -12,14 +12,14 @@ index.html: doc.xml
 gobject/style.css: style.css
 	([ -x gobject ] || mkdir gobject) && cp $< $@
 
-gobject/index.html: gobject.texi gobject/style.css
+gobject/index.html: gobject.texi gobject.ref.texi gobject/style.css
 	makeinfo --html --css-ref=style.css $<
 	sbcl --noinform --no-sysinit --no-userinit --disable-debugger --load colorize-lisp-examples.lisp $@
 
 gtk/style.css: style.css
 	([ -x gtk ] || mkdir gtk) && cp $< $@
 
-gtk/index.html: gtk.texi gtk.ref.texi gdk.ref.texi gobject.ref.texi gtk/style.css
+gtk/index.html: gtk.texi gtk.ref.texi gdk.ref.texi gobject.ref.texi glib.ref.texi gtk/style.css
 	makeinfo --html --css-ref=style.css $<
 	#sbcl --noinform --no-sysinit --no-userinit --disable-debugger --load colorize-lisp-examples.lisp $@
 
