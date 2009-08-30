@@ -238,7 +238,7 @@ Type: \type\
 
 @code{cl-gtk2} is the GUI library for Common Lisp. @code{cl-gtk2} is based on @uref{http://www.gtk.org/,,Gtk+} GUI library and is Common Lisp binding for it. @code{cl-gtk2} allows you to create graphical user interfaces for Common Lisp applications.
 
-As @code{Gtk+} is based on object system GObject, @code{cl-gtk2} is based on a binding to this object system called @uref{../gobject/index.html,,cl-gtk2-gobject}.
+As @code{Gtk+} is based on object system GObject, @code{cl-gtk2} is based on a binding to this object system called @code{cl-gtk2-gobject}.
 
 @code{cl-gtk2} provides a thin wrapper around @code{Gtk+} functionality, mostly retaining the same set of classes, properties and methods.
 
