@@ -1316,7 +1316,9 @@ See MOP for information what metaclass is and why is it useful.
 
 GObject metaclass @code{gobject-class} bridges two object systems: GObject and CLOS.
 
-Classes that correspond to GObject classes are instances of this class.
+Classes that correspond to GObject classes are instances of this class. Each CLOS class of @code{gobject-class} metaclass is mapped to one GObject class. Two or more CLOS classes may map into one GObject class. GObject and CLOS inheritance must be consistent: if class @code{X} is a subclass or the same class as @code{Y} in CLOS, then this relation must hold for @code{X'} and @code{Y'}, where @code{X'} is a GObject class to which @code{X} class maps to.
+
+For each instance of GObject-related CLOS class there is a corresponding instance of GObject class (of a GObject class to which the CLOS class maps). Whenever the GObject class instance reference enters the Lisp memory (by creating instance with @code{make-instance}, as the return value of foreign function or as a slot value of GObject class instance), an instance of CLOS class is created.
 
 Defining the class with metaclass @code{gobject-class} registers the type @code{:g-type-name} for conversions using GValue and CFFI foreign type @code{g-object}.
 
@@ -1324,13 +1326,13 @@ This class has the following slots:
 @itemize
 @item @var{g-type-name} (accessor @code{gobject-class-g-type-name}, initarg @code{:g-type-name})
 
-Specifies the name of GObject class
+Specifies the name of corresponding GObject class. String or NIL is allowed. If the name is NIL, then the same GObject class as its parent. Only one class may have specified a given @code{:g-type-name}.
 @item @var{g-type-initializer} (accessor @code{gobject-class-g-type-initializer}, initarg @code{:g-type-initializer})
 
-Name of type initializer function. This function initializes the class and returns its GType. Typically it is named @code{class_get_type}.
+Name of foreign type initializer function. This function initializes the class and returns its GType. Typically it is named @code{class_get_type}. String or NIL is allowed.
 @item @var{interface-p} (accessor @code{gobject-class-interface-p}, initarg @code{:interface-p})
 
-A boolean specifying whether this CLOS class corresponds to GInterface.
+A boolean specifying whether this CLOS class corresponds to GInterface. It is NIL by default.
 @end itemize
 
 This metaclass defines the GObject classes.
