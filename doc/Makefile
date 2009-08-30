@@ -15,13 +15,15 @@ gobject/style.css: style.css
 gobject/index.html: gobject.texi gobject.ref.texi gobject/style.css
 	makeinfo --html --css-ref=style.css $<
 	sbcl --noinform --no-sysinit --no-userinit --disable-debugger --load colorize-lisp-examples.lisp $@
+	./fix-tex-references.sh gobject
 
 gtk/style.css: style.css
 	([ -x gtk ] || mkdir gtk) && cp $< $@
 
 gtk/index.html: gtk.texi gtk.ref.texi gdk.ref.texi gobject.ref.texi glib.ref.texi gtk/style.css
 	makeinfo --html --css-ref=style.css $<
-	#sbcl --noinform --no-sysinit --no-userinit --disable-debugger --load colorize-lisp-examples.lisp $@
+	sbcl --noinform --no-sysinit --no-userinit --disable-debugger --load colorize-lisp-examples.lisp $@
+	./fix-tex-references.sh gtk
 
 #gtk.ref.texi gdk.ref.texi gobject.ref.texi: introspection.lisp
 #	sbcl --noinfo --no-sysinit --no-user-init --disable-debugger --eval "(asdf:oos 'asdf:load-op :cl-gtk2-gtk)" --load "introspection.lisp" --eval '(gtk-doc-introspection:generate-texinfo-for-packages *default-pathname-defaults* (list :gdk :gobject :gtk))'
