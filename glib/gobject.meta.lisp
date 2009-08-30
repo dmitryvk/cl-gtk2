@@ -2,8 +2,10 @@
 
 (defclass gobject-class (standard-class)
   ((g-type-name :initform nil
-                :initarg :g-type-name
                 :accessor gobject-class-g-type-name)
+   (direct-g-type-name :initform nil
+                       :initarg :g-type-name
+                       :accessor gobject-class-direct-g-type-name)
    (g-type-initializer :initform nil
                        :initarg :g-type-initializer
                        :reader gobject-class-g-type-initializer)
@@ -20,33 +22,33 @@
                                               g-type))))
         (if (null initializer-fn-ptr)
             (warn "Type initializer for class '~A' (GType '~A') is invalid: foreign symbol '~A'"
-                  (gobject-class-g-type-name class) (class-name class) (gobject-class-g-type-initializer class))
+                  (gobject-class-direct-g-type-name class) (class-name class) (gobject-class-g-type-initializer class))
             (progn
               (when (g-type= +g-type-invalid+ type)
                 (warn "Declared GType name '~A' for class '~A' is invalid ('~A' returned 0)"
-                      (gobject-class-g-type-name class) (class-name class)
+                      (gobject-class-direct-g-type-name class) (class-name class)
                       (gobject-class-g-type-initializer class)))
-              (unless (g-type= (gobject-class-g-type-name class) type)
+              (unless (g-type= (gobject-class-direct-g-type-name class) type)
                 (warn "Declared GType name '~A' for class '~A' does not match actual GType name '~A'"
-                      (gobject-class-g-type-name class)
+                      (gobject-class-direct-g-type-name class)
                       (class-name class)
                       (g-type-name type))))))
-      (unless (g-type-from-name (gobject-class-g-type-name class))
+      (unless (g-type-from-name (gobject-class-direct-g-type-name class))
         (warn "Declared GType name '~A' for class '~A' is invalid (g_type_name returned 0)"
-              (gobject-class-g-type-name class) (class-name class)))))
+              (gobject-class-direct-g-type-name class) (class-name class)))))
 
 (defmethod initialize-instance :after ((object gobject-class) &key &allow-other-keys)
-  (when (gobject-class-g-type-name object)
-    (register-object-type (gobject-class-g-type-name object) (class-name object)))
-  (at-init (object) (initialize-gobject-class-g-type object)))
+  (when (gobject-class-direct-g-type-name object)
+    (register-object-type (gobject-class-direct-g-type-name object) (class-name object))
+    (at-init (object) (initialize-gobject-class-g-type object))))
 
 (defmethod finalize-inheritance :after ((class gobject-class))
-  (unless (gobject-class-g-type-name class)
-    (let ((gobject-superclass (iter (for superclass in (class-direct-superclasses class))
-                                    (finding superclass such-that (typep superclass 'gobject-class)))))
-      (assert gobject-superclass)
-      (setf (gobject-class-g-type-name class)
-            (gobject-class-g-type-name gobject-superclass)))))
+  (setf (gobject-class-g-type-name class)
+        (or (gobject-class-direct-g-type-name class)
+            (let ((gobject-superclass (iter (for superclass in (class-direct-superclasses class))
+                                            (finding superclass such-that (typep superclass 'gobject-class)))))
+              (assert gobject-superclass)
+              (gobject-class-g-type-name gobject-superclass)))))
 
 (defclass gobject-direct-slot-definition (standard-direct-slot-definition)
   ((g-property-type :initform nil
