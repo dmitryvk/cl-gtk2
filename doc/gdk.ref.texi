@@ -1,5 +1,9 @@
 @menu
 * Screens and displays::
+* Gdk Objects::
+* Gdk Structs::
+* Gdk Enums::
+* Gdk Flags::
 @end menu
 
 @node Screens and displays
@@ -113,3 +117,30 @@ The default screen of the @var{display}.
 @Class screen
 @Superclass g-object
 
+@node Gdk Objects
+@section Gdk Objects
+
+@lowersections
+@include gdk.objects.texi
+@raisesections
+
+@node Gdk Structs
+@section Gdk Structs
+
+@lowersections
+@include gdk.structs.texi
+@raisesections
+
+@node Gdk Enums
+@section Gdk Enums
+
+@lowersections
+@include gdk.enums.texi
+@raisesections
+
+@node Gdk Flags
+@section Gdk Flags
+
+@lowersections
+@include gdk.flags.texi
+@raisesections

@@ -1,0 +1,1296 @@
+@menu
+* anchor-type::
+* arrow-type::
+* assistant-page-type::
+* builder-error::
+* button-box-style::
+* buttons-type::
+* c-list-drag-pos::
+* c-tree-expander-style::
+* c-tree-expansion-type::
+* c-tree-line-style::
+* c-tree-pos::
+* cell-renderer-accel-mode::
+* cell-renderer-mode::
+* cell-type::
+* corner-type::
+* curve-type::
+* delete-type::
+* direction-type::
+* drag-result::
+* expander-style::
+* file-chooser-action::
+* file-chooser-confirmation::
+* file-chooser-error::
+* i-m-preedit-style::
+* i-m-status-style::
+* icon-size::
+* icon-theme-error::
+* icon-view-drop-position::
+* image-type::
+* justification::
+* match-type::
+* menu-direction-type::
+* message-type::
+* metric-type::
+* movement-step::
+* notebook-tab::
+* number-up-layout::
+* orientation::
+* pack-direction::
+* pack-type::
+* page-orientation::
+* page-set::
+* path-priority-type::
+* path-type::
+* policy-type::
+* position-type::
+* preview-type::
+* print-duplex::
+* print-error::
+* print-operation-action::
+* print-operation-result::
+* print-pages::
+* print-quality::
+* print-status::
+* progress-bar-orientation::
+* progress-bar-style::
+* rc-token-type::
+* recent-chooser-error::
+* recent-manager-error::
+* recent-sort-type::
+* relief-style::
+* resize-mode::
+* response-type::
+* scroll-step::
+* scroll-type::
+* selection-mode::
+* sensitivity-type::
+* shadow-type::
+* side-type::
+* size-group-mode::
+* sort-type::
+* spin-button-update-policy::
+* spin-type::
+* state-type::
+* submenu-direction::
+* submenu-placement::
+* text-buffer-target-info::
+* text-direction::
+* text-window-type::
+* toolbar-child-type::
+* toolbar-space-style::
+* toolbar-style::
+* tree-view-column-sizing::
+* tree-view-drop-position::
+* tree-view-grid-lines::
+* tree-view-mode::
+* unit::
+* update-type::
+* visibility::
+* widget-help-type::
+* window-position::
+* window-type::
+* wrap-mode::
+@end menu
+
+@node anchor-type
+@section anchor-type
+@Enum anchor-type
+Values: 
+@itemize
+@item :center
+@item :north
+@item :north-west
+@item :north-east
+@item :south
+@item :south-west
+@item :south-east
+@item :west
+@item :east
+@item :n
+@item :nw
+@item :ne
+@item :s
+@item :sw
+@item :se
+@item :w
+@item :e
+@end itemize
+
+
+@node arrow-type
+@section arrow-type
+@Enum arrow-type
+Values: 
+@itemize
+@item :up
+@item :down
+@item :left
+@item :right
+@item :none
+@end itemize
+
+
+@node assistant-page-type
+@section assistant-page-type
+@Enum assistant-page-type
+Values: 
+@itemize
+@item :content
+@item :intro
+@item :confirm
+@item :summary
+@item :progress
+@end itemize
+
+
+@node builder-error
+@section builder-error
+@Enum builder-error
+Values: 
+@itemize
+@item :invalid-type-function
+@item :unhandled-tag
+@item :missing-attribute
+@item :invalid-attribute
+@item :invalid-tag
+@item :missing-property-value
+@item :invalid-value
+@item :version-mismatch
+@item :duplicate-id
+@end itemize
+
+
+@node button-box-style
+@section button-box-style
+@Enum button-box-style
+Values: 
+@itemize
+@item :default-style
+@item :spread
+@item :edge
+@item :start
+@item :end
+@item :center
+@end itemize
+
+
+@node buttons-type
+@section buttons-type
+@Enum buttons-type
+Values: 
+@itemize
+@item :none
+@item :ok
+@item :close
+@item :cancel
+@item :yes-no
+@item :ok-cancel
+@end itemize
+
+
+@node c-list-drag-pos
+@section c-list-drag-pos
+@Enum c-list-drag-pos
+Values: 
+@itemize
+@item :none
+@item :before
+@item :into
+@item :after
+@end itemize
+
+
+@node c-tree-expander-style
+@section c-tree-expander-style
+@Enum c-tree-expander-style
+Values: 
+@itemize
+@item :none
+@item :square
+@item :triangle
+@item :circular
+@end itemize
+
+
+@node c-tree-expansion-type
+@section c-tree-expansion-type
+@Enum c-tree-expansion-type
+Values: 
+@itemize
+@item :expand
+@item :expand-recursive
+@item :collapse
+@item :collapse-recursive
+@item :toggle
+@item :toggle-recursive
+@end itemize
+
+
+@node c-tree-line-style
+@section c-tree-line-style
+@Enum c-tree-line-style
+Values: 
+@itemize
+@item :none
+@item :solid
+@item :dotted
+@item :tabbed
+@end itemize
+
+
+@node c-tree-pos
+@section c-tree-pos
+@Enum c-tree-pos
+Values: 
+@itemize
+@item :before
+@item :as-child
+@item :after
+@end itemize
+
+
+@node cell-renderer-accel-mode
+@section cell-renderer-accel-mode
+@Enum cell-renderer-accel-mode
+Values: 
+@itemize
+@item :gtk
+@item :other
+@end itemize
+
+
+@node cell-renderer-mode
+@section cell-renderer-mode
+@Enum cell-renderer-mode
+Values: 
+@itemize
+@item :inert
+@item :activatable
+@item :editable
+@end itemize
+
+
+@node cell-type
+@section cell-type
+@Enum cell-type
+Values: 
+@itemize
+@item :empty
+@item :text
+@item :pixmap
+@item :pixtext
+@item :widget
+@end itemize
+
+
+@node corner-type
+@section corner-type
+@Enum corner-type
+Values: 
+@itemize
+@item :top-left
+@item :bottom-left
+@item :top-right
+@item :bottom-right
+@end itemize
+
+
+@node curve-type
+@section curve-type
+@Enum curve-type
+Values: 
+@itemize
+@item :linear
+@item :spline
+@item :free
+@end itemize
+
+
+@node delete-type
+@section delete-type
+@Enum delete-type
+Values: 
+@itemize
+@item :chars
+@item :word-ends
+@item :words
+@item :display-lines
+@item :display-line-ends
+@item :paragraph-ends
+@item :paragraphs
+@item :whitespace
+@end itemize
+
+
+@node direction-type
+@section direction-type
+@Enum direction-type
+Values: 
+@itemize
+@item :tab-forward
+@item :tab-backward
+@item :up
+@item :down
+@item :left
+@item :right
+@end itemize
+
+
+@node drag-result
+@section drag-result
+@Enum drag-result
+Values: 
+@itemize
+@item :success
+@item :no-target
+@item :user-cancelled
+@item :timeout-expired
+@item :grab-broken
+@item :error
+@end itemize
+
+
+@node expander-style
+@section expander-style
+@Enum expander-style
+Values: 
+@itemize
+@item :collapsed
+@item :semi-collapsed
+@item :semi-expanded
+@item :expanded
+@end itemize
+
+
+@node file-chooser-action
+@section file-chooser-action
+@Enum file-chooser-action
+Values: 
+@itemize
+@item :open
+@item :save
+@item :select-folder
+@item :create-folder
+@end itemize
+
+
+@node file-chooser-confirmation
+@section file-chooser-confirmation
+@Enum file-chooser-confirmation
+Values: 
+@itemize
+@item :confirm
+@item :accept-filename
+@item :select-again
+@end itemize
+
+
+@node file-chooser-error
+@section file-chooser-error
+@Enum file-chooser-error
+Values: 
+@itemize
+@item :nonexistent
+@item :bad-filename
+@item :already-exists
+@item :incomplete-hostname
+@end itemize
+
+
+@node i-m-preedit-style
+@section i-m-preedit-style
+@Enum i-m-preedit-style
+Values: 
+@itemize
+@item :nothing
+@item :callback
+@item :none
+@end itemize
+
+
+@node i-m-status-style
+@section i-m-status-style
+@Enum i-m-status-style
+Values: 
+@itemize
+@item :nothing
+@item :callback
+@item :none
+@end itemize
+
+
+@node icon-size
+@section icon-size
+@Enum icon-size
+Values: 
+@itemize
+@item :invalid
+@item :menu
+@item :small-toolbar
+@item :large-toolbar
+@item :button
+@item :dnd
+@item :dialog
+@end itemize
+
+
+@node icon-theme-error
+@section icon-theme-error
+@Enum icon-theme-error
+Values: 
+@itemize
+@item :not-found
+@item :failed
+@end itemize
+
+
+@node icon-view-drop-position
+@section icon-view-drop-position
+@Enum icon-view-drop-position
+Values: 
+@itemize
+@item :no-drop
+@item :drop-into
+@item :drop-left
+@item :drop-right
+@item :drop-above
+@item :drop-below
+@end itemize
+
+
+@node image-type
+@section image-type
+@Enum image-type
+Values: 
+@itemize
+@item :empty
+@item :pixmap
+@item :image
+@item :pixbuf
+@item :stock
+@item :icon-set
+@item :animation
+@item :icon-name
+@item :gicon
+@end itemize
+
+
+@node justification
+@section justification
+@Enum justification
+Values: 
+@itemize
+@item :left
+@item :right
+@item :center
+@item :fill
+@end itemize
+
+
+@node match-type
+@section match-type
+@Enum match-type
+Values: 
+@itemize
+@item :all
+@item :all-tail
+@item :head
+@item :tail
+@item :exact
+@item :last
+@end itemize
+
+
+@node menu-direction-type
+@section menu-direction-type
+@Enum menu-direction-type
+Values: 
+@itemize
+@item :parent
+@item :child
+@item :next
+@item :prev
+@end itemize
+
+
+@node message-type
+@section message-type
+@Enum message-type
+Values: 
+@itemize
+@item :info
+@item :warning
+@item :question
+@item :error
+@item :other
+@end itemize
+
+
+@node metric-type
+@section metric-type
+@Enum metric-type
+Values: 
+@itemize
+@item :pixels
+@item :inches
+@item :centimeters
+@end itemize
+
+
+@node movement-step
+@section movement-step
+@Enum movement-step
+Values: 
+@itemize
+@item :logical-positions
+@item :visual-positions
+@item :words
+@item :display-lines
+@item :display-line-ends
+@item :paragraphs
+@item :paragraph-ends
+@item :pages
+@item :buffer-ends
+@item :horizontal-pages
+@end itemize
+
+
+@node notebook-tab
+@section notebook-tab
+@Enum notebook-tab
+Values: 
+@itemize
+@item :first
+@item :last
+@end itemize
+
+
+@node number-up-layout
+@section number-up-layout
+@Enum number-up-layout
+Values: 
+@itemize
+@item :lrtb
+@item :lrbt
+@item :rltb
+@item :rlbt
+@item :tblr
+@item :tbrl
+@item :btlr
+@item :btrl
+@end itemize
+
+
+@node orientation
+@section orientation
+@Enum orientation
+Values: 
+@itemize
+@item :horizontal
+@item :vertical
+@end itemize
+
+
+@node pack-direction
+@section pack-direction
+@Enum pack-direction
+Values: 
+@itemize
+@item :ltr
+@item :rtl
+@item :ttb
+@item :btt
+@end itemize
+
+
+@node pack-type
+@section pack-type
+@Enum pack-type
+Values: 
+@itemize
+@item :start
+@item :end
+@end itemize
+
+
+@node page-orientation
+@section page-orientation
+@Enum page-orientation
+Values: 
+@itemize
+@item :portrait
+@item :landscape
+@item :reverse-portrait
+@item :reverse-landscape
+@end itemize
+
+
+@node page-set
+@section page-set
+@Enum page-set
+Values: 
+@itemize
+@item :all
+@item :even
+@item :odd
+@end itemize
+
+
+@node path-priority-type
+@section path-priority-type
+@Enum path-priority-type
+Values: 
+@itemize
+@item :lowest
+@item :gtk
+@item :application
+@item :theme
+@item :rc
+@item :highest
+@end itemize
+
+
+@node path-type
+@section path-type
+@Enum path-type
+Values: 
+@itemize
+@item :widget
+@item :widget-class
+@item :class
+@end itemize
+
+
+@node policy-type
+@section policy-type
+@Enum policy-type
+Values: 
+@itemize
+@item :always
+@item :automatic
+@item :never
+@end itemize
+
+
+@node position-type
+@section position-type
+@Enum position-type
+Values: 
+@itemize
+@item :left
+@item :right
+@item :top
+@item :bottom
+@end itemize
+
+
+@node preview-type
+@section preview-type
+@Enum preview-type
+Values: 
+@itemize
+@item :color
+@item :grayscale
+@end itemize
+
+
+@node print-duplex
+@section print-duplex
+@Enum print-duplex
+Values: 
+@itemize
+@item :simplex
+@item :horizontal
+@item :vertical
+@end itemize
+
+
+@node print-error
+@section print-error
+@Enum print-error
+Values: 
+@itemize
+@item :general
+@item :internal-error
+@item :nomem
+@item :invalid-file
+@end itemize
+
+
+@node print-operation-action
+@section print-operation-action
+@Enum print-operation-action
+Values: 
+@itemize
+@item :print-dialog
+@item :print
+@item :preview
+@item :export
+@end itemize
+
+
+@node print-operation-result
+@section print-operation-result
+@Enum print-operation-result
+Values: 
+@itemize
+@item :error
+@item :apply
+@item :cancel
+@item :in-progress
+@end itemize
+
+
+@node print-pages
+@section print-pages
+@Enum print-pages
+Values: 
+@itemize
+@item :all
+@item :current
+@item :ranges
+@end itemize
+
+
+@node print-quality
+@section print-quality
+@Enum print-quality
+Values: 
+@itemize
+@item :low
+@item :normal
+@item :high
+@item :draft
+@end itemize
+
+
+@node print-status
+@section print-status
+@Enum print-status
+Values: 
+@itemize
+@item :initial
+@item :preparing
+@item :generating-data
+@item :sending-data
+@item :pending
+@item :pending-issue
+@item :printing
+@item :finished
+@item :finished-aborted
+@end itemize
+
+
+@node progress-bar-orientation
+@section progress-bar-orientation
+@Enum progress-bar-orientation
+Values: 
+@itemize
+@item :left-to-right
+@item :right-to-left
+@item :bottom-to-top
+@item :top-to-bottom
+@end itemize
+
+
+@node progress-bar-style
+@section progress-bar-style
+@Enum progress-bar-style
+Values: 
+@itemize
+@item :continuous
+@item :discrete
+@end itemize
+
+
+@node rc-token-type
+@section rc-token-type
+@Enum rc-token-type
+Values: 
+@itemize
+@item :invalid
+@item :include
+@item :normal
+@item :active
+@item :prelight
+@item :selected
+@item :insensitive
+@item :fg
+@item :bg
+@item :text
+@item :base
+@item :xthickness
+@item :ythickness
+@item :font
+@item :fontset
+@item :font-name
+@item :bg-pixmap
+@item :pixmap-path
+@item :style
+@item :binding
+@item :bind
+@item :widget
+@item :widget-class
+@item :class
+@item :lowest
+@item :gtk
+@item :application
+@item :theme
+@item :rc
+@item :highest
+@item :engine
+@item :module-path
+@item :im-module-path
+@item :im-module-file
+@item :stock
+@item :ltr
+@item :rtl
+@item :color
+@item :unbind
+@item :last
+@end itemize
+
+
+@node recent-chooser-error
+@section recent-chooser-error
+@Enum recent-chooser-error
+Values: 
+@itemize
+@item :not-found
+@item :invalid-uri
+@end itemize
+
+
+@node recent-manager-error
+@section recent-manager-error
+@Enum recent-manager-error
+Values: 
+@itemize
+@item :not-found
+@item :invalid-uri
+@item :invalid-encoding
+@item :not-registered
+@item :read
+@item :write
+@item :unknown
+@end itemize
+
+
+@node recent-sort-type
+@section recent-sort-type
+@Enum recent-sort-type
+Values: 
+@itemize
+@item :none
+@item :mru
+@item :lru
+@item :custom
+@end itemize
+
+
+@node relief-style
+@section relief-style
+@Enum relief-style
+Values: 
+@itemize
+@item :normal
+@item :half
+@item :none
+@end itemize
+
+
+@node resize-mode
+@section resize-mode
+@Enum resize-mode
+Values: 
+@itemize
+@item :parent
+@item :queue
+@item :immediate
+@end itemize
+
+
+@node response-type
+@section response-type
+@Enum response-type
+Values: 
+@itemize
+@item :none
+@item :reject
+@item :accept
+@item :delete-event
+@item :ok
+@item :cancel
+@item :close
+@item :yes
+@item :no
+@item :apply
+@item :help
+@end itemize
+
+
+@node scroll-step
+@section scroll-step
+@Enum scroll-step
+Values: 
+@itemize
+@item :steps
+@item :pages
+@item :ends
+@item :horizontal-steps
+@item :horizontal-pages
+@item :horizontal-ends
+@end itemize
+
+
+@node scroll-type
+@section scroll-type
+@Enum scroll-type
+Values: 
+@itemize
+@item :none
+@item :jump
+@item :step-backward
+@item :step-forward
+@item :page-backward
+@item :page-forward
+@item :step-up
+@item :step-down
+@item :page-up
+@item :page-down
+@item :step-left
+@item :step-right
+@item :page-left
+@item :page-right
+@item :start
+@item :end
+@end itemize
+
+
+@node selection-mode
+@section selection-mode
+@Enum selection-mode
+Values: 
+@itemize
+@item :none
+@item :single
+@item :browse
+@item :multiple
+@item :extended
+@end itemize
+
+
+@node sensitivity-type
+@section sensitivity-type
+@Enum sensitivity-type
+Values: 
+@itemize
+@item :auto
+@item :on
+@item :off
+@end itemize
+
+
+@node shadow-type
+@section shadow-type
+@Enum shadow-type
+Values: 
+@itemize
+@item :none
+@item :in
+@item :out
+@item :etched-in
+@item :etched-out
+@end itemize
+
+
+@node side-type
+@section side-type
+@Enum side-type
+Values: 
+@itemize
+@item :top
+@item :bottom
+@item :left
+@item :right
+@end itemize
+
+
+@node size-group-mode
+@section size-group-mode
+@Enum size-group-mode
+Values: 
+@itemize
+@item :none
+@item :horizontal
+@item :vertical
+@item :both
+@end itemize
+
+
+@node sort-type
+@section sort-type
+@Enum sort-type
+Values: 
+@itemize
+@item :ascending
+@item :descending
+@end itemize
+
+
+@node spin-button-update-policy
+@section spin-button-update-policy
+@Enum spin-button-update-policy
+Values: 
+@itemize
+@item :always
+@item :if-valid
+@end itemize
+
+
+@node spin-type
+@section spin-type
+@Enum spin-type
+Values: 
+@itemize
+@item :step-forward
+@item :step-backward
+@item :page-forward
+@item :page-backward
+@item :home
+@item :end
+@item :user-defined
+@end itemize
+
+
+@node state-type
+@section state-type
+@Enum state-type
+Values: 
+@itemize
+@item :normal
+@item :active
+@item :prelight
+@item :selected
+@item :insensitive
+@end itemize
+
+
+@node submenu-direction
+@section submenu-direction
+@Enum submenu-direction
+Values: 
+@itemize
+@item :left
+@item :right
+@end itemize
+
+
+@node submenu-placement
+@section submenu-placement
+@Enum submenu-placement
+Values: 
+@itemize
+@item :top-bottom
+@item :left-right
+@end itemize
+
+
+@node text-buffer-target-info
+@section text-buffer-target-info
+@Enum text-buffer-target-info
+Values: 
+@itemize
+@item :buffer-contents
+@item :rich-text
+@item :text
+@end itemize
+
+
+@node text-direction
+@section text-direction
+@Enum text-direction
+Values: 
+@itemize
+@item :none
+@item :ltr
+@item :rtl
+@end itemize
+
+
+@node text-window-type
+@section text-window-type
+@Enum text-window-type
+Values: 
+@itemize
+@item :private
+@item :widget
+@item :text
+@item :left
+@item :right
+@item :top
+@item :bottom
+@end itemize
+
+
+@node toolbar-child-type
+@section toolbar-child-type
+@Enum toolbar-child-type
+Values: 
+@itemize
+@item :space
+@item :button
+@item :togglebutton
+@item :radiobutton
+@item :widget
+@end itemize
+
+
+@node toolbar-space-style
+@section toolbar-space-style
+@Enum toolbar-space-style
+Values: 
+@itemize
+@item :empty
+@item :line
+@end itemize
+
+
+@node toolbar-style
+@section toolbar-style
+@Enum toolbar-style
+Values: 
+@itemize
+@item :icons
+@item :text
+@item :both
+@item :both-horiz
+@end itemize
+
+
+@node tree-view-column-sizing
+@section tree-view-column-sizing
+@Enum tree-view-column-sizing
+Values: 
+@itemize
+@item :grow-only
+@item :autosize
+@item :fixed
+@end itemize
+
+
+@node tree-view-drop-position
+@section tree-view-drop-position
+@Enum tree-view-drop-position
+Values: 
+@itemize
+@item :before
+@item :after
+@item :into-or-before
+@item :into-or-after
+@end itemize
+
+
+@node tree-view-grid-lines
+@section tree-view-grid-lines
+@Enum tree-view-grid-lines
+Values: 
+@itemize
+@item :none
+@item :horizontal
+@item :vertical
+@item :both
+@end itemize
+
+
+@node tree-view-mode
+@section tree-view-mode
+@Enum tree-view-mode
+Values: 
+@itemize
+@item :line
+@item :item
+@end itemize
+
+
+@node unit
+@section unit
+@Enum unit
+Values: 
+@itemize
+@item :pixel
+@item :points
+@item :inch
+@item :mm
+@end itemize
+
+
+@node update-type
+@section update-type
+@Enum update-type
+Values: 
+@itemize
+@item :continuous
+@item :discontinuous
+@item :delayed
+@end itemize
+
+
+@node visibility
+@section visibility
+@Enum visibility
+Values: 
+@itemize
+@item :none
+@item :partial
+@item :full
+@end itemize
+
+
+@node widget-help-type
+@section widget-help-type
+@Enum widget-help-type
+Values: 
+@itemize
+@item :tooltip
+@item :whats-this
+@end itemize
+
+
+@node window-position
+@section window-position
+@Enum window-position
+Values: 
+@itemize
+@item :none
+@item :center
+@item :mouse
+@item :center-always
+@item :center-on-parent
+@end itemize
+
+
+@node window-type
+@section window-type
+@Enum window-type
+Values: 
+@itemize
+@item :toplevel
+@item :popup
+@end itemize
+
+
+@node wrap-mode
+@section wrap-mode
+@Enum wrap-mode
+Values: 
+@itemize
+@item :none
+@item :char
+@item :word
+@item :word-char
+@end itemize
+
+

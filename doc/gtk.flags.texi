@@ -1,0 +1,344 @@
+@menu
+* accel-flags::
+* arg-flags::
+* attach-options::
+* button-action::
+* calendar-display-options::
+* cell-renderer-state::
+* debug-flag::
+* dest-defaults::
+* dialog-flags::
+* file-filter-flags::
+* gdk-modifier-type::
+* icon-lookup-flags::
+* object-flags::
+* private-flags::
+* rc-flags::
+* recent-filter-flags::
+* signal-run-type::
+* target-flags::
+* text-search-flags::
+* tree-model-flags::
+* ui-manager-item-type::
+* widget-flags::
+@end menu
+
+@node accel-flags
+@section accel-flags
+@Flags accel-flags
+Values: 
+@itemize
+@item :visible
+@item :locked
+@item :mask
+@end itemize
+
+
+@node arg-flags
+@section arg-flags
+@Flags arg-flags
+Values: 
+@itemize
+@item :readable
+@item :writable
+@item :construct
+@item :construct-only
+@item :child-arg
+@end itemize
+
+
+@node attach-options
+@section attach-options
+@Flags attach-options
+Values: 
+@itemize
+@item :expand
+@item :shrink
+@item :fill
+@end itemize
+
+
+@node button-action
+@section button-action
+@Flags button-action
+Values: 
+@itemize
+@item :ignored
+@item :selects
+@item :drags
+@item :expands
+@end itemize
+
+
+@node calendar-display-options
+@section calendar-display-options
+@Flags calendar-display-options
+Values: 
+@itemize
+@item :show-heading
+@item :show-day-names
+@item :no-month-change
+@item :show-week-numbers
+@item :week-start-monday
+@item :show-details
+@end itemize
+
+
+@node cell-renderer-state
+@section cell-renderer-state
+@Flags cell-renderer-state
+Values: 
+@itemize
+@item :selected
+@item :prelit
+@item :insensitive
+@item :sorted
+@item :focused
+@end itemize
+
+
+@node debug-flag
+@section debug-flag
+@Flags debug-flag
+Values: 
+@itemize
+@item :misc
+@item :plugsocket
+@item :text
+@item :tree
+@item :updates
+@item :keybindings
+@item :multihead
+@item :modules
+@item :geometry
+@item :icontheme
+@item :printing
+@item :builder
+@end itemize
+
+
+@node dest-defaults
+@section dest-defaults
+@Flags dest-defaults
+Values: 
+@itemize
+@item :motion
+@item :highlight
+@item :drop
+@item :all
+@end itemize
+
+
+@node dialog-flags
+@section dialog-flags
+@Flags dialog-flags
+Values: 
+@itemize
+@item :modal
+@item :destroy-with-parent
+@item :no-separator
+@end itemize
+
+
+@node file-filter-flags
+@section file-filter-flags
+@Flags file-filter-flags
+Values: 
+@itemize
+@item :filename
+@item :uri
+@item :display-name
+@item :mime-type
+@end itemize
+
+
+@node gdk-modifier-type
+@section gdk-modifier-type
+@Flags gdk-modifier-type
+Values: 
+@itemize
+@item :shift-mask
+@item :lock-mask
+@item :control-mask
+@item :mod1-mask
+@item :mod2-mask
+@item :mod3-mask
+@item :mod4-mask
+@item :mod5-mask
+@item :button1-mask
+@item :button2-mask
+@item :button3-mask
+@item :button4-mask
+@item :button5-mask
+@item :super-mask
+@item :hyper-mask
+@item :meta-mask
+@item :release-mask
+@item :modifier-mask
+@end itemize
+
+
+@node icon-lookup-flags
+@section icon-lookup-flags
+@Flags icon-lookup-flags
+Values: 
+@itemize
+@item :no-svg
+@item :force-svg
+@item :use-builtin
+@item :generic-fallback
+@item :force-size
+@end itemize
+
+
+@node object-flags
+@section object-flags
+@Flags object-flags
+Values: 
+@itemize
+@item :in-destruction
+@item :floating
+@item :reserved-1
+@item :reserved-2
+@end itemize
+
+
+@node private-flags
+@section private-flags
+@Flags private-flags
+Values: 
+@itemize
+@item :user-style
+@item :resize-pending
+@item :has-pointer
+@item :shadowed
+@item :has-shape-mask
+@item :in-reparent
+@item :direction-set
+@item :direction-ltr
+@item :anchored
+@item :child-visible
+@item :redraw-on-alloc
+@item :alloc-needed
+@item :request-needed
+@end itemize
+
+
+@node rc-flags
+@section rc-flags
+@Flags rc-flags
+Values: 
+@itemize
+@item :fg
+@item :bg
+@item :text
+@item :base
+@end itemize
+
+
+@node recent-filter-flags
+@section recent-filter-flags
+@Flags recent-filter-flags
+Values: 
+@itemize
+@item :uri
+@item :display-name
+@item :mime-type
+@item :application
+@item :group
+@item :age
+@end itemize
+
+
+@node signal-run-type
+@section signal-run-type
+@Flags signal-run-type
+Values: 
+@itemize
+@item :first
+@item :last
+@item :both
+@item :no-recurse
+@item :action
+@item :no-hooks
+@end itemize
+
+
+@node target-flags
+@section target-flags
+@Flags target-flags
+Values: 
+@itemize
+@item :same-app
+@item :same-widget
+@item :other-app
+@item :other-widget
+@end itemize
+
+
+@node text-search-flags
+@section text-search-flags
+@Flags text-search-flags
+Values: 
+@itemize
+@item :visible-only
+@item :text-only
+@end itemize
+
+
+@node tree-model-flags
+@section tree-model-flags
+@Flags tree-model-flags
+Values: 
+@itemize
+@item :iters-persist
+@item :list-only
+@end itemize
+
+
+@node ui-manager-item-type
+@section ui-manager-item-type
+@Flags ui-manager-item-type
+Values: 
+@itemize
+@item :auto
+@item :menubar
+@item :menu
+@item :toolbar
+@item :placeholder
+@item :popup
+@item :menuitem
+@item :toolitem
+@item :separator
+@item :accelerator
+@item :popup-with-accels
+@end itemize
+
+
+@node widget-flags
+@section widget-flags
+@Flags widget-flags
+Values: 
+@itemize
+@item :toplevel
+@item :no-window
+@item :realized
+@item :mapped
+@item :visible
+@item :sensitive
+@item :parent-sensitive
+@item :can-focus
+@item :has-focus
+@item :can-default
+@item :has-default
+@item :has-grab
+@item :rc-style
+@item :composite-child
+@item :no-reparent
+@item :app-paintable
+@item :receives-default
+@item :double-buffered
+@item :no-show-all
+@end itemize
+
+

@@ -1,0 +1,447 @@
+@menu
+* color::
+* cursor::
+* event::
+* event-button::
+* event-client::
+* event-client-16::
+* event-client-32::
+* event-client-8::
+* event-configure::
+* event-crossing::
+* event-dnd::
+* event-expose::
+* event-focus::
+* event-grab-broken::
+* event-key::
+* event-motion::
+* event-no-expose::
+* event-owner-change::
+* event-property::
+* event-proximity::
+* event-scroll::
+* event-selection::
+* event-setting::
+* event-visibility::
+* event-window-state::
+* font::
+* geometry::
+* rectangle::
+@end menu
+
+@node color
+@section color
+@Struct color
+Superclass: @code{structure-object}
+
+Slots:
+@itemize
+@item @anchor{slot.color.pixel}pixel. Accessor: color-pixel.
+@item @anchor{slot.color.red}red. Accessor: color-red.
+@item @anchor{slot.color.green}green. Accessor: color-green.
+@item @anchor{slot.color.blue}blue. Accessor: color-blue.
+@end itemize
+
+
+@node cursor
+@section cursor
+@Struct cursor
+Superclass: @code{structure-object}
+
+Slots:
+@itemize
+@item @anchor{slot.cursor.type}type. Accessor: cursor-type.
+@end itemize
+
+
+@node event
+@section event
+@Struct event
+Superclass: @code{structure-object}
+
+Subclasses: @ref{event-key} @ref{event-button} @ref{event-scroll} @ref{event-motion} @ref{event-expose} @ref{event-visibility} @ref{event-crossing} @ref{event-focus} @ref{event-configure} @ref{event-property} @ref{event-selection} @ref{event-dnd} @ref{event-proximity} @ref{event-client} @ref{event-no-expose} @ref{event-window-state} @ref{event-setting} @ref{event-owner-change} @ref{event-grab-broken}
+
+Slots:
+@itemize
+@item @anchor{slot.event.type}type. Accessor: event-type.
+@item @anchor{slot.event.window}window. Accessor: event-window.
+@item @anchor{slot.event.send-event}send-event. Accessor: event-send-event.
+@end itemize
+
+
+@node event-button
+@section event-button
+@Struct event-button
+Superclass: @ref{event}
+
+Slots:
+@itemize
+@item @anchor{slot.event-button.type}type. Accessor: event-button-type.
+@item @anchor{slot.event-button.time}time. Accessor: event-button-time.
+@item @anchor{slot.event-button.x}x. Accessor: event-button-x.
+@item @anchor{slot.event-button.y}y. Accessor: event-button-y.
+@item @anchor{slot.event-button.axes}axes. Accessor: event-button-axes.
+@item @anchor{slot.event-button.state}state. Accessor: event-button-state.
+@item @anchor{slot.event-button.button}button. Accessor: event-button-button.
+@item @anchor{slot.event-button.device}device. Accessor: event-button-device.
+@item @anchor{slot.event-button.x-root}x-root. Accessor: event-button-x-root.
+@item @anchor{slot.event-button.y-root}y-root. Accessor: event-button-y-root.
+@end itemize
+
+
+@node event-client
+@section event-client
+@Struct event-client
+Superclass: @ref{event}
+
+Subclasses: @ref{event-client-8} @ref{event-client-16} @ref{event-client-32}
+
+Slots:
+@itemize
+@item @anchor{slot.event-client.type}type. Accessor: event-client-type.
+@item @anchor{slot.event-client.message-time}message-time. Accessor: event-client-message-time.
+@item @anchor{slot.event-client.data-format}data-format. Accessor: event-client-data-format.
+@end itemize
+
+
+@node event-client-16
+@section event-client-16
+@Struct event-client-16
+Superclass: @ref{event-client}
+
+Slots:
+@itemize
+@item @anchor{slot.event-client-16.data-format}data-format. Accessor: event-client-16-data-format.
+@item @anchor{slot.event-client-16.data}data. Accessor: event-client-16-data.
+@end itemize
+
+
+@node event-client-32
+@section event-client-32
+@Struct event-client-32
+Superclass: @ref{event-client}
+
+Slots:
+@itemize
+@item @anchor{slot.event-client-32.data-format}data-format. Accessor: event-client-32-data-format.
+@item @anchor{slot.event-client-32.data}data. Accessor: event-client-32-data.
+@end itemize
+
+
+@node event-client-8
+@section event-client-8
+@Struct event-client-8
+Superclass: @ref{event-client}
+
+Slots:
+@itemize
+@item @anchor{slot.event-client-8.data-format}data-format. Accessor: event-client-8-data-format.
+@item @anchor{slot.event-client-8.data}data. Accessor: event-client-8-data.
+@end itemize
+
+
+@node event-configure
+@section event-configure
+@Struct event-configure
+Superclass: @ref{event}
+
+Slots:
+@itemize
+@item @anchor{slot.event-configure.type}type. Accessor: event-configure-type.
+@item @anchor{slot.event-configure.x}x. Accessor: event-configure-x.
+@item @anchor{slot.event-configure.y}y. Accessor: event-configure-y.
+@item @anchor{slot.event-configure.width}width. Accessor: event-configure-width.
+@item @anchor{slot.event-configure.height}height. Accessor: event-configure-height.
+@end itemize
+
+
+@node event-crossing
+@section event-crossing
+@Struct event-crossing
+Superclass: @ref{event}
+
+Slots:
+@itemize
+@item @anchor{slot.event-crossing.type}type. Accessor: event-crossing-type.
+@item @anchor{slot.event-crossing.sub-window}sub-window. Accessor: event-crossing-sub-window.
+@item @anchor{slot.event-crossing.time}time. Accessor: event-crossing-time.
+@item @anchor{slot.event-crossing.x}x. Accessor: event-crossing-x.
+@item @anchor{slot.event-crossing.y}y. Accessor: event-crossing-y.
+@item @anchor{slot.event-crossing.x-root}x-root. Accessor: event-crossing-x-root.
+@item @anchor{slot.event-crossing.y-root}y-root. Accessor: event-crossing-y-root.
+@item @anchor{slot.event-crossing.mode}mode. Accessor: event-crossing-mode.
+@item @anchor{slot.event-crossing.detail}detail. Accessor: event-crossing-detail.
+@item @anchor{slot.event-crossing.focus}focus. Accessor: event-crossing-focus.
+@item @anchor{slot.event-crossing.state}state. Accessor: event-crossing-state.
+@end itemize
+
+
+@node event-dnd
+@section event-dnd
+@Struct event-dnd
+Superclass: @ref{event}
+
+Slots:
+@itemize
+@item @anchor{slot.event-dnd.type}type. Accessor: event-dnd-type.
+@item @anchor{slot.event-dnd.drag-context}drag-context. Accessor: event-dnd-drag-context.
+@item @anchor{slot.event-dnd.time}time. Accessor: event-dnd-time.
+@item @anchor{slot.event-dnd.x-root}x-root. Accessor: event-dnd-x-root.
+@item @anchor{slot.event-dnd.y-root}y-root. Accessor: event-dnd-y-root.
+@end itemize
+
+
+@node event-expose
+@section event-expose
+@Struct event-expose
+Superclass: @ref{event}
+
+Slots:
+@itemize
+@item @anchor{slot.event-expose.type}type. Accessor: event-expose-type.
+@item @anchor{slot.event-expose.area}area. Accessor: event-expose-area.
+@item @anchor{slot.event-expose.region}region. Accessor: event-expose-region.
+@item @anchor{slot.event-expose.count}count. Accessor: event-expose-count.
+@end itemize
+
+
+@node event-focus
+@section event-focus
+@Struct event-focus
+Superclass: @ref{event}
+
+Slots:
+@itemize
+@item @anchor{slot.event-focus.type}type. Accessor: event-focus-type.
+@item @anchor{slot.event-focus.in}in. Accessor: event-focus-in.
+@end itemize
+
+
+@node event-grab-broken
+@section event-grab-broken
+@Struct event-grab-broken
+Superclass: @ref{event}
+
+Slots:
+@itemize
+@item @anchor{slot.event-grab-broken.type}type. Accessor: event-grab-broken-type.
+@item @anchor{slot.event-grab-broken.keyboard}keyboard. Accessor: event-grab-broken-keyboard.
+@item @anchor{slot.event-grab-broken.implicit}implicit. Accessor: event-grab-broken-implicit.
+@item @anchor{slot.event-grab-broken.grab-window}grab-window. Accessor: event-grab-broken-grab-window.
+@end itemize
+
+
+@node event-key
+@section event-key
+@Struct event-key
+Superclass: @ref{event}
+
+Slots:
+@itemize
+@item @anchor{slot.event-key.type}type. Accessor: event-key-type.
+@item @anchor{slot.event-key.time}time. Accessor: event-key-time.
+@item @anchor{slot.event-key.state}state. Accessor: event-key-state.
+@item @anchor{slot.event-key.keyval}keyval. Accessor: event-key-keyval.
+@item @anchor{slot.event-key.length}length. Accessor: event-key-length.
+@item @anchor{slot.event-key.string}string. Accessor: event-key-string.
+@item @anchor{slot.event-key.hardware-keycode}hardware-keycode. Accessor: event-key-hardware-keycode.
+@item @anchor{slot.event-key.group}group. Accessor: event-key-group.
+@item @anchor{slot.event-key.is-modifier}is-modifier. Accessor: event-key-is-modifier.
+@end itemize
+
+
+@node event-motion
+@section event-motion
+@Struct event-motion
+Superclass: @ref{event}
+
+Slots:
+@itemize
+@item @anchor{slot.event-motion.type}type. Accessor: event-motion-type.
+@item @anchor{slot.event-motion.time}time. Accessor: event-motion-time.
+@item @anchor{slot.event-motion.x}x. Accessor: event-motion-x.
+@item @anchor{slot.event-motion.y}y. Accessor: event-motion-y.
+@item @anchor{slot.event-motion.axes}axes. Accessor: event-motion-axes.
+@item @anchor{slot.event-motion.state}state. Accessor: event-motion-state.
+@item @anchor{slot.event-motion.is-hint}is-hint. Accessor: event-motion-is-hint.
+@item @anchor{slot.event-motion.device}device. Accessor: event-motion-device.
+@item @anchor{slot.event-motion.x-root}x-root. Accessor: event-motion-x-root.
+@item @anchor{slot.event-motion.y-root}y-root. Accessor: event-motion-y-root.
+@end itemize
+
+
+@node event-no-expose
+@section event-no-expose
+@Struct event-no-expose
+Superclass: @ref{event}
+
+Slots:
+@itemize
+@item @anchor{slot.event-no-expose.type}type. Accessor: event-no-expose-type.
+@end itemize
+
+
+@node event-owner-change
+@section event-owner-change
+@Struct event-owner-change
+Superclass: @ref{event}
+
+Slots:
+@itemize
+@item @anchor{slot.event-owner-change.type}type. Accessor: event-owner-change-type.
+@item @anchor{slot.event-owner-change.owner}owner. Accessor: event-owner-change-owner.
+@item @anchor{slot.event-owner-change.reason}reason. Accessor: event-owner-change-reason.
+@item @anchor{slot.event-owner-change.selection}selection. Accessor: event-owner-change-selection.
+@item @anchor{slot.event-owner-change.time}time. Accessor: event-owner-change-time.
+@item @anchor{slot.event-owner-change.selection-time}selection-time. Accessor: event-owner-change-selection-time.
+@end itemize
+
+
+@node event-property
+@section event-property
+@Struct event-property
+Superclass: @ref{event}
+
+Slots:
+@itemize
+@item @anchor{slot.event-property.type}type. Accessor: event-property-type.
+@item @anchor{slot.event-property.atom}atom. Accessor: event-property-atom.
+@item @anchor{slot.event-property.time}time. Accessor: event-property-time.
+@item @anchor{slot.event-property.state}state. Accessor: event-property-state.
+@end itemize
+
+
+@node event-proximity
+@section event-proximity
+@Struct event-proximity
+Superclass: @ref{event}
+
+Slots:
+@itemize
+@item @anchor{slot.event-proximity.type}type. Accessor: event-proximity-type.
+@item @anchor{slot.event-proximity.time}time. Accessor: event-proximity-time.
+@item @anchor{slot.event-proximity.device}device. Accessor: event-proximity-device.
+@end itemize
+
+
+@node event-scroll
+@section event-scroll
+@Struct event-scroll
+Superclass: @ref{event}
+
+Slots:
+@itemize
+@item @anchor{slot.event-scroll.type}type. Accessor: event-scroll-type.
+@item @anchor{slot.event-scroll.time}time. Accessor: event-scroll-time.
+@item @anchor{slot.event-scroll.x}x. Accessor: event-scroll-x.
+@item @anchor{slot.event-scroll.y}y. Accessor: event-scroll-y.
+@item @anchor{slot.event-scroll.state}state. Accessor: event-scroll-state.
+@item @anchor{slot.event-scroll.direction}direction. Accessor: event-scroll-direction.
+@item @anchor{slot.event-scroll.device}device. Accessor: event-scroll-device.
+@item @anchor{slot.event-scroll.x-root}x-root. Accessor: event-scroll-x-root.
+@item @anchor{slot.event-scroll.y-root}y-root. Accessor: event-scroll-y-root.
+@end itemize
+
+
+@node event-selection
+@section event-selection
+@Struct event-selection
+Superclass: @ref{event}
+
+Slots:
+@itemize
+@item @anchor{slot.event-selection.type}type. Accessor: event-selection-type.
+@item @anchor{slot.event-selection.selection}selection. Accessor: event-selection-selection.
+@item @anchor{slot.event-selection.target}target. Accessor: event-selection-target.
+@item @anchor{slot.event-selection.property}property. Accessor: event-selection-property.
+@item @anchor{slot.event-selection.time}time. Accessor: event-selection-time.
+@item @anchor{slot.event-selection.requestor}requestor. Accessor: event-selection-requestor.
+@end itemize
+
+
+@node event-setting
+@section event-setting
+@Struct event-setting
+Superclass: @ref{event}
+
+Slots:
+@itemize
+@item @anchor{slot.event-setting.type}type. Accessor: event-setting-type.
+@item @anchor{slot.event-setting.action}action. Accessor: event-setting-action.
+@item @anchor{slot.event-setting.name}name. Accessor: event-setting-name.
+@end itemize
+
+
+@node event-visibility
+@section event-visibility
+@Struct event-visibility
+Superclass: @ref{event}
+
+Slots:
+@itemize
+@item @anchor{slot.event-visibility.type}type. Accessor: event-visibility-type.
+@item @anchor{slot.event-visibility.state}state. Accessor: event-visibility-state.
+@end itemize
+
+
+@node event-window-state
+@section event-window-state
+@Struct event-window-state
+Superclass: @ref{event}
+
+Slots:
+@itemize
+@item @anchor{slot.event-window-state.type}type. Accessor: event-window-state-type.
+@item @anchor{slot.event-window-state.changed-mask}changed-mask. Accessor: event-window-state-changed-mask.
+@item @anchor{slot.event-window-state.new-window-state}new-window-state. Accessor: event-window-state-new-window-state.
+@end itemize
+
+
+@node font
+@section font
+@Struct font
+Superclass: @code{structure-object}
+
+Slots:
+@itemize
+@item @anchor{slot.font.type}type. Accessor: font-type.
+@item @anchor{slot.font.ascent}ascent. Accessor: font-ascent.
+@item @anchor{slot.font.descent}descent. Accessor: font-descent.
+@end itemize
+
+
+@node geometry
+@section geometry
+@Struct geometry
+Superclass: @code{structure-object}
+
+Slots:
+@itemize
+@item @anchor{slot.geometry.min-width}min-width. Accessor: geometry-min-width.
+@item @anchor{slot.geometry.min-height}min-height. Accessor: geometry-min-height.
+@item @anchor{slot.geometry.max-width}max-width. Accessor: geometry-max-width.
+@item @anchor{slot.geometry.max-height}max-height. Accessor: geometry-max-height.
+@item @anchor{slot.geometry.base-width}base-width. Accessor: geometry-base-width.
+@item @anchor{slot.geometry.base-height}base-height. Accessor: geometry-base-height.
+@item @anchor{slot.geometry.width-increment}width-increment. Accessor: geometry-width-increment.
+@item @anchor{slot.geometry.height-increment}height-increment. Accessor: geometry-height-increment.
+@item @anchor{slot.geometry.min-aspect}min-aspect. Accessor: geometry-min-aspect.
+@item @anchor{slot.geometry.max-aspect}max-aspect. Accessor: geometry-max-aspect.
+@item @anchor{slot.geometry.gravity}gravity. Accessor: geometry-gravity.
+@end itemize
+
+
+@node rectangle
+@section rectangle
+@Struct rectangle
+Superclass: @code{structure-object}
+
+Slots:
+@itemize
+@item @anchor{slot.rectangle.x}x. Accessor: rectangle-x.
+@item @anchor{slot.rectangle.y}y. Accessor: rectangle-y.
+@item @anchor{slot.rectangle.width}width. Accessor: rectangle-width.
+@item @anchor{slot.rectangle.height}height. Accessor: rectangle-height.
+@end itemize
+
+

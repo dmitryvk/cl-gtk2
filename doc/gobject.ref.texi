@@ -1263,6 +1263,7 @@ Example:
 @chapter GObject high-level
 @menu
 * g-object::
+* g-initially-unowned::
 * GObject metaclass::
 * Using objects::
 * Signals::
@@ -1308,6 +1309,15 @@ A base class for all GObject classes.
 @Accessor pointer g-object
 
 An accessor that accesses the foreign pointer to object.
+
+@node g-initially-unowned
+@section g-initially-unowned
+
+@Class g-initially-unowned
+
+Superclass: @ref{g-object}
+
+A base class for all GObject classes whose initial reference is floating.
 
 @node GObject metaclass
 @section GObject metaclass

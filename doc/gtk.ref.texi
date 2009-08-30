@@ -1,6 +1,11 @@
 @menu
 * Gtk+ Main loop::
 * Widgets::
+* Gtk+ Interfaces::
+* Gtk+ Objects::
+* Gtk+ Structs::
+* Gtk+ Enums::
+* Gtk+ Flags::
 @end menu
 
 All symbols of Gtk+ binding in cl-gtk2 reside in @code{gtk} package.
@@ -14,3 +19,28 @@ All symbols of Gtk+ binding in cl-gtk2 reside in @code{gtk} package.
 @chapter Widgets
 
 @include gtk.widgets.texi
+
+@node Gtk+ Interfaces
+@chapter Gtk+ Interfaces
+
+@include gtk.interfaces.texi
+
+@node Gtk+ Objects
+@chapter Gtk+ Objects
+
+@include gtk.objects.texi
+
+@node Gtk+ Structs
+@chapter Gtk+ Structs
+
+@include gtk.structs.texi
+
+@node Gtk+ Enums
+@chapter Gtk+ Enums
+
+@include gtk.enums.texi
+
+@node Gtk+ Flags
+@chapter Gtk+ Flags
+
+@include gtk.flags.texi

@@ -1,0 +1,1377 @@
+@menu
+* accel-group::
+* accel-map::
+* action::
+* action-group::
+* adjustment::
+* array-list-store::
+* builder::
+* cell-renderer::
+* cell-renderer-accel::
+* cell-renderer-combo::
+* cell-renderer-pixbuf::
+* cell-renderer-progress::
+* cell-renderer-spin::
+* cell-renderer-text::
+* cell-renderer-toggle::
+* clipboard::
+* entry-completion::
+* file-filter::
+* gtk-object::
+* i-m-context::
+* icon-factory::
+* icon-theme::
+* list-store::
+* page-setup::
+* print-context::
+* print-operation::
+* print-settings::
+* radio-action::
+* rc-style::
+* recent-action::
+* recent-filter::
+* recent-manager::
+* settings::
+* size-group::
+* status-icon::
+* style::
+* text-buffer::
+* text-child-anchor::
+* text-iter::
+* text-mark::
+* text-tag::
+* text-tag-table::
+* toggle-action::
+* tooltip::
+* tooltips::
+* tree-lisp-store::
+* tree-model-filter::
+* tree-model-sort::
+* tree-path::
+* tree-selection::
+* tree-store::
+* tree-view-column::
+* ui-manager::
+* window-group::
+@end menu
+
+@node accel-group
+@section accel-group
+@Class accel-group
+Superclass: @ref{g-object}
+
+Slots:
+@itemize
+@item @anchor{slot.accel-group.is-locked}is-locked. Type: @code{boolean}. Accessor: @anchor{fn.accel-group-is-locked}@code{accel-group-is-locked}. Read-only.
+@item @anchor{slot.accel-group.modifier-mask}modifier-mask. Type: @ref{gdk-modifier-type}. Accessor: @anchor{fn.accel-group-modifier-mask}@code{accel-group-modifier-mask}. Read-only.
+@end itemize
+
+
+Signals:
+@itemize
+@item @anchor{signal.accel-group.accel-activate}"accel-activate". Signature: (instance @ref{accel-group}), (arg-1 @ref{g-object}), (arg-2 @code{integer}), (arg-3 @ref{gdk-modifier-type}) @result{} @code{boolean}. Options: detailed.
+@item @anchor{signal.accel-group.accel-changed}"accel-changed". Signature: (instance @ref{accel-group}), (arg-1 @code{integer}), (arg-2 @ref{gdk-modifier-type}), (arg-3 @code{GClosure}) @result{} void. Options: run-first, detailed.
+@end itemize
+
+
+
+
+@node accel-map
+@section accel-map
+@Class accel-map
+Superclass: @ref{g-object}
+
+Slots:
+@itemize
+@end itemize
+
+
+Signals:
+@itemize
+@end itemize
+
+
+
+
+@node action
+@section action
+@Class action
+Superclass: @ref{g-object}
+
+Subclasses: @ref{recent-action} @ref{toggle-action}
+
+Slots:
+@itemize
+@item @anchor{slot.action.name}name. Type: @code{string}. Accessor: @anchor{fn.action-name}@code{action-name}.
+@item @anchor{slot.action.label}label. Type: @code{string}. Accessor: @anchor{fn.action-label}@code{action-label}.
+@item @anchor{slot.action.short-label}short-label. Type: @code{string}. Accessor: @anchor{fn.action-short-label}@code{action-short-label}.
+@item @anchor{slot.action.tooltip}tooltip. Type: @code{string}. Accessor: @anchor{fn.action-tooltip}@code{action-tooltip}.
+@item @anchor{slot.action.stock-id}stock-id. Type: @code{string}. Accessor: @anchor{fn.action-stock-id}@code{action-stock-id}.
+@item @anchor{slot.action.icon-name}icon-name. Type: @code{string}. Accessor: @anchor{fn.action-icon-name}@code{action-icon-name}.
+@item @anchor{slot.action.gicon}gicon. Type: @code{GIcon}. Accessor: @anchor{fn.action-gicon}@code{action-gicon}.
+@item @anchor{slot.action.visible-horizontal}visible-horizontal. Type: @code{boolean}. Accessor: @anchor{fn.action-visible-horizontal}@code{action-visible-horizontal}.
+@item @anchor{slot.action.visible-vertical}visible-vertical. Type: @code{boolean}. Accessor: @anchor{fn.action-visible-vertical}@code{action-visible-vertical}.
+@item @anchor{slot.action.visible-overflown}visible-overflown. Type: @code{boolean}. Accessor: @anchor{fn.action-visible-overflown}@code{action-visible-overflown}.
+@item @anchor{slot.action.is-important}is-important. Type: @code{boolean}. Accessor: @anchor{fn.action-is-important}@code{action-is-important}.
+@item @anchor{slot.action.hide-if-empty}hide-if-empty. Type: @code{boolean}. Accessor: @anchor{fn.action-hide-if-empty}@code{action-hide-if-empty}.
+@item @anchor{slot.action.sensitive}sensitive. Type: @code{boolean}. Accessor: @anchor{fn.action-sensitive}@code{action-sensitive}.
+@item @anchor{slot.action.visible}visible. Type: @code{boolean}. Accessor: @anchor{fn.action-visible}@code{action-visible}.
+@item @anchor{slot.action.action-group}action-group. Type: @ref{action-group}. Accessor: @anchor{fn.action-action-group}@code{action-action-group}.
+@item @anchor{slot.action.accel-path}accel-path. Type: @code{string}. Accessor: @anchor{fn.action-accel-path}@code{action-accel-path}.
+@item @anchor{slot.action.accel-group}accel-group. Type: @ref{g-object}. Accessor: @anchor{fn.action-accel-group}@code{action-accel-group}. Write-only.
+@end itemize
+
+
+Signals:
+@itemize
+@item @anchor{signal.action.activate}"activate". Signature: (instance @ref{action}) @result{} void. Options: run-first, no-recurse.
+@end itemize
+
+
+
+
+@node action-group
+@section action-group
+@Class action-group
+Superclass: @ref{g-object}
+
+Slots:
+@itemize
+@item @anchor{slot.action-group.name}name. Type: @code{string}. Accessor: @anchor{fn.action-group-name}@code{action-group-name}.
+@item @anchor{slot.action-group.sensitive}sensitive. Type: @code{boolean}. Accessor: @anchor{fn.action-group-sensitive}@code{action-group-sensitive}.
+@item @anchor{slot.action-group.visible}visible. Type: @code{boolean}. Accessor: @anchor{fn.action-group-visible}@code{action-group-visible}.
+@item @anchor{slot.action-group.translate-function}translate-function. Type: ????. Accessor: @anchor{fn.action-group-translate-function}@code{action-group-translate-function}. Write-only.
+@item @anchor{slot.action-group.translation-domain}translation-domain. Type: ????. Accessor: @anchor{fn.action-group-translation-domain}@code{action-group-translation-domain}. Write-only.
+@end itemize
+
+
+Signals:
+@itemize
+@item @anchor{signal.action-group.connect-proxy}"connect-proxy". Signature: (instance @ref{action-group}), (arg-1 @ref{action}), (arg-2 @ref{widget}) @result{} void. Options: .
+@item @anchor{signal.action-group.disconnect-proxy}"disconnect-proxy". Signature: (instance @ref{action-group}), (arg-1 @ref{action}), (arg-2 @ref{widget}) @result{} void. Options: .
+@item @anchor{signal.action-group.pre-activate}"pre-activate". Signature: (instance @ref{action-group}), (arg-1 @ref{action}) @result{} void. Options: .
+@item @anchor{signal.action-group.post-activate}"post-activate". Signature: (instance @ref{action-group}), (arg-1 @ref{action}) @result{} void. Options: .
+@end itemize
+
+
+
+
+@node adjustment
+@section adjustment
+@Class adjustment
+Superclass: @ref{gtk-object}
+
+Slots:
+@itemize
+@item @anchor{slot.adjustment.value}value. Type: @code{double-float}. Accessor: @anchor{fn.adjustment-value}@code{adjustment-value}.
+@item @anchor{slot.adjustment.lower}lower. Type: @code{double-float}. Accessor: @anchor{fn.adjustment-lower}@code{adjustment-lower}.
+@item @anchor{slot.adjustment.upper}upper. Type: @code{double-float}. Accessor: @anchor{fn.adjustment-upper}@code{adjustment-upper}.
+@item @anchor{slot.adjustment.step-increment}step-increment. Type: @code{double-float}. Accessor: @anchor{fn.adjustment-step-increment}@code{adjustment-step-increment}.
+@item @anchor{slot.adjustment.page-increment}page-increment. Type: @code{double-float}. Accessor: @anchor{fn.adjustment-page-increment}@code{adjustment-page-increment}.
+@item @anchor{slot.adjustment.page-size}page-size. Type: @code{double-float}. Accessor: @anchor{fn.adjustment-page-size}@code{adjustment-page-size}.
+@end itemize
+
+
+Signals:
+@itemize
+@item @anchor{signal.adjustment.changed}"changed". Signature: (instance @ref{adjustment}) @result{} void. Options: run-first, no-recurse.
+@item @anchor{signal.adjustment.value-changed}"value-changed". Signature: (instance @ref{adjustment}) @result{} void. Options: run-first, no-recurse.
+@end itemize
+
+
+
+
+@node array-list-store
+@section array-list-store
+@Class array-list-store
+Superclass: @ref{g-object}
+
+Slots:
+@itemize
+@end itemize
+
+
+Signals:
+@itemize
+@end itemize
+
+
+
+
+@node builder
+@section builder
+@Class builder
+Superclass: @ref{g-object}
+
+Slots:
+@itemize
+@item @anchor{slot.builder.translation-domain}translation-domain. Type: @code{string}. Accessor: @anchor{fn.builder-translation-domain}@code{builder-translation-domain}.
+@end itemize
+
+
+Signals:
+@itemize
+@end itemize
+
+
+
+
+@node cell-renderer
+@section cell-renderer
+@Class cell-renderer
+Superclass: @ref{gtk-object}
+
+Subclasses: @ref{cell-renderer-toggle} @ref{cell-renderer-progress} @ref{cell-renderer-pixbuf} @ref{cell-renderer-text}
+
+Slots:
+@itemize
+@item @anchor{slot.cell-renderer.mode}mode. Type: @ref{cell-renderer-mode}. Accessor: @anchor{fn.cell-renderer-mode}@code{cell-renderer-mode}.
+@item @anchor{slot.cell-renderer.visible}visible. Type: @code{boolean}. Accessor: @anchor{fn.cell-renderer-visible}@code{cell-renderer-visible}.
+@item @anchor{slot.cell-renderer.sensitive}sensitive. Type: @code{boolean}. Accessor: @anchor{fn.cell-renderer-sensitive}@code{cell-renderer-sensitive}.
+@item @anchor{slot.cell-renderer.xalign}xalign. Type: @code{single-float}. Accessor: @anchor{fn.cell-renderer-xalign}@code{cell-renderer-xalign}.
+@item @anchor{slot.cell-renderer.yalign}yalign. Type: @code{single-float}. Accessor: @anchor{fn.cell-renderer-yalign}@code{cell-renderer-yalign}.
+@item @anchor{slot.cell-renderer.xpad}xpad. Type: @code{integer}. Accessor: @anchor{fn.cell-renderer-xpad}@code{cell-renderer-xpad}.
+@item @anchor{slot.cell-renderer.ypad}ypad. Type: @code{integer}. Accessor: @anchor{fn.cell-renderer-ypad}@code{cell-renderer-ypad}.
+@item @anchor{slot.cell-renderer.width}width. Type: @code{integer}. Accessor: @anchor{fn.cell-renderer-width}@code{cell-renderer-width}.
+@item @anchor{slot.cell-renderer.height}height. Type: @code{integer}. Accessor: @anchor{fn.cell-renderer-height}@code{cell-renderer-height}.
+@item @anchor{slot.cell-renderer.is-expander}is-expander. Type: @code{boolean}. Accessor: @anchor{fn.cell-renderer-is-expander}@code{cell-renderer-is-expander}.
+@item @anchor{slot.cell-renderer.is-expanded}is-expanded. Type: @code{boolean}. Accessor: @anchor{fn.cell-renderer-is-expanded}@code{cell-renderer-is-expanded}.
+@item @anchor{slot.cell-renderer.cell-background}cell-background. Type: @code{string}. Accessor: @anchor{fn.cell-renderer-cell-background}@code{cell-renderer-cell-background}. Write-only.
+@item @anchor{slot.cell-renderer.cell-background-gdk}cell-background-gdk. Type: @ref{color}. Accessor: @anchor{fn.cell-renderer-cell-background-gdk}@code{cell-renderer-cell-background-gdk}.
+@item @anchor{slot.cell-renderer.cell-background-set}cell-background-set. Type: @code{boolean}. Accessor: @anchor{fn.cell-renderer-cell-background-set}@code{cell-renderer-cell-background-set}.
+@item @anchor{slot.cell-renderer.editing}editing. Type: @code{boolean}. Accessor: @anchor{fn.cell-renderer-editing}@code{cell-renderer-editing}. Read-only.
+@end itemize
+
+
+Signals:
+@itemize
+@item @anchor{signal.cell-renderer.editing-canceled}"editing-canceled". Signature: (instance @ref{cell-renderer}) @result{} void. Options: run-first.
+@item @anchor{signal.cell-renderer.editing-started}"editing-started". Signature: (instance @ref{cell-renderer}), (arg-1 @ref{cell-editable}), (arg-2 @code{string}) @result{} void. Options: run-first.
+@end itemize
+
+
+
+
+@node cell-renderer-accel
+@section cell-renderer-accel
+@Class cell-renderer-accel
+Superclass: @ref{cell-renderer-text}
+
+Slots:
+@itemize
+@item @anchor{slot.cell-renderer-accel.accel-key}accel-key. Type: @code{integer}. Accessor: @anchor{fn.cell-renderer-accel-accel-key}@code{cell-renderer-accel-accel-key}.
+@item @anchor{slot.cell-renderer-accel.accel-mods}accel-mods. Type: @ref{gdk-modifier-type}. Accessor: @anchor{fn.cell-renderer-accel-accel-mods}@code{cell-renderer-accel-accel-mods}.
+@item @anchor{slot.cell-renderer-accel.keycode}keycode. Type: @code{integer}. Accessor: @anchor{fn.cell-renderer-accel-keycode}@code{cell-renderer-accel-keycode}.
+@item @anchor{slot.cell-renderer-accel.accel-mode}accel-mode. Type: @ref{cell-renderer-accel-mode}. Accessor: @anchor{fn.cell-renderer-accel-accel-mode}@code{cell-renderer-accel-accel-mode}.
+@end itemize
+
+
+Signals:
+@itemize
+@item @anchor{signal.cell-renderer-accel.accel-edited}"accel-edited". Signature: (instance @ref{cell-renderer-accel}), (arg-1 @code{string}), (arg-2 @code{integer}), (arg-3 @ref{gdk-modifier-type}), (arg-4 @code{integer}) @result{} void. Options: run-last.
+@item @anchor{signal.cell-renderer-accel.accel-cleared}"accel-cleared". Signature: (instance @ref{cell-renderer-accel}), (arg-1 @code{string}) @result{} void. Options: run-last.
+@end itemize
+
+
+
+
+@node cell-renderer-combo
+@section cell-renderer-combo
+@Class cell-renderer-combo
+Superclass: @ref{cell-renderer-text}
+
+Slots:
+@itemize
+@item @anchor{slot.cell-renderer-combo.model}model. Type: @ref{tree-model}. Accessor: @anchor{fn.cell-renderer-combo-model}@code{cell-renderer-combo-model}.
+@item @anchor{slot.cell-renderer-combo.text-column}text-column. Type: @code{integer}. Accessor: @anchor{fn.cell-renderer-combo-text-column}@code{cell-renderer-combo-text-column}.
+@item @anchor{slot.cell-renderer-combo.has-entry}has-entry. Type: @code{boolean}. Accessor: @anchor{fn.cell-renderer-combo-has-entry}@code{cell-renderer-combo-has-entry}.
+@end itemize
+
+
+Signals:
+@itemize
+@item @anchor{signal.cell-renderer-combo.changed}"changed". Signature: (instance @ref{cell-renderer-combo}), (arg-1 @code{string}), (arg-2 @ref{tree-iter}) @result{} void. Options: run-last.
+@end itemize
+
+
+
+
+@node cell-renderer-pixbuf
+@section cell-renderer-pixbuf
+@Class cell-renderer-pixbuf
+Superclass: @ref{cell-renderer}
+
+Slots:
+@itemize
+@item @anchor{slot.cell-renderer-pixbuf.pixbuf}pixbuf. Type: @ref{pixbuf}. Accessor: @anchor{fn.cell-renderer-pixbuf-pixbuf}@code{cell-renderer-pixbuf-pixbuf}.
+@item @anchor{slot.cell-renderer-pixbuf.pixbuf-expander-open}pixbuf-expander-open. Type: @ref{pixbuf}. Accessor: @anchor{fn.cell-renderer-pixbuf-pixbuf-expander-open}@code{cell-renderer-pixbuf-pixbuf-expander-open}.
+@item @anchor{slot.cell-renderer-pixbuf.pixbuf-expander-closed}pixbuf-expander-closed. Type: @ref{pixbuf}. Accessor: @anchor{fn.cell-renderer-pixbuf-pixbuf-expander-closed}@code{cell-renderer-pixbuf-pixbuf-expander-closed}.
+@item @anchor{slot.cell-renderer-pixbuf.stock-id}stock-id. Type: @code{string}. Accessor: @anchor{fn.cell-renderer-pixbuf-stock-id}@code{cell-renderer-pixbuf-stock-id}.
+@item @anchor{slot.cell-renderer-pixbuf.stock-size}stock-size. Type: @code{integer}. Accessor: @anchor{fn.cell-renderer-pixbuf-stock-size}@code{cell-renderer-pixbuf-stock-size}.
+@item @anchor{slot.cell-renderer-pixbuf.stock-detail}stock-detail. Type: @code{string}. Accessor: @anchor{fn.cell-renderer-pixbuf-stock-detail}@code{cell-renderer-pixbuf-stock-detail}.
+@item @anchor{slot.cell-renderer-pixbuf.follow-state}follow-state. Type: @code{boolean}. Accessor: @anchor{fn.cell-renderer-pixbuf-follow-state}@code{cell-renderer-pixbuf-follow-state}.
+@item @anchor{slot.cell-renderer-pixbuf.icon-name}icon-name. Type: @code{string}. Accessor: @anchor{fn.cell-renderer-pixbuf-icon-name}@code{cell-renderer-pixbuf-icon-name}.
+@item @anchor{slot.cell-renderer-pixbuf.gicon}gicon. Type: @code{GIcon}. Accessor: @anchor{fn.cell-renderer-pixbuf-gicon}@code{cell-renderer-pixbuf-gicon}.
+@end itemize
+
+
+Signals:
+@itemize
+@end itemize
+
+
+
+
+@node cell-renderer-progress
+@section cell-renderer-progress
+@Class cell-renderer-progress
+Superclass: @ref{cell-renderer}
+
+Slots:
+@itemize
+@item @anchor{slot.cell-renderer-progress.value}value. Type: @code{integer}. Accessor: @anchor{fn.cell-renderer-progress-value}@code{cell-renderer-progress-value}.
+@item @anchor{slot.cell-renderer-progress.text}text. Type: @code{string}. Accessor: @anchor{fn.cell-renderer-progress-text}@code{cell-renderer-progress-text}.
+@item @anchor{slot.cell-renderer-progress.pulse}pulse. Type: @code{integer}. Accessor: @anchor{fn.cell-renderer-progress-pulse}@code{cell-renderer-progress-pulse}.
+@item @anchor{slot.cell-renderer-progress.text-xalign}text-xalign. Type: @code{single-float}. Accessor: @anchor{fn.cell-renderer-progress-text-xalign}@code{cell-renderer-progress-text-xalign}.
+@item @anchor{slot.cell-renderer-progress.text-yalign}text-yalign. Type: @code{single-float}. Accessor: @anchor{fn.cell-renderer-progress-text-yalign}@code{cell-renderer-progress-text-yalign}.
+@item @anchor{slot.cell-renderer-progress.orientation}orientation. Type: @ref{progress-bar-orientation}. Accessor: @anchor{fn.cell-renderer-progress-orientation}@code{cell-renderer-progress-orientation}.
+@end itemize
+
+
+Signals:
+@itemize
+@end itemize
+
+
+
+
+@node cell-renderer-spin
+@section cell-renderer-spin
+@Class cell-renderer-spin
+Superclass: @ref{cell-renderer-text}
+
+Slots:
+@itemize
+@item @anchor{slot.cell-renderer-spin.adjustment}adjustment. Type: @ref{adjustment}. Accessor: @anchor{fn.cell-renderer-spin-adjustment}@code{cell-renderer-spin-adjustment}.
+@item @anchor{slot.cell-renderer-spin.climb-rate}climb-rate. Type: @code{double-float}. Accessor: @anchor{fn.cell-renderer-spin-climb-rate}@code{cell-renderer-spin-climb-rate}.
+@item @anchor{slot.cell-renderer-spin.digits}digits. Type: @code{integer}. Accessor: @anchor{fn.cell-renderer-spin-digits}@code{cell-renderer-spin-digits}.
+@end itemize
+
+
+Signals:
+@itemize
+@end itemize
+
+
+
+
+@node cell-renderer-text
+@section cell-renderer-text
+@Class cell-renderer-text
+Superclass: @ref{cell-renderer}
+
+Subclasses: @ref{cell-renderer-spin} @ref{cell-renderer-combo} @ref{cell-renderer-accel}
+
+Slots:
+@itemize
+@item @anchor{slot.cell-renderer-text.text}text. Type: @code{string}. Accessor: @anchor{fn.cell-renderer-text-text}@code{cell-renderer-text-text}.
+@item @anchor{slot.cell-renderer-text.markup}markup. Type: @code{string}. Accessor: @anchor{fn.cell-renderer-text-markup}@code{cell-renderer-text-markup}. Write-only.
+@item @anchor{slot.cell-renderer-text.attributes}attributes. Type: @code{PangoAttrList}. Accessor: @anchor{fn.cell-renderer-text-attributes}@code{cell-renderer-text-attributes}.
+@item @anchor{slot.cell-renderer-text.single-paragraph-mode}single-paragraph-mode. Type: @code{boolean}. Accessor: @anchor{fn.cell-renderer-text-single-paragraph-mode}@code{cell-renderer-text-single-paragraph-mode}.
+@item @anchor{slot.cell-renderer-text.width-chars}width-chars. Type: @code{integer}. Accessor: @anchor{fn.cell-renderer-text-width-chars}@code{cell-renderer-text-width-chars}.
+@item @anchor{slot.cell-renderer-text.wrap-width}wrap-width. Type: @code{integer}. Accessor: @anchor{fn.cell-renderer-text-wrap-width}@code{cell-renderer-text-wrap-width}.
+@item @anchor{slot.cell-renderer-text.alignment}alignment. Type: @code{PangoAlignment}. Accessor: @anchor{fn.cell-renderer-text-alignment}@code{cell-renderer-text-alignment}.
+@item @anchor{slot.cell-renderer-text.background}background. Type: @code{string}. Accessor: @anchor{fn.cell-renderer-text-background}@code{cell-renderer-text-background}. Write-only.
+@item @anchor{slot.cell-renderer-text.foreground}foreground. Type: @code{string}. Accessor: @anchor{fn.cell-renderer-text-foreground}@code{cell-renderer-text-foreground}. Write-only.
+@item @anchor{slot.cell-renderer-text.background-gdk}background-gdk. Type: @ref{color}. Accessor: @anchor{fn.cell-renderer-text-background-gdk}@code{cell-renderer-text-background-gdk}.
+@item @anchor{slot.cell-renderer-text.foreground-gdk}foreground-gdk. Type: @ref{color}. Accessor: @anchor{fn.cell-renderer-text-foreground-gdk}@code{cell-renderer-text-foreground-gdk}.
+@item @anchor{slot.cell-renderer-text.font}font. Type: @code{string}. Accessor: @anchor{fn.cell-renderer-text-font}@code{cell-renderer-text-font}.
+@item @anchor{slot.cell-renderer-text.font-desc}font-desc. Type: @code{PangoFontDescription}. Accessor: @anchor{fn.cell-renderer-text-font-desc}@code{cell-renderer-text-font-desc}.
+@item @anchor{slot.cell-renderer-text.family}family. Type: @code{string}. Accessor: @anchor{fn.cell-renderer-text-family}@code{cell-renderer-text-family}.
+@item @anchor{slot.cell-renderer-text.style}style. Type: @code{PangoStyle}. Accessor: @anchor{fn.cell-renderer-text-style}@code{cell-renderer-text-style}.
+@item @anchor{slot.cell-renderer-text.variant}variant. Type: @code{PangoVariant}. Accessor: @anchor{fn.cell-renderer-text-variant}@code{cell-renderer-text-variant}.
+@item @anchor{slot.cell-renderer-text.weight}weight. Type: @code{integer}. Accessor: @anchor{fn.cell-renderer-text-weight}@code{cell-renderer-text-weight}.
+@item @anchor{slot.cell-renderer-text.stretch}stretch. Type: @code{PangoStretch}. Accessor: @anchor{fn.cell-renderer-text-stretch}@code{cell-renderer-text-stretch}.
+@item @anchor{slot.cell-renderer-text.size}size. Type: @code{integer}. Accessor: @anchor{fn.cell-renderer-text-size}@code{cell-renderer-text-size}.
+@item @anchor{slot.cell-renderer-text.size-points}size-points. Type: @code{double-float}. Accessor: @anchor{fn.cell-renderer-text-size-points}@code{cell-renderer-text-size-points}.
+@item @anchor{slot.cell-renderer-text.scale}scale. Type: @code{double-float}. Accessor: @anchor{fn.cell-renderer-text-scale}@code{cell-renderer-text-scale}.
+@item @anchor{slot.cell-renderer-text.editable}editable. Type: @code{boolean}. Accessor: @anchor{fn.cell-renderer-text-editable}@code{cell-renderer-text-editable}.
+@item @anchor{slot.cell-renderer-text.strikethrough}strikethrough. Type: @code{boolean}. Accessor: @anchor{fn.cell-renderer-text-strikethrough}@code{cell-renderer-text-strikethrough}.
+@item @anchor{slot.cell-renderer-text.underline}underline. Type: @code{PangoUnderline}. Accessor: @anchor{fn.cell-renderer-text-underline}@code{cell-renderer-text-underline}.
+@item @anchor{slot.cell-renderer-text.rise}rise. Type: @code{integer}. Accessor: @anchor{fn.cell-renderer-text-rise}@code{cell-renderer-text-rise}.
+@item @anchor{slot.cell-renderer-text.language}language. Type: @code{string}. Accessor: @anchor{fn.cell-renderer-text-language}@code{cell-renderer-text-language}.
+@item @anchor{slot.cell-renderer-text.ellipsize}ellipsize. Type: @code{PangoEllipsizeMode}. Accessor: @anchor{fn.cell-renderer-text-ellipsize}@code{cell-renderer-text-ellipsize}.
+@item @anchor{slot.cell-renderer-text.wrap-mode}wrap-mode. Type: @code{PangoWrapMode}. Accessor: @anchor{fn.cell-renderer-text-wrap-mode}@code{cell-renderer-text-wrap-mode}.
+@item @anchor{slot.cell-renderer-text.background-set}background-set. Type: @code{boolean}. Accessor: @anchor{fn.cell-renderer-text-background-set}@code{cell-renderer-text-background-set}.
+@item @anchor{slot.cell-renderer-text.foreground-set}foreground-set. Type: @code{boolean}. Accessor: @anchor{fn.cell-renderer-text-foreground-set}@code{cell-renderer-text-foreground-set}.
+@item @anchor{slot.cell-renderer-text.family-set}family-set. Type: @code{boolean}. Accessor: @anchor{fn.cell-renderer-text-family-set}@code{cell-renderer-text-family-set}.
+@item @anchor{slot.cell-renderer-text.style-set}style-set. Type: @code{boolean}. Accessor: @anchor{fn.cell-renderer-text-style-set}@code{cell-renderer-text-style-set}.
+@item @anchor{slot.cell-renderer-text.variant-set}variant-set. Type: @code{boolean}. Accessor: @anchor{fn.cell-renderer-text-variant-set}@code{cell-renderer-text-variant-set}.
+@item @anchor{slot.cell-renderer-text.weight-set}weight-set. Type: @code{boolean}. Accessor: @anchor{fn.cell-renderer-text-weight-set}@code{cell-renderer-text-weight-set}.
+@item @anchor{slot.cell-renderer-text.stretch-set}stretch-set. Type: @code{boolean}. Accessor: @anchor{fn.cell-renderer-text-stretch-set}@code{cell-renderer-text-stretch-set}.
+@item @anchor{slot.cell-renderer-text.size-set}size-set. Type: @code{boolean}. Accessor: @anchor{fn.cell-renderer-text-size-set}@code{cell-renderer-text-size-set}.
+@item @anchor{slot.cell-renderer-text.scale-set}scale-set. Type: @code{boolean}. Accessor: @anchor{fn.cell-renderer-text-scale-set}@code{cell-renderer-text-scale-set}.
+@item @anchor{slot.cell-renderer-text.editable-set}editable-set. Type: @code{boolean}. Accessor: @anchor{fn.cell-renderer-text-editable-set}@code{cell-renderer-text-editable-set}.
+@item @anchor{slot.cell-renderer-text.strikethrough-set}strikethrough-set. Type: @code{boolean}. Accessor: @anchor{fn.cell-renderer-text-strikethrough-set}@code{cell-renderer-text-strikethrough-set}.
+@item @anchor{slot.cell-renderer-text.underline-set}underline-set. Type: @code{boolean}. Accessor: @anchor{fn.cell-renderer-text-underline-set}@code{cell-renderer-text-underline-set}.
+@item @anchor{slot.cell-renderer-text.rise-set}rise-set. Type: @code{boolean}. Accessor: @anchor{fn.cell-renderer-text-rise-set}@code{cell-renderer-text-rise-set}.
+@item @anchor{slot.cell-renderer-text.language-set}language-set. Type: @code{boolean}. Accessor: @anchor{fn.cell-renderer-text-language-set}@code{cell-renderer-text-language-set}.
+@item @anchor{slot.cell-renderer-text.ellipsize-set}ellipsize-set. Type: @code{boolean}. Accessor: @anchor{fn.cell-renderer-text-ellipsize-set}@code{cell-renderer-text-ellipsize-set}.
+@item @anchor{slot.cell-renderer-text.align-set}align-set. Type: @code{boolean}. Accessor: @anchor{fn.cell-renderer-text-align-set}@code{cell-renderer-text-align-set}.
+@end itemize
+
+
+Signals:
+@itemize
+@item @anchor{signal.cell-renderer-text.edited}"edited". Signature: (instance @ref{cell-renderer-text}), (arg-1 @code{string}), (arg-2 @code{string}) @result{} void. Options: run-last.
+@end itemize
+
+
+
+
+@node cell-renderer-toggle
+@section cell-renderer-toggle
+@Class cell-renderer-toggle
+Superclass: @ref{cell-renderer}
+
+Slots:
+@itemize
+@item @anchor{slot.cell-renderer-toggle.activatable}activatable. Type: @code{boolean}. Accessor: @anchor{fn.cell-renderer-toggle-activatable}@code{cell-renderer-toggle-activatable}.
+@item @anchor{slot.cell-renderer-toggle.active}active. Type: @code{boolean}. Accessor: @anchor{fn.cell-renderer-toggle-active}@code{cell-renderer-toggle-active}.
+@item @anchor{slot.cell-renderer-toggle.radio}radio. Type: @code{boolean}. Accessor: @anchor{fn.cell-renderer-toggle-radio}@code{cell-renderer-toggle-radio}.
+@item @anchor{slot.cell-renderer-toggle.inconsistent}inconsistent. Type: @code{boolean}. Accessor: @anchor{fn.cell-renderer-toggle-inconsistent}@code{cell-renderer-toggle-inconsistent}.
+@item @anchor{slot.cell-renderer-toggle.indicator-size}indicator-size. Type: @code{integer}. Accessor: @anchor{fn.cell-renderer-toggle-indicator-size}@code{cell-renderer-toggle-indicator-size}.
+@end itemize
+
+
+Signals:
+@itemize
+@item @anchor{signal.cell-renderer-toggle.toggled}"toggled". Signature: (instance @ref{cell-renderer-toggle}), (arg-1 @code{string}) @result{} void. Options: run-last.
+@end itemize
+
+
+
+
+@node clipboard
+@section clipboard
+@Class clipboard
+Superclass: @ref{g-object}
+
+Slots:
+@itemize
+@end itemize
+
+
+Signals:
+@itemize
+@end itemize
+
+
+
+
+@node entry-completion
+@section entry-completion
+@Class entry-completion
+Superclass: @ref{g-object}
+
+Slots:
+@itemize
+@item @anchor{slot.entry-completion.model}model. Type: @ref{tree-model}. Accessor: @anchor{fn.entry-completion-model}@code{entry-completion-model}.
+@item @anchor{slot.entry-completion.minimum-key-length}minimum-key-length. Type: @code{integer}. Accessor: @anchor{fn.entry-completion-minimum-key-length}@code{entry-completion-minimum-key-length}.
+@item @anchor{slot.entry-completion.text-column}text-column. Type: @code{integer}. Accessor: @anchor{fn.entry-completion-text-column}@code{entry-completion-text-column}.
+@item @anchor{slot.entry-completion.inline-completion}inline-completion. Type: @code{boolean}. Accessor: @anchor{fn.entry-completion-inline-completion}@code{entry-completion-inline-completion}.
+@item @anchor{slot.entry-completion.popup-completion}popup-completion. Type: @code{boolean}. Accessor: @anchor{fn.entry-completion-popup-completion}@code{entry-completion-popup-completion}.
+@item @anchor{slot.entry-completion.popup-set-width}popup-set-width. Type: @code{boolean}. Accessor: @anchor{fn.entry-completion-popup-set-width}@code{entry-completion-popup-set-width}.
+@item @anchor{slot.entry-completion.popup-single-match}popup-single-match. Type: @code{boolean}. Accessor: @anchor{fn.entry-completion-popup-single-match}@code{entry-completion-popup-single-match}.
+@item @anchor{slot.entry-completion.inline-selection}inline-selection. Type: @code{boolean}. Accessor: @anchor{fn.entry-completion-inline-selection}@code{entry-completion-inline-selection}.
+@end itemize
+
+
+Signals:
+@itemize
+@item @anchor{signal.entry-completion.insert-prefix}"insert-prefix". Signature: (instance @ref{entry-completion}), (arg-1 @code{string}) @result{} @code{boolean}. Options: run-last.
+@item @anchor{signal.entry-completion.match-selected}"match-selected". Signature: (instance @ref{entry-completion}), (arg-1 @ref{tree-model}), (arg-2 @ref{tree-iter}) @result{} @code{boolean}. Options: run-last.
+@item @anchor{signal.entry-completion.cursor-on-match}"cursor-on-match". Signature: (instance @ref{entry-completion}), (arg-1 @ref{tree-model}), (arg-2 @ref{tree-iter}) @result{} @code{boolean}. Options: run-last.
+@item @anchor{signal.entry-completion.action-activated}"action-activated". Signature: (instance @ref{entry-completion}), (arg-1 @code{integer}) @result{} void. Options: run-last.
+@end itemize
+
+
+
+
+@node file-filter
+@section file-filter
+@Class file-filter
+Superclass: @ref{gtk-object}
+
+Slots:
+@itemize
+@item @anchor{slot.file-filter.name}name. Type: @code{string}. Accessor: @anchor{fn.file-filter-name}@code{file-filter-name}.
+@end itemize
+
+
+Signals:
+@itemize
+@end itemize
+
+
+
+
+@node gtk-object
+@section gtk-object
+@Class gtk-object
+Superclass: @ref{g-initially-unowned}
+
+Subclasses: @ref{tooltips} @ref{recent-filter} @ref{file-filter} @ref{cell-renderer} @ref{tree-view-column} @ref{adjustment} @ref{widget}
+
+Slots:
+@itemize
+@item @anchor{slot.gtk-object.user-data}user-data. Type: gpointer. Accessor: @anchor{fn.gtk-object-user-data}@code{gtk-object-user-data}.
+@end itemize
+
+
+Signals:
+@itemize
+@item @anchor{signal.gtk-object.destroy}"destroy". Signature: (instance @ref{gtk-object}) @result{} void. Options: run-cleanup, no-recurse, no-hooks.
+@end itemize
+
+
+
+
+@node i-m-context
+@section i-m-context
+@Class i-m-context
+Superclass: @ref{g-object}
+
+Slots:
+@itemize
+@end itemize
+
+
+Signals:
+@itemize
+@end itemize
+
+
+
+
+@node icon-factory
+@section icon-factory
+@Class icon-factory
+Superclass: @ref{g-object}
+
+Slots:
+@itemize
+@end itemize
+
+
+Signals:
+@itemize
+@end itemize
+
+
+
+
+@node icon-theme
+@section icon-theme
+@Class icon-theme
+Superclass: @ref{g-object}
+
+Slots:
+@itemize
+@end itemize
+
+
+Signals:
+@itemize
+@end itemize
+
+
+
+
+@node list-store
+@section list-store
+@Class list-store
+Superclass: @ref{g-object}
+
+Slots:
+@itemize
+@end itemize
+
+
+Signals:
+@itemize
+@end itemize
+
+
+
+
+@node page-setup
+@section page-setup
+@Class page-setup
+Superclass: @ref{g-object}
+
+Slots:
+@itemize
+@end itemize
+
+
+Signals:
+@itemize
+@end itemize
+
+
+
+
+@node print-context
+@section print-context
+@Class print-context
+Superclass: @ref{g-object}
+
+Slots:
+@itemize
+@end itemize
+
+
+Signals:
+@itemize
+@end itemize
+
+
+
+
+@node print-operation
+@section print-operation
+@Class print-operation
+Superclass: @ref{g-object}
+
+Slots:
+@itemize
+@item @anchor{slot.print-operation.default-page-setup}default-page-setup. Type: @ref{page-setup}. Accessor: @anchor{fn.print-operation-default-page-setup}@code{print-operation-default-page-setup}.
+@item @anchor{slot.print-operation.print-settings}print-settings. Type: @ref{print-settings}. Accessor: @anchor{fn.print-operation-print-settings}@code{print-operation-print-settings}.
+@item @anchor{slot.print-operation.job-name}job-name. Type: @code{string}. Accessor: @anchor{fn.print-operation-job-name}@code{print-operation-job-name}.
+@item @anchor{slot.print-operation.n-pages}n-pages. Type: @code{integer}. Accessor: @anchor{fn.print-operation-n-pages}@code{print-operation-n-pages}.
+@item @anchor{slot.print-operation.current-page}current-page. Type: @code{integer}. Accessor: @anchor{fn.print-operation-current-page}@code{print-operation-current-page}.
+@item @anchor{slot.print-operation.use-full-page}use-full-page. Type: @code{boolean}. Accessor: @anchor{fn.print-operation-use-full-page}@code{print-operation-use-full-page}.
+@item @anchor{slot.print-operation.track-print-status}track-print-status. Type: @code{boolean}. Accessor: @anchor{fn.print-operation-track-print-status}@code{print-operation-track-print-status}.
+@item @anchor{slot.print-operation.unit}unit. Type: @ref{unit}. Accessor: @anchor{fn.print-operation-unit}@code{print-operation-unit}.
+@item @anchor{slot.print-operation.show-progress}show-progress. Type: @code{boolean}. Accessor: @anchor{fn.print-operation-show-progress}@code{print-operation-show-progress}.
+@item @anchor{slot.print-operation.allow-async}allow-async. Type: @code{boolean}. Accessor: @anchor{fn.print-operation-allow-async}@code{print-operation-allow-async}.
+@item @anchor{slot.print-operation.export-filename}export-filename. Type: @code{string}. Accessor: @anchor{fn.print-operation-export-filename}@code{print-operation-export-filename}.
+@item @anchor{slot.print-operation.status}status. Type: @ref{print-status}. Accessor: @anchor{fn.print-operation-status}@code{print-operation-status}. Read-only.
+@item @anchor{slot.print-operation.status-string}status-string. Type: @code{string}. Accessor: @anchor{fn.print-operation-status-string}@code{print-operation-status-string}. Read-only.
+@item @anchor{slot.print-operation.custom-tab-label}custom-tab-label. Type: @code{string}. Accessor: @anchor{fn.print-operation-custom-tab-label}@code{print-operation-custom-tab-label}.
+@end itemize
+
+
+Signals:
+@itemize
+@item @anchor{signal.print-operation.done}"done". Signature: (instance @ref{print-operation}), (arg-1 @ref{print-operation-result}) @result{} void. Options: run-last.
+@item @anchor{signal.print-operation.begin-print}"begin-print". Signature: (instance @ref{print-operation}), (arg-1 @ref{print-context}) @result{} void. Options: run-last.
+@item @anchor{signal.print-operation.paginate}"paginate". Signature: (instance @ref{print-operation}), (arg-1 @ref{print-context}) @result{} @code{boolean}. Options: run-last.
+@item @anchor{signal.print-operation.request-page-setup}"request-page-setup". Signature: (instance @ref{print-operation}), (arg-1 @ref{print-context}), (arg-2 @code{integer}), (arg-3 @ref{page-setup}) @result{} void. Options: run-last.
+@item @anchor{signal.print-operation.draw-page}"draw-page". Signature: (instance @ref{print-operation}), (arg-1 @ref{print-context}), (arg-2 @code{integer}) @result{} void. Options: run-last.
+@item @anchor{signal.print-operation.end-print}"end-print". Signature: (instance @ref{print-operation}), (arg-1 @ref{print-context}) @result{} void. Options: run-last.
+@item @anchor{signal.print-operation.status-changed}"status-changed". Signature: (instance @ref{print-operation}) @result{} void. Options: run-last.
+@item @anchor{signal.print-operation.create-custom-widget}"create-custom-widget". Signature: (instance @ref{print-operation}) @result{} @ref{g-object}. Options: run-last.
+@item @anchor{signal.print-operation.custom-widget-apply}"custom-widget-apply". Signature: (instance @ref{print-operation}), (arg-1 @ref{widget}) @result{} void. Options: run-last.
+@item @anchor{signal.print-operation.preview}"preview". Signature: (instance @ref{print-operation}), (arg-1 @ref{print-operation-preview}), (arg-2 @ref{print-context}), (arg-3 @ref{gtk-window}) @result{} @code{boolean}. Options: run-last.
+@end itemize
+
+
+
+
+@node print-settings
+@section print-settings
+@Class print-settings
+Superclass: @ref{g-object}
+
+Slots:
+@itemize
+@end itemize
+
+
+Signals:
+@itemize
+@end itemize
+
+
+
+
+@node radio-action
+@section radio-action
+@Class radio-action
+Superclass: @ref{toggle-action}
+
+Slots:
+@itemize
+@item @anchor{slot.radio-action.value}value. Type: @code{integer}. Accessor: @anchor{fn.radio-action-value}@code{radio-action-value}.
+@item @anchor{slot.radio-action.group}group. Type: @ref{radio-action}. Accessor: @anchor{fn.radio-action-group}@code{radio-action-group}. Write-only.
+@item @anchor{slot.radio-action.current-value}current-value. Type: @code{integer}. Accessor: @anchor{fn.radio-action-current-value}@code{radio-action-current-value}.
+@end itemize
+
+
+Signals:
+@itemize
+@item @anchor{signal.radio-action.changed}"changed". Signature: (instance @ref{radio-action}), (arg-1 @ref{radio-action}) @result{} void. Options: run-first, no-recurse.
+@end itemize
+
+
+
+
+@node rc-style
+@section rc-style
+@Class rc-style
+Superclass: @ref{g-object}
+
+Slots:
+@itemize
+@end itemize
+
+
+Signals:
+@itemize
+@end itemize
+
+
+
+
+@node recent-action
+@section recent-action
+@Class recent-action
+Superclass: @ref{action}
+
+Slots:
+@itemize
+@item @anchor{slot.recent-action.show-numbers}show-numbers. Type: @code{boolean}. Accessor: @anchor{fn.recent-action-show-numbers}@code{recent-action-show-numbers}.
+@end itemize
+
+
+Signals:
+@itemize
+@end itemize
+
+
+
+
+@node recent-filter
+@section recent-filter
+@Class recent-filter
+Superclass: @ref{gtk-object}
+
+Slots:
+@itemize
+@end itemize
+
+
+Signals:
+@itemize
+@end itemize
+
+
+
+
+@node recent-manager
+@section recent-manager
+@Class recent-manager
+Superclass: @ref{g-object}
+
+Slots:
+@itemize
+@item @anchor{slot.recent-manager.filename}filename. Type: @code{string}. Accessor: @anchor{fn.recent-manager-filename}@code{recent-manager-filename}.
+@item @anchor{slot.recent-manager.limit}limit. Type: @code{integer}. Accessor: @anchor{fn.recent-manager-limit}@code{recent-manager-limit}.
+@item @anchor{slot.recent-manager.size}size. Type: @code{integer}. Accessor: @anchor{fn.recent-manager-size}@code{recent-manager-size}. Read-only.
+@end itemize
+
+
+Signals:
+@itemize
+@item @anchor{signal.recent-manager.changed}"changed". Signature: (instance @ref{recent-manager}) @result{} void. Options: run-first.
+@end itemize
+
+
+
+
+@node settings
+@section settings
+@Class settings
+Superclass: @ref{g-object}
+
+Slots:
+@itemize
+@item @anchor{slot.settings.gtk-double-click-time}gtk-double-click-time. Type: @code{integer}. Accessor: @anchor{fn.settings-gtk-double-click-time}@code{settings-gtk-double-click-time}.
+@item @anchor{slot.settings.gtk-double-click-distance}gtk-double-click-distance. Type: @code{integer}. Accessor: @anchor{fn.settings-gtk-double-click-distance}@code{settings-gtk-double-click-distance}.
+@item @anchor{slot.settings.gtk-cursor-blink}gtk-cursor-blink. Type: @code{boolean}. Accessor: @anchor{fn.settings-gtk-cursor-blink}@code{settings-gtk-cursor-blink}.
+@item @anchor{slot.settings.gtk-cursor-blink-time}gtk-cursor-blink-time. Type: @code{integer}. Accessor: @anchor{fn.settings-gtk-cursor-blink-time}@code{settings-gtk-cursor-blink-time}.
+@item @anchor{slot.settings.gtk-cursor-blink-timeout}gtk-cursor-blink-timeout. Type: @code{integer}. Accessor: @anchor{fn.settings-gtk-cursor-blink-timeout}@code{settings-gtk-cursor-blink-timeout}.
+@item @anchor{slot.settings.gtk-split-cursor}gtk-split-cursor. Type: @code{boolean}. Accessor: @anchor{fn.settings-gtk-split-cursor}@code{settings-gtk-split-cursor}.
+@item @anchor{slot.settings.gtk-theme-name}gtk-theme-name. Type: @code{string}. Accessor: @anchor{fn.settings-gtk-theme-name}@code{settings-gtk-theme-name}.
+@item @anchor{slot.settings.gtk-icon-theme-name}gtk-icon-theme-name. Type: @code{string}. Accessor: @anchor{fn.settings-gtk-icon-theme-name}@code{settings-gtk-icon-theme-name}.
+@item @anchor{slot.settings.gtk-fallback-icon-theme}gtk-fallback-icon-theme. Type: @code{string}. Accessor: @anchor{fn.settings-gtk-fallback-icon-theme}@code{settings-gtk-fallback-icon-theme}.
+@item @anchor{slot.settings.gtk-key-theme-name}gtk-key-theme-name. Type: @code{string}. Accessor: @anchor{fn.settings-gtk-key-theme-name}@code{settings-gtk-key-theme-name}.
+@item @anchor{slot.settings.gtk-menu-bar-accel}gtk-menu-bar-accel. Type: @code{string}. Accessor: @anchor{fn.settings-gtk-menu-bar-accel}@code{settings-gtk-menu-bar-accel}.
+@item @anchor{slot.settings.gtk-dnd-drag-threshold}gtk-dnd-drag-threshold. Type: @code{integer}. Accessor: @anchor{fn.settings-gtk-dnd-drag-threshold}@code{settings-gtk-dnd-drag-threshold}.
+@item @anchor{slot.settings.gtk-font-name}gtk-font-name. Type: @code{string}. Accessor: @anchor{fn.settings-gtk-font-name}@code{settings-gtk-font-name}.
+@item @anchor{slot.settings.gtk-icon-sizes}gtk-icon-sizes. Type: @code{string}. Accessor: @anchor{fn.settings-gtk-icon-sizes}@code{settings-gtk-icon-sizes}.
+@item @anchor{slot.settings.gtk-modules}gtk-modules. Type: @code{string}. Accessor: @anchor{fn.settings-gtk-modules}@code{settings-gtk-modules}.
+@item @anchor{slot.settings.gtk-xft-antialias}gtk-xft-antialias. Type: @code{integer}. Accessor: @anchor{fn.settings-gtk-xft-antialias}@code{settings-gtk-xft-antialias}.
+@item @anchor{slot.settings.gtk-xft-hinting}gtk-xft-hinting. Type: @code{integer}. Accessor: @anchor{fn.settings-gtk-xft-hinting}@code{settings-gtk-xft-hinting}.
+@item @anchor{slot.settings.gtk-xft-hintstyle}gtk-xft-hintstyle. Type: @code{string}. Accessor: @anchor{fn.settings-gtk-xft-hintstyle}@code{settings-gtk-xft-hintstyle}.
+@item @anchor{slot.settings.gtk-xft-rgba}gtk-xft-rgba. Type: @code{string}. Accessor: @anchor{fn.settings-gtk-xft-rgba}@code{settings-gtk-xft-rgba}.
+@item @anchor{slot.settings.gtk-xft-dpi}gtk-xft-dpi. Type: @code{integer}. Accessor: @anchor{fn.settings-gtk-xft-dpi}@code{settings-gtk-xft-dpi}.
+@item @anchor{slot.settings.gtk-cursor-theme-name}gtk-cursor-theme-name. Type: @code{string}. Accessor: @anchor{fn.settings-gtk-cursor-theme-name}@code{settings-gtk-cursor-theme-name}.
+@item @anchor{slot.settings.gtk-cursor-theme-size}gtk-cursor-theme-size. Type: @code{integer}. Accessor: @anchor{fn.settings-gtk-cursor-theme-size}@code{settings-gtk-cursor-theme-size}.
+@item @anchor{slot.settings.gtk-alternative-button-order}gtk-alternative-button-order. Type: @code{boolean}. Accessor: @anchor{fn.settings-gtk-alternative-button-order}@code{settings-gtk-alternative-button-order}.
+@item @anchor{slot.settings.gtk-alternative-sort-arrows}gtk-alternative-sort-arrows. Type: @code{boolean}. Accessor: @anchor{fn.settings-gtk-alternative-sort-arrows}@code{settings-gtk-alternative-sort-arrows}.
+@item @anchor{slot.settings.gtk-show-input-method-menu}gtk-show-input-method-menu. Type: @code{boolean}. Accessor: @anchor{fn.settings-gtk-show-input-method-menu}@code{settings-gtk-show-input-method-menu}.
+@item @anchor{slot.settings.gtk-show-unicode-menu}gtk-show-unicode-menu. Type: @code{boolean}. Accessor: @anchor{fn.settings-gtk-show-unicode-menu}@code{settings-gtk-show-unicode-menu}.
+@item @anchor{slot.settings.gtk-timeout-initial}gtk-timeout-initial. Type: @code{integer}. Accessor: @anchor{fn.settings-gtk-timeout-initial}@code{settings-gtk-timeout-initial}.
+@item @anchor{slot.settings.gtk-timeout-repeat}gtk-timeout-repeat. Type: @code{integer}. Accessor: @anchor{fn.settings-gtk-timeout-repeat}@code{settings-gtk-timeout-repeat}.
+@item @anchor{slot.settings.gtk-timeout-expand}gtk-timeout-expand. Type: @code{integer}. Accessor: @anchor{fn.settings-gtk-timeout-expand}@code{settings-gtk-timeout-expand}.
+@item @anchor{slot.settings.gtk-color-scheme}gtk-color-scheme. Type: @code{string}. Accessor: @anchor{fn.settings-gtk-color-scheme}@code{settings-gtk-color-scheme}.
+@item @anchor{slot.settings.gtk-enable-animations}gtk-enable-animations. Type: @code{boolean}. Accessor: @anchor{fn.settings-gtk-enable-animations}@code{settings-gtk-enable-animations}.
+@item @anchor{slot.settings.gtk-touchscreen-mode}gtk-touchscreen-mode. Type: @code{boolean}. Accessor: @anchor{fn.settings-gtk-touchscreen-mode}@code{settings-gtk-touchscreen-mode}.
+@item @anchor{slot.settings.gtk-tooltip-timeout}gtk-tooltip-timeout. Type: @code{integer}. Accessor: @anchor{fn.settings-gtk-tooltip-timeout}@code{settings-gtk-tooltip-timeout}.
+@item @anchor{slot.settings.gtk-tooltip-browse-timeout}gtk-tooltip-browse-timeout. Type: @code{integer}. Accessor: @anchor{fn.settings-gtk-tooltip-browse-timeout}@code{settings-gtk-tooltip-browse-timeout}.
+@item @anchor{slot.settings.gtk-tooltip-browse-mode-timeout}gtk-tooltip-browse-mode-timeout. Type: @code{integer}. Accessor: @anchor{fn.settings-gtk-tooltip-browse-mode-timeout}@code{settings-gtk-tooltip-browse-mode-timeout}.
+@item @anchor{slot.settings.gtk-keynav-cursor-only}gtk-keynav-cursor-only. Type: @code{boolean}. Accessor: @anchor{fn.settings-gtk-keynav-cursor-only}@code{settings-gtk-keynav-cursor-only}.
+@item @anchor{slot.settings.gtk-keynav-wrap-around}gtk-keynav-wrap-around. Type: @code{boolean}. Accessor: @anchor{fn.settings-gtk-keynav-wrap-around}@code{settings-gtk-keynav-wrap-around}.
+@item @anchor{slot.settings.gtk-error-bell}gtk-error-bell. Type: @code{boolean}. Accessor: @anchor{fn.settings-gtk-error-bell}@code{settings-gtk-error-bell}.
+@item @anchor{slot.settings.color-hash}color-hash. Type: @code{GHashTable}. Accessor: @anchor{fn.settings-color-hash}@code{settings-color-hash}. Read-only.
+@item @anchor{slot.settings.gtk-file-chooser-backend}gtk-file-chooser-backend. Type: @code{string}. Accessor: @anchor{fn.settings-gtk-file-chooser-backend}@code{settings-gtk-file-chooser-backend}.
+@item @anchor{slot.settings.gtk-print-backends}gtk-print-backends. Type: @code{string}. Accessor: @anchor{fn.settings-gtk-print-backends}@code{settings-gtk-print-backends}.
+@item @anchor{slot.settings.gtk-print-preview-command}gtk-print-preview-command. Type: @code{string}. Accessor: @anchor{fn.settings-gtk-print-preview-command}@code{settings-gtk-print-preview-command}.
+@item @anchor{slot.settings.gtk-enable-mnemonics}gtk-enable-mnemonics. Type: @code{boolean}. Accessor: @anchor{fn.settings-gtk-enable-mnemonics}@code{settings-gtk-enable-mnemonics}.
+@item @anchor{slot.settings.gtk-enable-accels}gtk-enable-accels. Type: @code{boolean}. Accessor: @anchor{fn.settings-gtk-enable-accels}@code{settings-gtk-enable-accels}.
+@item @anchor{slot.settings.gtk-recent-files-limit}gtk-recent-files-limit. Type: @code{integer}. Accessor: @anchor{fn.settings-gtk-recent-files-limit}@code{settings-gtk-recent-files-limit}.
+@item @anchor{slot.settings.gtk-im-module}gtk-im-module. Type: @code{string}. Accessor: @anchor{fn.settings-gtk-im-module}@code{settings-gtk-im-module}.
+@item @anchor{slot.settings.gtk-recent-files-max-age}gtk-recent-files-max-age. Type: @code{integer}. Accessor: @anchor{fn.settings-gtk-recent-files-max-age}@code{settings-gtk-recent-files-max-age}.
+@item @anchor{slot.settings.gtk-fontconfig-timestamp}gtk-fontconfig-timestamp. Type: @code{integer}. Accessor: @anchor{fn.settings-gtk-fontconfig-timestamp}@code{settings-gtk-fontconfig-timestamp}.
+@item @anchor{slot.settings.gtk-sound-theme-name}gtk-sound-theme-name. Type: @code{string}. Accessor: @anchor{fn.settings-gtk-sound-theme-name}@code{settings-gtk-sound-theme-name}.
+@item @anchor{slot.settings.gtk-enable-input-feedback-sounds}gtk-enable-input-feedback-sounds. Type: @code{boolean}. Accessor: @anchor{fn.settings-gtk-enable-input-feedback-sounds}@code{settings-gtk-enable-input-feedback-sounds}.
+@item @anchor{slot.settings.gtk-enable-event-sounds}gtk-enable-event-sounds. Type: @code{boolean}. Accessor: @anchor{fn.settings-gtk-enable-event-sounds}@code{settings-gtk-enable-event-sounds}.
+@item @anchor{slot.settings.gtk-enable-tooltips}gtk-enable-tooltips. Type: @code{boolean}. Accessor: @anchor{fn.settings-gtk-enable-tooltips}@code{settings-gtk-enable-tooltips}.
+@item @anchor{slot.settings.gtk-button-images}gtk-button-images. Type: @code{boolean}. Accessor: @anchor{fn.settings-gtk-button-images}@code{settings-gtk-button-images}.
+@item @anchor{slot.settings.gtk-menu-images}gtk-menu-images. Type: @code{boolean}. Accessor: @anchor{fn.settings-gtk-menu-images}@code{settings-gtk-menu-images}.
+@item @anchor{slot.settings.gtk-scrolled-window-placement}gtk-scrolled-window-placement. Type: @ref{corner-type}. Accessor: @anchor{fn.settings-gtk-scrolled-window-placement}@code{settings-gtk-scrolled-window-placement}.
+@item @anchor{slot.settings.gtk-can-change-accels}gtk-can-change-accels. Type: @code{boolean}. Accessor: @anchor{fn.settings-gtk-can-change-accels}@code{settings-gtk-can-change-accels}.
+@item @anchor{slot.settings.gtk-menu-popup-delay}gtk-menu-popup-delay. Type: @code{integer}. Accessor: @anchor{fn.settings-gtk-menu-popup-delay}@code{settings-gtk-menu-popup-delay}.
+@item @anchor{slot.settings.gtk-menu-popdown-delay}gtk-menu-popdown-delay. Type: @code{integer}. Accessor: @anchor{fn.settings-gtk-menu-popdown-delay}@code{settings-gtk-menu-popdown-delay}.
+@item @anchor{slot.settings.gtk-menu-bar-popup-delay}gtk-menu-bar-popup-delay. Type: @code{integer}. Accessor: @anchor{fn.settings-gtk-menu-bar-popup-delay}@code{settings-gtk-menu-bar-popup-delay}.
+@item @anchor{slot.settings.gtk-color-palette}gtk-color-palette. Type: @code{string}. Accessor: @anchor{fn.settings-gtk-color-palette}@code{settings-gtk-color-palette}.
+@item @anchor{slot.settings.gtk-toolbar-style}gtk-toolbar-style. Type: @ref{toolbar-style}. Accessor: @anchor{fn.settings-gtk-toolbar-style}@code{settings-gtk-toolbar-style}.
+@item @anchor{slot.settings.gtk-toolbar-icon-size}gtk-toolbar-icon-size. Type: @ref{icon-size}. Accessor: @anchor{fn.settings-gtk-toolbar-icon-size}@code{settings-gtk-toolbar-icon-size}.
+@item @anchor{slot.settings.gtk-label-select-on-focus}gtk-label-select-on-focus. Type: @code{boolean}. Accessor: @anchor{fn.settings-gtk-label-select-on-focus}@code{settings-gtk-label-select-on-focus}.
+@item @anchor{slot.settings.gtk-entry-select-on-focus}gtk-entry-select-on-focus. Type: @code{boolean}. Accessor: @anchor{fn.settings-gtk-entry-select-on-focus}@code{settings-gtk-entry-select-on-focus}.
+@item @anchor{slot.settings.gtk-entry-password-hint-timeout}gtk-entry-password-hint-timeout. Type: @code{integer}. Accessor: @anchor{fn.settings-gtk-entry-password-hint-timeout}@code{settings-gtk-entry-password-hint-timeout}.
+@end itemize
+
+
+Signals:
+@itemize
+@end itemize
+
+
+
+
+@node size-group
+@section size-group
+@Class size-group
+Superclass: @ref{g-object}
+
+Slots:
+@itemize
+@item @anchor{slot.size-group.mode}mode. Type: @ref{size-group-mode}. Accessor: @anchor{fn.size-group-mode}@code{size-group-mode}.
+@item @anchor{slot.size-group.ignore-hidden}ignore-hidden. Type: @code{boolean}. Accessor: @anchor{fn.size-group-ignore-hidden}@code{size-group-ignore-hidden}.
+@end itemize
+
+
+Signals:
+@itemize
+@end itemize
+
+
+
+
+@node status-icon
+@section status-icon
+@Class status-icon
+Superclass: @ref{g-object}
+
+Slots:
+@itemize
+@item @anchor{slot.status-icon.pixbuf}pixbuf. Type: @ref{pixbuf}. Accessor: @anchor{fn.status-icon-pixbuf}@code{status-icon-pixbuf}.
+@item @anchor{slot.status-icon.file}file. Type: @code{string}. Accessor: @anchor{fn.status-icon-file}@code{status-icon-file}. Write-only.
+@item @anchor{slot.status-icon.stock}stock. Type: @code{string}. Accessor: @anchor{fn.status-icon-stock}@code{status-icon-stock}.
+@item @anchor{slot.status-icon.icon-name}icon-name. Type: @code{string}. Accessor: @anchor{fn.status-icon-icon-name}@code{status-icon-icon-name}.
+@item @anchor{slot.status-icon.gicon}gicon. Type: @code{GIcon}. Accessor: @anchor{fn.status-icon-gicon}@code{status-icon-gicon}.
+@item @anchor{slot.status-icon.storage-type}storage-type. Type: @ref{image-type}. Accessor: @anchor{fn.status-icon-storage-type}@code{status-icon-storage-type}. Read-only.
+@item @anchor{slot.status-icon.size}size. Type: @code{integer}. Accessor: @anchor{fn.status-icon-size}@code{status-icon-size}. Read-only.
+@item @anchor{slot.status-icon.screen}screen. Type: @ref{screen}. Accessor: @anchor{fn.status-icon-screen}@code{status-icon-screen}.
+@item @anchor{slot.status-icon.visible}visible. Type: @code{boolean}. Accessor: @anchor{fn.status-icon-visible}@code{status-icon-visible}.
+@item @anchor{slot.status-icon.orientation}orientation. Type: @ref{orientation}. Accessor: @anchor{fn.status-icon-orientation}@code{status-icon-orientation}. Read-only.
+@item @anchor{slot.status-icon.embedded}embedded. Type: @code{boolean}. Accessor: @anchor{fn.status-icon-embedded}@code{status-icon-embedded}. Read-only.
+@item @anchor{slot.status-icon.blinking}blinking. Type: @code{boolean}. Accessor: @anchor{fn.status-icon-blinking}@code{status-icon-blinking}.
+@item @anchor{slot.status-icon.has-tooltip}has-tooltip. Type: @code{boolean}. Accessor: @anchor{fn.status-icon-has-tooltip}@code{status-icon-has-tooltip}.
+@item @anchor{slot.status-icon.tooltip-text}tooltip-text. Type: @code{string}. Accessor: @anchor{fn.status-icon-tooltip-text}@code{status-icon-tooltip-text}.
+@item @anchor{slot.status-icon.tooltip-markup}tooltip-markup. Type: @code{string}. Accessor: @anchor{fn.status-icon-tooltip-markup}@code{status-icon-tooltip-markup}.
+@end itemize
+
+
+Signals:
+@itemize
+@item @anchor{signal.status-icon.size-changed}"size-changed". Signature: (instance @ref{status-icon}), (arg-1 @code{integer}) @result{} @code{boolean}. Options: run-last.
+@item @anchor{signal.status-icon.button-press-event}"button-press-event". Signature: (instance @ref{status-icon}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
+@item @anchor{signal.status-icon.button-release-event}"button-release-event". Signature: (instance @ref{status-icon}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
+@item @anchor{signal.status-icon.scroll-event}"scroll-event". Signature: (instance @ref{status-icon}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
+@item @anchor{signal.status-icon.query-tooltip}"query-tooltip". Signature: (instance @ref{status-icon}), (arg-1 @code{integer}), (arg-2 @code{integer}), (arg-3 @code{boolean}), (arg-4 @ref{tooltip}) @result{} @code{boolean}. Options: run-last.
+@item @anchor{signal.status-icon.popup-menu}"popup-menu". Signature: (instance @ref{status-icon}), (arg-1 @code{integer}), (arg-2 @code{integer}) @result{} void. Options: run-first, action.
+@item @anchor{signal.status-icon.activate}"activate". Signature: (instance @ref{status-icon}) @result{} void. Options: run-first, action.
+@end itemize
+
+
+
+
+@node style
+@section style
+@Class style
+Superclass: @ref{g-object}
+
+Slots:
+@itemize
+@end itemize
+
+
+Signals:
+@itemize
+@end itemize
+
+
+
+
+@node text-buffer
+@section text-buffer
+@Class text-buffer
+Superclass: @ref{g-object}
+
+Slots:
+@itemize
+@item @anchor{slot.text-buffer.tag-table}tag-table. Type: @ref{text-tag-table}. Accessor: @anchor{fn.text-buffer-tag-table}@code{text-buffer-tag-table}.
+@item @anchor{slot.text-buffer.text}text. Type: @code{string}. Accessor: @anchor{fn.text-buffer-text}@code{text-buffer-text}.
+@item @anchor{slot.text-buffer.has-selection}has-selection. Type: @code{boolean}. Accessor: @anchor{fn.text-buffer-has-selection}@code{text-buffer-has-selection}. Read-only.
+@item @anchor{slot.text-buffer.cursor-position}cursor-position. Type: @code{integer}. Accessor: @anchor{fn.text-buffer-cursor-position}@code{text-buffer-cursor-position}. Read-only.
+@item @anchor{slot.text-buffer.copy-target-list}copy-target-list. Type: @code{GtkTargetList}. Accessor: @anchor{fn.text-buffer-copy-target-list}@code{text-buffer-copy-target-list}. Read-only.
+@item @anchor{slot.text-buffer.paste-target-list}paste-target-list. Type: @code{GtkTargetList}. Accessor: @anchor{fn.text-buffer-paste-target-list}@code{text-buffer-paste-target-list}. Read-only.
+@end itemize
+
+
+Signals:
+@itemize
+@item @anchor{signal.text-buffer.changed}"changed". Signature: (instance @ref{text-buffer}) @result{} void. Options: run-last.
+@item @anchor{signal.text-buffer.insert-text}"insert-text". Signature: (instance @ref{text-buffer}), (arg-1 @ref{text-iter}), (arg-2 @code{string}), (arg-3 @code{integer}) @result{} void. Options: run-last.
+@item @anchor{signal.text-buffer.insert-pixbuf}"insert-pixbuf". Signature: (instance @ref{text-buffer}), (arg-1 @ref{text-iter}), (arg-2 @ref{pixbuf}) @result{} void. Options: run-last.
+@item @anchor{signal.text-buffer.insert-child-anchor}"insert-child-anchor". Signature: (instance @ref{text-buffer}), (arg-1 @ref{text-iter}), (arg-2 @ref{text-child-anchor}) @result{} void. Options: run-last.
+@item @anchor{signal.text-buffer.delete-range}"delete-range". Signature: (instance @ref{text-buffer}), (arg-1 @ref{text-iter}), (arg-2 @ref{text-iter}) @result{} void. Options: run-last.
+@item @anchor{signal.text-buffer.modified-changed}"modified-changed". Signature: (instance @ref{text-buffer}) @result{} void. Options: run-last.
+@item @anchor{signal.text-buffer.mark-set}"mark-set". Signature: (instance @ref{text-buffer}), (arg-1 @ref{text-iter}), (arg-2 @ref{text-mark}) @result{} void. Options: run-last.
+@item @anchor{signal.text-buffer.mark-deleted}"mark-deleted". Signature: (instance @ref{text-buffer}), (arg-1 @ref{text-mark}) @result{} void. Options: run-last.
+@item @anchor{signal.text-buffer.apply-tag}"apply-tag". Signature: (instance @ref{text-buffer}), (arg-1 @ref{text-tag}), (arg-2 @ref{text-iter}), (arg-3 @ref{text-iter}) @result{} void. Options: run-last.
+@item @anchor{signal.text-buffer.remove-tag}"remove-tag". Signature: (instance @ref{text-buffer}), (arg-1 @ref{text-tag}), (arg-2 @ref{text-iter}), (arg-3 @ref{text-iter}) @result{} void. Options: run-last.
+@item @anchor{signal.text-buffer.begin-user-action}"begin-user-action". Signature: (instance @ref{text-buffer}) @result{} void. Options: run-last.
+@item @anchor{signal.text-buffer.end-user-action}"end-user-action". Signature: (instance @ref{text-buffer}) @result{} void. Options: run-last.
+@item @anchor{signal.text-buffer.paste-done}"paste-done". Signature: (instance @ref{text-buffer}), (arg-1 @ref{clipboard}) @result{} void. Options: run-last.
+@end itemize
+
+
+
+
+@node text-child-anchor
+@section text-child-anchor
+@Class text-child-anchor
+Superclass: @ref{g-object}
+
+Slots:
+@itemize
+@end itemize
+
+
+Signals:
+@itemize
+@end itemize
+
+
+
+
+@node text-iter
+@section text-iter
+@Class text-iter
+Superclass: @ref{g-boxed-opaque}
+
+Slots:
+@itemize
+@end itemize
+
+
+
+
+
+
+@node text-mark
+@section text-mark
+@Class text-mark
+Superclass: @ref{g-object}
+
+Slots:
+@itemize
+@item @anchor{slot.text-mark.name}name. Type: @code{string}. Accessor: @anchor{fn.text-mark-name}@code{text-mark-name}.
+@item @anchor{slot.text-mark.left-gravity}left-gravity. Type: @code{boolean}. Accessor: @anchor{fn.text-mark-left-gravity}@code{text-mark-left-gravity}.
+@end itemize
+
+
+Signals:
+@itemize
+@end itemize
+
+
+
+
+@node text-tag
+@section text-tag
+@Class text-tag
+Superclass: @ref{g-object}
+
+Slots:
+@itemize
+@item @anchor{slot.text-tag.name}name. Type: @code{string}. Accessor: @anchor{fn.text-tag-name}@code{text-tag-name}.
+@item @anchor{slot.text-tag.background}background. Type: @code{string}. Accessor: @anchor{fn.text-tag-background}@code{text-tag-background}. Write-only.
+@item @anchor{slot.text-tag.foreground}foreground. Type: @code{string}. Accessor: @anchor{fn.text-tag-foreground}@code{text-tag-foreground}. Write-only.
+@item @anchor{slot.text-tag.background-gdk}background-gdk. Type: @ref{color}. Accessor: @anchor{fn.text-tag-background-gdk}@code{text-tag-background-gdk}.
+@item @anchor{slot.text-tag.foreground-gdk}foreground-gdk. Type: @ref{color}. Accessor: @anchor{fn.text-tag-foreground-gdk}@code{text-tag-foreground-gdk}.
+@item @anchor{slot.text-tag.background-stipple}background-stipple. Type: @ref{pixmap}. Accessor: @anchor{fn.text-tag-background-stipple}@code{text-tag-background-stipple}.
+@item @anchor{slot.text-tag.foreground-stipple}foreground-stipple. Type: @ref{pixmap}. Accessor: @anchor{fn.text-tag-foreground-stipple}@code{text-tag-foreground-stipple}.
+@item @anchor{slot.text-tag.font}font. Type: @code{string}. Accessor: @anchor{fn.text-tag-font}@code{text-tag-font}.
+@item @anchor{slot.text-tag.font-desc}font-desc. Type: @code{PangoFontDescription}. Accessor: @anchor{fn.text-tag-font-desc}@code{text-tag-font-desc}.
+@item @anchor{slot.text-tag.family}family. Type: @code{string}. Accessor: @anchor{fn.text-tag-family}@code{text-tag-family}.
+@item @anchor{slot.text-tag.style}style. Type: @code{PangoStyle}. Accessor: @anchor{fn.text-tag-style}@code{text-tag-style}.
+@item @anchor{slot.text-tag.variant}variant. Type: @code{PangoVariant}. Accessor: @anchor{fn.text-tag-variant}@code{text-tag-variant}.
+@item @anchor{slot.text-tag.weight}weight. Type: @code{integer}. Accessor: @anchor{fn.text-tag-weight}@code{text-tag-weight}.
+@item @anchor{slot.text-tag.stretch}stretch. Type: @code{PangoStretch}. Accessor: @anchor{fn.text-tag-stretch}@code{text-tag-stretch}.
+@item @anchor{slot.text-tag.size}size. Type: @code{integer}. Accessor: @anchor{fn.text-tag-size}@code{text-tag-size}.
+@item @anchor{slot.text-tag.size-points}size-points. Type: @code{double-float}. Accessor: @anchor{fn.text-tag-size-points}@code{text-tag-size-points}.
+@item @anchor{slot.text-tag.scale}scale. Type: @code{double-float}. Accessor: @anchor{fn.text-tag-scale}@code{text-tag-scale}.
+@item @anchor{slot.text-tag.pixels-above-lines}pixels-above-lines. Type: @code{integer}. Accessor: @anchor{fn.text-tag-pixels-above-lines}@code{text-tag-pixels-above-lines}.
+@item @anchor{slot.text-tag.pixels-below-lines}pixels-below-lines. Type: @code{integer}. Accessor: @anchor{fn.text-tag-pixels-below-lines}@code{text-tag-pixels-below-lines}.
+@item @anchor{slot.text-tag.pixels-inside-wrap}pixels-inside-wrap. Type: @code{integer}. Accessor: @anchor{fn.text-tag-pixels-inside-wrap}@code{text-tag-pixels-inside-wrap}.
+@item @anchor{slot.text-tag.editable}editable. Type: @code{boolean}. Accessor: @anchor{fn.text-tag-editable}@code{text-tag-editable}.
+@item @anchor{slot.text-tag.wrap-mode}wrap-mode. Type: @ref{wrap-mode}. Accessor: @anchor{fn.text-tag-wrap-mode}@code{text-tag-wrap-mode}.
+@item @anchor{slot.text-tag.justification}justification. Type: @ref{justification}. Accessor: @anchor{fn.text-tag-justification}@code{text-tag-justification}.
+@item @anchor{slot.text-tag.direction}direction. Type: @ref{text-direction}. Accessor: @anchor{fn.text-tag-direction}@code{text-tag-direction}.
+@item @anchor{slot.text-tag.left-margin}left-margin. Type: @code{integer}. Accessor: @anchor{fn.text-tag-left-margin}@code{text-tag-left-margin}.
+@item @anchor{slot.text-tag.indent}indent. Type: @code{integer}. Accessor: @anchor{fn.text-tag-indent}@code{text-tag-indent}.
+@item @anchor{slot.text-tag.strikethrough}strikethrough. Type: @code{boolean}. Accessor: @anchor{fn.text-tag-strikethrough}@code{text-tag-strikethrough}.
+@item @anchor{slot.text-tag.right-margin}right-margin. Type: @code{integer}. Accessor: @anchor{fn.text-tag-right-margin}@code{text-tag-right-margin}.
+@item @anchor{slot.text-tag.underline}underline. Type: @code{PangoUnderline}. Accessor: @anchor{fn.text-tag-underline}@code{text-tag-underline}.
+@item @anchor{slot.text-tag.rise}rise. Type: @code{integer}. Accessor: @anchor{fn.text-tag-rise}@code{text-tag-rise}.
+@item @anchor{slot.text-tag.background-full-height}background-full-height. Type: @code{boolean}. Accessor: @anchor{fn.text-tag-background-full-height}@code{text-tag-background-full-height}.
+@item @anchor{slot.text-tag.language}language. Type: @code{string}. Accessor: @anchor{fn.text-tag-language}@code{text-tag-language}.
+@item @anchor{slot.text-tag.tabs}tabs. Type: @code{PangoTabArray}. Accessor: @anchor{fn.text-tag-tabs}@code{text-tag-tabs}.
+@item @anchor{slot.text-tag.invisible}invisible. Type: @code{boolean}. Accessor: @anchor{fn.text-tag-invisible}@code{text-tag-invisible}.
+@item @anchor{slot.text-tag.paragraph-background}paragraph-background. Type: @code{string}. Accessor: @anchor{fn.text-tag-paragraph-background}@code{text-tag-paragraph-background}. Write-only.
+@item @anchor{slot.text-tag.paragraph-background-gdk}paragraph-background-gdk. Type: @ref{color}. Accessor: @anchor{fn.text-tag-paragraph-background-gdk}@code{text-tag-paragraph-background-gdk}.
+@item @anchor{slot.text-tag.accumulative-margin}accumulative-margin. Type: @code{boolean}. Accessor: @anchor{fn.text-tag-accumulative-margin}@code{text-tag-accumulative-margin}.
+@item @anchor{slot.text-tag.background-set}background-set. Type: @code{boolean}. Accessor: @anchor{fn.text-tag-background-set}@code{text-tag-background-set}.
+@item @anchor{slot.text-tag.foreground-set}foreground-set. Type: @code{boolean}. Accessor: @anchor{fn.text-tag-foreground-set}@code{text-tag-foreground-set}.
+@item @anchor{slot.text-tag.background-stipple-set}background-stipple-set. Type: @code{boolean}. Accessor: @anchor{fn.text-tag-background-stipple-set}@code{text-tag-background-stipple-set}.
+@item @anchor{slot.text-tag.foreground-stipple-set}foreground-stipple-set. Type: @code{boolean}. Accessor: @anchor{fn.text-tag-foreground-stipple-set}@code{text-tag-foreground-stipple-set}.
+@item @anchor{slot.text-tag.family-set}family-set. Type: @code{boolean}. Accessor: @anchor{fn.text-tag-family-set}@code{text-tag-family-set}.
+@item @anchor{slot.text-tag.style-set}style-set. Type: @code{boolean}. Accessor: @anchor{fn.text-tag-style-set}@code{text-tag-style-set}.
+@item @anchor{slot.text-tag.variant-set}variant-set. Type: @code{boolean}. Accessor: @anchor{fn.text-tag-variant-set}@code{text-tag-variant-set}.
+@item @anchor{slot.text-tag.weight-set}weight-set. Type: @code{boolean}. Accessor: @anchor{fn.text-tag-weight-set}@code{text-tag-weight-set}.
+@item @anchor{slot.text-tag.stretch-set}stretch-set. Type: @code{boolean}. Accessor: @anchor{fn.text-tag-stretch-set}@code{text-tag-stretch-set}.
+@item @anchor{slot.text-tag.size-set}size-set. Type: @code{boolean}. Accessor: @anchor{fn.text-tag-size-set}@code{text-tag-size-set}.
+@item @anchor{slot.text-tag.scale-set}scale-set. Type: @code{boolean}. Accessor: @anchor{fn.text-tag-scale-set}@code{text-tag-scale-set}.
+@item @anchor{slot.text-tag.pixels-above-lines-set}pixels-above-lines-set. Type: @code{boolean}. Accessor: @anchor{fn.text-tag-pixels-above-lines-set}@code{text-tag-pixels-above-lines-set}.
+@item @anchor{slot.text-tag.pixels-below-lines-set}pixels-below-lines-set. Type: @code{boolean}. Accessor: @anchor{fn.text-tag-pixels-below-lines-set}@code{text-tag-pixels-below-lines-set}.
+@item @anchor{slot.text-tag.pixels-inside-wrap-set}pixels-inside-wrap-set. Type: @code{boolean}. Accessor: @anchor{fn.text-tag-pixels-inside-wrap-set}@code{text-tag-pixels-inside-wrap-set}.
+@item @anchor{slot.text-tag.editable-set}editable-set. Type: @code{boolean}. Accessor: @anchor{fn.text-tag-editable-set}@code{text-tag-editable-set}.
+@item @anchor{slot.text-tag.wrap-mode-set}wrap-mode-set. Type: @code{boolean}. Accessor: @anchor{fn.text-tag-wrap-mode-set}@code{text-tag-wrap-mode-set}.
+@item @anchor{slot.text-tag.justification-set}justification-set. Type: @code{boolean}. Accessor: @anchor{fn.text-tag-justification-set}@code{text-tag-justification-set}.
+@item @anchor{slot.text-tag.left-margin-set}left-margin-set. Type: @code{boolean}. Accessor: @anchor{fn.text-tag-left-margin-set}@code{text-tag-left-margin-set}.
+@item @anchor{slot.text-tag.indent-set}indent-set. Type: @code{boolean}. Accessor: @anchor{fn.text-tag-indent-set}@code{text-tag-indent-set}.
+@item @anchor{slot.text-tag.strikethrough-set}strikethrough-set. Type: @code{boolean}. Accessor: @anchor{fn.text-tag-strikethrough-set}@code{text-tag-strikethrough-set}.
+@item @anchor{slot.text-tag.right-margin-set}right-margin-set. Type: @code{boolean}. Accessor: @anchor{fn.text-tag-right-margin-set}@code{text-tag-right-margin-set}.
+@item @anchor{slot.text-tag.underline-set}underline-set. Type: @code{boolean}. Accessor: @anchor{fn.text-tag-underline-set}@code{text-tag-underline-set}.
+@item @anchor{slot.text-tag.rise-set}rise-set. Type: @code{boolean}. Accessor: @anchor{fn.text-tag-rise-set}@code{text-tag-rise-set}.
+@item @anchor{slot.text-tag.background-full-height-set}background-full-height-set. Type: @code{boolean}. Accessor: @anchor{fn.text-tag-background-full-height-set}@code{text-tag-background-full-height-set}.
+@item @anchor{slot.text-tag.language-set}language-set. Type: @code{boolean}. Accessor: @anchor{fn.text-tag-language-set}@code{text-tag-language-set}.
+@item @anchor{slot.text-tag.tabs-set}tabs-set. Type: @code{boolean}. Accessor: @anchor{fn.text-tag-tabs-set}@code{text-tag-tabs-set}.
+@item @anchor{slot.text-tag.invisible-set}invisible-set. Type: @code{boolean}. Accessor: @anchor{fn.text-tag-invisible-set}@code{text-tag-invisible-set}.
+@item @anchor{slot.text-tag.paragraph-background-set}paragraph-background-set. Type: @code{boolean}. Accessor: @anchor{fn.text-tag-paragraph-background-set}@code{text-tag-paragraph-background-set}.
+@item @anchor{slot.text-tag.priority}priority. Type: @code{integer}. Accessor: @anchor{fn.text-tag-priority}@code{text-tag-priority}.
+@end itemize
+
+
+Signals:
+@itemize
+@item @anchor{signal.text-tag.event}"event". Signature: (instance @ref{text-tag}), (arg-1 @ref{g-object}), (arg-2 @ref{event}), (arg-3 @ref{text-iter}) @result{} @code{boolean}. Options: run-last.
+@end itemize
+
+
+
+
+@node text-tag-table
+@section text-tag-table
+@Class text-tag-table
+Superclass: @ref{g-object}
+
+Slots:
+@itemize
+@end itemize
+
+
+Signals:
+@itemize
+@end itemize
+
+
+
+
+@node toggle-action
+@section toggle-action
+@Class toggle-action
+Superclass: @ref{action}
+
+Subclasses: @ref{radio-action}
+
+Slots:
+@itemize
+@item @anchor{slot.toggle-action.draw-as-radio}draw-as-radio. Type: @code{boolean}. Accessor: @anchor{fn.toggle-action-draw-as-radio}@code{toggle-action-draw-as-radio}.
+@item @anchor{slot.toggle-action.active}active. Type: @code{boolean}. Accessor: @anchor{fn.toggle-action-active}@code{toggle-action-active}.
+@end itemize
+
+
+Signals:
+@itemize
+@item @anchor{signal.toggle-action.toggled}"toggled". Signature: (instance @ref{toggle-action}) @result{} void. Options: run-first.
+@end itemize
+
+
+
+
+@node tooltip
+@section tooltip
+@Class tooltip
+Superclass: @ref{g-object}
+
+Slots:
+@itemize
+@end itemize
+
+
+Signals:
+@itemize
+@end itemize
+
+
+
+
+@node tooltips
+@section tooltips
+@Class tooltips
+Superclass: @ref{gtk-object}
+
+Slots:
+@itemize
+@end itemize
+
+
+Signals:
+@itemize
+@end itemize
+
+
+
+
+@node tree-lisp-store
+@section tree-lisp-store
+@Class tree-lisp-store
+Superclass: @ref{g-object}
+
+Slots:
+@itemize
+@end itemize
+
+
+Signals:
+@itemize
+@end itemize
+
+
+
+
+@node tree-model-filter
+@section tree-model-filter
+@Class tree-model-filter
+Superclass: @ref{g-object}
+
+Slots:
+@itemize
+@item @anchor{slot.tree-model-filter.child-model}child-model. Type: @ref{tree-model}. Accessor: @anchor{fn.tree-model-filter-child-model}@code{tree-model-filter-child-model}.
+@item @anchor{slot.tree-model-filter.virtual-root}virtual-root. Type: @ref{tree-path}. Accessor: @anchor{fn.tree-model-filter-virtual-root}@code{tree-model-filter-virtual-root}.
+@end itemize
+
+
+Signals:
+@itemize
+@end itemize
+
+
+
+
+@node tree-model-sort
+@section tree-model-sort
+@Class tree-model-sort
+Superclass: @ref{g-object}
+
+Slots:
+@itemize
+@item @anchor{slot.tree-model-sort.model}model. Type: @ref{tree-model}. Accessor: @anchor{fn.tree-model-sort-model}@code{tree-model-sort-model}.
+@end itemize
+
+
+Signals:
+@itemize
+@end itemize
+
+
+
+
+@node tree-path
+@section tree-path
+@Class tree-path
+Superclass: @ref{g-boxed-opaque}
+
+Slots:
+@itemize
+@end itemize
+
+
+
+
+
+
+@node tree-selection
+@section tree-selection
+@Class tree-selection
+Superclass: @ref{g-object}
+
+Slots:
+@itemize
+@item @anchor{slot.tree-selection.mode}mode. Type: @ref{selection-mode}. Accessor: @anchor{fn.tree-selection-mode}@code{tree-selection-mode}.
+@item @anchor{slot.tree-selection.select-function}select-function. Type: ????. Accessor: @anchor{fn.tree-selection-select-function}@code{tree-selection-select-function}.
+@end itemize
+
+
+Signals:
+@itemize
+@end itemize
+
+
+
+
+@node tree-store
+@section tree-store
+@Class tree-store
+Superclass: @ref{g-object}
+
+Slots:
+@itemize
+@end itemize
+
+
+Signals:
+@itemize
+@end itemize
+
+
+
+
+@node tree-view-column
+@section tree-view-column
+@Class tree-view-column
+Superclass: @ref{gtk-object}
+
+Slots:
+@itemize
+@item @anchor{slot.tree-view-column.visible}visible. Type: @code{boolean}. Accessor: @anchor{fn.tree-view-column-visible}@code{tree-view-column-visible}.
+@item @anchor{slot.tree-view-column.resizable}resizable. Type: @code{boolean}. Accessor: @anchor{fn.tree-view-column-resizable}@code{tree-view-column-resizable}.
+@item @anchor{slot.tree-view-column.width}width. Type: @code{integer}. Accessor: @anchor{fn.tree-view-column-width}@code{tree-view-column-width}. Read-only.
+@item @anchor{slot.tree-view-column.spacing}spacing. Type: @code{integer}. Accessor: @anchor{fn.tree-view-column-spacing}@code{tree-view-column-spacing}.
+@item @anchor{slot.tree-view-column.sizing}sizing. Type: @ref{tree-view-column-sizing}. Accessor: @anchor{fn.tree-view-column-sizing}@code{tree-view-column-sizing}.
+@item @anchor{slot.tree-view-column.fixed-width}fixed-width. Type: @code{integer}. Accessor: @anchor{fn.tree-view-column-fixed-width}@code{tree-view-column-fixed-width}.
+@item @anchor{slot.tree-view-column.min-width}min-width. Type: @code{integer}. Accessor: @anchor{fn.tree-view-column-min-width}@code{tree-view-column-min-width}.
+@item @anchor{slot.tree-view-column.max-width}max-width. Type: @code{integer}. Accessor: @anchor{fn.tree-view-column-max-width}@code{tree-view-column-max-width}.
+@item @anchor{slot.tree-view-column.title}title. Type: @code{string}. Accessor: @anchor{fn.tree-view-column-title}@code{tree-view-column-title}.
+@item @anchor{slot.tree-view-column.expand}expand. Type: @code{boolean}. Accessor: @anchor{fn.tree-view-column-expand}@code{tree-view-column-expand}.
+@item @anchor{slot.tree-view-column.clickable}clickable. Type: @code{boolean}. Accessor: @anchor{fn.tree-view-column-clickable}@code{tree-view-column-clickable}.
+@item @anchor{slot.tree-view-column.widget}widget. Type: @ref{widget}. Accessor: @anchor{fn.tree-view-column-widget}@code{tree-view-column-widget}.
+@item @anchor{slot.tree-view-column.alignment}alignment. Type: @code{single-float}. Accessor: @anchor{fn.tree-view-column-alignment}@code{tree-view-column-alignment}.
+@item @anchor{slot.tree-view-column.reorderable}reorderable. Type: @code{boolean}. Accessor: @anchor{fn.tree-view-column-reorderable}@code{tree-view-column-reorderable}.
+@item @anchor{slot.tree-view-column.sort-indicator}sort-indicator. Type: @code{boolean}. Accessor: @anchor{fn.tree-view-column-sort-indicator}@code{tree-view-column-sort-indicator}.
+@item @anchor{slot.tree-view-column.sort-order}sort-order. Type: @ref{sort-type}. Accessor: @anchor{fn.tree-view-column-sort-order}@code{tree-view-column-sort-order}.
+@item @anchor{slot.tree-view-column.tree-view}tree-view. Type: @ref{g-object}. Accessor: @anchor{fn.tree-view-column-tree-view}@code{tree-view-column-tree-view}. Read-only.
+@item @anchor{slot.tree-view-column.sort-column-id}sort-column-id. Type: @code{integer}. Accessor: @anchor{fn.tree-view-column-sort-column-id}@code{tree-view-column-sort-column-id}.
+@item @anchor{slot.tree-view-column.cell-renderers}cell-renderers. Type: list of @ref{g-object}. Accessor: @anchor{fn.tree-view-column-cell-renderers}@code{tree-view-column-cell-renderers}. Read-only.
+@end itemize
+
+
+Signals:
+@itemize
+@item @anchor{signal.tree-view-column.clicked}"clicked". Signature: (instance @ref{tree-view-column}) @result{} void. Options: run-last.
+@end itemize
+
+
+
+
+@node ui-manager
+@section ui-manager
+@Class ui-manager
+Superclass: @ref{g-object}
+
+Slots:
+@itemize
+@item @anchor{slot.ui-manager.add-tearoffs}add-tearoffs. Type: @code{boolean}. Accessor: @anchor{fn.ui-manager-add-tearoffs}@code{ui-manager-add-tearoffs}.
+@item @anchor{slot.ui-manager.ui}ui. Type: @code{string}. Accessor: @anchor{fn.ui-manager-ui}@code{ui-manager-ui}. Read-only.
+@item @anchor{slot.ui-manager.accel-group}accel-group. Type: @ref{g-object}. Accessor: @anchor{fn.ui-manager-accel-group}@code{ui-manager-accel-group}. Read-only.
+@end itemize
+
+
+Signals:
+@itemize
+@item @anchor{signal.ui-manager.connect-proxy}"connect-proxy". Signature: (instance @ref{ui-manager}), (arg-1 @ref{action}), (arg-2 @ref{widget}) @result{} void. Options: run-first, no-recurse.
+@item @anchor{signal.ui-manager.disconnect-proxy}"disconnect-proxy". Signature: (instance @ref{ui-manager}), (arg-1 @ref{action}), (arg-2 @ref{widget}) @result{} void. Options: run-first, no-recurse.
+@item @anchor{signal.ui-manager.pre-activate}"pre-activate". Signature: (instance @ref{ui-manager}), (arg-1 @ref{action}) @result{} void. Options: run-first, no-recurse.
+@item @anchor{signal.ui-manager.post-activate}"post-activate". Signature: (instance @ref{ui-manager}), (arg-1 @ref{action}) @result{} void. Options: run-first, no-recurse.
+@item @anchor{signal.ui-manager.add-widget}"add-widget". Signature: (instance @ref{ui-manager}), (arg-1 @ref{widget}) @result{} void. Options: run-first, no-recurse.
+@item @anchor{signal.ui-manager.actions-changed}"actions-changed". Signature: (instance @ref{ui-manager}) @result{} void. Options: run-first, no-recurse.
+@end itemize
+
+
+
+
+@node window-group
+@section window-group
+@Class window-group
+Superclass: @ref{g-object}
+
+Slots:
+@itemize
+@end itemize
+
+
+Signals:
+@itemize
+@end itemize
+
+
+
+

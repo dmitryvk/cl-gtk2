@@ -1,0 +1,81 @@
+@menu
+* border::
+* progress-display::
+* progress-window::
+* tree-iter::
+* tree-node::
+@end menu
+
+@node border
+@section border
+@Struct border
+Superclass: @code{structure-object}
+
+Slots:
+@itemize
+@item @anchor{slot.border.left}left. Accessor: border-left.
+@item @anchor{slot.border.right}right. Accessor: border-right.
+@item @anchor{slot.border.top}top. Accessor: border-top.
+@item @anchor{slot.border.bottom}bottom. Accessor: border-bottom.
+@end itemize
+
+
+@node progress-display
+@section progress-display
+@Struct progress-display
+Superclass: @code{structure-object}
+
+Subclasses: @ref{progress-window}
+
+Slots:
+@itemize
+@item @anchor{slot.progress-display.parent}parent. Accessor: progress-display-parent.
+@item @anchor{slot.progress-display.name}name. Accessor: progress-display-name.
+@item @anchor{slot.progress-display.count}count. Accessor: progress-display-count.
+@item @anchor{slot.progress-display.bar}bar. Accessor: progress-display-bar.
+@item @anchor{slot.progress-display.time-started}time-started. Accessor: progress-display-time-started.
+@item @anchor{slot.progress-display.current}current. Accessor: progress-display-current.
+@end itemize
+
+
+@node progress-window
+@section progress-window
+@Struct progress-window
+Superclass: @ref{progress-display}
+
+Slots:
+@itemize
+@item @anchor{slot.progress-window.window}window. Accessor: progress-window-window.
+@item @anchor{slot.progress-window.box}box. Accessor: progress-window-box.
+@end itemize
+
+
+@node tree-iter
+@section tree-iter
+@Struct tree-iter
+Superclass: @code{structure-object}
+
+Slots:
+@itemize
+@item @anchor{slot.tree-iter.stamp}stamp. Accessor: tree-iter-stamp.
+@item @anchor{slot.tree-iter.user-data}user-data. Accessor: tree-iter-user-data.
+@item @anchor{slot.tree-iter.user-data-2}user-data-2. Accessor: tree-iter-user-data-2.
+@item @anchor{slot.tree-iter.user-data-3}user-data-3. Accessor: tree-iter-user-data-3.
+@end itemize
+
+
+@node tree-node
+@section tree-node
+@Struct tree-node
+Superclass: @code{structure-object}
+
+Slots:
+@itemize
+@item @anchor{slot.tree-node.tree}tree. Accessor: tree-node-tree.
+@item @anchor{slot.tree-node.parent}parent. Accessor: tree-node-parent.
+@item @anchor{slot.tree-node.id}id. Accessor: tree-node-id.
+@item @anchor{slot.tree-node.item}item. Accessor: tree-node-item.
+@item @anchor{slot.tree-node.children}children. Accessor: tree-node-children.
+@end itemize
+
+

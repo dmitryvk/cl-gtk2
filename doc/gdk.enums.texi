@@ -1,0 +1,335 @@
+@menu
+* colorspace::
+* crossing-mode::
+* cursor-type::
+* event-type::
+* font-type::
+* gdk-extension-mode::
+* gdk-window-type-hint::
+* grab-status::
+* gravity::
+* notify-type::
+* owner-change::
+* property-state::
+* scroll-direction::
+* setting-action::
+* visibility-state::
+* window-edge::
+@end menu
+
+@node colorspace
+@section colorspace
+@Enum colorspace
+Values: 
+@itemize
+@item :rgb
+@end itemize
+
+
+@node crossing-mode
+@section crossing-mode
+@Enum crossing-mode
+Values: 
+@itemize
+@item :normal
+@item :grab
+@item :ungrab
+@item :gtk-grab
+@item :gtk-ungrab
+@item :state-changed
+@end itemize
+
+
+@node cursor-type
+@section cursor-type
+@Enum cursor-type
+Values: 
+@itemize
+@item :x-cursor
+@item :arrow
+@item :based-arrow-down
+@item :based-arrow-up
+@item :boat
+@item :bogosity
+@item :bottom-left-corner
+@item :bottom-right-corner
+@item :bottom-side
+@item :bottom-tee
+@item :box-spiral
+@item :center-ptr
+@item :circle
+@item :clock
+@item :coffee-mug
+@item :cross
+@item :cross-reverse
+@item :crosshair
+@item :diamond-cross
+@item :dot
+@item :dotbox
+@item :double-arrow
+@item :draft-large
+@item :draft-small
+@item :draped-box
+@item :exchange
+@item :fleur
+@item :gobbler
+@item :gumby
+@item :hand1
+@item :hand2
+@item :heart
+@item :icon
+@item :iron-cross
+@item :left-ptr
+@item :left-side
+@item :left-tee
+@item :leftbutton
+@item :ll-angle
+@item :lr-angle
+@item :man
+@item :middlebutton
+@item :mouse
+@item :pencil
+@item :pirate
+@item :plus
+@item :question-arrow
+@item :right-ptr
+@item :right-side
+@item :right-tee
+@item :rightbutton
+@item :rtl-logo
+@item :sailboat
+@item :sb-down-arrow
+@item :sb-h-double-arrow
+@item :sb-left-arrow
+@item :sb-right-arrow
+@item :sb-up-arrow
+@item :sb-v-double-arrow
+@item :shuttle
+@item :sizing
+@item :spider
+@item :spraycan
+@item :star
+@item :target
+@item :tcross
+@item :top-left-arrow
+@item :top-left-corner
+@item :top-right-corner
+@item :top-side
+@item :top-tee
+@item :trek
+@item :ul-angle
+@item :umbrella
+@item :ur-angle
+@item :watch
+@item :xterm
+@item :last-cursor
+@item :blank-cursor
+@item :cursor-is-pixmap
+@end itemize
+
+
+@node event-type
+@section event-type
+@Enum event-type
+Values: 
+@itemize
+@item :nothing
+@item :delete
+@item :destroy
+@item :expose
+@item :motion-notify
+@item :button-press
+@item :2button-press
+@item :3button-press
+@item :button-release
+@item :key-press
+@item :key-release
+@item :enter-notify
+@item :leave-notify
+@item :focus-change
+@item :configure
+@item :map
+@item :unmap
+@item :property-notify
+@item :selection-clear
+@item :selection-request
+@item :selection-notify
+@item :proximity-in
+@item :proximity-out
+@item :drag-enter
+@item :drag-leave
+@item :drag-motion
+@item :drag-status
+@item :drop-start
+@item :drop-finished
+@item :client-event
+@item :visibility-notify
+@item :no-expose
+@item :scroll
+@item :window-state
+@item :setting
+@item :owner-change
+@item :grab-broken
+@item :damage
+@end itemize
+
+
+@node font-type
+@section font-type
+@Enum font-type
+Values: 
+@itemize
+@item :font
+@item :fontset
+@end itemize
+
+
+@node gdk-extension-mode
+@section gdk-extension-mode
+@Enum gdk-extension-mode
+Values: 
+@itemize
+@item :none
+@item :all
+@item :cursor
+@end itemize
+
+
+@node gdk-window-type-hint
+@section gdk-window-type-hint
+@Enum gdk-window-type-hint
+Values: 
+@itemize
+@item :normal
+@item :dialog
+@item :menu
+@item :toolbar
+@item :splashscreen
+@item :utility
+@item :dock
+@item :desktop
+@item :dropdown-menu
+@item :popup-menu
+@item :tooltip
+@item :notification
+@item :combo
+@item :dnd
+@end itemize
+
+
+@node grab-status
+@section grab-status
+@Enum grab-status
+Values: 
+@itemize
+@item :success
+@item :already-grabbed
+@item :invalid-time
+@item :not-viewable
+@item :frozen
+@end itemize
+
+
+@node gravity
+@section gravity
+@Enum gravity
+Values: 
+@itemize
+@item :north-west
+@item :north
+@item :north-east
+@item :west
+@item :center
+@item :east
+@item :south-west
+@item :south
+@item :south-east
+@item :static
+@end itemize
+
+
+@node notify-type
+@section notify-type
+@Enum notify-type
+Values: 
+@itemize
+@item :ancestor
+@item :virtual
+@item :inferior
+@item :nonlinear
+@item :nonlinear-virtual
+@item :unknown
+@end itemize
+
+
+@node owner-change
+@section owner-change
+@Enum owner-change
+Values: 
+@itemize
+@item :new-owner
+@item :destroy
+@item :close
+@end itemize
+
+
+@node property-state
+@section property-state
+@Enum property-state
+Values: 
+@itemize
+@item :new-value
+@item :delete
+@end itemize
+
+
+@node scroll-direction
+@section scroll-direction
+@Enum scroll-direction
+Values: 
+@itemize
+@item :up
+@item :down
+@item :left
+@item :right
+@end itemize
+
+
+@node setting-action
+@section setting-action
+@Enum setting-action
+Values: 
+@itemize
+@item :new
+@item :changed
+@item :deleted
+@end itemize
+
+
+@node visibility-state
+@section visibility-state
+@Enum visibility-state
+Values: 
+@itemize
+@item :unobscured
+@item :partial
+@item :fully-obscured
+@end itemize
+
+
+@node window-edge
+@section window-edge
+@Enum window-edge
+Values: 
+@itemize
+@item :north-west
+@item :north
+@item :north-east
+@item :west
+@item :east
+@item :south-west
+@item :south
+@item :south-east
+@end itemize
+
+

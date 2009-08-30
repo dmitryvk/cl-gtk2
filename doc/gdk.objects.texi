@@ -1,0 +1,297 @@
+@menu
+@c * display::
+* display-manager::
+* drag-context::
+* drawable::
+* gdk-colormap::
+* gdk-window::
+* graphics-context::
+* keymap::
+* pango-layout::
+* pixbuf::
+* pixbuf-animation::
+* pixmap::
+@c * screen::
+* visual::
+@end menu
+
+@c @node display
+@c @section display
+@c @Class display
+@c Superclass: @ref{g-object}
+
+@c Slots:
+@c @itemize
+@c @item @anchor{slot.display.name}name. Type: @code{string}. Accessor: @anchor{fn.display-name}@code{display-name}. Read-only.
+@c @item @anchor{slot.display.n-screens}n-screens. Type: @code{integer}. Accessor: @anchor{fn.display-n-screens}@code{display-n-screens}. Read-only.
+@c @item @anchor{slot.display.default-screen}default-screen. Type: @ref{screen}. Accessor: @anchor{fn.display-default-screen}@code{display-default-screen}. Read-only.
+@c @end itemize
+
+
+@c Signals:
+@c @itemize
+@c @item @anchor{signal.display.closed}"closed". Signature: (instance @ref{display}), (arg-1 @code{boolean}) @result{} void. Options: run-last.
+@c @end itemize
+
+
+
+
+@node display-manager
+@section display-manager
+@Class display-manager
+Superclass: @ref{g-object}
+
+Slots:
+@itemize
+@item @anchor{slot.display-manager.default-display}default-display. Type: @ref{display}. Accessor: @anchor{fn.display-manager-default-display}@code{display-manager-default-display}.
+@end itemize
+
+
+Signals:
+@itemize
+@item @anchor{signal.display-manager.display-opened}"display-opened". Signature: (instance @ref{display-manager}), (arg-1 @ref{display}) @result{} void. Options: run-last.
+@end itemize
+
+
+
+
+@node drag-context
+@section drag-context
+@Class drag-context
+Superclass: @ref{g-object}
+
+Slots:
+@itemize
+@end itemize
+
+
+Signals:
+@itemize
+@end itemize
+
+
+
+
+@node drawable
+@section drawable
+@Class drawable
+Superclass: @ref{g-object}
+
+Subclasses: @ref{gdk-window} @ref{pixmap}
+
+Slots:
+@itemize
+@end itemize
+
+
+Signals:
+@itemize
+@end itemize
+
+
+
+
+@node gdk-colormap
+@section gdk-colormap
+@Class gdk-colormap
+Superclass: @ref{g-object}
+
+Slots:
+@itemize
+@end itemize
+
+
+Signals:
+@itemize
+@end itemize
+
+
+
+
+@node gdk-window
+@section gdk-window
+@Class gdk-window
+Superclass: @ref{drawable}
+
+Slots:
+@itemize
+@end itemize
+
+
+Signals:
+@itemize
+@end itemize
+
+
+
+
+@node graphics-context
+@section graphics-context
+@Class graphics-context
+Superclass: @ref{g-object}
+
+Slots:
+@itemize
+@end itemize
+
+
+Signals:
+@itemize
+@end itemize
+
+
+
+
+@node keymap
+@section keymap
+@Class keymap
+Superclass: @ref{g-object}
+
+Slots:
+@itemize
+@end itemize
+
+
+Signals:
+@itemize
+@end itemize
+
+
+
+
+@node pango-layout
+@section pango-layout
+@Class pango-layout
+Superclass: @ref{g-object}
+
+Slots:
+@itemize
+@end itemize
+
+
+Signals:
+@itemize
+@end itemize
+
+
+
+
+@node pixbuf
+@section pixbuf
+@Class pixbuf
+Superclass: @ref{g-object}
+
+Slots:
+@itemize
+@item @anchor{slot.pixbuf.colorspace}colorspace. Type: @ref{colorspace}. Accessor: @anchor{fn.pixbuf-colorspace}@code{pixbuf-colorspace}.
+@item @anchor{slot.pixbuf.n-channels}n-channels. Type: @code{integer}. Accessor: @anchor{fn.pixbuf-n-channels}@code{pixbuf-n-channels}.
+@item @anchor{slot.pixbuf.has-alpha}has-alpha. Type: @code{boolean}. Accessor: @anchor{fn.pixbuf-has-alpha}@code{pixbuf-has-alpha}.
+@item @anchor{slot.pixbuf.bits-per-sample}bits-per-sample. Type: @code{integer}. Accessor: @anchor{fn.pixbuf-bits-per-sample}@code{pixbuf-bits-per-sample}.
+@item @anchor{slot.pixbuf.width}width. Type: @code{integer}. Accessor: @anchor{fn.pixbuf-width}@code{pixbuf-width}.
+@item @anchor{slot.pixbuf.height}height. Type: @code{integer}. Accessor: @anchor{fn.pixbuf-height}@code{pixbuf-height}.
+@item @anchor{slot.pixbuf.rowstride}rowstride. Type: @code{integer}. Accessor: @anchor{fn.pixbuf-rowstride}@code{pixbuf-rowstride}.
+@item @anchor{slot.pixbuf.pixels}pixels. Type: gpointer. Accessor: @anchor{fn.pixbuf-pixels}@code{pixbuf-pixels}.
+@end itemize
+
+
+Signals:
+@itemize
+@end itemize
+
+
+
+
+@node pixbuf-animation
+@section pixbuf-animation
+@Class pixbuf-animation
+Superclass: @ref{g-object}
+
+Slots:
+@itemize
+@end itemize
+
+
+Signals:
+@itemize
+@end itemize
+
+
+
+
+@node pixmap
+@section pixmap
+@Class pixmap
+Superclass: @ref{drawable}
+
+Slots:
+@itemize
+@end itemize
+
+
+Signals:
+@itemize
+@end itemize
+
+
+
+
+@c @node screen
+@c @section screen
+@c @Class screen
+@c Superclass: @ref{g-object}
+
+@c Slots:
+@c @itemize
+@c @item @anchor{slot.screen.font-options}font-options. Type: gpointer. Accessor: @anchor{fn.screen-font-options}@code{screen-font-options}.
+@c @item @anchor{slot.screen.resolution}resolution. Type: @code{double-float}. Accessor: @anchor{fn.screen-resolution}@code{screen-resolution}.
+@c @item @anchor{slot.screen.default-colormap}default-colormap. Type: @ref{colormap}. Accessor: @anchor{fn.screen-default-colormap}@code{screen-default-colormap}.
+@c @item @anchor{slot.screen.system-colormap}system-colormap. Type: @ref{colormap}. Accessor: @anchor{fn.screen-system-colormap}@code{screen-system-colormap}. Read-only.
+@c @item @anchor{slot.screen.system-visual}system-visual. Type: @ref{visual}. Accessor: @anchor{fn.screen-system-visual}@code{screen-system-visual}. Read-only.
+@c @item @anchor{slot.screen.rgb-colormap}rgb-colormap. Type: @ref{colormap}. Accessor: @anchor{fn.screen-rgb-colormap}@code{screen-rgb-colormap}. Read-only.
+@c @item @anchor{slot.screen.rgb-visual}rgb-visual. Type: @ref{visual}. Accessor: @anchor{fn.screen-rgb-visual}@code{screen-rgb-visual}. Read-only.
+@c @item @anchor{slot.screen.rgba-colormap}rgba-colormap. Type: @ref{colormap}. Accessor: @anchor{fn.screen-rgba-colormap}@code{screen-rgba-colormap}. Read-only.
+@c @item @anchor{slot.screen.rgba-visual}rgba-visual. Type: @ref{visual}. Accessor: @anchor{fn.screen-rgba-visual}@code{screen-rgba-visual}. Read-only.
+@c @item @anchor{slot.screen.composited-p}composited-p. Type: @code{boolean}. Accessor: @anchor{fn.screen-composited-p}@code{screen-composited-p}. Read-only.
+@c @item @anchor{slot.screen.root-window}root-window. Type: @ref{gdk-window}. Accessor: @anchor{fn.screen-root-window}@code{screen-root-window}. Read-only.
+@c @item @anchor{slot.screen.display}display. Type: @ref{display}. Accessor: @anchor{fn.screen-display}@code{screen-display}. Read-only.
+@c @item @anchor{slot.screen.number}number. Type: @code{integer}. Accessor: @anchor{fn.screen-number}@code{screen-number}. Read-only.
+@c @item @anchor{slot.screen.width}width. Type: @code{integer}. Accessor: @anchor{fn.screen-width}@code{screen-width}. Read-only.
+@c @item @anchor{slot.screen.height}height. Type: @code{integer}. Accessor: @anchor{fn.screen-height}@code{screen-height}. Read-only.
+@c @item @anchor{slot.screen.width-mm}width-mm. Type: @code{integer}. Accessor: @anchor{fn.screen-width-mm}@code{screen-width-mm}. Read-only.
+@c @item @anchor{slot.screen.height-mm}height-mm. Type: @code{integer}. Accessor: @anchor{fn.screen-height-mm}@code{screen-height-mm}. Read-only.
+@c @item @anchor{slot.screen.visuals}visuals. Type: list of @ref{visual}. Accessor: @anchor{fn.screen-visuals}@code{screen-visuals}. Read-only.
+@c @item @anchor{slot.screen.toplevel-windows}toplevel-windows. Type: list of @ref{gdk-window}. Accessor: @anchor{fn.screen-toplevel-windows}@code{screen-toplevel-windows}. Read-only.
+@c @item @anchor{slot.screen.display-name}display-name. Type: @code{string}. Accessor: @anchor{fn.screen-display-name}@code{screen-display-name}. Read-only.
+@c @item @anchor{slot.screen.n-monitors}n-monitors. Type: @code{integer}. Accessor: @anchor{fn.screen-n-monitors}@code{screen-n-monitors}. Read-only.
+@c @item @anchor{slot.screen.active-window}active-window. Type: @ref{gdk-window}. Accessor: @anchor{fn.screen-active-window}@code{screen-active-window}. Read-only.
+@c @item @anchor{slot.screen.window-stack}window-stack. Type: list of @ref{gdk-window}. Accessor: @anchor{fn.screen-window-stack}@code{screen-window-stack}. Read-only.
+@c @end itemize
+
+
+@c Signals:
+@c @itemize
+@c @item @anchor{signal.screen.size-changed}"size-changed". Signature: (instance @ref{screen}) @result{} void. Options: run-last.
+@c @item @anchor{signal.screen.composited-changed}"composited-changed". Signature: (instance @ref{screen}) @result{} void. Options: run-last.
+@c @item @anchor{signal.screen.monitors-changed}"monitors-changed". Signature: (instance @ref{screen}) @result{} void. Options: run-last.
+@c @end itemize
+
+
+
+
+@node visual
+@section visual
+@Class visual
+Superclass: @ref{g-object}
+
+Slots:
+@itemize
+@end itemize
+
+
+Signals:
+@itemize
+@end itemize
+
+
+
+

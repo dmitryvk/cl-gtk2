@@ -20,7 +20,9 @@ gobject/index.html: gobject.texi gobject.ref.texi gobject/style.css
 gtk/style.css: style.css
 	([ -x gtk ] || mkdir gtk) && cp $< $@
 
-gtk/index.html: gtk.texi gtk.ref.texi gdk.ref.texi gobject.ref.texi glib.ref.texi gtk/style.css
+gtk/index.html: gtk.texi gtk.ref.texi gdk.ref.texi gobject.ref.texi glib.ref.texi gtk/style.css gdk.enums.texi \
+gtk.flags.texi gtk.objects.texi gdk.flags.texi gdk.structs.texi gtk.interfaces.texi gtk.widgets.texi gdk.objects.texi \
+ gtk.enums.texi gtk.main_loop.texi gtk.structs.texi
 	makeinfo --html --css-ref=style.css $<
 	#sbcl --noinform --no-sysinit --no-userinit --disable-debugger --load colorize-lisp-examples.lisp $@
 	./fix-tex-references.sh gtk

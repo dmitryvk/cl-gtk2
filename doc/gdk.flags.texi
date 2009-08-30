@@ -1,0 +1,126 @@
+@menu
+* event-mask::
+* gdk-event-mask::
+* modifier-type::
+* window-hints::
+* window-state::
+@end menu
+
+@node event-mask
+@section event-mask
+@Flags event-mask
+Values: 
+@itemize
+@item :exposure-mask
+@item :pointer-motion-mask
+@item :pointer-motion-hint-mask
+@item :button-motion-mask
+@item :button1-motion-mask
+@item :button2-motion-mask
+@item :button3-motion-mask
+@item :button-press-mask
+@item :button-release-mask
+@item :key-press-mask
+@item :key-release-mask
+@item :enter-notify-mask
+@item :leave-notify-mask
+@item :focus-change-mask
+@item :structure-mask
+@item :property-change-mask
+@item :visibility-notify-mask
+@item :proximity-in-mask
+@item :proximity-out-mask
+@item :substructure-mask
+@item :scroll-mask
+@item :all-events-mask
+@end itemize
+
+
+@node gdk-event-mask
+@section gdk-event-mask
+@Flags gdk-event-mask
+Values: 
+@itemize
+@item :exposure-mask
+@item :pointer-motion-mask
+@item :pointer-motion-hint-mask
+@item :button-motion-mask
+@item :button1-motion-mask
+@item :button2-motion-mask
+@item :button3-motion-mask
+@item :button-press-mask
+@item :button-release-mask
+@item :key-press-mask
+@item :key-release-mask
+@item :enter-notify-mask
+@item :leave-notify-mask
+@item :focus-change-mask
+@item :structure-mask
+@item :property-change-mask
+@item :visibility-notify-mask
+@item :proximity-in-mask
+@item :proximity-out-mask
+@item :substructure-mask
+@item :scroll-mask
+@item :all-events-mask
+@end itemize
+
+
+@node modifier-type
+@section modifier-type
+@Flags modifier-type
+Values: 
+@itemize
+@item :shift-mask
+@item :lock-mask
+@item :control-mask
+@item :mod1-mask
+@item :mod2-mask
+@item :mod3-mask
+@item :mod4-mask
+@item :mod5-mask
+@item :button1-mask
+@item :button2-mask
+@item :button3-mask
+@item :button4-mask
+@item :button5-mask
+@item :super-mask
+@item :hyper-mask
+@item :meta-mask
+@item :release-mask
+@item :modifier-mask
+@end itemize
+
+
+@node window-hints
+@section window-hints
+@Flags window-hints
+Values: 
+@itemize
+@item :pos
+@item :min-size
+@item :max-size
+@item :base-size
+@item :aspect
+@item :resize-inc
+@item :win-gravity
+@item :user-pos
+@item :user-size
+@end itemize
+
+
+@node window-state
+@section window-state
+@Flags window-state
+Values: 
+@itemize
+@item :withdrawn
+@item :iconified
+@item :maximized
+@item :sticky
+@item :fullscreen
+@item :above
+@item :below
+@end itemize
+
+
