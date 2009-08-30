@@ -7,6 +7,7 @@
   (bottom :int :initform 0))
 
 (at-init () (foreign-funcall "gtk_border_get_type" :int))
+(at-init () (foreign-funcall "gtk_ui_manager_get_type" :int))
 
 (export (boxed-related-symbols 'border))
 
