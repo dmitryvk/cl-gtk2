@@ -1,16 +1,26 @@
 (in-package :gtk)
 
+(define-condition gtk-call-aborted (error)
+  ((condition :initarg :condition :reader gtk-call-aborted-condition))
+  (:report (lambda (c stream)
+             (format stream "Call within main loop aborted because of error:~%~A" (gtk-call-aborted-condition c)))))
+
 (defun call-within-main-loop-and-wait (fn)
   (let ((lock (bt:make-lock))
         (cv (bt:make-condition-variable))
+        error
         result)
     (bt:with-lock-held (lock)
       (within-main-loop
-        (setf result (multiple-value-list (funcall fn)))
+        (handler-case
+            (setf result (multiple-value-list (funcall fn)))
+          (error (e) (setf error e)))
         (bt:with-lock-held (lock)
           (bt:condition-notify cv)))
       (bt:condition-wait cv lock)
-      (values-list result))))
+      (if error
+          (error 'gtk-call-aborted :condition error)
+          (values-list result)))))
 
 (export 'call-within-main-loop-and-wait)
 

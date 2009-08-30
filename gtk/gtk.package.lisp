@@ -21,7 +21,9 @@
            #:tree-node-remove-at
            #:tree-node-child-at
            #:tree-lisp-store-add-column
-           #:gtk-main-add-timeout))
+           #:gtk-main-add-timeout
+           #:gtk-call-aborted
+           #:gtk-call-aborted-condition))
 
 (defpackage :gtk-examples
   (:use :cl :gtk :gdk :gobject)
