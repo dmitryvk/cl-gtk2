@@ -2,6 +2,10 @@
 
 ; TODO: gtk_get_default_language
 
+(defcfun gtk-events-pending :boolean)
+
+(export 'gtk-events-pending)
+
 (defcfun gtk-main-iteration :boolean)
 
 (export 'gtk-main-iteration)
