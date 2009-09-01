@@ -28,9 +28,9 @@
 @Flags accel-flags
 Values: 
 @itemize
-@item :visible
-@item :locked
-@item :mask
+@item @anchor{flags.accel-flags.locked}:locked
+@item @anchor{flags.accel-flags.mask}:mask
+@item @anchor{flags.accel-flags.visible}:visible
 @end itemize
 
 
@@ -39,11 +39,11 @@ Values:
 @Flags arg-flags
 Values: 
 @itemize
-@item :readable
-@item :writable
-@item :construct
-@item :construct-only
-@item :child-arg
+@item @anchor{flags.arg-flags.child-arg}:child-arg
+@item @anchor{flags.arg-flags.construct}:construct
+@item @anchor{flags.arg-flags.construct-only}:construct-only
+@item @anchor{flags.arg-flags.readable}:readable
+@item @anchor{flags.arg-flags.writable}:writable
 @end itemize
 
 
@@ -52,9 +52,9 @@ Values:
 @Flags attach-options
 Values: 
 @itemize
-@item :expand
-@item :shrink
-@item :fill
+@item @anchor{flags.attach-options.expand}:expand
+@item @anchor{flags.attach-options.fill}:fill
+@item @anchor{flags.attach-options.shrink}:shrink
 @end itemize
 
 
@@ -63,10 +63,10 @@ Values:
 @Flags button-action
 Values: 
 @itemize
-@item :ignored
-@item :selects
-@item :drags
-@item :expands
+@item @anchor{flags.button-action.drags}:drags
+@item @anchor{flags.button-action.expands}:expands
+@item @anchor{flags.button-action.ignored}:ignored
+@item @anchor{flags.button-action.selects}:selects
 @end itemize
 
 
@@ -75,12 +75,12 @@ Values:
 @Flags calendar-display-options
 Values: 
 @itemize
-@item :show-heading
-@item :show-day-names
-@item :no-month-change
-@item :show-week-numbers
-@item :week-start-monday
-@item :show-details
+@item @anchor{flags.calendar-display-options.no-month-change}:no-month-change
+@item @anchor{flags.calendar-display-options.show-day-names}:show-day-names
+@item @anchor{flags.calendar-display-options.show-details}:show-details
+@item @anchor{flags.calendar-display-options.show-heading}:show-heading
+@item @anchor{flags.calendar-display-options.show-week-numbers}:show-week-numbers
+@item @anchor{flags.calendar-display-options.week-start-monday}:week-start-monday
 @end itemize
 
 
@@ -89,11 +89,11 @@ Values:
 @Flags cell-renderer-state
 Values: 
 @itemize
-@item :selected
-@item :prelit
-@item :insensitive
-@item :sorted
-@item :focused
+@item @anchor{flags.cell-renderer-state.focused}:focused
+@item @anchor{flags.cell-renderer-state.insensitive}:insensitive
+@item @anchor{flags.cell-renderer-state.prelit}:prelit
+@item @anchor{flags.cell-renderer-state.selected}:selected
+@item @anchor{flags.cell-renderer-state.sorted}:sorted
 @end itemize
 
 
@@ -102,18 +102,18 @@ Values:
 @Flags debug-flag
 Values: 
 @itemize
-@item :misc
-@item :plugsocket
-@item :text
-@item :tree
-@item :updates
-@item :keybindings
-@item :multihead
-@item :modules
-@item :geometry
-@item :icontheme
-@item :printing
-@item :builder
+@item @anchor{flags.debug-flag.builder}:builder
+@item @anchor{flags.debug-flag.geometry}:geometry
+@item @anchor{flags.debug-flag.icontheme}:icontheme
+@item @anchor{flags.debug-flag.keybindings}:keybindings
+@item @anchor{flags.debug-flag.misc}:misc
+@item @anchor{flags.debug-flag.modules}:modules
+@item @anchor{flags.debug-flag.multihead}:multihead
+@item @anchor{flags.debug-flag.plugsocket}:plugsocket
+@item @anchor{flags.debug-flag.printing}:printing
+@item @anchor{flags.debug-flag.text}:text
+@item @anchor{flags.debug-flag.tree}:tree
+@item @anchor{flags.debug-flag.updates}:updates
 @end itemize
 
 
@@ -122,10 +122,10 @@ Values:
 @Flags dest-defaults
 Values: 
 @itemize
-@item :motion
-@item :highlight
-@item :drop
-@item :all
+@item @anchor{flags.dest-defaults.all}:all
+@item @anchor{flags.dest-defaults.drop}:drop
+@item @anchor{flags.dest-defaults.highlight}:highlight
+@item @anchor{flags.dest-defaults.motion}:motion
 @end itemize
 
 
@@ -134,9 +134,9 @@ Values:
 @Flags dialog-flags
 Values: 
 @itemize
-@item :modal
-@item :destroy-with-parent
-@item :no-separator
+@item @anchor{flags.dialog-flags.destroy-with-parent}:destroy-with-parent
+@item @anchor{flags.dialog-flags.modal}:modal
+@item @anchor{flags.dialog-flags.no-separator}:no-separator
 @end itemize
 
 
@@ -145,10 +145,10 @@ Values:
 @Flags file-filter-flags
 Values: 
 @itemize
-@item :filename
-@item :uri
-@item :display-name
-@item :mime-type
+@item @anchor{flags.file-filter-flags.display-name}:display-name
+@item @anchor{flags.file-filter-flags.filename}:filename
+@item @anchor{flags.file-filter-flags.mime-type}:mime-type
+@item @anchor{flags.file-filter-flags.uri}:uri
 @end itemize
 
 
@@ -157,24 +157,24 @@ Values:
 @Flags gdk-modifier-type
 Values: 
 @itemize
-@item :shift-mask
-@item :lock-mask
-@item :control-mask
-@item :mod1-mask
-@item :mod2-mask
-@item :mod3-mask
-@item :mod4-mask
-@item :mod5-mask
-@item :button1-mask
-@item :button2-mask
-@item :button3-mask
-@item :button4-mask
-@item :button5-mask
-@item :super-mask
-@item :hyper-mask
-@item :meta-mask
-@item :release-mask
-@item :modifier-mask
+@item @anchor{flags.gdk-modifier-type.button1-mask}:button1-mask
+@item @anchor{flags.gdk-modifier-type.button2-mask}:button2-mask
+@item @anchor{flags.gdk-modifier-type.button3-mask}:button3-mask
+@item @anchor{flags.gdk-modifier-type.button4-mask}:button4-mask
+@item @anchor{flags.gdk-modifier-type.button5-mask}:button5-mask
+@item @anchor{flags.gdk-modifier-type.control-mask}:control-mask
+@item @anchor{flags.gdk-modifier-type.hyper-mask}:hyper-mask
+@item @anchor{flags.gdk-modifier-type.lock-mask}:lock-mask
+@item @anchor{flags.gdk-modifier-type.meta-mask}:meta-mask
+@item @anchor{flags.gdk-modifier-type.mod1-mask}:mod1-mask
+@item @anchor{flags.gdk-modifier-type.mod2-mask}:mod2-mask
+@item @anchor{flags.gdk-modifier-type.mod3-mask}:mod3-mask
+@item @anchor{flags.gdk-modifier-type.mod4-mask}:mod4-mask
+@item @anchor{flags.gdk-modifier-type.mod5-mask}:mod5-mask
+@item @anchor{flags.gdk-modifier-type.modifier-mask}:modifier-mask
+@item @anchor{flags.gdk-modifier-type.release-mask}:release-mask
+@item @anchor{flags.gdk-modifier-type.shift-mask}:shift-mask
+@item @anchor{flags.gdk-modifier-type.super-mask}:super-mask
 @end itemize
 
 
@@ -183,11 +183,11 @@ Values:
 @Flags icon-lookup-flags
 Values: 
 @itemize
-@item :no-svg
-@item :force-svg
-@item :use-builtin
-@item :generic-fallback
-@item :force-size
+@item @anchor{flags.icon-lookup-flags.force-size}:force-size
+@item @anchor{flags.icon-lookup-flags.force-svg}:force-svg
+@item @anchor{flags.icon-lookup-flags.generic-fallback}:generic-fallback
+@item @anchor{flags.icon-lookup-flags.no-svg}:no-svg
+@item @anchor{flags.icon-lookup-flags.use-builtin}:use-builtin
 @end itemize
 
 
@@ -196,10 +196,10 @@ Values:
 @Flags object-flags
 Values: 
 @itemize
-@item :in-destruction
-@item :floating
-@item :reserved-1
-@item :reserved-2
+@item @anchor{flags.object-flags.floating}:floating
+@item @anchor{flags.object-flags.in-destruction}:in-destruction
+@item @anchor{flags.object-flags.reserved-1}:reserved-1
+@item @anchor{flags.object-flags.reserved-2}:reserved-2
 @end itemize
 
 
@@ -208,19 +208,19 @@ Values:
 @Flags private-flags
 Values: 
 @itemize
-@item :user-style
-@item :resize-pending
-@item :has-pointer
-@item :shadowed
-@item :has-shape-mask
-@item :in-reparent
-@item :direction-set
-@item :direction-ltr
-@item :anchored
-@item :child-visible
-@item :redraw-on-alloc
-@item :alloc-needed
-@item :request-needed
+@item @anchor{flags.private-flags.alloc-needed}:alloc-needed
+@item @anchor{flags.private-flags.anchored}:anchored
+@item @anchor{flags.private-flags.child-visible}:child-visible
+@item @anchor{flags.private-flags.direction-ltr}:direction-ltr
+@item @anchor{flags.private-flags.direction-set}:direction-set
+@item @anchor{flags.private-flags.has-pointer}:has-pointer
+@item @anchor{flags.private-flags.has-shape-mask}:has-shape-mask
+@item @anchor{flags.private-flags.in-reparent}:in-reparent
+@item @anchor{flags.private-flags.redraw-on-alloc}:redraw-on-alloc
+@item @anchor{flags.private-flags.request-needed}:request-needed
+@item @anchor{flags.private-flags.resize-pending}:resize-pending
+@item @anchor{flags.private-flags.shadowed}:shadowed
+@item @anchor{flags.private-flags.user-style}:user-style
 @end itemize
 
 
@@ -229,10 +229,10 @@ Values:
 @Flags rc-flags
 Values: 
 @itemize
-@item :fg
-@item :bg
-@item :text
-@item :base
+@item @anchor{flags.rc-flags.base}:base
+@item @anchor{flags.rc-flags.bg}:bg
+@item @anchor{flags.rc-flags.fg}:fg
+@item @anchor{flags.rc-flags.text}:text
 @end itemize
 
 
@@ -241,12 +241,12 @@ Values:
 @Flags recent-filter-flags
 Values: 
 @itemize
-@item :uri
-@item :display-name
-@item :mime-type
-@item :application
-@item :group
-@item :age
+@item @anchor{flags.recent-filter-flags.age}:age
+@item @anchor{flags.recent-filter-flags.application}:application
+@item @anchor{flags.recent-filter-flags.display-name}:display-name
+@item @anchor{flags.recent-filter-flags.group}:group
+@item @anchor{flags.recent-filter-flags.mime-type}:mime-type
+@item @anchor{flags.recent-filter-flags.uri}:uri
 @end itemize
 
 
@@ -255,12 +255,12 @@ Values:
 @Flags signal-run-type
 Values: 
 @itemize
-@item :first
-@item :last
-@item :both
-@item :no-recurse
-@item :action
-@item :no-hooks
+@item @anchor{flags.signal-run-type.action}:action
+@item @anchor{flags.signal-run-type.both}:both
+@item @anchor{flags.signal-run-type.first}:first
+@item @anchor{flags.signal-run-type.last}:last
+@item @anchor{flags.signal-run-type.no-hooks}:no-hooks
+@item @anchor{flags.signal-run-type.no-recurse}:no-recurse
 @end itemize
 
 
@@ -269,10 +269,10 @@ Values:
 @Flags target-flags
 Values: 
 @itemize
-@item :same-app
-@item :same-widget
-@item :other-app
-@item :other-widget
+@item @anchor{flags.target-flags.other-app}:other-app
+@item @anchor{flags.target-flags.other-widget}:other-widget
+@item @anchor{flags.target-flags.same-app}:same-app
+@item @anchor{flags.target-flags.same-widget}:same-widget
 @end itemize
 
 
@@ -281,8 +281,8 @@ Values:
 @Flags text-search-flags
 Values: 
 @itemize
-@item :visible-only
-@item :text-only
+@item @anchor{flags.text-search-flags.text-only}:text-only
+@item @anchor{flags.text-search-flags.visible-only}:visible-only
 @end itemize
 
 
@@ -291,8 +291,8 @@ Values:
 @Flags tree-model-flags
 Values: 
 @itemize
-@item :iters-persist
-@item :list-only
+@item @anchor{flags.tree-model-flags.iters-persist}:iters-persist
+@item @anchor{flags.tree-model-flags.list-only}:list-only
 @end itemize
 
 
@@ -301,17 +301,17 @@ Values:
 @Flags ui-manager-item-type
 Values: 
 @itemize
-@item :auto
-@item :menubar
-@item :menu
-@item :toolbar
-@item :placeholder
-@item :popup
-@item :menuitem
-@item :toolitem
-@item :separator
-@item :accelerator
-@item :popup-with-accels
+@item @anchor{flags.ui-manager-item-type.accelerator}:accelerator
+@item @anchor{flags.ui-manager-item-type.auto}:auto
+@item @anchor{flags.ui-manager-item-type.menu}:menu
+@item @anchor{flags.ui-manager-item-type.menubar}:menubar
+@item @anchor{flags.ui-manager-item-type.menuitem}:menuitem
+@item @anchor{flags.ui-manager-item-type.placeholder}:placeholder
+@item @anchor{flags.ui-manager-item-type.popup}:popup
+@item @anchor{flags.ui-manager-item-type.popup-with-accels}:popup-with-accels
+@item @anchor{flags.ui-manager-item-type.separator}:separator
+@item @anchor{flags.ui-manager-item-type.toolbar}:toolbar
+@item @anchor{flags.ui-manager-item-type.toolitem}:toolitem
 @end itemize
 
 
@@ -320,25 +320,25 @@ Values:
 @Flags widget-flags
 Values: 
 @itemize
-@item :toplevel
-@item :no-window
-@item :realized
-@item :mapped
-@item :visible
-@item :sensitive
-@item :parent-sensitive
-@item :can-focus
-@item :has-focus
-@item :can-default
-@item :has-default
-@item :has-grab
-@item :rc-style
-@item :composite-child
-@item :no-reparent
-@item :app-paintable
-@item :receives-default
-@item :double-buffered
-@item :no-show-all
+@item @anchor{flags.widget-flags.app-paintable}:app-paintable
+@item @anchor{flags.widget-flags.can-default}:can-default
+@item @anchor{flags.widget-flags.can-focus}:can-focus
+@item @anchor{flags.widget-flags.composite-child}:composite-child
+@item @anchor{flags.widget-flags.double-buffered}:double-buffered
+@item @anchor{flags.widget-flags.has-default}:has-default
+@item @anchor{flags.widget-flags.has-focus}:has-focus
+@item @anchor{flags.widget-flags.has-grab}:has-grab
+@item @anchor{flags.widget-flags.mapped}:mapped
+@item @anchor{flags.widget-flags.no-reparent}:no-reparent
+@item @anchor{flags.widget-flags.no-show-all}:no-show-all
+@item @anchor{flags.widget-flags.no-window}:no-window
+@item @anchor{flags.widget-flags.parent-sensitive}:parent-sensitive
+@item @anchor{flags.widget-flags.rc-style}:rc-style
+@item @anchor{flags.widget-flags.realized}:realized
+@item @anchor{flags.widget-flags.receives-default}:receives-default
+@item @anchor{flags.widget-flags.sensitive}:sensitive
+@item @anchor{flags.widget-flags.toplevel}:toplevel
+@item @anchor{flags.widget-flags.visible}:visible
 @end itemize
 
 

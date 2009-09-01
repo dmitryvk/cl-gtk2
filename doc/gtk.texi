@@ -150,6 +150,10 @@ Type: \type\
 @end defvr
 @end macro
 
+@macro SlotRef {class, slot}
+@ref{slot.\class\.\slot\,\class\-\slot\}
+@end macro
+
 @macro cffi
 @acronym{CFFI}
 @end macro

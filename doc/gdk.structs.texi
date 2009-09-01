@@ -36,10 +36,10 @@ Superclass: @code{structure-object}
 
 Slots:
 @itemize
+@item @anchor{slot.color.blue}blue. Accessor: color-blue.
+@item @anchor{slot.color.green}green. Accessor: color-green.
 @item @anchor{slot.color.pixel}pixel. Accessor: color-pixel.
 @item @anchor{slot.color.red}red. Accessor: color-red.
-@item @anchor{slot.color.green}green. Accessor: color-green.
-@item @anchor{slot.color.blue}blue. Accessor: color-blue.
 @end itemize
 
 
@@ -63,9 +63,9 @@ Subclasses: @ref{event-key} @ref{event-button} @ref{event-scroll} @ref{event-mot
 
 Slots:
 @itemize
+@item @anchor{slot.event.send-event}send-event. Accessor: event-send-event.
 @item @anchor{slot.event.type}type. Accessor: event-type.
 @item @anchor{slot.event.window}window. Accessor: event-window.
-@item @anchor{slot.event.send-event}send-event. Accessor: event-send-event.
 @end itemize
 
 
@@ -76,15 +76,15 @@ Superclass: @ref{event}
 
 Slots:
 @itemize
-@item @anchor{slot.event-button.type}type. Accessor: event-button-type.
-@item @anchor{slot.event-button.time}time. Accessor: event-button-time.
-@item @anchor{slot.event-button.x}x. Accessor: event-button-x.
-@item @anchor{slot.event-button.y}y. Accessor: event-button-y.
 @item @anchor{slot.event-button.axes}axes. Accessor: event-button-axes.
-@item @anchor{slot.event-button.state}state. Accessor: event-button-state.
 @item @anchor{slot.event-button.button}button. Accessor: event-button-button.
 @item @anchor{slot.event-button.device}device. Accessor: event-button-device.
+@item @anchor{slot.event-button.state}state. Accessor: event-button-state.
+@item @anchor{slot.event-button.time}time. Accessor: event-button-time.
+@item @anchor{slot.event-button.type}type. Accessor: event-button-type.
+@item @anchor{slot.event-button.x}x. Accessor: event-button-x.
 @item @anchor{slot.event-button.x-root}x-root. Accessor: event-button-x-root.
+@item @anchor{slot.event-button.y}y. Accessor: event-button-y.
 @item @anchor{slot.event-button.y-root}y-root. Accessor: event-button-y-root.
 @end itemize
 
@@ -98,9 +98,9 @@ Subclasses: @ref{event-client-8} @ref{event-client-16} @ref{event-client-32}
 
 Slots:
 @itemize
-@item @anchor{slot.event-client.type}type. Accessor: event-client-type.
-@item @anchor{slot.event-client.message-time}message-time. Accessor: event-client-message-time.
 @item @anchor{slot.event-client.data-format}data-format. Accessor: event-client-data-format.
+@item @anchor{slot.event-client.message-time}message-time. Accessor: event-client-message-time.
+@item @anchor{slot.event-client.type}type. Accessor: event-client-type.
 @end itemize
 
 
@@ -111,8 +111,8 @@ Superclass: @ref{event-client}
 
 Slots:
 @itemize
-@item @anchor{slot.event-client-16.data-format}data-format. Accessor: event-client-16-data-format.
 @item @anchor{slot.event-client-16.data}data. Accessor: event-client-16-data.
+@item @anchor{slot.event-client-16.data-format}data-format. Accessor: event-client-16-data-format.
 @end itemize
 
 
@@ -123,8 +123,8 @@ Superclass: @ref{event-client}
 
 Slots:
 @itemize
-@item @anchor{slot.event-client-32.data-format}data-format. Accessor: event-client-32-data-format.
 @item @anchor{slot.event-client-32.data}data. Accessor: event-client-32-data.
+@item @anchor{slot.event-client-32.data-format}data-format. Accessor: event-client-32-data-format.
 @end itemize
 
 
@@ -135,8 +135,8 @@ Superclass: @ref{event-client}
 
 Slots:
 @itemize
-@item @anchor{slot.event-client-8.data-format}data-format. Accessor: event-client-8-data-format.
 @item @anchor{slot.event-client-8.data}data. Accessor: event-client-8-data.
+@item @anchor{slot.event-client-8.data-format}data-format. Accessor: event-client-8-data-format.
 @end itemize
 
 
@@ -147,11 +147,11 @@ Superclass: @ref{event}
 
 Slots:
 @itemize
+@item @anchor{slot.event-configure.height}height. Accessor: event-configure-height.
 @item @anchor{slot.event-configure.type}type. Accessor: event-configure-type.
+@item @anchor{slot.event-configure.width}width. Accessor: event-configure-width.
 @item @anchor{slot.event-configure.x}x. Accessor: event-configure-x.
 @item @anchor{slot.event-configure.y}y. Accessor: event-configure-y.
-@item @anchor{slot.event-configure.width}width. Accessor: event-configure-width.
-@item @anchor{slot.event-configure.height}height. Accessor: event-configure-height.
 @end itemize
 
 
@@ -162,17 +162,17 @@ Superclass: @ref{event}
 
 Slots:
 @itemize
-@item @anchor{slot.event-crossing.type}type. Accessor: event-crossing-type.
-@item @anchor{slot.event-crossing.sub-window}sub-window. Accessor: event-crossing-sub-window.
-@item @anchor{slot.event-crossing.time}time. Accessor: event-crossing-time.
-@item @anchor{slot.event-crossing.x}x. Accessor: event-crossing-x.
-@item @anchor{slot.event-crossing.y}y. Accessor: event-crossing-y.
-@item @anchor{slot.event-crossing.x-root}x-root. Accessor: event-crossing-x-root.
-@item @anchor{slot.event-crossing.y-root}y-root. Accessor: event-crossing-y-root.
-@item @anchor{slot.event-crossing.mode}mode. Accessor: event-crossing-mode.
 @item @anchor{slot.event-crossing.detail}detail. Accessor: event-crossing-detail.
 @item @anchor{slot.event-crossing.focus}focus. Accessor: event-crossing-focus.
+@item @anchor{slot.event-crossing.mode}mode. Accessor: event-crossing-mode.
 @item @anchor{slot.event-crossing.state}state. Accessor: event-crossing-state.
+@item @anchor{slot.event-crossing.sub-window}sub-window. Accessor: event-crossing-sub-window.
+@item @anchor{slot.event-crossing.time}time. Accessor: event-crossing-time.
+@item @anchor{slot.event-crossing.type}type. Accessor: event-crossing-type.
+@item @anchor{slot.event-crossing.x}x. Accessor: event-crossing-x.
+@item @anchor{slot.event-crossing.x-root}x-root. Accessor: event-crossing-x-root.
+@item @anchor{slot.event-crossing.y}y. Accessor: event-crossing-y.
+@item @anchor{slot.event-crossing.y-root}y-root. Accessor: event-crossing-y-root.
 @end itemize
 
 
@@ -183,9 +183,9 @@ Superclass: @ref{event}
 
 Slots:
 @itemize
-@item @anchor{slot.event-dnd.type}type. Accessor: event-dnd-type.
 @item @anchor{slot.event-dnd.drag-context}drag-context. Accessor: event-dnd-drag-context.
 @item @anchor{slot.event-dnd.time}time. Accessor: event-dnd-time.
+@item @anchor{slot.event-dnd.type}type. Accessor: event-dnd-type.
 @item @anchor{slot.event-dnd.x-root}x-root. Accessor: event-dnd-x-root.
 @item @anchor{slot.event-dnd.y-root}y-root. Accessor: event-dnd-y-root.
 @end itemize
@@ -198,10 +198,10 @@ Superclass: @ref{event}
 
 Slots:
 @itemize
-@item @anchor{slot.event-expose.type}type. Accessor: event-expose-type.
 @item @anchor{slot.event-expose.area}area. Accessor: event-expose-area.
-@item @anchor{slot.event-expose.region}region. Accessor: event-expose-region.
 @item @anchor{slot.event-expose.count}count. Accessor: event-expose-count.
+@item @anchor{slot.event-expose.region}region. Accessor: event-expose-region.
+@item @anchor{slot.event-expose.type}type. Accessor: event-expose-type.
 @end itemize
 
 
@@ -212,8 +212,8 @@ Superclass: @ref{event}
 
 Slots:
 @itemize
-@item @anchor{slot.event-focus.type}type. Accessor: event-focus-type.
 @item @anchor{slot.event-focus.in}in. Accessor: event-focus-in.
+@item @anchor{slot.event-focus.type}type. Accessor: event-focus-type.
 @end itemize
 
 
@@ -224,10 +224,10 @@ Superclass: @ref{event}
 
 Slots:
 @itemize
-@item @anchor{slot.event-grab-broken.type}type. Accessor: event-grab-broken-type.
-@item @anchor{slot.event-grab-broken.keyboard}keyboard. Accessor: event-grab-broken-keyboard.
-@item @anchor{slot.event-grab-broken.implicit}implicit. Accessor: event-grab-broken-implicit.
 @item @anchor{slot.event-grab-broken.grab-window}grab-window. Accessor: event-grab-broken-grab-window.
+@item @anchor{slot.event-grab-broken.implicit}implicit. Accessor: event-grab-broken-implicit.
+@item @anchor{slot.event-grab-broken.keyboard}keyboard. Accessor: event-grab-broken-keyboard.
+@item @anchor{slot.event-grab-broken.type}type. Accessor: event-grab-broken-type.
 @end itemize
 
 
@@ -238,15 +238,15 @@ Superclass: @ref{event}
 
 Slots:
 @itemize
-@item @anchor{slot.event-key.type}type. Accessor: event-key-type.
-@item @anchor{slot.event-key.time}time. Accessor: event-key-time.
-@item @anchor{slot.event-key.state}state. Accessor: event-key-state.
+@item @anchor{slot.event-key.group}group. Accessor: event-key-group.
+@item @anchor{slot.event-key.hardware-keycode}hardware-keycode. Accessor: event-key-hardware-keycode.
+@item @anchor{slot.event-key.is-modifier}is-modifier. Accessor: event-key-is-modifier.
 @item @anchor{slot.event-key.keyval}keyval. Accessor: event-key-keyval.
 @item @anchor{slot.event-key.length}length. Accessor: event-key-length.
+@item @anchor{slot.event-key.state}state. Accessor: event-key-state.
 @item @anchor{slot.event-key.string}string. Accessor: event-key-string.
-@item @anchor{slot.event-key.hardware-keycode}hardware-keycode. Accessor: event-key-hardware-keycode.
-@item @anchor{slot.event-key.group}group. Accessor: event-key-group.
-@item @anchor{slot.event-key.is-modifier}is-modifier. Accessor: event-key-is-modifier.
+@item @anchor{slot.event-key.time}time. Accessor: event-key-time.
+@item @anchor{slot.event-key.type}type. Accessor: event-key-type.
 @end itemize
 
 
@@ -257,15 +257,15 @@ Superclass: @ref{event}
 
 Slots:
 @itemize
-@item @anchor{slot.event-motion.type}type. Accessor: event-motion-type.
-@item @anchor{slot.event-motion.time}time. Accessor: event-motion-time.
-@item @anchor{slot.event-motion.x}x. Accessor: event-motion-x.
-@item @anchor{slot.event-motion.y}y. Accessor: event-motion-y.
 @item @anchor{slot.event-motion.axes}axes. Accessor: event-motion-axes.
-@item @anchor{slot.event-motion.state}state. Accessor: event-motion-state.
-@item @anchor{slot.event-motion.is-hint}is-hint. Accessor: event-motion-is-hint.
 @item @anchor{slot.event-motion.device}device. Accessor: event-motion-device.
+@item @anchor{slot.event-motion.is-hint}is-hint. Accessor: event-motion-is-hint.
+@item @anchor{slot.event-motion.state}state. Accessor: event-motion-state.
+@item @anchor{slot.event-motion.time}time. Accessor: event-motion-time.
+@item @anchor{slot.event-motion.type}type. Accessor: event-motion-type.
+@item @anchor{slot.event-motion.x}x. Accessor: event-motion-x.
 @item @anchor{slot.event-motion.x-root}x-root. Accessor: event-motion-x-root.
+@item @anchor{slot.event-motion.y}y. Accessor: event-motion-y.
 @item @anchor{slot.event-motion.y-root}y-root. Accessor: event-motion-y-root.
 @end itemize
 
@@ -288,12 +288,12 @@ Superclass: @ref{event}
 
 Slots:
 @itemize
-@item @anchor{slot.event-owner-change.type}type. Accessor: event-owner-change-type.
 @item @anchor{slot.event-owner-change.owner}owner. Accessor: event-owner-change-owner.
 @item @anchor{slot.event-owner-change.reason}reason. Accessor: event-owner-change-reason.
 @item @anchor{slot.event-owner-change.selection}selection. Accessor: event-owner-change-selection.
-@item @anchor{slot.event-owner-change.time}time. Accessor: event-owner-change-time.
 @item @anchor{slot.event-owner-change.selection-time}selection-time. Accessor: event-owner-change-selection-time.
+@item @anchor{slot.event-owner-change.time}time. Accessor: event-owner-change-time.
+@item @anchor{slot.event-owner-change.type}type. Accessor: event-owner-change-type.
 @end itemize
 
 
@@ -304,10 +304,10 @@ Superclass: @ref{event}
 
 Slots:
 @itemize
-@item @anchor{slot.event-property.type}type. Accessor: event-property-type.
 @item @anchor{slot.event-property.atom}atom. Accessor: event-property-atom.
-@item @anchor{slot.event-property.time}time. Accessor: event-property-time.
 @item @anchor{slot.event-property.state}state. Accessor: event-property-state.
+@item @anchor{slot.event-property.time}time. Accessor: event-property-time.
+@item @anchor{slot.event-property.type}type. Accessor: event-property-type.
 @end itemize
 
 
@@ -318,9 +318,9 @@ Superclass: @ref{event}
 
 Slots:
 @itemize
-@item @anchor{slot.event-proximity.type}type. Accessor: event-proximity-type.
-@item @anchor{slot.event-proximity.time}time. Accessor: event-proximity-time.
 @item @anchor{slot.event-proximity.device}device. Accessor: event-proximity-device.
+@item @anchor{slot.event-proximity.time}time. Accessor: event-proximity-time.
+@item @anchor{slot.event-proximity.type}type. Accessor: event-proximity-type.
 @end itemize
 
 
@@ -331,14 +331,14 @@ Superclass: @ref{event}
 
 Slots:
 @itemize
-@item @anchor{slot.event-scroll.type}type. Accessor: event-scroll-type.
-@item @anchor{slot.event-scroll.time}time. Accessor: event-scroll-time.
-@item @anchor{slot.event-scroll.x}x. Accessor: event-scroll-x.
-@item @anchor{slot.event-scroll.y}y. Accessor: event-scroll-y.
-@item @anchor{slot.event-scroll.state}state. Accessor: event-scroll-state.
-@item @anchor{slot.event-scroll.direction}direction. Accessor: event-scroll-direction.
 @item @anchor{slot.event-scroll.device}device. Accessor: event-scroll-device.
+@item @anchor{slot.event-scroll.direction}direction. Accessor: event-scroll-direction.
+@item @anchor{slot.event-scroll.state}state. Accessor: event-scroll-state.
+@item @anchor{slot.event-scroll.time}time. Accessor: event-scroll-time.
+@item @anchor{slot.event-scroll.type}type. Accessor: event-scroll-type.
+@item @anchor{slot.event-scroll.x}x. Accessor: event-scroll-x.
 @item @anchor{slot.event-scroll.x-root}x-root. Accessor: event-scroll-x-root.
+@item @anchor{slot.event-scroll.y}y. Accessor: event-scroll-y.
 @item @anchor{slot.event-scroll.y-root}y-root. Accessor: event-scroll-y-root.
 @end itemize
 
@@ -350,12 +350,12 @@ Superclass: @ref{event}
 
 Slots:
 @itemize
-@item @anchor{slot.event-selection.type}type. Accessor: event-selection-type.
+@item @anchor{slot.event-selection.property}property. Accessor: event-selection-property.
+@item @anchor{slot.event-selection.requestor}requestor. Accessor: event-selection-requestor.
 @item @anchor{slot.event-selection.selection}selection. Accessor: event-selection-selection.
 @item @anchor{slot.event-selection.target}target. Accessor: event-selection-target.
-@item @anchor{slot.event-selection.property}property. Accessor: event-selection-property.
 @item @anchor{slot.event-selection.time}time. Accessor: event-selection-time.
-@item @anchor{slot.event-selection.requestor}requestor. Accessor: event-selection-requestor.
+@item @anchor{slot.event-selection.type}type. Accessor: event-selection-type.
 @end itemize
 
 
@@ -366,9 +366,9 @@ Superclass: @ref{event}
 
 Slots:
 @itemize
-@item @anchor{slot.event-setting.type}type. Accessor: event-setting-type.
 @item @anchor{slot.event-setting.action}action. Accessor: event-setting-action.
 @item @anchor{slot.event-setting.name}name. Accessor: event-setting-name.
+@item @anchor{slot.event-setting.type}type. Accessor: event-setting-type.
 @end itemize
 
 
@@ -379,8 +379,8 @@ Superclass: @ref{event}
 
 Slots:
 @itemize
-@item @anchor{slot.event-visibility.type}type. Accessor: event-visibility-type.
 @item @anchor{slot.event-visibility.state}state. Accessor: event-visibility-state.
+@item @anchor{slot.event-visibility.type}type. Accessor: event-visibility-type.
 @end itemize
 
 
@@ -391,9 +391,9 @@ Superclass: @ref{event}
 
 Slots:
 @itemize
-@item @anchor{slot.event-window-state.type}type. Accessor: event-window-state-type.
 @item @anchor{slot.event-window-state.changed-mask}changed-mask. Accessor: event-window-state-changed-mask.
 @item @anchor{slot.event-window-state.new-window-state}new-window-state. Accessor: event-window-state-new-window-state.
+@item @anchor{slot.event-window-state.type}type. Accessor: event-window-state-type.
 @end itemize
 
 
@@ -404,9 +404,9 @@ Superclass: @code{structure-object}
 
 Slots:
 @itemize
-@item @anchor{slot.font.type}type. Accessor: font-type.
 @item @anchor{slot.font.ascent}ascent. Accessor: font-ascent.
 @item @anchor{slot.font.descent}descent. Accessor: font-descent.
+@item @anchor{slot.font.type}type. Accessor: font-type.
 @end itemize
 
 
@@ -417,17 +417,17 @@ Superclass: @code{structure-object}
 
 Slots:
 @itemize
-@item @anchor{slot.geometry.min-width}min-width. Accessor: geometry-min-width.
-@item @anchor{slot.geometry.min-height}min-height. Accessor: geometry-min-height.
-@item @anchor{slot.geometry.max-width}max-width. Accessor: geometry-max-width.
-@item @anchor{slot.geometry.max-height}max-height. Accessor: geometry-max-height.
-@item @anchor{slot.geometry.base-width}base-width. Accessor: geometry-base-width.
 @item @anchor{slot.geometry.base-height}base-height. Accessor: geometry-base-height.
-@item @anchor{slot.geometry.width-increment}width-increment. Accessor: geometry-width-increment.
-@item @anchor{slot.geometry.height-increment}height-increment. Accessor: geometry-height-increment.
-@item @anchor{slot.geometry.min-aspect}min-aspect. Accessor: geometry-min-aspect.
-@item @anchor{slot.geometry.max-aspect}max-aspect. Accessor: geometry-max-aspect.
+@item @anchor{slot.geometry.base-width}base-width. Accessor: geometry-base-width.
 @item @anchor{slot.geometry.gravity}gravity. Accessor: geometry-gravity.
+@item @anchor{slot.geometry.height-increment}height-increment. Accessor: geometry-height-increment.
+@item @anchor{slot.geometry.max-aspect}max-aspect. Accessor: geometry-max-aspect.
+@item @anchor{slot.geometry.max-height}max-height. Accessor: geometry-max-height.
+@item @anchor{slot.geometry.max-width}max-width. Accessor: geometry-max-width.
+@item @anchor{slot.geometry.min-aspect}min-aspect. Accessor: geometry-min-aspect.
+@item @anchor{slot.geometry.min-height}min-height. Accessor: geometry-min-height.
+@item @anchor{slot.geometry.min-width}min-width. Accessor: geometry-min-width.
+@item @anchor{slot.geometry.width-increment}width-increment. Accessor: geometry-width-increment.
 @end itemize
 
 
@@ -438,10 +438,10 @@ Superclass: @code{structure-object}
 
 Slots:
 @itemize
+@item @anchor{slot.rectangle.height}height. Accessor: rectangle-height.
+@item @anchor{slot.rectangle.width}width. Accessor: rectangle-width.
 @item @anchor{slot.rectangle.x}x. Accessor: rectangle-x.
 @item @anchor{slot.rectangle.y}y. Accessor: rectangle-y.
-@item @anchor{slot.rectangle.width}width. Accessor: rectangle-width.
-@item @anchor{slot.rectangle.height}height. Accessor: rectangle-height.
 @end itemize
 
 

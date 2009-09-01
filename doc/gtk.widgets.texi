@@ -111,23 +111,23 @@
 @node about-dialog
 @section about-dialog
 @Class about-dialog
-Superclass: @ref{dialog}
+Superclass: @ref{dialog} @ref{atk-implementor-iface} @ref{buildable}
 
 Slots:
 @itemize
-@item @anchor{slot.about-dialog.program-name}program-name. Type: @code{string}. Accessor: @anchor{fn.about-dialog-program-name}@code{about-dialog-program-name}.
-@item @anchor{slot.about-dialog.version}version. Type: @code{string}. Accessor: @anchor{fn.about-dialog-version}@code{about-dialog-version}.
-@item @anchor{slot.about-dialog.copyright}copyright. Type: @code{string}. Accessor: @anchor{fn.about-dialog-copyright}@code{about-dialog-copyright}.
-@item @anchor{slot.about-dialog.comments}comments. Type: @code{string}. Accessor: @anchor{fn.about-dialog-comments}@code{about-dialog-comments}.
-@item @anchor{slot.about-dialog.website}website. Type: @code{string}. Accessor: @anchor{fn.about-dialog-website}@code{about-dialog-website}.
-@item @anchor{slot.about-dialog.website-label}website-label. Type: @code{string}. Accessor: @anchor{fn.about-dialog-website-label}@code{about-dialog-website-label}.
-@item @anchor{slot.about-dialog.license}license. Type: @code{string}. Accessor: @anchor{fn.about-dialog-license}@code{about-dialog-license}.
-@item @anchor{slot.about-dialog.authors}authors. Type: @code{GStrv}. Accessor: @anchor{fn.about-dialog-authors}@code{about-dialog-authors}.
-@item @anchor{slot.about-dialog.documenters}documenters. Type: @code{GStrv}. Accessor: @anchor{fn.about-dialog-documenters}@code{about-dialog-documenters}.
-@item @anchor{slot.about-dialog.translator-credits}translator-credits. Type: @code{string}. Accessor: @anchor{fn.about-dialog-translator-credits}@code{about-dialog-translator-credits}.
 @item @anchor{slot.about-dialog.artists}artists. Type: @code{GStrv}. Accessor: @anchor{fn.about-dialog-artists}@code{about-dialog-artists}.
+@item @anchor{slot.about-dialog.authors}authors. Type: @code{GStrv}. Accessor: @anchor{fn.about-dialog-authors}@code{about-dialog-authors}.
+@item @anchor{slot.about-dialog.comments}comments. Type: @code{string}. Accessor: @anchor{fn.about-dialog-comments}@code{about-dialog-comments}.
+@item @anchor{slot.about-dialog.copyright}copyright. Type: @code{string}. Accessor: @anchor{fn.about-dialog-copyright}@code{about-dialog-copyright}.
+@item @anchor{slot.about-dialog.documenters}documenters. Type: @code{GStrv}. Accessor: @anchor{fn.about-dialog-documenters}@code{about-dialog-documenters}.
+@item @anchor{slot.about-dialog.license}license. Type: @code{string}. Accessor: @anchor{fn.about-dialog-license}@code{about-dialog-license}.
 @item @anchor{slot.about-dialog.logo}logo. Type: @ref{pixbuf}. Accessor: @anchor{fn.about-dialog-logo}@code{about-dialog-logo}.
 @item @anchor{slot.about-dialog.logo-icon-name}logo-icon-name. Type: @code{string}. Accessor: @anchor{fn.about-dialog-logo-icon-name}@code{about-dialog-logo-icon-name}.
+@item @anchor{slot.about-dialog.program-name}program-name. Type: @code{string}. Accessor: @anchor{fn.about-dialog-program-name}@code{about-dialog-program-name}.
+@item @anchor{slot.about-dialog.translator-credits}translator-credits. Type: @code{string}. Accessor: @anchor{fn.about-dialog-translator-credits}@code{about-dialog-translator-credits}.
+@item @anchor{slot.about-dialog.version}version. Type: @code{string}. Accessor: @anchor{fn.about-dialog-version}@code{about-dialog-version}.
+@item @anchor{slot.about-dialog.website}website. Type: @code{string}. Accessor: @anchor{fn.about-dialog-website}@code{about-dialog-website}.
+@item @anchor{slot.about-dialog.website-label}website-label. Type: @code{string}. Accessor: @anchor{fn.about-dialog-website-label}@code{about-dialog-website-label}.
 @item @anchor{slot.about-dialog.wrap-license}wrap-license. Type: @code{boolean}. Accessor: @anchor{fn.about-dialog-wrap-license}@code{about-dialog-wrap-license}.
 @end itemize
 
@@ -142,7 +142,7 @@ Signals:
 @node accel-label
 @section accel-label
 @Class accel-label
-Superclass: @ref{label}
+Superclass: @ref{label} @ref{atk-implementor-iface} @ref{buildable}
 
 Slots:
 @itemize
@@ -161,18 +161,18 @@ Signals:
 @node alignment
 @section alignment
 @Class alignment
-Superclass: @ref{bin}
+Superclass: @ref{bin} @ref{atk-implementor-iface} @ref{buildable}
 
 Slots:
 @itemize
-@item @anchor{slot.alignment.xalign}xalign. Type: @code{single-float}. Accessor: @anchor{fn.alignment-xalign}@code{alignment-xalign}.
-@item @anchor{slot.alignment.yalign}yalign. Type: @code{single-float}. Accessor: @anchor{fn.alignment-yalign}@code{alignment-yalign}.
-@item @anchor{slot.alignment.xscale}xscale. Type: @code{single-float}. Accessor: @anchor{fn.alignment-xscale}@code{alignment-xscale}.
-@item @anchor{slot.alignment.yscale}yscale. Type: @code{single-float}. Accessor: @anchor{fn.alignment-yscale}@code{alignment-yscale}.
-@item @anchor{slot.alignment.top-padding}top-padding. Type: @code{integer}. Accessor: @anchor{fn.alignment-top-padding}@code{alignment-top-padding}.
 @item @anchor{slot.alignment.bottom-padding}bottom-padding. Type: @code{integer}. Accessor: @anchor{fn.alignment-bottom-padding}@code{alignment-bottom-padding}.
 @item @anchor{slot.alignment.left-padding}left-padding. Type: @code{integer}. Accessor: @anchor{fn.alignment-left-padding}@code{alignment-left-padding}.
 @item @anchor{slot.alignment.right-padding}right-padding. Type: @code{integer}. Accessor: @anchor{fn.alignment-right-padding}@code{alignment-right-padding}.
+@item @anchor{slot.alignment.top-padding}top-padding. Type: @code{integer}. Accessor: @anchor{fn.alignment-top-padding}@code{alignment-top-padding}.
+@item @anchor{slot.alignment.xalign}xalign. Type: @code{single-float}. Accessor: @anchor{fn.alignment-xalign}@code{alignment-xalign}.
+@item @anchor{slot.alignment.xscale}xscale. Type: @code{single-float}. Accessor: @anchor{fn.alignment-xscale}@code{alignment-xscale}.
+@item @anchor{slot.alignment.yalign}yalign. Type: @code{single-float}. Accessor: @anchor{fn.alignment-yalign}@code{alignment-yalign}.
+@item @anchor{slot.alignment.yscale}yscale. Type: @code{single-float}. Accessor: @anchor{fn.alignment-yscale}@code{alignment-yscale}.
 @end itemize
 
 
@@ -186,7 +186,7 @@ Signals:
 @node arrow
 @section arrow
 @Class arrow
-Superclass: @ref{misc}
+Superclass: @ref{misc} @ref{atk-implementor-iface} @ref{buildable}
 
 Slots:
 @itemize
@@ -205,14 +205,14 @@ Signals:
 @node aspect-frame
 @section aspect-frame
 @Class aspect-frame
-Superclass: @ref{frame}
+Superclass: @ref{frame} @ref{atk-implementor-iface} @ref{buildable}
 
 Slots:
 @itemize
+@item @anchor{slot.aspect-frame.obey-child}obey-child. Type: @code{boolean}. Accessor: @anchor{fn.aspect-frame-obey-child}@code{aspect-frame-obey-child}.
+@item @anchor{slot.aspect-frame.ratio}ratio. Type: @code{single-float}. Accessor: @anchor{fn.aspect-frame-ratio}@code{aspect-frame-ratio}.
 @item @anchor{slot.aspect-frame.xalign}xalign. Type: @code{single-float}. Accessor: @anchor{fn.aspect-frame-xalign}@code{aspect-frame-xalign}.
 @item @anchor{slot.aspect-frame.yalign}yalign. Type: @code{single-float}. Accessor: @anchor{fn.aspect-frame-yalign}@code{aspect-frame-yalign}.
-@item @anchor{slot.aspect-frame.ratio}ratio. Type: @code{single-float}. Accessor: @anchor{fn.aspect-frame-ratio}@code{aspect-frame-ratio}.
-@item @anchor{slot.aspect-frame.obey-child}obey-child. Type: @code{boolean}. Accessor: @anchor{fn.aspect-frame-obey-child}@code{aspect-frame-obey-child}.
 @end itemize
 
 
@@ -226,7 +226,7 @@ Signals:
 @node assistant
 @section assistant
 @Class assistant
-Superclass: @ref{gtk-window}
+Superclass: @ref{gtk-window} @ref{atk-implementor-iface} @ref{buildable}
 
 Slots:
 @itemize
@@ -235,6 +235,10 @@ Slots:
 
 Signals:
 @itemize
+@item @anchor{signal.assistant.apply}"apply". Signature: (instance @ref{assistant}) @result{} void. Options: run-last.
+@item @anchor{signal.assistant.cancel}"cancel". Signature: (instance @ref{assistant}) @result{} void. Options: run-last.
+@item @anchor{signal.assistant.close}"close". Signature: (instance @ref{assistant}) @result{} void. Options: run-last.
+@item @anchor{signal.assistant.prepare}"prepare". Signature: (instance @ref{assistant}), (arg-1 @ref{widget}) @result{} void. Options: run-last.
 @end itemize
 
 
@@ -243,7 +247,7 @@ Signals:
 @node bin
 @section bin
 @Class bin
-Superclass: @ref{container}
+Superclass: @ref{container} @ref{atk-implementor-iface} @ref{buildable}
 
 Subclasses: @ref{viewport} @ref{scrolled-window} @ref{tool-item} @ref{handle-box} @ref{expander} @ref{event-box} @ref{combo-box} @ref{frame} @ref{alignment} @ref{button} @ref{item} @ref{gtk-window}
 
@@ -262,14 +266,14 @@ Signals:
 @node box
 @section box
 @Class box
-Superclass: @ref{container}
+Superclass: @ref{container} @ref{atk-implementor-iface} @ref{buildable} @ref{orientable}
 
 Subclasses: @ref{h-box} @ref{v-box} @ref{button-box}
 
 Slots:
 @itemize
-@item @anchor{slot.box.spacing}spacing. Type: @code{integer}. Accessor: @anchor{fn.box-spacing}@code{box-spacing}.
 @item @anchor{slot.box.homogeneous}homogeneous. Type: @code{boolean}. Accessor: @anchor{fn.box-homogeneous}@code{box-homogeneous}.
+@item @anchor{slot.box.spacing}spacing. Type: @code{integer}. Accessor: @anchor{fn.box-spacing}@code{box-spacing}.
 @end itemize
 
 
@@ -283,32 +287,32 @@ Signals:
 @node button
 @section button
 @Class button
-Superclass: @ref{bin}
+Superclass: @ref{bin} @ref{atk-implementor-iface} @ref{activatable} @ref{buildable}
 
 Subclasses: @ref{scale-button} @ref{link-button} @ref{font-button} @ref{color-button} @ref{toggle-button}
 
 Slots:
 @itemize
-@item @anchor{slot.button.label}label. Type: @code{string}. Accessor: @anchor{fn.button-label}@code{button-label}.
-@item @anchor{slot.button.image}image. Type: @ref{widget}. Accessor: @anchor{fn.button-image}@code{button-image}.
-@item @anchor{slot.button.relief}relief. Type: @ref{relief-style}. Accessor: @anchor{fn.button-relief}@code{button-relief}.
-@item @anchor{slot.button.use-underline}use-underline. Type: @code{boolean}. Accessor: @anchor{fn.button-use-underline}@code{button-use-underline}.
-@item @anchor{slot.button.use-stock}use-stock. Type: @code{boolean}. Accessor: @anchor{fn.button-use-stock}@code{button-use-stock}.
 @item @anchor{slot.button.focus-on-click}focus-on-click. Type: @code{boolean}. Accessor: @anchor{fn.button-focus-on-click}@code{button-focus-on-click}.
+@item @anchor{slot.button.image}image. Type: @ref{widget}. Accessor: @anchor{fn.button-image}@code{button-image}.
+@item @anchor{slot.button.image-position}image-position. Type: @ref{position-type}. Accessor: @anchor{fn.button-image-position}@code{button-image-position}.
+@item @anchor{slot.button.label}label. Type: @code{string}. Accessor: @anchor{fn.button-label}@code{button-label}.
+@item @anchor{slot.button.relief}relief. Type: @ref{relief-style}. Accessor: @anchor{fn.button-relief}@code{button-relief}.
+@item @anchor{slot.button.use-stock}use-stock. Type: @code{boolean}. Accessor: @anchor{fn.button-use-stock}@code{button-use-stock}.
+@item @anchor{slot.button.use-underline}use-underline. Type: @code{boolean}. Accessor: @anchor{fn.button-use-underline}@code{button-use-underline}.
 @item @anchor{slot.button.xalign}xalign. Type: @code{single-float}. Accessor: @anchor{fn.button-xalign}@code{button-xalign}.
 @item @anchor{slot.button.yalign}yalign. Type: @code{single-float}. Accessor: @anchor{fn.button-yalign}@code{button-yalign}.
-@item @anchor{slot.button.image-position}image-position. Type: @ref{position-type}. Accessor: @anchor{fn.button-image-position}@code{button-image-position}.
 @end itemize
 
 
 Signals:
 @itemize
 @item @anchor{signal.button.activate}"activate". Signature: (instance @ref{button}) @result{} void. Options: run-first, action.
-@item @anchor{signal.button.pressed}"pressed". Signature: (instance @ref{button}) @result{} void. Options: run-first.
-@item @anchor{signal.button.released}"released". Signature: (instance @ref{button}) @result{} void. Options: run-first.
 @item @anchor{signal.button.clicked}"clicked". Signature: (instance @ref{button}) @result{} void. Options: run-first, action.
 @item @anchor{signal.button.enter}"enter". Signature: (instance @ref{button}) @result{} void. Options: run-first.
 @item @anchor{signal.button.leave}"leave". Signature: (instance @ref{button}) @result{} void. Options: run-first.
+@item @anchor{signal.button.pressed}"pressed". Signature: (instance @ref{button}) @result{} void. Options: run-first.
+@item @anchor{signal.button.released}"released". Signature: (instance @ref{button}) @result{} void. Options: run-first.
 @end itemize
 
 
@@ -317,7 +321,7 @@ Signals:
 @node button-box
 @section button-box
 @Class button-box
-Superclass: @ref{box}
+Superclass: @ref{box} @ref{atk-implementor-iface} @ref{buildable} @ref{orientable}
 
 Subclasses: @ref{v-button-box} @ref{h-button-box}
 
@@ -337,33 +341,33 @@ Signals:
 @node calendar
 @section calendar
 @Class calendar
-Superclass: @ref{widget}
+Superclass: @ref{widget} @ref{atk-implementor-iface} @ref{buildable}
 
 Slots:
 @itemize
-@item @anchor{slot.calendar.year}year. Type: @code{integer}. Accessor: @anchor{fn.calendar-year}@code{calendar-year}.
-@item @anchor{slot.calendar.month}month. Type: @code{integer}. Accessor: @anchor{fn.calendar-month}@code{calendar-month}.
 @item @anchor{slot.calendar.day}day. Type: @code{integer}. Accessor: @anchor{fn.calendar-day}@code{calendar-day}.
-@item @anchor{slot.calendar.show-heading}show-heading. Type: @code{boolean}. Accessor: @anchor{fn.calendar-show-heading}@code{calendar-show-heading}.
-@item @anchor{slot.calendar.show-day-names}show-day-names. Type: @code{boolean}. Accessor: @anchor{fn.calendar-show-day-names}@code{calendar-show-day-names}.
-@item @anchor{slot.calendar.no-month-change}no-month-change. Type: @code{boolean}. Accessor: @anchor{fn.calendar-no-month-change}@code{calendar-no-month-change}.
-@item @anchor{slot.calendar.show-week-numbers}show-week-numbers. Type: @code{boolean}. Accessor: @anchor{fn.calendar-show-week-numbers}@code{calendar-show-week-numbers}.
-@item @anchor{slot.calendar.show-details}show-details. Type: @code{boolean}. Accessor: @anchor{fn.calendar-show-details}@code{calendar-show-details}.
-@item @anchor{slot.calendar.detail-width-chars}detail-width-chars. Type: @code{integer}. Accessor: @anchor{fn.calendar-detail-width-chars}@code{calendar-detail-width-chars}.
-@item @anchor{slot.calendar.detail-height-rows}detail-height-rows. Type: @code{integer}. Accessor: @anchor{fn.calendar-detail-height-rows}@code{calendar-detail-height-rows}.
 @item @anchor{slot.calendar.detail-function}detail-function. Type: ????. Accessor: @anchor{fn.calendar-detail-function}@code{calendar-detail-function}. Write-only.
+@item @anchor{slot.calendar.detail-height-rows}detail-height-rows. Type: @code{integer}. Accessor: @anchor{fn.calendar-detail-height-rows}@code{calendar-detail-height-rows}.
+@item @anchor{slot.calendar.detail-width-chars}detail-width-chars. Type: @code{integer}. Accessor: @anchor{fn.calendar-detail-width-chars}@code{calendar-detail-width-chars}.
+@item @anchor{slot.calendar.month}month. Type: @code{integer}. Accessor: @anchor{fn.calendar-month}@code{calendar-month}.
+@item @anchor{slot.calendar.no-month-change}no-month-change. Type: @code{boolean}. Accessor: @anchor{fn.calendar-no-month-change}@code{calendar-no-month-change}.
+@item @anchor{slot.calendar.show-day-names}show-day-names. Type: @code{boolean}. Accessor: @anchor{fn.calendar-show-day-names}@code{calendar-show-day-names}.
+@item @anchor{slot.calendar.show-details}show-details. Type: @code{boolean}. Accessor: @anchor{fn.calendar-show-details}@code{calendar-show-details}.
+@item @anchor{slot.calendar.show-heading}show-heading. Type: @code{boolean}. Accessor: @anchor{fn.calendar-show-heading}@code{calendar-show-heading}.
+@item @anchor{slot.calendar.show-week-numbers}show-week-numbers. Type: @code{boolean}. Accessor: @anchor{fn.calendar-show-week-numbers}@code{calendar-show-week-numbers}.
+@item @anchor{slot.calendar.year}year. Type: @code{integer}. Accessor: @anchor{fn.calendar-year}@code{calendar-year}.
 @end itemize
 
 
 Signals:
 @itemize
-@item @anchor{signal.calendar.month-changed}"month-changed". Signature: (instance @ref{calendar}) @result{} void. Options: run-first.
 @item @anchor{signal.calendar.day-selected}"day-selected". Signature: (instance @ref{calendar}) @result{} void. Options: run-first.
 @item @anchor{signal.calendar.day-selected-double-click}"day-selected-double-click". Signature: (instance @ref{calendar}) @result{} void. Options: run-first.
-@item @anchor{signal.calendar.prev-month}"prev-month". Signature: (instance @ref{calendar}) @result{} void. Options: run-first.
+@item @anchor{signal.calendar.month-changed}"month-changed". Signature: (instance @ref{calendar}) @result{} void. Options: run-first.
 @item @anchor{signal.calendar.next-month}"next-month". Signature: (instance @ref{calendar}) @result{} void. Options: run-first.
-@item @anchor{signal.calendar.prev-year}"prev-year". Signature: (instance @ref{calendar}) @result{} void. Options: run-first.
 @item @anchor{signal.calendar.next-year}"next-year". Signature: (instance @ref{calendar}) @result{} void. Options: run-first.
+@item @anchor{signal.calendar.prev-month}"prev-month". Signature: (instance @ref{calendar}) @result{} void. Options: run-first.
+@item @anchor{signal.calendar.prev-year}"prev-year". Signature: (instance @ref{calendar}) @result{} void. Options: run-first.
 @end itemize
 
 
@@ -372,15 +376,15 @@ Signals:
 @node cell-view
 @section cell-view
 @Class cell-view
-Superclass: @ref{widget}
+Superclass: @ref{widget} @ref{atk-implementor-iface} @ref{buildable} @ref{cell-layout}
 
 Slots:
 @itemize
 @item @anchor{slot.cell-view.background}background. Type: @code{string}. Accessor: @anchor{fn.cell-view-background}@code{cell-view-background}. Write-only.
 @item @anchor{slot.cell-view.background-gdk}background-gdk. Type: @ref{color}. Accessor: @anchor{fn.cell-view-background-gdk}@code{cell-view-background-gdk}.
 @item @anchor{slot.cell-view.background-set}background-set. Type: @code{boolean}. Accessor: @anchor{fn.cell-view-background-set}@code{cell-view-background-set}.
-@item @anchor{slot.cell-view.model}model. Type: @ref{tree-model}. Accessor: @anchor{fn.cell-view-model}@code{cell-view-model}.
 @item @anchor{slot.cell-view.displayed-row}displayed-row. Type: @ref{tree-path}. Accessor: @anchor{fn.cell-view-displayed-row}@code{cell-view-displayed-row}.
+@item @anchor{slot.cell-view.model}model. Type: @ref{tree-model}. Accessor: @anchor{fn.cell-view-model}@code{cell-view-model}.
 @end itemize
 
 
@@ -394,7 +398,7 @@ Signals:
 @node check-button
 @section check-button
 @Class check-button
-Superclass: @ref{toggle-button}
+Superclass: @ref{toggle-button} @ref{atk-implementor-iface} @ref{activatable} @ref{buildable}
 
 Subclasses: @ref{radio-button}
 
@@ -413,15 +417,15 @@ Signals:
 @node check-menu-item
 @section check-menu-item
 @Class check-menu-item
-Superclass: @ref{menu-item}
+Superclass: @ref{menu-item} @ref{atk-implementor-iface} @ref{activatable} @ref{buildable}
 
 Subclasses: @ref{radio-menu-item}
 
 Slots:
 @itemize
 @item @anchor{slot.check-menu-item.active}active. Type: @code{boolean}. Accessor: @anchor{fn.check-menu-item-active}@code{check-menu-item-active}.
-@item @anchor{slot.check-menu-item.inconsistent}inconsistent. Type: @code{boolean}. Accessor: @anchor{fn.check-menu-item-inconsistent}@code{check-menu-item-inconsistent}.
 @item @anchor{slot.check-menu-item.draw-as-radio}draw-as-radio. Type: @code{boolean}. Accessor: @anchor{fn.check-menu-item-draw-as-radio}@code{check-menu-item-draw-as-radio}.
+@item @anchor{slot.check-menu-item.inconsistent}inconsistent. Type: @code{boolean}. Accessor: @anchor{fn.check-menu-item-inconsistent}@code{check-menu-item-inconsistent}.
 @end itemize
 
 
@@ -436,14 +440,14 @@ Signals:
 @node color-button
 @section color-button
 @Class color-button
-Superclass: @ref{button}
+Superclass: @ref{button} @ref{atk-implementor-iface} @ref{activatable} @ref{buildable}
 
 Slots:
 @itemize
-@item @anchor{slot.color-button.use-alpha}use-alpha. Type: @code{boolean}. Accessor: @anchor{fn.color-button-use-alpha}@code{color-button-use-alpha}.
-@item @anchor{slot.color-button.title}title. Type: @code{string}. Accessor: @anchor{fn.color-button-title}@code{color-button-title}.
-@item @anchor{slot.color-button.color}color. Type: @ref{color}. Accessor: @anchor{fn.color-button-color}@code{color-button-color}.
 @item @anchor{slot.color-button.alpha}alpha. Type: @code{integer}. Accessor: @anchor{fn.color-button-alpha}@code{color-button-alpha}.
+@item @anchor{slot.color-button.color}color. Type: @ref{color}. Accessor: @anchor{fn.color-button-color}@code{color-button-color}.
+@item @anchor{slot.color-button.title}title. Type: @code{string}. Accessor: @anchor{fn.color-button-title}@code{color-button-title}.
+@item @anchor{slot.color-button.use-alpha}use-alpha. Type: @code{boolean}. Accessor: @anchor{fn.color-button-use-alpha}@code{color-button-use-alpha}.
 @end itemize
 
 
@@ -458,14 +462,14 @@ Signals:
 @node color-selection
 @section color-selection
 @Class color-selection
-Superclass: @ref{v-box}
+Superclass: @ref{v-box} @ref{atk-implementor-iface} @ref{buildable} @ref{orientable}
 
 Slots:
 @itemize
-@item @anchor{slot.color-selection.has-palette}has-palette. Type: @code{boolean}. Accessor: @anchor{fn.color-selection-has-palette}@code{color-selection-has-palette}.
-@item @anchor{slot.color-selection.has-opacity-control}has-opacity-control. Type: @code{boolean}. Accessor: @anchor{fn.color-selection-has-opacity-control}@code{color-selection-has-opacity-control}.
-@item @anchor{slot.color-selection.current-color}current-color. Type: @ref{color}. Accessor: @anchor{fn.color-selection-current-color}@code{color-selection-current-color}.
 @item @anchor{slot.color-selection.current-alpha}current-alpha. Type: @code{integer}. Accessor: @anchor{fn.color-selection-current-alpha}@code{color-selection-current-alpha}.
+@item @anchor{slot.color-selection.current-color}current-color. Type: @ref{color}. Accessor: @anchor{fn.color-selection-current-color}@code{color-selection-current-color}.
+@item @anchor{slot.color-selection.has-opacity-control}has-opacity-control. Type: @code{boolean}. Accessor: @anchor{fn.color-selection-has-opacity-control}@code{color-selection-has-opacity-control}.
+@item @anchor{slot.color-selection.has-palette}has-palette. Type: @code{boolean}. Accessor: @anchor{fn.color-selection-has-palette}@code{color-selection-has-palette}.
 @end itemize
 
 
@@ -480,14 +484,14 @@ Signals:
 @node color-selection-dialog
 @section color-selection-dialog
 @Class color-selection-dialog
-Superclass: @ref{dialog}
+Superclass: @ref{dialog} @ref{atk-implementor-iface} @ref{buildable}
 
 Slots:
 @itemize
-@item @anchor{slot.color-selection-dialog.color-selection}color-selection. Type: @ref{widget}. Accessor: @anchor{fn.color-selection-dialog-color-selection}@code{color-selection-dialog-color-selection}. Read-only.
-@item @anchor{slot.color-selection-dialog.ok-button}ok-button. Type: @ref{widget}. Accessor: @anchor{fn.color-selection-dialog-ok-button}@code{color-selection-dialog-ok-button}. Read-only.
 @item @anchor{slot.color-selection-dialog.cancel-button}cancel-button. Type: @ref{widget}. Accessor: @anchor{fn.color-selection-dialog-cancel-button}@code{color-selection-dialog-cancel-button}. Read-only.
+@item @anchor{slot.color-selection-dialog.color-selection}color-selection. Type: @ref{widget}. Accessor: @anchor{fn.color-selection-dialog-color-selection}@code{color-selection-dialog-color-selection}. Read-only.
 @item @anchor{slot.color-selection-dialog.help-button}help-button. Type: @ref{widget}. Accessor: @anchor{fn.color-selection-dialog-help-button}@code{color-selection-dialog-help-button}. Read-only.
+@item @anchor{slot.color-selection-dialog.ok-button}ok-button. Type: @ref{widget}. Accessor: @anchor{fn.color-selection-dialog-ok-button}@code{color-selection-dialog-ok-button}. Read-only.
 @end itemize
 
 
@@ -501,25 +505,25 @@ Signals:
 @node combo-box
 @section combo-box
 @Class combo-box
-Superclass: @ref{bin}
+Superclass: @ref{bin} @ref{atk-implementor-iface} @ref{buildable} @ref{cell-editable} @ref{cell-layout}
 
 Subclasses: @ref{combo-box-entry}
 
 Slots:
 @itemize
-@item @anchor{slot.combo-box.model}model. Type: @ref{tree-model}. Accessor: @anchor{fn.combo-box-model}@code{combo-box-model}.
-@item @anchor{slot.combo-box.wrap-width}wrap-width. Type: @code{integer}. Accessor: @anchor{fn.combo-box-wrap-width}@code{combo-box-wrap-width}.
-@item @anchor{slot.combo-box.row-span-column}row-span-column. Type: @code{integer}. Accessor: @anchor{fn.combo-box-row-span-column}@code{combo-box-row-span-column}.
-@item @anchor{slot.combo-box.column-span-column}column-span-column. Type: @code{integer}. Accessor: @anchor{fn.combo-box-column-span-column}@code{combo-box-column-span-column}.
 @item @anchor{slot.combo-box.active}active. Type: @code{integer}. Accessor: @anchor{fn.combo-box-active}@code{combo-box-active}.
-@item @anchor{slot.combo-box.add-tearoffs}add-tearoffs. Type: @code{boolean}. Accessor: @anchor{fn.combo-box-add-tearoffs}@code{combo-box-add-tearoffs}.
-@item @anchor{slot.combo-box.tearoff-title}tearoff-title. Type: @code{string}. Accessor: @anchor{fn.combo-box-tearoff-title}@code{combo-box-tearoff-title}.
-@item @anchor{slot.combo-box.has-frame}has-frame. Type: @code{boolean}. Accessor: @anchor{fn.combo-box-has-frame}@code{combo-box-has-frame}.
-@item @anchor{slot.combo-box.focus-on-click}focus-on-click. Type: @code{boolean}. Accessor: @anchor{fn.combo-box-focus-on-click}@code{combo-box-focus-on-click}.
-@item @anchor{slot.combo-box.popup-shown}popup-shown. Type: @code{boolean}. Accessor: @anchor{fn.combo-box-popup-shown}@code{combo-box-popup-shown}. Read-only.
-@item @anchor{slot.combo-box.button-sensitivity}button-sensitivity. Type: @ref{sensitivity-type}. Accessor: @anchor{fn.combo-box-button-sensitivity}@code{combo-box-button-sensitivity}.
 @item @anchor{slot.combo-box.active-iter}active-iter. Type: @ref{tree-iter}. Accessor: @anchor{fn.combo-box-active-iter}@code{combo-box-active-iter}.
+@item @anchor{slot.combo-box.add-tearoffs}add-tearoffs. Type: @code{boolean}. Accessor: @anchor{fn.combo-box-add-tearoffs}@code{combo-box-add-tearoffs}.
+@item @anchor{slot.combo-box.button-sensitivity}button-sensitivity. Type: @ref{sensitivity-type}. Accessor: @anchor{fn.combo-box-button-sensitivity}@code{combo-box-button-sensitivity}.
+@item @anchor{slot.combo-box.column-span-column}column-span-column. Type: @code{integer}. Accessor: @anchor{fn.combo-box-column-span-column}@code{combo-box-column-span-column}.
+@item @anchor{slot.combo-box.focus-on-click}focus-on-click. Type: @code{boolean}. Accessor: @anchor{fn.combo-box-focus-on-click}@code{combo-box-focus-on-click}.
+@item @anchor{slot.combo-box.has-frame}has-frame. Type: @code{boolean}. Accessor: @anchor{fn.combo-box-has-frame}@code{combo-box-has-frame}.
+@item @anchor{slot.combo-box.model}model. Type: @ref{tree-model}. Accessor: @anchor{fn.combo-box-model}@code{combo-box-model}.
+@item @anchor{slot.combo-box.popup-shown}popup-shown. Type: @code{boolean}. Accessor: @anchor{fn.combo-box-popup-shown}@code{combo-box-popup-shown}. Read-only.
 @item @anchor{slot.combo-box.row-separator-func}row-separator-func. Type: ????. Accessor: @anchor{fn.combo-box-row-separator-func}@code{combo-box-row-separator-func}. Write-only.
+@item @anchor{slot.combo-box.row-span-column}row-span-column. Type: @code{integer}. Accessor: @anchor{fn.combo-box-row-span-column}@code{combo-box-row-span-column}.
+@item @anchor{slot.combo-box.tearoff-title}tearoff-title. Type: @code{string}. Accessor: @anchor{fn.combo-box-tearoff-title}@code{combo-box-tearoff-title}.
+@item @anchor{slot.combo-box.wrap-width}wrap-width. Type: @code{integer}. Accessor: @anchor{fn.combo-box-wrap-width}@code{combo-box-wrap-width}.
 @end itemize
 
 
@@ -527,8 +531,8 @@ Signals:
 @itemize
 @item @anchor{signal.combo-box.changed}"changed". Signature: (instance @ref{combo-box}) @result{} void. Options: run-last.
 @item @anchor{signal.combo-box.move-active}"move-active". Signature: (instance @ref{combo-box}), (arg-1 @ref{scroll-type}) @result{} void. Options: run-last, action.
-@item @anchor{signal.combo-box.popup}"popup". Signature: (instance @ref{combo-box}) @result{} void. Options: run-last, action.
 @item @anchor{signal.combo-box.popdown}"popdown". Signature: (instance @ref{combo-box}) @result{} @code{boolean}. Options: run-last, action.
+@item @anchor{signal.combo-box.popup}"popup". Signature: (instance @ref{combo-box}) @result{} void. Options: run-last, action.
 @end itemize
 
 
@@ -537,7 +541,7 @@ Signals:
 @node combo-box-entry
 @section combo-box-entry
 @Class combo-box-entry
-Superclass: @ref{combo-box}
+Superclass: @ref{combo-box} @ref{atk-implementor-iface} @ref{buildable} @ref{cell-editable} @ref{cell-layout}
 
 Slots:
 @itemize
@@ -555,26 +559,26 @@ Signals:
 @node container
 @section container
 @Class container
-Superclass: @ref{widget}
+Superclass: @ref{widget} @ref{atk-implementor-iface} @ref{buildable}
 
 Subclasses: @ref{tree} @ref{toolbar} @ref{text-view} @ref{table} @ref{socket} @ref{layout} @ref{paned} @ref{fixed} @ref{box} @ref{icon-view} @ref{tree-view} @ref{notebook} @ref{menu-shell} @ref{bin}
 
 Slots:
 @itemize
 @item @anchor{slot.container.border-width}border-width. Type: @code{integer}. Accessor: @anchor{fn.container-border-width}@code{container-border-width}.
-@item @anchor{slot.container.resize-mode}resize-mode. Type: @ref{resize-mode}. Accessor: @anchor{fn.container-resize-mode}@code{container-resize-mode}.
 @item @anchor{slot.container.child}child. Type: @ref{widget}. Accessor: @anchor{fn.container-child}@code{container-child}. Write-only.
 @item @anchor{slot.container.focus-child}focus-child. Type: @ref{g-object}. Accessor: @anchor{fn.container-focus-child}@code{container-focus-child}.
-@item @anchor{slot.container.focus-vadjustment}focus-vadjustment. Type: @ref{g-object}. Accessor: @anchor{fn.container-focus-vadjustment}@code{container-focus-vadjustment}.
 @item @anchor{slot.container.focus-hadjustment}focus-hadjustment. Type: @ref{g-object}. Accessor: @anchor{fn.container-focus-hadjustment}@code{container-focus-hadjustment}.
+@item @anchor{slot.container.focus-vadjustment}focus-vadjustment. Type: @ref{g-object}. Accessor: @anchor{fn.container-focus-vadjustment}@code{container-focus-vadjustment}.
+@item @anchor{slot.container.resize-mode}resize-mode. Type: @ref{resize-mode}. Accessor: @anchor{fn.container-resize-mode}@code{container-resize-mode}.
 @end itemize
 
 
 Signals:
 @itemize
 @item @anchor{signal.container.add}"add". Signature: (instance @ref{container}), (arg-1 @ref{widget}) @result{} void. Options: run-first.
-@item @anchor{signal.container.remove}"remove". Signature: (instance @ref{container}), (arg-1 @ref{widget}) @result{} void. Options: run-first.
 @item @anchor{signal.container.check-resize}"check-resize". Signature: (instance @ref{container}) @result{} void. Options: run-last.
+@item @anchor{signal.container.remove}"remove". Signature: (instance @ref{container}), (arg-1 @ref{widget}) @result{} void. Options: run-first.
 @item @anchor{signal.container.set-focus-child}"set-focus-child". Signature: (instance @ref{container}), (arg-1 @ref{widget}) @result{} void. Options: run-first.
 @end itemize
 
@@ -584,15 +588,15 @@ Signals:
 @node curve
 @section curve
 @Class curve
-Superclass: @ref{drawing-area}
+Superclass: @ref{drawing-area} @ref{atk-implementor-iface} @ref{buildable}
 
 Slots:
 @itemize
 @item @anchor{slot.curve.curve-type}curve-type. Type: @ref{curve-type}. Accessor: @anchor{fn.curve-curve-type}@code{curve-curve-type}.
-@item @anchor{slot.curve.min-x}min-x. Type: @code{single-float}. Accessor: @anchor{fn.curve-min-x}@code{curve-min-x}.
 @item @anchor{slot.curve.max-x}max-x. Type: @code{single-float}. Accessor: @anchor{fn.curve-max-x}@code{curve-max-x}.
-@item @anchor{slot.curve.min-y}min-y. Type: @code{single-float}. Accessor: @anchor{fn.curve-min-y}@code{curve-min-y}.
 @item @anchor{slot.curve.max-y}max-y. Type: @code{single-float}. Accessor: @anchor{fn.curve-max-y}@code{curve-max-y}.
+@item @anchor{slot.curve.min-x}min-x. Type: @code{single-float}. Accessor: @anchor{fn.curve-min-x}@code{curve-min-x}.
+@item @anchor{slot.curve.min-y}min-y. Type: @code{single-float}. Accessor: @anchor{fn.curve-min-y}@code{curve-min-y}.
 @end itemize
 
 
@@ -607,7 +611,7 @@ Signals:
 @node dialog
 @section dialog
 @Class dialog
-Superclass: @ref{gtk-window}
+Superclass: @ref{gtk-window} @ref{atk-implementor-iface} @ref{buildable}
 
 Subclasses: @ref{recent-chooser-dialog} @ref{message-dialog} @ref{input-dialog} @ref{font-selection-dialog} @ref{file-chooser-dialog} @ref{color-selection-dialog} @ref{about-dialog}
 
@@ -619,8 +623,8 @@ Slots:
 
 Signals:
 @itemize
-@item @anchor{signal.dialog.response}"response". Signature: (instance @ref{dialog}), (arg-1 @code{integer}) @result{} void. Options: run-last.
 @item @anchor{signal.dialog.close}"close". Signature: (instance @ref{dialog}) @result{} void. Options: run-last, action.
+@item @anchor{signal.dialog.response}"response". Signature: (instance @ref{dialog}), (arg-1 @code{integer}) @result{} void. Options: run-last.
 @end itemize
 
 
@@ -629,7 +633,7 @@ Signals:
 @node drawing-area
 @section drawing-area
 @Class drawing-area
-Superclass: @ref{widget}
+Superclass: @ref{widget} @ref{atk-implementor-iface} @ref{buildable}
 
 Subclasses: @ref{curve}
 
@@ -648,69 +652,69 @@ Signals:
 @node entry
 @section entry
 @Class entry
-Superclass: @ref{widget}
+Superclass: @ref{widget} @ref{atk-implementor-iface} @ref{buildable} @ref{cell-editable} @ref{editable}
 
 Subclasses: @ref{spin-button}
 
 Slots:
 @itemize
+@item @anchor{slot.entry.activates-default}activates-default. Type: @code{boolean}. Accessor: @anchor{fn.entry-activates-default}@code{entry-activates-default}.
+@item @anchor{slot.entry.caps-lock-warning}caps-lock-warning. Type: @code{boolean}. Accessor: @anchor{fn.entry-caps-lock-warning}@code{entry-caps-lock-warning}.
 @item @anchor{slot.entry.cursor-position}cursor-position. Type: @code{integer}. Accessor: @anchor{fn.entry-cursor-position}@code{entry-cursor-position}. Read-only.
-@item @anchor{slot.entry.selection-bound}selection-bound. Type: @code{integer}. Accessor: @anchor{fn.entry-selection-bound}@code{entry-selection-bound}. Read-only.
 @item @anchor{slot.entry.editable}editable. Type: @code{boolean}. Accessor: @anchor{fn.entry-editable}@code{entry-editable}.
-@item @anchor{slot.entry.max-length}max-length. Type: @code{integer}. Accessor: @anchor{fn.entry-max-length}@code{entry-max-length}.
-@item @anchor{slot.entry.visibility}visibility. Type: @code{boolean}. Accessor: @anchor{fn.entry-visibility}@code{entry-visibility}.
 @item @anchor{slot.entry.has-frame}has-frame. Type: @code{boolean}. Accessor: @anchor{fn.entry-has-frame}@code{entry-has-frame}.
+@item @anchor{slot.entry.im-module}im-module. Type: @code{string}. Accessor: @anchor{fn.entry-im-module}@code{entry-im-module}.
 @item @anchor{slot.entry.inner-border}inner-border. Type: @ref{border}. Accessor: @anchor{fn.entry-inner-border}@code{entry-inner-border}.
 @item @anchor{slot.entry.invisible-char}invisible-char. Type: @code{integer}. Accessor: @anchor{fn.entry-invisible-char}@code{entry-invisible-char}.
-@item @anchor{slot.entry.activates-default}activates-default. Type: @code{boolean}. Accessor: @anchor{fn.entry-activates-default}@code{entry-activates-default}.
-@item @anchor{slot.entry.width-chars}width-chars. Type: @code{integer}. Accessor: @anchor{fn.entry-width-chars}@code{entry-width-chars}.
-@item @anchor{slot.entry.scroll-offset}scroll-offset. Type: @code{integer}. Accessor: @anchor{fn.entry-scroll-offset}@code{entry-scroll-offset}. Read-only.
-@item @anchor{slot.entry.text}text. Type: @code{string}. Accessor: @anchor{fn.entry-text}@code{entry-text}.
-@item @anchor{slot.entry.xalign}xalign. Type: @code{single-float}. Accessor: @anchor{fn.entry-xalign}@code{entry-xalign}.
-@item @anchor{slot.entry.truncate-multiline}truncate-multiline. Type: @code{boolean}. Accessor: @anchor{fn.entry-truncate-multiline}@code{entry-truncate-multiline}.
-@item @anchor{slot.entry.shadow-type}shadow-type. Type: @ref{shadow-type}. Accessor: @anchor{fn.entry-shadow-type}@code{entry-shadow-type}.
-@item @anchor{slot.entry.overwrite-mode}overwrite-mode. Type: @code{boolean}. Accessor: @anchor{fn.entry-overwrite-mode}@code{entry-overwrite-mode}.
-@item @anchor{slot.entry.text-length}text-length. Type: @code{integer}. Accessor: @anchor{fn.entry-text-length}@code{entry-text-length}. Read-only.
 @item @anchor{slot.entry.invisible-char-set}invisible-char-set. Type: @code{boolean}. Accessor: @anchor{fn.entry-invisible-char-set}@code{entry-invisible-char-set}.
-@item @anchor{slot.entry.caps-lock-warning}caps-lock-warning. Type: @code{boolean}. Accessor: @anchor{fn.entry-caps-lock-warning}@code{entry-caps-lock-warning}.
+@item @anchor{slot.entry.max-length}max-length. Type: @code{integer}. Accessor: @anchor{fn.entry-max-length}@code{entry-max-length}.
+@item @anchor{slot.entry.overwrite-mode}overwrite-mode. Type: @code{boolean}. Accessor: @anchor{fn.entry-overwrite-mode}@code{entry-overwrite-mode}.
+@item @anchor{slot.entry.primary-icon-activatable}primary-icon-activatable. Type: @code{boolean}. Accessor: @anchor{fn.entry-primary-icon-activatable}@code{entry-primary-icon-activatable}.
+@item @anchor{slot.entry.primary-icon-gicon}primary-icon-gicon. Type: @code{GIcon}. Accessor: @anchor{fn.entry-primary-icon-gicon}@code{entry-primary-icon-gicon}.
+@item @anchor{slot.entry.primary-icon-name}primary-icon-name. Type: @code{string}. Accessor: @anchor{fn.entry-primary-icon-name}@code{entry-primary-icon-name}.
+@item @anchor{slot.entry.primary-icon-pixbuf}primary-icon-pixbuf. Type: @ref{pixbuf}. Accessor: @anchor{fn.entry-primary-icon-pixbuf}@code{entry-primary-icon-pixbuf}.
+@item @anchor{slot.entry.primary-icon-sensitive}primary-icon-sensitive. Type: @code{boolean}. Accessor: @anchor{fn.entry-primary-icon-sensitive}@code{entry-primary-icon-sensitive}.
+@item @anchor{slot.entry.primary-icon-stock}primary-icon-stock. Type: @code{string}. Accessor: @anchor{fn.entry-primary-icon-stock}@code{entry-primary-icon-stock}.
+@item @anchor{slot.entry.primary-icon-storage-type}primary-icon-storage-type. Type: @ref{image-type}. Accessor: @anchor{fn.entry-primary-icon-storage-type}@code{entry-primary-icon-storage-type}. Read-only.
+@item @anchor{slot.entry.primary-icon-tooltip-markup}primary-icon-tooltip-markup. Type: @code{string}. Accessor: @anchor{fn.entry-primary-icon-tooltip-markup}@code{entry-primary-icon-tooltip-markup}.
+@item @anchor{slot.entry.primary-icon-tooltip-text}primary-icon-tooltip-text. Type: @code{string}. Accessor: @anchor{fn.entry-primary-icon-tooltip-text}@code{entry-primary-icon-tooltip-text}.
 @item @anchor{slot.entry.progress-fraction}progress-fraction. Type: @code{double-float}. Accessor: @anchor{fn.entry-progress-fraction}@code{entry-progress-fraction}.
 @item @anchor{slot.entry.progress-pulse-step}progress-pulse-step. Type: @code{double-float}. Accessor: @anchor{fn.entry-progress-pulse-step}@code{entry-progress-pulse-step}.
-@item @anchor{slot.entry.primary-icon-pixbuf}primary-icon-pixbuf. Type: @ref{pixbuf}. Accessor: @anchor{fn.entry-primary-icon-pixbuf}@code{entry-primary-icon-pixbuf}.
-@item @anchor{slot.entry.secondary-icon-pixbuf}secondary-icon-pixbuf. Type: @ref{pixbuf}. Accessor: @anchor{fn.entry-secondary-icon-pixbuf}@code{entry-secondary-icon-pixbuf}.
-@item @anchor{slot.entry.primary-icon-stock}primary-icon-stock. Type: @code{string}. Accessor: @anchor{fn.entry-primary-icon-stock}@code{entry-primary-icon-stock}.
-@item @anchor{slot.entry.secondary-icon-stock}secondary-icon-stock. Type: @code{string}. Accessor: @anchor{fn.entry-secondary-icon-stock}@code{entry-secondary-icon-stock}.
-@item @anchor{slot.entry.primary-icon-name}primary-icon-name. Type: @code{string}. Accessor: @anchor{fn.entry-primary-icon-name}@code{entry-primary-icon-name}.
-@item @anchor{slot.entry.secondary-icon-name}secondary-icon-name. Type: @code{string}. Accessor: @anchor{fn.entry-secondary-icon-name}@code{entry-secondary-icon-name}.
-@item @anchor{slot.entry.primary-icon-gicon}primary-icon-gicon. Type: @code{GIcon}. Accessor: @anchor{fn.entry-primary-icon-gicon}@code{entry-primary-icon-gicon}.
-@item @anchor{slot.entry.secondary-icon-gicon}secondary-icon-gicon. Type: @code{GIcon}. Accessor: @anchor{fn.entry-secondary-icon-gicon}@code{entry-secondary-icon-gicon}.
-@item @anchor{slot.entry.primary-icon-storage-type}primary-icon-storage-type. Type: @ref{image-type}. Accessor: @anchor{fn.entry-primary-icon-storage-type}@code{entry-primary-icon-storage-type}. Read-only.
-@item @anchor{slot.entry.secondary-icon-storage-type}secondary-icon-storage-type. Type: @ref{image-type}. Accessor: @anchor{fn.entry-secondary-icon-storage-type}@code{entry-secondary-icon-storage-type}. Read-only.
-@item @anchor{slot.entry.primary-icon-activatable}primary-icon-activatable. Type: @code{boolean}. Accessor: @anchor{fn.entry-primary-icon-activatable}@code{entry-primary-icon-activatable}.
+@item @anchor{slot.entry.scroll-offset}scroll-offset. Type: @code{integer}. Accessor: @anchor{fn.entry-scroll-offset}@code{entry-scroll-offset}. Read-only.
 @item @anchor{slot.entry.secondary-icon-activatable}secondary-icon-activatable. Type: @code{boolean}. Accessor: @anchor{fn.entry-secondary-icon-activatable}@code{entry-secondary-icon-activatable}.
-@item @anchor{slot.entry.primary-icon-sensitive}primary-icon-sensitive. Type: @code{boolean}. Accessor: @anchor{fn.entry-primary-icon-sensitive}@code{entry-primary-icon-sensitive}.
+@item @anchor{slot.entry.secondary-icon-gicon}secondary-icon-gicon. Type: @code{GIcon}. Accessor: @anchor{fn.entry-secondary-icon-gicon}@code{entry-secondary-icon-gicon}.
+@item @anchor{slot.entry.secondary-icon-name}secondary-icon-name. Type: @code{string}. Accessor: @anchor{fn.entry-secondary-icon-name}@code{entry-secondary-icon-name}.
+@item @anchor{slot.entry.secondary-icon-pixbuf}secondary-icon-pixbuf. Type: @ref{pixbuf}. Accessor: @anchor{fn.entry-secondary-icon-pixbuf}@code{entry-secondary-icon-pixbuf}.
 @item @anchor{slot.entry.secondary-icon-sensitive}secondary-icon-sensitive. Type: @code{boolean}. Accessor: @anchor{fn.entry-secondary-icon-sensitive}@code{entry-secondary-icon-sensitive}.
-@item @anchor{slot.entry.primary-icon-tooltip-text}primary-icon-tooltip-text. Type: @code{string}. Accessor: @anchor{fn.entry-primary-icon-tooltip-text}@code{entry-primary-icon-tooltip-text}.
-@item @anchor{slot.entry.secondary-icon-tooltip-text}secondary-icon-tooltip-text. Type: @code{string}. Accessor: @anchor{fn.entry-secondary-icon-tooltip-text}@code{entry-secondary-icon-tooltip-text}.
-@item @anchor{slot.entry.primary-icon-tooltip-markup}primary-icon-tooltip-markup. Type: @code{string}. Accessor: @anchor{fn.entry-primary-icon-tooltip-markup}@code{entry-primary-icon-tooltip-markup}.
+@item @anchor{slot.entry.secondary-icon-stock}secondary-icon-stock. Type: @code{string}. Accessor: @anchor{fn.entry-secondary-icon-stock}@code{entry-secondary-icon-stock}.
+@item @anchor{slot.entry.secondary-icon-storage-type}secondary-icon-storage-type. Type: @ref{image-type}. Accessor: @anchor{fn.entry-secondary-icon-storage-type}@code{entry-secondary-icon-storage-type}. Read-only.
 @item @anchor{slot.entry.secondary-icon-tooltip-markup}secondary-icon-tooltip-markup. Type: @code{string}. Accessor: @anchor{fn.entry-secondary-icon-tooltip-markup}@code{entry-secondary-icon-tooltip-markup}.
-@item @anchor{slot.entry.im-module}im-module. Type: @code{string}. Accessor: @anchor{fn.entry-im-module}@code{entry-im-module}.
+@item @anchor{slot.entry.secondary-icon-tooltip-text}secondary-icon-tooltip-text. Type: @code{string}. Accessor: @anchor{fn.entry-secondary-icon-tooltip-text}@code{entry-secondary-icon-tooltip-text}.
+@item @anchor{slot.entry.selection-bound}selection-bound. Type: @code{integer}. Accessor: @anchor{fn.entry-selection-bound}@code{entry-selection-bound}. Read-only.
+@item @anchor{slot.entry.shadow-type}shadow-type. Type: @ref{shadow-type}. Accessor: @anchor{fn.entry-shadow-type}@code{entry-shadow-type}.
+@item @anchor{slot.entry.text}text. Type: @code{string}. Accessor: @anchor{fn.entry-text}@code{entry-text}.
+@item @anchor{slot.entry.text-length}text-length. Type: @code{integer}. Accessor: @anchor{fn.entry-text-length}@code{entry-text-length}. Read-only.
+@item @anchor{slot.entry.truncate-multiline}truncate-multiline. Type: @code{boolean}. Accessor: @anchor{fn.entry-truncate-multiline}@code{entry-truncate-multiline}.
+@item @anchor{slot.entry.visibility}visibility. Type: @code{boolean}. Accessor: @anchor{fn.entry-visibility}@code{entry-visibility}.
+@item @anchor{slot.entry.width-chars}width-chars. Type: @code{integer}. Accessor: @anchor{fn.entry-width-chars}@code{entry-width-chars}.
+@item @anchor{slot.entry.xalign}xalign. Type: @code{single-float}. Accessor: @anchor{fn.entry-xalign}@code{entry-xalign}.
 @end itemize
 
 
 Signals:
 @itemize
-@item @anchor{signal.entry.insert-at-cursor}"insert-at-cursor". Signature: (instance @ref{entry}), (arg-1 @code{string}) @result{} void. Options: run-last, action.
 @item @anchor{signal.entry.activate}"activate". Signature: (instance @ref{entry}) @result{} void. Options: run-last, action.
-@item @anchor{signal.entry.move-cursor}"move-cursor". Signature: (instance @ref{entry}), (arg-1 @ref{movement-step}), (arg-2 @code{integer}), (arg-3 @code{boolean}) @result{} void. Options: run-last, action.
-@item @anchor{signal.entry.copy-clipboard}"copy-clipboard". Signature: (instance @ref{entry}) @result{} void. Options: run-last, action.
-@item @anchor{signal.entry.populate-popup}"populate-popup". Signature: (instance @ref{entry}), (arg-1 @ref{menu}) @result{} void. Options: run-last.
-@item @anchor{signal.entry.delete-from-cursor}"delete-from-cursor". Signature: (instance @ref{entry}), (arg-1 @ref{delete-type}), (arg-2 @code{integer}) @result{} void. Options: run-last, action.
 @item @anchor{signal.entry.backspace}"backspace". Signature: (instance @ref{entry}) @result{} void. Options: run-last, action.
+@item @anchor{signal.entry.copy-clipboard}"copy-clipboard". Signature: (instance @ref{entry}) @result{} void. Options: run-last, action.
 @item @anchor{signal.entry.cut-clipboard}"cut-clipboard". Signature: (instance @ref{entry}) @result{} void. Options: run-last, action.
-@item @anchor{signal.entry.paste-clipboard}"paste-clipboard". Signature: (instance @ref{entry}) @result{} void. Options: run-last, action.
-@item @anchor{signal.entry.toggle-overwrite}"toggle-overwrite". Signature: (instance @ref{entry}) @result{} void. Options: run-last, action.
+@item @anchor{signal.entry.delete-from-cursor}"delete-from-cursor". Signature: (instance @ref{entry}), (arg-1 @ref{delete-type}), (arg-2 @code{integer}) @result{} void. Options: run-last, action.
 @item @anchor{signal.entry.icon-press}"icon-press". Signature: (instance @ref{entry}), (arg-1 @code{GtkEntryIconPosition}), (arg-2 @ref{event}) @result{} void. Options: run-last.
 @item @anchor{signal.entry.icon-release}"icon-release". Signature: (instance @ref{entry}), (arg-1 @code{GtkEntryIconPosition}), (arg-2 @ref{event}) @result{} void. Options: run-last.
+@item @anchor{signal.entry.insert-at-cursor}"insert-at-cursor". Signature: (instance @ref{entry}), (arg-1 @code{string}) @result{} void. Options: run-last, action.
+@item @anchor{signal.entry.move-cursor}"move-cursor". Signature: (instance @ref{entry}), (arg-1 @ref{movement-step}), (arg-2 @code{integer}), (arg-3 @code{boolean}) @result{} void. Options: run-last, action.
+@item @anchor{signal.entry.paste-clipboard}"paste-clipboard". Signature: (instance @ref{entry}) @result{} void. Options: run-last, action.
+@item @anchor{signal.entry.populate-popup}"populate-popup". Signature: (instance @ref{entry}), (arg-1 @ref{menu}) @result{} void. Options: run-last.
+@item @anchor{signal.entry.toggle-overwrite}"toggle-overwrite". Signature: (instance @ref{entry}) @result{} void. Options: run-last, action.
 @end itemize
 
 
@@ -719,12 +723,12 @@ Signals:
 @node event-box
 @section event-box
 @Class event-box
-Superclass: @ref{bin}
+Superclass: @ref{bin} @ref{atk-implementor-iface} @ref{buildable}
 
 Slots:
 @itemize
-@item @anchor{slot.event-box.visible-window}visible-window. Type: @code{boolean}. Accessor: @anchor{fn.event-box-visible-window}@code{event-box-visible-window}.
 @item @anchor{slot.event-box.above-child}above-child. Type: @code{boolean}. Accessor: @anchor{fn.event-box-above-child}@code{event-box-above-child}.
+@item @anchor{slot.event-box.visible-window}visible-window. Type: @code{boolean}. Accessor: @anchor{fn.event-box-visible-window}@code{event-box-visible-window}.
 @end itemize
 
 
@@ -738,16 +742,16 @@ Signals:
 @node expander
 @section expander
 @Class expander
-Superclass: @ref{bin}
+Superclass: @ref{bin} @ref{atk-implementor-iface} @ref{buildable}
 
 Slots:
 @itemize
 @item @anchor{slot.expander.expanded}expanded. Type: @code{boolean}. Accessor: @anchor{fn.expander-expanded}@code{expander-expanded}.
 @item @anchor{slot.expander.label}label. Type: @code{string}. Accessor: @anchor{fn.expander-label}@code{expander-label}.
-@item @anchor{slot.expander.use-underline}use-underline. Type: @code{boolean}. Accessor: @anchor{fn.expander-use-underline}@code{expander-use-underline}.
-@item @anchor{slot.expander.use-markup}use-markup. Type: @code{boolean}. Accessor: @anchor{fn.expander-use-markup}@code{expander-use-markup}.
-@item @anchor{slot.expander.spacing}spacing. Type: @code{integer}. Accessor: @anchor{fn.expander-spacing}@code{expander-spacing}.
 @item @anchor{slot.expander.label-widget}label-widget. Type: @ref{widget}. Accessor: @anchor{fn.expander-label-widget}@code{expander-label-widget}.
+@item @anchor{slot.expander.spacing}spacing. Type: @code{integer}. Accessor: @anchor{fn.expander-spacing}@code{expander-spacing}.
+@item @anchor{slot.expander.use-markup}use-markup. Type: @code{boolean}. Accessor: @anchor{fn.expander-use-markup}@code{expander-use-markup}.
+@item @anchor{slot.expander.use-underline}use-underline. Type: @code{boolean}. Accessor: @anchor{fn.expander-use-underline}@code{expander-use-underline}.
 @end itemize
 
 
@@ -762,7 +766,7 @@ Signals:
 @node file-chooser-button
 @section file-chooser-button
 @Class file-chooser-button
-Superclass: @ref{h-box}
+Superclass: @ref{h-box} @ref{atk-implementor-iface} @ref{buildable} @ref{file-chooser} @ref{orientable}
 
 Slots:
 @itemize
@@ -784,7 +788,7 @@ Signals:
 @node file-chooser-dialog
 @section file-chooser-dialog
 @Class file-chooser-dialog
-Superclass: @ref{dialog}
+Superclass: @ref{dialog} @ref{atk-implementor-iface} @ref{buildable} @ref{file-chooser}
 
 Slots:
 @itemize
@@ -801,7 +805,7 @@ Signals:
 @node file-chooser-widget
 @section file-chooser-widget
 @Class file-chooser-widget
-Superclass: @ref{v-box}
+Superclass: @ref{v-box} @ref{atk-implementor-iface} @ref{buildable} @ref{file-chooser} @ref{file-chooser-embed} @ref{orientable}
 
 Slots:
 @itemize
@@ -818,7 +822,7 @@ Signals:
 @node fixed
 @section fixed
 @Class fixed
-Superclass: @ref{container}
+Superclass: @ref{container} @ref{atk-implementor-iface} @ref{buildable}
 
 Slots:
 @itemize
@@ -836,16 +840,16 @@ Signals:
 @node font-button
 @section font-button
 @Class font-button
-Superclass: @ref{button}
+Superclass: @ref{button} @ref{atk-implementor-iface} @ref{activatable} @ref{buildable}
 
 Slots:
 @itemize
-@item @anchor{slot.font-button.title}title. Type: @code{string}. Accessor: @anchor{fn.font-button-title}@code{font-button-title}.
 @item @anchor{slot.font-button.font-name}font-name. Type: @code{string}. Accessor: @anchor{fn.font-button-font-name}@code{font-button-font-name}.
+@item @anchor{slot.font-button.show-size}show-size. Type: @code{boolean}. Accessor: @anchor{fn.font-button-show-size}@code{font-button-show-size}.
+@item @anchor{slot.font-button.show-style}show-style. Type: @code{boolean}. Accessor: @anchor{fn.font-button-show-style}@code{font-button-show-style}.
+@item @anchor{slot.font-button.title}title. Type: @code{string}. Accessor: @anchor{fn.font-button-title}@code{font-button-title}.
 @item @anchor{slot.font-button.use-font}use-font. Type: @code{boolean}. Accessor: @anchor{fn.font-button-use-font}@code{font-button-use-font}.
 @item @anchor{slot.font-button.use-size}use-size. Type: @code{boolean}. Accessor: @anchor{fn.font-button-use-size}@code{font-button-use-size}.
-@item @anchor{slot.font-button.show-style}show-style. Type: @code{boolean}. Accessor: @anchor{fn.font-button-show-style}@code{font-button-show-style}.
-@item @anchor{slot.font-button.show-size}show-size. Type: @code{boolean}. Accessor: @anchor{fn.font-button-show-size}@code{font-button-show-size}.
 @end itemize
 
 
@@ -860,12 +864,12 @@ Signals:
 @node font-selection
 @section font-selection
 @Class font-selection
-Superclass: @ref{v-box}
+Superclass: @ref{v-box} @ref{atk-implementor-iface} @ref{buildable} @ref{orientable}
 
 Slots:
 @itemize
-@item @anchor{slot.font-selection.font-name}font-name. Type: @code{string}. Accessor: @anchor{fn.font-selection-font-name}@code{font-selection-font-name}.
 @item @anchor{slot.font-selection.font}font. Type: @ref{font}. Accessor: @anchor{fn.font-selection-font}@code{font-selection-font}. Read-only.
+@item @anchor{slot.font-selection.font-name}font-name. Type: @code{string}. Accessor: @anchor{fn.font-selection-font-name}@code{font-selection-font-name}.
 @item @anchor{slot.font-selection.preview-text}preview-text. Type: @code{string}. Accessor: @anchor{fn.font-selection-preview-text}@code{font-selection-preview-text}.
 @end itemize
 
@@ -880,15 +884,15 @@ Signals:
 @node font-selection-dialog
 @section font-selection-dialog
 @Class font-selection-dialog
-Superclass: @ref{dialog}
+Superclass: @ref{dialog} @ref{atk-implementor-iface} @ref{buildable}
 
 Slots:
 @itemize
-@item @anchor{slot.font-selection-dialog.font-name}font-name. Type: @code{string}. Accessor: @anchor{fn.font-selection-dialog-font-name}@code{font-selection-dialog-font-name}.
-@item @anchor{slot.font-selection-dialog.preview-text}preview-text. Type: @code{string}. Accessor: @anchor{fn.font-selection-dialog-preview-text}@code{font-selection-dialog-preview-text}.
 @item @anchor{slot.font-selection-dialog.apply-button}apply-button. Type: @ref{g-object}. Accessor: @anchor{fn.font-selection-dialog-apply-button}@code{font-selection-dialog-apply-button}. Read-only.
 @item @anchor{slot.font-selection-dialog.cancel-button}cancel-button. Type: @ref{g-object}. Accessor: @anchor{fn.font-selection-dialog-cancel-button}@code{font-selection-dialog-cancel-button}. Read-only.
+@item @anchor{slot.font-selection-dialog.font-name}font-name. Type: @code{string}. Accessor: @anchor{fn.font-selection-dialog-font-name}@code{font-selection-dialog-font-name}.
 @item @anchor{slot.font-selection-dialog.ok-button}ok-button. Type: @ref{g-object}. Accessor: @anchor{fn.font-selection-dialog-ok-button}@code{font-selection-dialog-ok-button}. Read-only.
+@item @anchor{slot.font-selection-dialog.preview-text}preview-text. Type: @code{string}. Accessor: @anchor{fn.font-selection-dialog-preview-text}@code{font-selection-dialog-preview-text}.
 @end itemize
 
 
@@ -902,18 +906,18 @@ Signals:
 @node frame
 @section frame
 @Class frame
-Superclass: @ref{bin}
+Superclass: @ref{bin} @ref{atk-implementor-iface} @ref{buildable}
 
 Subclasses: @ref{aspect-frame}
 
 Slots:
 @itemize
 @item @anchor{slot.frame.label}label. Type: @code{string}. Accessor: @anchor{fn.frame-label}@code{frame-label}.
+@item @anchor{slot.frame.label-widget}label-widget. Type: @ref{widget}. Accessor: @anchor{fn.frame-label-widget}@code{frame-label-widget}.
 @item @anchor{slot.frame.label-xalign}label-xalign. Type: @code{single-float}. Accessor: @anchor{fn.frame-label-xalign}@code{frame-label-xalign}.
 @item @anchor{slot.frame.label-yalign}label-yalign. Type: @code{single-float}. Accessor: @anchor{fn.frame-label-yalign}@code{frame-label-yalign}.
 @item @anchor{slot.frame.shadow}shadow. Type: @ref{shadow-type}. Accessor: @anchor{fn.frame-shadow}@code{frame-shadow}.
 @item @anchor{slot.frame.shadow-type}shadow-type. Type: @ref{shadow-type}. Accessor: @anchor{fn.frame-shadow-type}@code{frame-shadow-type}.
-@item @anchor{slot.frame.label-widget}label-widget. Type: @ref{widget}. Accessor: @anchor{fn.frame-label-widget}@code{frame-label-widget}.
 @end itemize
 
 
@@ -927,7 +931,7 @@ Signals:
 @node gamma-curve
 @section gamma-curve
 @Class gamma-curve
-Superclass: @ref{v-box}
+Superclass: @ref{v-box} @ref{atk-implementor-iface} @ref{buildable} @ref{orientable}
 
 Slots:
 @itemize
@@ -944,50 +948,50 @@ Signals:
 @node gtk-window
 @section gtk-window
 @Class gtk-window
-Superclass: @ref{bin}
+Superclass: @ref{bin} @ref{atk-implementor-iface} @ref{buildable}
 
 Subclasses: @ref{plug} @ref{assistant} @ref{dialog}
 
 Slots:
 @itemize
-@item @anchor{slot.gtk-window.type}type. Type: @ref{window-type}. Accessor: @anchor{fn.gtk-window-type}@code{gtk-window-type}.
-@item @anchor{slot.gtk-window.title}title. Type: @code{string}. Accessor: @anchor{fn.gtk-window-title}@code{gtk-window-title}.
-@item @anchor{slot.gtk-window.startup-id}startup-id. Type: @code{string}. Accessor: @anchor{fn.gtk-window-startup-id}@code{gtk-window-startup-id}. Write-only.
-@item @anchor{slot.gtk-window.role}role. Type: @code{string}. Accessor: @anchor{fn.gtk-window-role}@code{gtk-window-role}.
-@item @anchor{slot.gtk-window.allow-shrink}allow-shrink. Type: @code{boolean}. Accessor: @anchor{fn.gtk-window-allow-shrink}@code{gtk-window-allow-shrink}.
+@item @anchor{slot.gtk-window.accept-focus}accept-focus. Type: @code{boolean}. Accessor: @anchor{fn.gtk-window-accept-focus}@code{gtk-window-accept-focus}.
 @item @anchor{slot.gtk-window.allow-grow}allow-grow. Type: @code{boolean}. Accessor: @anchor{fn.gtk-window-allow-grow}@code{gtk-window-allow-grow}.
-@item @anchor{slot.gtk-window.resizable}resizable. Type: @code{boolean}. Accessor: @anchor{fn.gtk-window-resizable}@code{gtk-window-resizable}.
-@item @anchor{slot.gtk-window.modal}modal. Type: @code{boolean}. Accessor: @anchor{fn.gtk-window-modal}@code{gtk-window-modal}.
-@item @anchor{slot.gtk-window.window-position}window-position. Type: @ref{window-position}. Accessor: @anchor{fn.gtk-window-window-position}@code{gtk-window-window-position}.
-@item @anchor{slot.gtk-window.default-width}default-width. Type: @code{integer}. Accessor: @anchor{fn.gtk-window-default-width}@code{gtk-window-default-width}.
+@item @anchor{slot.gtk-window.allow-shrink}allow-shrink. Type: @code{boolean}. Accessor: @anchor{fn.gtk-window-allow-shrink}@code{gtk-window-allow-shrink}.
+@item @anchor{slot.gtk-window.decorated}decorated. Type: @code{boolean}. Accessor: @anchor{fn.gtk-window-decorated}@code{gtk-window-decorated}.
 @item @anchor{slot.gtk-window.default-height}default-height. Type: @code{integer}. Accessor: @anchor{fn.gtk-window-default-height}@code{gtk-window-default-height}.
+@item @anchor{slot.gtk-window.default-width}default-width. Type: @code{integer}. Accessor: @anchor{fn.gtk-window-default-width}@code{gtk-window-default-width}.
+@item @anchor{slot.gtk-window.deletable}deletable. Type: @code{boolean}. Accessor: @anchor{fn.gtk-window-deletable}@code{gtk-window-deletable}.
 @item @anchor{slot.gtk-window.destroy-with-parent}destroy-with-parent. Type: @code{boolean}. Accessor: @anchor{fn.gtk-window-destroy-with-parent}@code{gtk-window-destroy-with-parent}.
+@item @anchor{slot.gtk-window.focus-on-map}focus-on-map. Type: @code{boolean}. Accessor: @anchor{fn.gtk-window-focus-on-map}@code{gtk-window-focus-on-map}.
+@item @anchor{slot.gtk-window.gravity}gravity. Type: @ref{gravity}. Accessor: @anchor{fn.gtk-window-gravity}@code{gtk-window-gravity}.
+@item @anchor{slot.gtk-window.has-toplevel-focus}has-toplevel-focus. Type: @code{boolean}. Accessor: @anchor{fn.gtk-window-has-toplevel-focus}@code{gtk-window-has-toplevel-focus}. Read-only.
 @item @anchor{slot.gtk-window.icon}icon. Type: @ref{pixbuf}. Accessor: @anchor{fn.gtk-window-icon}@code{gtk-window-icon}.
 @item @anchor{slot.gtk-window.icon-name}icon-name. Type: @code{string}. Accessor: @anchor{fn.gtk-window-icon-name}@code{gtk-window-icon-name}.
-@item @anchor{slot.gtk-window.screen}screen. Type: @ref{screen}. Accessor: @anchor{fn.gtk-window-screen}@code{gtk-window-screen}.
-@item @anchor{slot.gtk-window.type-hint}type-hint. Type: @ref{gdk-window-type-hint}. Accessor: @anchor{fn.gtk-window-type-hint}@code{gtk-window-type-hint}.
-@item @anchor{slot.gtk-window.skip-taskbar-hint}skip-taskbar-hint. Type: @code{boolean}. Accessor: @anchor{fn.gtk-window-skip-taskbar-hint}@code{gtk-window-skip-taskbar-hint}.
-@item @anchor{slot.gtk-window.skip-pager-hint}skip-pager-hint. Type: @code{boolean}. Accessor: @anchor{fn.gtk-window-skip-pager-hint}@code{gtk-window-skip-pager-hint}.
-@item @anchor{slot.gtk-window.urgency-hint}urgency-hint. Type: @code{boolean}. Accessor: @anchor{fn.gtk-window-urgency-hint}@code{gtk-window-urgency-hint}.
-@item @anchor{slot.gtk-window.accept-focus}accept-focus. Type: @code{boolean}. Accessor: @anchor{fn.gtk-window-accept-focus}@code{gtk-window-accept-focus}.
-@item @anchor{slot.gtk-window.focus-on-map}focus-on-map. Type: @code{boolean}. Accessor: @anchor{fn.gtk-window-focus-on-map}@code{gtk-window-focus-on-map}.
-@item @anchor{slot.gtk-window.decorated}decorated. Type: @code{boolean}. Accessor: @anchor{fn.gtk-window-decorated}@code{gtk-window-decorated}.
-@item @anchor{slot.gtk-window.deletable}deletable. Type: @code{boolean}. Accessor: @anchor{fn.gtk-window-deletable}@code{gtk-window-deletable}.
-@item @anchor{slot.gtk-window.gravity}gravity. Type: @ref{gravity}. Accessor: @anchor{fn.gtk-window-gravity}@code{gtk-window-gravity}.
-@item @anchor{slot.gtk-window.transient-for}transient-for. Type: @ref{gtk-window}. Accessor: @anchor{fn.gtk-window-transient-for}@code{gtk-window-transient-for}.
-@item @anchor{slot.gtk-window.opacity}opacity. Type: @code{double-float}. Accessor: @anchor{fn.gtk-window-opacity}@code{gtk-window-opacity}.
 @item @anchor{slot.gtk-window.is-active}is-active. Type: @code{boolean}. Accessor: @anchor{fn.gtk-window-is-active}@code{gtk-window-is-active}. Read-only.
-@item @anchor{slot.gtk-window.has-toplevel-focus}has-toplevel-focus. Type: @code{boolean}. Accessor: @anchor{fn.gtk-window-has-toplevel-focus}@code{gtk-window-has-toplevel-focus}. Read-only.
+@item @anchor{slot.gtk-window.modal}modal. Type: @code{boolean}. Accessor: @anchor{fn.gtk-window-modal}@code{gtk-window-modal}.
+@item @anchor{slot.gtk-window.opacity}opacity. Type: @code{double-float}. Accessor: @anchor{fn.gtk-window-opacity}@code{gtk-window-opacity}.
+@item @anchor{slot.gtk-window.resizable}resizable. Type: @code{boolean}. Accessor: @anchor{fn.gtk-window-resizable}@code{gtk-window-resizable}.
+@item @anchor{slot.gtk-window.role}role. Type: @code{string}. Accessor: @anchor{fn.gtk-window-role}@code{gtk-window-role}.
+@item @anchor{slot.gtk-window.screen}screen. Type: @ref{screen}. Accessor: @anchor{fn.gtk-window-screen}@code{gtk-window-screen}.
+@item @anchor{slot.gtk-window.skip-pager-hint}skip-pager-hint. Type: @code{boolean}. Accessor: @anchor{fn.gtk-window-skip-pager-hint}@code{gtk-window-skip-pager-hint}.
+@item @anchor{slot.gtk-window.skip-taskbar-hint}skip-taskbar-hint. Type: @code{boolean}. Accessor: @anchor{fn.gtk-window-skip-taskbar-hint}@code{gtk-window-skip-taskbar-hint}.
+@item @anchor{slot.gtk-window.startup-id}startup-id. Type: @code{string}. Accessor: @anchor{fn.gtk-window-startup-id}@code{gtk-window-startup-id}. Write-only.
+@item @anchor{slot.gtk-window.title}title. Type: @code{string}. Accessor: @anchor{fn.gtk-window-title}@code{gtk-window-title}.
+@item @anchor{slot.gtk-window.transient-for}transient-for. Type: @ref{gtk-window}. Accessor: @anchor{fn.gtk-window-transient-for}@code{gtk-window-transient-for}.
+@item @anchor{slot.gtk-window.type}type. Type: @ref{window-type}. Accessor: @anchor{fn.gtk-window-type}@code{gtk-window-type}.
+@item @anchor{slot.gtk-window.type-hint}type-hint. Type: @ref{gdk-window-type-hint}. Accessor: @anchor{fn.gtk-window-type-hint}@code{gtk-window-type-hint}.
+@item @anchor{slot.gtk-window.urgency-hint}urgency-hint. Type: @code{boolean}. Accessor: @anchor{fn.gtk-window-urgency-hint}@code{gtk-window-urgency-hint}.
+@item @anchor{slot.gtk-window.window-position}window-position. Type: @ref{window-position}. Accessor: @anchor{fn.gtk-window-window-position}@code{gtk-window-window-position}.
 @end itemize
 
 
 Signals:
 @itemize
-@item @anchor{signal.gtk-window.set-focus}"set-focus". Signature: (instance @ref{gtk-window}), (arg-1 @ref{widget}) @result{} void. Options: run-last.
-@item @anchor{signal.gtk-window.frame-event}"frame-event". Signature: (instance @ref{gtk-window}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
-@item @anchor{signal.gtk-window.activate-focus}"activate-focus". Signature: (instance @ref{gtk-window}) @result{} void. Options: run-last, action.
 @item @anchor{signal.gtk-window.activate-default}"activate-default". Signature: (instance @ref{gtk-window}) @result{} void. Options: run-last, action.
+@item @anchor{signal.gtk-window.activate-focus}"activate-focus". Signature: (instance @ref{gtk-window}) @result{} void. Options: run-last, action.
+@item @anchor{signal.gtk-window.frame-event}"frame-event". Signature: (instance @ref{gtk-window}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
 @item @anchor{signal.gtk-window.keys-changed}"keys-changed". Signature: (instance @ref{gtk-window}) @result{} void. Options: run-first.
+@item @anchor{signal.gtk-window.set-focus}"set-focus". Signature: (instance @ref{gtk-window}), (arg-1 @ref{widget}) @result{} void. Options: run-last.
 @end itemize
 
 
@@ -996,7 +1000,7 @@ Signals:
 @node h-box
 @section h-box
 @Class h-box
-Superclass: @ref{box}
+Superclass: @ref{box} @ref{atk-implementor-iface} @ref{buildable} @ref{orientable}
 
 Subclasses: @ref{statusbar} @ref{file-chooser-button}
 
@@ -1015,7 +1019,7 @@ Signals:
 @node h-button-box
 @section h-button-box
 @Class h-button-box
-Superclass: @ref{button-box}
+Superclass: @ref{button-box} @ref{atk-implementor-iface} @ref{buildable} @ref{orientable}
 
 Slots:
 @itemize
@@ -1032,7 +1036,7 @@ Signals:
 @node h-paned
 @section h-paned
 @Class h-paned
-Superclass: @ref{paned}
+Superclass: @ref{paned} @ref{atk-implementor-iface} @ref{buildable} @ref{orientable}
 
 Slots:
 @itemize
@@ -1049,7 +1053,7 @@ Signals:
 @node h-ruler
 @section h-ruler
 @Class h-ruler
-Superclass: @ref{ruler}
+Superclass: @ref{ruler} @ref{atk-implementor-iface} @ref{buildable} @ref{orientable}
 
 Slots:
 @itemize
@@ -1066,7 +1070,7 @@ Signals:
 @node h-s-v
 @section h-s-v
 @Class h-s-v
-Superclass: @ref{widget}
+Superclass: @ref{widget} @ref{atk-implementor-iface} @ref{buildable}
 
 Slots:
 @itemize
@@ -1075,6 +1079,8 @@ Slots:
 
 Signals:
 @itemize
+@item @anchor{signal.h-s-v.changed}"changed". Signature: (instance @ref{h-s-v}) @result{} void. Options: run-first.
+@item @anchor{signal.h-s-v.move}"move". Signature: (instance @ref{h-s-v}), (arg-1 @ref{direction-type}) @result{} void. Options: run-last, action.
 @end itemize
 
 
@@ -1083,7 +1089,7 @@ Signals:
 @node h-scale
 @section h-scale
 @Class h-scale
-Superclass: @ref{scale}
+Superclass: @ref{scale} @ref{atk-implementor-iface} @ref{buildable} @ref{orientable}
 
 Slots:
 @itemize
@@ -1100,7 +1106,7 @@ Signals:
 @node h-scrollbar
 @section h-scrollbar
 @Class h-scrollbar
-Superclass: @ref{scrollbar}
+Superclass: @ref{scrollbar} @ref{atk-implementor-iface} @ref{buildable} @ref{orientable}
 
 Slots:
 @itemize
@@ -1117,7 +1123,7 @@ Signals:
 @node h-separator
 @section h-separator
 @Class h-separator
-Superclass: @ref{separator}
+Superclass: @ref{separator} @ref{atk-implementor-iface} @ref{buildable} @ref{orientable}
 
 Slots:
 @itemize
@@ -1134,23 +1140,23 @@ Signals:
 @node handle-box
 @section handle-box
 @Class handle-box
-Superclass: @ref{bin}
+Superclass: @ref{bin} @ref{atk-implementor-iface} @ref{buildable}
 
 Slots:
 @itemize
+@item @anchor{slot.handle-box.child-detached}child-detached. Type: @code{boolean}. Accessor: @anchor{fn.handle-box-child-detached}@code{handle-box-child-detached}. Read-only.
+@item @anchor{slot.handle-box.handle-position}handle-position. Type: @ref{position-type}. Accessor: @anchor{fn.handle-box-handle-position}@code{handle-box-handle-position}.
 @item @anchor{slot.handle-box.shadow}shadow. Type: @ref{shadow-type}. Accessor: @anchor{fn.handle-box-shadow}@code{handle-box-shadow}.
 @item @anchor{slot.handle-box.shadow-type}shadow-type. Type: @ref{shadow-type}. Accessor: @anchor{fn.handle-box-shadow-type}@code{handle-box-shadow-type}.
-@item @anchor{slot.handle-box.handle-position}handle-position. Type: @ref{position-type}. Accessor: @anchor{fn.handle-box-handle-position}@code{handle-box-handle-position}.
 @item @anchor{slot.handle-box.snap-edge}snap-edge. Type: @ref{position-type}. Accessor: @anchor{fn.handle-box-snap-edge}@code{handle-box-snap-edge}.
 @item @anchor{slot.handle-box.snap-edge-set}snap-edge-set. Type: @code{boolean}. Accessor: @anchor{fn.handle-box-snap-edge-set}@code{handle-box-snap-edge-set}.
-@item @anchor{slot.handle-box.child-detached}child-detached. Type: @code{boolean}. Accessor: @anchor{fn.handle-box-child-detached}@code{handle-box-child-detached}. Read-only.
 @end itemize
 
 
 Signals:
 @itemize
-@item @anchor{signal.handle-box.child-detached}"child-detached". Signature: (instance @ref{handle-box}), (arg-1 @ref{widget}) @result{} void. Options: run-first.
 @item @anchor{signal.handle-box.child-attached}"child-attached". Signature: (instance @ref{handle-box}), (arg-1 @ref{widget}) @result{} void. Options: run-first.
+@item @anchor{signal.handle-box.child-detached}"child-detached". Signature: (instance @ref{handle-box}), (arg-1 @ref{widget}) @result{} void. Options: run-first.
 @end itemize
 
 
@@ -1159,38 +1165,38 @@ Signals:
 @node icon-view
 @section icon-view
 @Class icon-view
-Superclass: @ref{container}
+Superclass: @ref{container} @ref{atk-implementor-iface} @ref{buildable} @ref{cell-layout}
 
 Slots:
 @itemize
-@item @anchor{slot.icon-view.pixbuf-column}pixbuf-column. Type: @code{integer}. Accessor: @anchor{fn.icon-view-pixbuf-column}@code{icon-view-pixbuf-column}.
-@item @anchor{slot.icon-view.text-column}text-column. Type: @code{integer}. Accessor: @anchor{fn.icon-view-text-column}@code{icon-view-text-column}.
-@item @anchor{slot.icon-view.markup-column}markup-column. Type: @code{integer}. Accessor: @anchor{fn.icon-view-markup-column}@code{icon-view-markup-column}.
-@item @anchor{slot.icon-view.selection-mode}selection-mode. Type: @ref{selection-mode}. Accessor: @anchor{fn.icon-view-selection-mode}@code{icon-view-selection-mode}.
-@item @anchor{slot.icon-view.orientation}orientation. Type: @ref{orientation}. Accessor: @anchor{fn.icon-view-orientation}@code{icon-view-orientation}.
-@item @anchor{slot.icon-view.model}model. Type: @ref{tree-model}. Accessor: @anchor{fn.icon-view-model}@code{icon-view-model}.
+@item @anchor{slot.icon-view.column-spacing}column-spacing. Type: @code{integer}. Accessor: @anchor{fn.icon-view-column-spacing}@code{icon-view-column-spacing}.
 @item @anchor{slot.icon-view.columns}columns. Type: @code{integer}. Accessor: @anchor{fn.icon-view-columns}@code{icon-view-columns}.
 @item @anchor{slot.icon-view.item-width}item-width. Type: @code{integer}. Accessor: @anchor{fn.icon-view-item-width}@code{icon-view-item-width}.
-@item @anchor{slot.icon-view.spacing}spacing. Type: @code{integer}. Accessor: @anchor{fn.icon-view-spacing}@code{icon-view-spacing}.
-@item @anchor{slot.icon-view.row-spacing}row-spacing. Type: @code{integer}. Accessor: @anchor{fn.icon-view-row-spacing}@code{icon-view-row-spacing}.
-@item @anchor{slot.icon-view.column-spacing}column-spacing. Type: @code{integer}. Accessor: @anchor{fn.icon-view-column-spacing}@code{icon-view-column-spacing}.
 @item @anchor{slot.icon-view.margin}margin. Type: @code{integer}. Accessor: @anchor{fn.icon-view-margin}@code{icon-view-margin}.
+@item @anchor{slot.icon-view.markup-column}markup-column. Type: @code{integer}. Accessor: @anchor{fn.icon-view-markup-column}@code{icon-view-markup-column}.
+@item @anchor{slot.icon-view.model}model. Type: @ref{tree-model}. Accessor: @anchor{fn.icon-view-model}@code{icon-view-model}.
+@item @anchor{slot.icon-view.orientation}orientation. Type: @ref{orientation}. Accessor: @anchor{fn.icon-view-orientation}@code{icon-view-orientation}.
+@item @anchor{slot.icon-view.pixbuf-column}pixbuf-column. Type: @code{integer}. Accessor: @anchor{fn.icon-view-pixbuf-column}@code{icon-view-pixbuf-column}.
 @item @anchor{slot.icon-view.reorderable}reorderable. Type: @code{boolean}. Accessor: @anchor{fn.icon-view-reorderable}@code{icon-view-reorderable}.
+@item @anchor{slot.icon-view.row-spacing}row-spacing. Type: @code{integer}. Accessor: @anchor{fn.icon-view-row-spacing}@code{icon-view-row-spacing}.
+@item @anchor{slot.icon-view.selection-mode}selection-mode. Type: @ref{selection-mode}. Accessor: @anchor{fn.icon-view-selection-mode}@code{icon-view-selection-mode}.
+@item @anchor{slot.icon-view.spacing}spacing. Type: @code{integer}. Accessor: @anchor{fn.icon-view-spacing}@code{icon-view-spacing}.
+@item @anchor{slot.icon-view.text-column}text-column. Type: @code{integer}. Accessor: @anchor{fn.icon-view-text-column}@code{icon-view-text-column}.
 @item @anchor{slot.icon-view.tooltip-column}tooltip-column. Type: @code{integer}. Accessor: @anchor{fn.icon-view-tooltip-column}@code{icon-view-tooltip-column}.
 @end itemize
 
 
 Signals:
 @itemize
-@item @anchor{signal.icon-view.set-scroll-adjustments}"set-scroll-adjustments". Signature: (instance @ref{icon-view}), (arg-1 @ref{adjustment}), (arg-2 @ref{adjustment}) @result{} void. Options: run-last.
+@item @anchor{signal.icon-view.activate-cursor-item}"activate-cursor-item". Signature: (instance @ref{icon-view}) @result{} @code{boolean}. Options: run-last, action.
+@item @anchor{signal.icon-view.item-activated}"item-activated". Signature: (instance @ref{icon-view}), (arg-1 @ref{tree-path}) @result{} void. Options: run-last.
 @item @anchor{signal.icon-view.move-cursor}"move-cursor". Signature: (instance @ref{icon-view}), (arg-1 @ref{movement-step}), (arg-2 @code{integer}) @result{} @code{boolean}. Options: run-last, action.
 @item @anchor{signal.icon-view.select-all}"select-all". Signature: (instance @ref{icon-view}) @result{} void. Options: run-last, action.
-@item @anchor{signal.icon-view.unselect-all}"unselect-all". Signature: (instance @ref{icon-view}) @result{} void. Options: run-last, action.
-@item @anchor{signal.icon-view.item-activated}"item-activated". Signature: (instance @ref{icon-view}), (arg-1 @ref{tree-path}) @result{} void. Options: run-last.
-@item @anchor{signal.icon-view.selection-changed}"selection-changed". Signature: (instance @ref{icon-view}) @result{} void. Options: run-first.
 @item @anchor{signal.icon-view.select-cursor-item}"select-cursor-item". Signature: (instance @ref{icon-view}) @result{} void. Options: run-last, action.
+@item @anchor{signal.icon-view.selection-changed}"selection-changed". Signature: (instance @ref{icon-view}) @result{} void. Options: run-first.
+@item @anchor{signal.icon-view.set-scroll-adjustments}"set-scroll-adjustments". Signature: (instance @ref{icon-view}), (arg-1 @ref{adjustment}), (arg-2 @ref{adjustment}) @result{} void. Options: run-last.
 @item @anchor{signal.icon-view.toggle-cursor-item}"toggle-cursor-item". Signature: (instance @ref{icon-view}) @result{} void. Options: run-last, action.
-@item @anchor{signal.icon-view.activate-cursor-item}"activate-cursor-item". Signature: (instance @ref{icon-view}) @result{} @code{boolean}. Options: run-last, action.
+@item @anchor{signal.icon-view.unselect-all}"unselect-all". Signature: (instance @ref{icon-view}) @result{} void. Options: run-last, action.
 @end itemize
 
 
@@ -1199,23 +1205,23 @@ Signals:
 @node image
 @section image
 @Class image
-Superclass: @ref{misc}
+Superclass: @ref{misc} @ref{atk-implementor-iface} @ref{buildable}
 
 Slots:
 @itemize
-@item @anchor{slot.image.pixbuf}pixbuf. Type: @ref{pixbuf}. Accessor: @anchor{fn.image-pixbuf}@code{image-pixbuf}.
-@item @anchor{slot.image.pixmap}pixmap. Type: @ref{pixmap}. Accessor: @anchor{fn.image-pixmap}@code{image-pixmap}.
-@item @anchor{slot.image.image}image. Type: @code{GdkImage}. Accessor: @anchor{fn.image-image}@code{image-image}.
-@item @anchor{slot.image.mask}mask. Type: @ref{pixmap}. Accessor: @anchor{fn.image-mask}@code{image-mask}.
 @item @anchor{slot.image.file}file. Type: @code{string}. Accessor: @anchor{fn.image-file}@code{image-file}.
-@item @anchor{slot.image.stock}stock. Type: @code{string}. Accessor: @anchor{fn.image-stock}@code{image-stock}.
+@item @anchor{slot.image.gicon}gicon. Type: @code{GIcon}. Accessor: @anchor{fn.image-gicon}@code{image-gicon}.
+@item @anchor{slot.image.icon-name}icon-name. Type: @code{string}. Accessor: @anchor{fn.image-icon-name}@code{image-icon-name}.
 @item @anchor{slot.image.icon-set}icon-set. Type: @code{GtkIconSet}. Accessor: @anchor{fn.image-icon-set}@code{image-icon-set}.
 @item @anchor{slot.image.icon-size}icon-size. Type: @code{integer}. Accessor: @anchor{fn.image-icon-size}@code{image-icon-size}.
-@item @anchor{slot.image.pixel-size}pixel-size. Type: @code{integer}. Accessor: @anchor{fn.image-pixel-size}@code{image-pixel-size}.
+@item @anchor{slot.image.image}image. Type: @code{GdkImage}. Accessor: @anchor{fn.image-image}@code{image-image}.
+@item @anchor{slot.image.mask}mask. Type: @ref{pixmap}. Accessor: @anchor{fn.image-mask}@code{image-mask}.
+@item @anchor{slot.image.pixbuf}pixbuf. Type: @ref{pixbuf}. Accessor: @anchor{fn.image-pixbuf}@code{image-pixbuf}.
 @item @anchor{slot.image.pixbuf-animation}pixbuf-animation. Type: @ref{pixbuf-animation}. Accessor: @anchor{fn.image-pixbuf-animation}@code{image-pixbuf-animation}.
-@item @anchor{slot.image.icon-name}icon-name. Type: @code{string}. Accessor: @anchor{fn.image-icon-name}@code{image-icon-name}.
+@item @anchor{slot.image.pixel-size}pixel-size. Type: @code{integer}. Accessor: @anchor{fn.image-pixel-size}@code{image-pixel-size}.
+@item @anchor{slot.image.pixmap}pixmap. Type: @ref{pixmap}. Accessor: @anchor{fn.image-pixmap}@code{image-pixmap}.
+@item @anchor{slot.image.stock}stock. Type: @code{string}. Accessor: @anchor{fn.image-stock}@code{image-stock}.
 @item @anchor{slot.image.storage-type}storage-type. Type: @ref{image-type}. Accessor: @anchor{fn.image-storage-type}@code{image-storage-type}. Read-only.
-@item @anchor{slot.image.gicon}gicon. Type: @code{GIcon}. Accessor: @anchor{fn.image-gicon}@code{image-gicon}.
 @end itemize
 
 
@@ -1229,14 +1235,14 @@ Signals:
 @node image-menu-item
 @section image-menu-item
 @Class image-menu-item
-Superclass: @ref{menu-item}
+Superclass: @ref{menu-item} @ref{atk-implementor-iface} @ref{activatable} @ref{buildable}
 
 Slots:
 @itemize
-@item @anchor{slot.image-menu-item.image}image. Type: @ref{widget}. Accessor: @anchor{fn.image-menu-item-image}@code{image-menu-item-image}.
-@item @anchor{slot.image-menu-item.use-stock}use-stock. Type: @code{boolean}. Accessor: @anchor{fn.image-menu-item-use-stock}@code{image-menu-item-use-stock}.
 @item @anchor{slot.image-menu-item.accel-group}accel-group. Type: @ref{accel-group}. Accessor: @anchor{fn.image-menu-item-accel-group}@code{image-menu-item-accel-group}. Write-only.
 @item @anchor{slot.image-menu-item.always-show-image}always-show-image. Type: @code{boolean}. Accessor: @anchor{fn.image-menu-item-always-show-image}@code{image-menu-item-always-show-image}.
+@item @anchor{slot.image-menu-item.image}image. Type: @ref{widget}. Accessor: @anchor{fn.image-menu-item-image}@code{image-menu-item-image}.
+@item @anchor{slot.image-menu-item.use-stock}use-stock. Type: @code{boolean}. Accessor: @anchor{fn.image-menu-item-use-stock}@code{image-menu-item-use-stock}.
 @end itemize
 
 
@@ -1250,7 +1256,7 @@ Signals:
 @node input-dialog
 @section input-dialog
 @Class input-dialog
-Superclass: @ref{dialog}
+Superclass: @ref{dialog} @ref{atk-implementor-iface} @ref{buildable}
 
 Slots:
 @itemize
@@ -1259,6 +1265,8 @@ Slots:
 
 Signals:
 @itemize
+@item @anchor{signal.input-dialog.disable-device}"disable-device". Signature: (instance @ref{input-dialog}), (arg-1 @code{GdkDevice}) @result{} void. Options: run-last.
+@item @anchor{signal.input-dialog.enable-device}"enable-device". Signature: (instance @ref{input-dialog}), (arg-1 @code{GdkDevice}) @result{} void. Options: run-last.
 @end itemize
 
 
@@ -1267,7 +1275,7 @@ Signals:
 @node invisible
 @section invisible
 @Class invisible
-Superclass: @ref{widget}
+Superclass: @ref{widget} @ref{atk-implementor-iface} @ref{buildable}
 
 Slots:
 @itemize
@@ -1285,7 +1293,7 @@ Signals:
 @node item
 @section item
 @Class item
-Superclass: @ref{bin}
+Superclass: @ref{bin} @ref{atk-implementor-iface} @ref{buildable}
 
 Subclasses: @ref{tree-item} @ref{menu-item}
 
@@ -1296,8 +1304,8 @@ Slots:
 
 Signals:
 @itemize
-@item @anchor{signal.item.select}"select". Signature: (instance @ref{item}) @result{} void. Options: run-first.
 @item @anchor{signal.item.deselect}"deselect". Signature: (instance @ref{item}) @result{} void. Options: run-first.
+@item @anchor{signal.item.select}"select". Signature: (instance @ref{item}) @result{} void. Options: run-first.
 @item @anchor{signal.item.toggle}"toggle". Signature: (instance @ref{item}) @result{} void. Options: run-first.
 @end itemize
 
@@ -1307,37 +1315,37 @@ Signals:
 @node label
 @section label
 @Class label
-Superclass: @ref{misc}
+Superclass: @ref{misc} @ref{atk-implementor-iface} @ref{buildable}
 
 Subclasses: @ref{accel-label}
 
 Slots:
 @itemize
-@item @anchor{slot.label.label}label. Type: @code{string}. Accessor: @anchor{fn.label-label}@code{label-label}.
+@item @anchor{slot.label.angle}angle. Type: @code{double-float}. Accessor: @anchor{fn.label-angle}@code{label-angle}.
 @item @anchor{slot.label.attributes}attributes. Type: @code{PangoAttrList}. Accessor: @anchor{fn.label-attributes}@code{label-attributes}.
-@item @anchor{slot.label.use-markup}use-markup. Type: @code{boolean}. Accessor: @anchor{fn.label-use-markup}@code{label-use-markup}.
-@item @anchor{slot.label.use-underline}use-underline. Type: @code{boolean}. Accessor: @anchor{fn.label-use-underline}@code{label-use-underline}.
+@item @anchor{slot.label.cursor-position}cursor-position. Type: @code{integer}. Accessor: @anchor{fn.label-cursor-position}@code{label-cursor-position}. Read-only.
+@item @anchor{slot.label.ellipsize}ellipsize. Type: @code{PangoEllipsizeMode}. Accessor: @anchor{fn.label-ellipsize}@code{label-ellipsize}.
 @item @anchor{slot.label.justify}justify. Type: @ref{justification}. Accessor: @anchor{fn.label-justify}@code{label-justify}.
-@item @anchor{slot.label.pattern}pattern. Type: @code{string}. Accessor: @anchor{fn.label-pattern}@code{label-pattern}. Write-only.
-@item @anchor{slot.label.wrap}wrap. Type: @code{boolean}. Accessor: @anchor{fn.label-wrap}@code{label-wrap}.
-@item @anchor{slot.label.wrap-mode}wrap-mode. Type: @code{PangoWrapMode}. Accessor: @anchor{fn.label-wrap-mode}@code{label-wrap-mode}.
-@item @anchor{slot.label.selectable}selectable. Type: @code{boolean}. Accessor: @anchor{fn.label-selectable}@code{label-selectable}.
+@item @anchor{slot.label.label}label. Type: @code{string}. Accessor: @anchor{fn.label-label}@code{label-label}.
+@item @anchor{slot.label.max-width-chars}max-width-chars. Type: @code{integer}. Accessor: @anchor{fn.label-max-width-chars}@code{label-max-width-chars}.
 @item @anchor{slot.label.mnemonic-keyval}mnemonic-keyval. Type: @code{integer}. Accessor: @anchor{fn.label-mnemonic-keyval}@code{label-mnemonic-keyval}. Read-only.
 @item @anchor{slot.label.mnemonic-widget}mnemonic-widget. Type: @ref{widget}. Accessor: @anchor{fn.label-mnemonic-widget}@code{label-mnemonic-widget}.
-@item @anchor{slot.label.cursor-position}cursor-position. Type: @code{integer}. Accessor: @anchor{fn.label-cursor-position}@code{label-cursor-position}. Read-only.
+@item @anchor{slot.label.pattern}pattern. Type: @code{string}. Accessor: @anchor{fn.label-pattern}@code{label-pattern}. Write-only.
+@item @anchor{slot.label.selectable}selectable. Type: @code{boolean}. Accessor: @anchor{fn.label-selectable}@code{label-selectable}.
 @item @anchor{slot.label.selection-bound}selection-bound. Type: @code{integer}. Accessor: @anchor{fn.label-selection-bound}@code{label-selection-bound}. Read-only.
-@item @anchor{slot.label.ellipsize}ellipsize. Type: @code{PangoEllipsizeMode}. Accessor: @anchor{fn.label-ellipsize}@code{label-ellipsize}.
-@item @anchor{slot.label.width-chars}width-chars. Type: @code{integer}. Accessor: @anchor{fn.label-width-chars}@code{label-width-chars}.
 @item @anchor{slot.label.single-line-mode}single-line-mode. Type: @code{boolean}. Accessor: @anchor{fn.label-single-line-mode}@code{label-single-line-mode}.
-@item @anchor{slot.label.angle}angle. Type: @code{double-float}. Accessor: @anchor{fn.label-angle}@code{label-angle}.
-@item @anchor{slot.label.max-width-chars}max-width-chars. Type: @code{integer}. Accessor: @anchor{fn.label-max-width-chars}@code{label-max-width-chars}.
+@item @anchor{slot.label.use-markup}use-markup. Type: @code{boolean}. Accessor: @anchor{fn.label-use-markup}@code{label-use-markup}.
+@item @anchor{slot.label.use-underline}use-underline. Type: @code{boolean}. Accessor: @anchor{fn.label-use-underline}@code{label-use-underline}.
+@item @anchor{slot.label.width-chars}width-chars. Type: @code{integer}. Accessor: @anchor{fn.label-width-chars}@code{label-width-chars}.
+@item @anchor{slot.label.wrap}wrap. Type: @code{boolean}. Accessor: @anchor{fn.label-wrap}@code{label-wrap}.
+@item @anchor{slot.label.wrap-mode}wrap-mode. Type: @code{PangoWrapMode}. Accessor: @anchor{fn.label-wrap-mode}@code{label-wrap-mode}.
 @end itemize
 
 
 Signals:
 @itemize
-@item @anchor{signal.label.move-cursor}"move-cursor". Signature: (instance @ref{label}), (arg-1 @ref{movement-step}), (arg-2 @code{integer}), (arg-3 @code{boolean}) @result{} void. Options: run-last, action.
 @item @anchor{signal.label.copy-clipboard}"copy-clipboard". Signature: (instance @ref{label}) @result{} void. Options: run-last, action.
+@item @anchor{signal.label.move-cursor}"move-cursor". Signature: (instance @ref{label}), (arg-1 @ref{movement-step}), (arg-2 @code{integer}), (arg-3 @code{boolean}) @result{} void. Options: run-last, action.
 @item @anchor{signal.label.populate-popup}"populate-popup". Signature: (instance @ref{label}), (arg-1 @ref{menu}) @result{} void. Options: run-last.
 @end itemize
 
@@ -1347,15 +1355,15 @@ Signals:
 @node layout
 @section layout
 @Class layout
-Superclass: @ref{container}
+Superclass: @ref{container} @ref{atk-implementor-iface} @ref{buildable}
 
 Slots:
 @itemize
+@item @anchor{slot.layout.bin-window}bin-window. Type: @ref{g-object}. Accessor: @anchor{fn.layout-bin-window}@code{layout-bin-window}. Read-only.
 @item @anchor{slot.layout.hadjustment}hadjustment. Type: @ref{adjustment}. Accessor: @anchor{fn.layout-hadjustment}@code{layout-hadjustment}.
+@item @anchor{slot.layout.height}height. Type: @code{integer}. Accessor: @anchor{fn.layout-height}@code{layout-height}.
 @item @anchor{slot.layout.vadjustment}vadjustment. Type: @ref{adjustment}. Accessor: @anchor{fn.layout-vadjustment}@code{layout-vadjustment}.
 @item @anchor{slot.layout.width}width. Type: @code{integer}. Accessor: @anchor{fn.layout-width}@code{layout-width}.
-@item @anchor{slot.layout.height}height. Type: @code{integer}. Accessor: @anchor{fn.layout-height}@code{layout-height}.
-@item @anchor{slot.layout.bin-window}bin-window. Type: @ref{g-object}. Accessor: @anchor{fn.layout-bin-window}@code{layout-bin-window}. Read-only.
 @end itemize
 
 
@@ -1370,7 +1378,7 @@ Signals:
 @node link-button
 @section link-button
 @Class link-button
-Superclass: @ref{button}
+Superclass: @ref{button} @ref{atk-implementor-iface} @ref{activatable} @ref{buildable}
 
 Slots:
 @itemize
@@ -1389,20 +1397,20 @@ Signals:
 @node menu
 @section menu
 @Class menu
-Superclass: @ref{menu-shell}
+Superclass: @ref{menu-shell} @ref{atk-implementor-iface} @ref{buildable}
 
 Subclasses: @ref{recent-chooser-menu}
 
 Slots:
 @itemize
-@item @anchor{slot.menu.active}active. Type: @code{integer}. Accessor: @anchor{fn.menu-active}@code{menu-active}.
 @item @anchor{slot.menu.accel-group}accel-group. Type: @ref{accel-group}. Accessor: @anchor{fn.menu-accel-group}@code{menu-accel-group}.
 @item @anchor{slot.menu.accel-path}accel-path. Type: @code{string}. Accessor: @anchor{fn.menu-accel-path}@code{menu-accel-path}.
+@item @anchor{slot.menu.active}active. Type: @code{integer}. Accessor: @anchor{fn.menu-active}@code{menu-active}.
 @item @anchor{slot.menu.attach-widget}attach-widget. Type: @ref{widget}. Accessor: @anchor{fn.menu-attach-widget}@code{menu-attach-widget}.
-@item @anchor{slot.menu.tearoff-state}tearoff-state. Type: @code{boolean}. Accessor: @anchor{fn.menu-tearoff-state}@code{menu-tearoff-state}.
-@item @anchor{slot.menu.tearoff-title}tearoff-title. Type: @code{string}. Accessor: @anchor{fn.menu-tearoff-title}@code{menu-tearoff-title}.
 @item @anchor{slot.menu.monitor}monitor. Type: @code{integer}. Accessor: @anchor{fn.menu-monitor}@code{menu-monitor}.
 @item @anchor{slot.menu.screen}screen. Type: @ref{g-object}. Accessor: @anchor{fn.menu-screen}@code{menu-screen}. Write-only.
+@item @anchor{slot.menu.tearoff-state}tearoff-state. Type: @code{boolean}. Accessor: @anchor{fn.menu-tearoff-state}@code{menu-tearoff-state}.
+@item @anchor{slot.menu.tearoff-title}tearoff-title. Type: @code{string}. Accessor: @anchor{fn.menu-tearoff-title}@code{menu-tearoff-title}.
 @end itemize
 
 
@@ -1417,12 +1425,12 @@ Signals:
 @node menu-bar
 @section menu-bar
 @Class menu-bar
-Superclass: @ref{menu-shell}
+Superclass: @ref{menu-shell} @ref{atk-implementor-iface} @ref{buildable}
 
 Slots:
 @itemize
-@item @anchor{slot.menu-bar.pack-direction}pack-direction. Type: @ref{pack-direction}. Accessor: @anchor{fn.menu-bar-pack-direction}@code{menu-bar-pack-direction}.
 @item @anchor{slot.menu-bar.child-pack-direction}child-pack-direction. Type: @ref{pack-direction}. Accessor: @anchor{fn.menu-bar-child-pack-direction}@code{menu-bar-child-pack-direction}.
+@item @anchor{slot.menu-bar.pack-direction}pack-direction. Type: @ref{pack-direction}. Accessor: @anchor{fn.menu-bar-pack-direction}@code{menu-bar-pack-direction}.
 @end itemize
 
 
@@ -1436,16 +1444,16 @@ Signals:
 @node menu-item
 @section menu-item
 @Class menu-item
-Superclass: @ref{item}
+Superclass: @ref{item} @ref{atk-implementor-iface} @ref{activatable} @ref{buildable}
 
 Subclasses: @ref{tearoff-menu-item} @ref{separator-menu-item} @ref{image-menu-item} @ref{check-menu-item}
 
 Slots:
 @itemize
-@item @anchor{slot.menu-item.right-justified}right-justified. Type: @code{boolean}. Accessor: @anchor{fn.menu-item-right-justified}@code{menu-item-right-justified}.
-@item @anchor{slot.menu-item.submenu}submenu. Type: @ref{menu}. Accessor: @anchor{fn.menu-item-submenu}@code{menu-item-submenu}.
 @item @anchor{slot.menu-item.accel-path}accel-path. Type: @code{string}. Accessor: @anchor{fn.menu-item-accel-path}@code{menu-item-accel-path}.
 @item @anchor{slot.menu-item.label}label. Type: @code{string}. Accessor: @anchor{fn.menu-item-label}@code{menu-item-label}.
+@item @anchor{slot.menu-item.right-justified}right-justified. Type: @code{boolean}. Accessor: @anchor{fn.menu-item-right-justified}@code{menu-item-right-justified}.
+@item @anchor{slot.menu-item.submenu}submenu. Type: @ref{menu}. Accessor: @anchor{fn.menu-item-submenu}@code{menu-item-submenu}.
 @item @anchor{slot.menu-item.use-underline}use-underline. Type: @code{boolean}. Accessor: @anchor{fn.menu-item-use-underline}@code{menu-item-use-underline}.
 @end itemize
 
@@ -1454,8 +1462,8 @@ Signals:
 @itemize
 @item @anchor{signal.menu-item.activate}"activate". Signature: (instance @ref{menu-item}) @result{} void. Options: run-first, action.
 @item @anchor{signal.menu-item.activate-item}"activate-item". Signature: (instance @ref{menu-item}) @result{} void. Options: run-first.
-@item @anchor{signal.menu-item.toggle-size-request}"toggle-size-request". Signature: (instance @ref{menu-item}), (arg-1 gpointer) @result{} void. Options: run-first.
 @item @anchor{signal.menu-item.toggle-size-allocate}"toggle-size-allocate". Signature: (instance @ref{menu-item}), (arg-1 @code{integer}) @result{} void. Options: run-first.
+@item @anchor{signal.menu-item.toggle-size-request}"toggle-size-request". Signature: (instance @ref{menu-item}), (arg-1 gpointer) @result{} void. Options: run-first.
 @end itemize
 
 
@@ -1464,7 +1472,7 @@ Signals:
 @node menu-shell
 @section menu-shell
 @Class menu-shell
-Superclass: @ref{container}
+Superclass: @ref{container} @ref{atk-implementor-iface} @ref{buildable}
 
 Subclasses: @ref{menu-bar} @ref{menu}
 
@@ -1476,13 +1484,13 @@ Slots:
 
 Signals:
 @itemize
-@item @anchor{signal.menu-shell.deactivate}"deactivate". Signature: (instance @ref{menu-shell}) @result{} void. Options: run-first.
-@item @anchor{signal.menu-shell.selection-done}"selection-done". Signature: (instance @ref{menu-shell}) @result{} void. Options: run-first.
-@item @anchor{signal.menu-shell.move-current}"move-current". Signature: (instance @ref{menu-shell}), (arg-1 @ref{menu-direction-type}) @result{} void. Options: run-last, action.
 @item @anchor{signal.menu-shell.activate-current}"activate-current". Signature: (instance @ref{menu-shell}), (arg-1 @code{boolean}) @result{} void. Options: run-last, action.
 @item @anchor{signal.menu-shell.cancel}"cancel". Signature: (instance @ref{menu-shell}) @result{} void. Options: run-last, action.
 @item @anchor{signal.menu-shell.cycle-focus}"cycle-focus". Signature: (instance @ref{menu-shell}), (arg-1 @ref{direction-type}) @result{} void. Options: run-last, action.
+@item @anchor{signal.menu-shell.deactivate}"deactivate". Signature: (instance @ref{menu-shell}) @result{} void. Options: run-first.
+@item @anchor{signal.menu-shell.move-current}"move-current". Signature: (instance @ref{menu-shell}), (arg-1 @ref{menu-direction-type}) @result{} void. Options: run-last, action.
 @item @anchor{signal.menu-shell.move-selected}"move-selected". Signature: (instance @ref{menu-shell}), (arg-1 @code{integer}) @result{} @code{boolean}. Options: run-last.
+@item @anchor{signal.menu-shell.selection-done}"selection-done". Signature: (instance @ref{menu-shell}) @result{} void. Options: run-first.
 @end itemize
 
 
@@ -1491,13 +1499,13 @@ Signals:
 @node menu-tool-button
 @section menu-tool-button
 @Class menu-tool-button
-Superclass: @ref{tool-button}
+Superclass: @ref{tool-button} @ref{atk-implementor-iface} @ref{activatable} @ref{buildable}
 
 Slots:
 @itemize
-@item @anchor{slot.menu-tool-button.menu}menu. Type: @ref{menu}. Accessor: @anchor{fn.menu-tool-button-menu}@code{menu-tool-button-menu}.
-@item @anchor{slot.menu-tool-button.arrow-tooltip-text}arrow-tooltip-text. Type: @code{string}. Accessor: @anchor{fn.menu-tool-button-arrow-tooltip-text}@code{menu-tool-button-arrow-tooltip-text}. Write-only.
 @item @anchor{slot.menu-tool-button.arrow-tooltip-markup}arrow-tooltip-markup. Type: @code{string}. Accessor: @anchor{fn.menu-tool-button-arrow-tooltip-markup}@code{menu-tool-button-arrow-tooltip-markup}. Write-only.
+@item @anchor{slot.menu-tool-button.arrow-tooltip-text}arrow-tooltip-text. Type: @code{string}. Accessor: @anchor{fn.menu-tool-button-arrow-tooltip-text}@code{menu-tool-button-arrow-tooltip-text}. Write-only.
+@item @anchor{slot.menu-tool-button.menu}menu. Type: @ref{menu}. Accessor: @anchor{fn.menu-tool-button-menu}@code{menu-tool-button-menu}.
 @end itemize
 
 
@@ -1512,17 +1520,17 @@ Signals:
 @node message-dialog
 @section message-dialog
 @Class message-dialog
-Superclass: @ref{dialog}
+Superclass: @ref{dialog} @ref{atk-implementor-iface} @ref{buildable}
 
 Slots:
 @itemize
-@item @anchor{slot.message-dialog.message-type}message-type. Type: @ref{message-type}. Accessor: @anchor{fn.message-dialog-message-type}@code{message-dialog-message-type}.
 @item @anchor{slot.message-dialog.buttons}buttons. Type: @ref{buttons-type}. Accessor: @anchor{fn.message-dialog-buttons}@code{message-dialog-buttons}. Write-only.
-@item @anchor{slot.message-dialog.text}text. Type: @code{string}. Accessor: @anchor{fn.message-dialog-text}@code{message-dialog-text}.
-@item @anchor{slot.message-dialog.use-markup}use-markup. Type: @code{boolean}. Accessor: @anchor{fn.message-dialog-use-markup}@code{message-dialog-use-markup}.
+@item @anchor{slot.message-dialog.image}image. Type: @ref{widget}. Accessor: @anchor{fn.message-dialog-image}@code{message-dialog-image}.
+@item @anchor{slot.message-dialog.message-type}message-type. Type: @ref{message-type}. Accessor: @anchor{fn.message-dialog-message-type}@code{message-dialog-message-type}.
 @item @anchor{slot.message-dialog.secondary-text}secondary-text. Type: @code{string}. Accessor: @anchor{fn.message-dialog-secondary-text}@code{message-dialog-secondary-text}.
 @item @anchor{slot.message-dialog.secondary-use-markup}secondary-use-markup. Type: @code{boolean}. Accessor: @anchor{fn.message-dialog-secondary-use-markup}@code{message-dialog-secondary-use-markup}.
-@item @anchor{slot.message-dialog.image}image. Type: @ref{widget}. Accessor: @anchor{fn.message-dialog-image}@code{message-dialog-image}.
+@item @anchor{slot.message-dialog.text}text. Type: @code{string}. Accessor: @anchor{fn.message-dialog-text}@code{message-dialog-text}.
+@item @anchor{slot.message-dialog.use-markup}use-markup. Type: @code{boolean}. Accessor: @anchor{fn.message-dialog-use-markup}@code{message-dialog-use-markup}.
 @end itemize
 
 
@@ -1536,15 +1544,15 @@ Signals:
 @node misc
 @section misc
 @Class misc
-Superclass: @ref{widget}
+Superclass: @ref{widget} @ref{atk-implementor-iface} @ref{buildable}
 
 Subclasses: @ref{image} @ref{arrow} @ref{label}
 
 Slots:
 @itemize
 @item @anchor{slot.misc.xalign}xalign. Type: @code{single-float}. Accessor: @anchor{fn.misc-xalign}@code{misc-xalign}.
-@item @anchor{slot.misc.yalign}yalign. Type: @code{single-float}. Accessor: @anchor{fn.misc-yalign}@code{misc-yalign}.
 @item @anchor{slot.misc.xpad}xpad. Type: @code{integer}. Accessor: @anchor{fn.misc-xpad}@code{misc-xpad}.
+@item @anchor{slot.misc.yalign}yalign. Type: @code{single-float}. Accessor: @anchor{fn.misc-yalign}@code{misc-yalign}.
 @item @anchor{slot.misc.ypad}ypad. Type: @code{integer}. Accessor: @anchor{fn.misc-ypad}@code{misc-ypad}.
 @end itemize
 
@@ -1559,37 +1567,37 @@ Signals:
 @node notebook
 @section notebook
 @Class notebook
-Superclass: @ref{container}
+Superclass: @ref{container} @ref{atk-implementor-iface} @ref{buildable}
 
 Slots:
 @itemize
-@item @anchor{slot.notebook.tab-pos}tab-pos. Type: @ref{position-type}. Accessor: @anchor{fn.notebook-tab-pos}@code{notebook-tab-pos}.
-@item @anchor{slot.notebook.show-tabs}show-tabs. Type: @code{boolean}. Accessor: @anchor{fn.notebook-show-tabs}@code{notebook-show-tabs}.
-@item @anchor{slot.notebook.show-border}show-border. Type: @code{boolean}. Accessor: @anchor{fn.notebook-show-border}@code{notebook-show-border}.
+@item @anchor{slot.notebook.enable-popup}enable-popup. Type: @code{boolean}. Accessor: @anchor{fn.notebook-enable-popup}@code{notebook-enable-popup}.
+@item @anchor{slot.notebook.group}group. Type: gpointer. Accessor: @anchor{fn.notebook-group}@code{notebook-group}.
+@item @anchor{slot.notebook.group-id}group-id. Type: @code{integer}. Accessor: @anchor{fn.notebook-group-id}@code{notebook-group-id}.
+@item @anchor{slot.notebook.homogeneous}homogeneous. Type: @code{boolean}. Accessor: @anchor{fn.notebook-homogeneous}@code{notebook-homogeneous}.
+@item @anchor{slot.notebook.page}page. Type: @code{integer}. Accessor: @anchor{fn.notebook-page}@code{notebook-page}.
 @item @anchor{slot.notebook.scrollable}scrollable. Type: @code{boolean}. Accessor: @anchor{fn.notebook-scrollable}@code{notebook-scrollable}.
+@item @anchor{slot.notebook.show-border}show-border. Type: @code{boolean}. Accessor: @anchor{fn.notebook-show-border}@code{notebook-show-border}.
+@item @anchor{slot.notebook.show-tabs}show-tabs. Type: @code{boolean}. Accessor: @anchor{fn.notebook-show-tabs}@code{notebook-show-tabs}.
 @item @anchor{slot.notebook.tab-border}tab-border. Type: @code{integer}. Accessor: @anchor{fn.notebook-tab-border}@code{notebook-tab-border}. Write-only.
 @item @anchor{slot.notebook.tab-hborder}tab-hborder. Type: @code{integer}. Accessor: @anchor{fn.notebook-tab-hborder}@code{notebook-tab-hborder}.
+@item @anchor{slot.notebook.tab-pos}tab-pos. Type: @ref{position-type}. Accessor: @anchor{fn.notebook-tab-pos}@code{notebook-tab-pos}.
 @item @anchor{slot.notebook.tab-vborder}tab-vborder. Type: @code{integer}. Accessor: @anchor{fn.notebook-tab-vborder}@code{notebook-tab-vborder}.
-@item @anchor{slot.notebook.page}page. Type: @code{integer}. Accessor: @anchor{fn.notebook-page}@code{notebook-page}.
-@item @anchor{slot.notebook.enable-popup}enable-popup. Type: @code{boolean}. Accessor: @anchor{fn.notebook-enable-popup}@code{notebook-enable-popup}.
-@item @anchor{slot.notebook.group-id}group-id. Type: @code{integer}. Accessor: @anchor{fn.notebook-group-id}@code{notebook-group-id}.
-@item @anchor{slot.notebook.group}group. Type: gpointer. Accessor: @anchor{fn.notebook-group}@code{notebook-group}.
-@item @anchor{slot.notebook.homogeneous}homogeneous. Type: @code{boolean}. Accessor: @anchor{fn.notebook-homogeneous}@code{notebook-homogeneous}.
 @end itemize
 
 
 Signals:
 @itemize
-@item @anchor{signal.notebook.switch-page}"switch-page". Signature: (instance @ref{notebook}), (arg-1 gpointer), (arg-2 @code{integer}) @result{} void. Options: run-last.
-@item @anchor{signal.notebook.focus-tab}"focus-tab". Signature: (instance @ref{notebook}), (arg-1 @ref{notebook-tab}) @result{} @code{boolean}. Options: run-last, action.
-@item @anchor{signal.notebook.select-page}"select-page". Signature: (instance @ref{notebook}), (arg-1 @code{boolean}) @result{} @code{boolean}. Options: run-last, action.
 @item @anchor{signal.notebook.change-current-page}"change-current-page". Signature: (instance @ref{notebook}), (arg-1 @code{integer}) @result{} @code{boolean}. Options: run-last, action.
-@item @anchor{signal.notebook.move-focus-out}"move-focus-out". Signature: (instance @ref{notebook}), (arg-1 @ref{direction-type}) @result{} void. Options: run-last, action.
-@item @anchor{signal.notebook.reorder-tab}"reorder-tab". Signature: (instance @ref{notebook}), (arg-1 @ref{direction-type}), (arg-2 @code{boolean}) @result{} @code{boolean}. Options: run-last, action.
-@item @anchor{signal.notebook.page-reordered}"page-reordered". Signature: (instance @ref{notebook}), (arg-1 @ref{widget}), (arg-2 @code{integer}) @result{} void. Options: run-last.
-@item @anchor{signal.notebook.page-removed}"page-removed". Signature: (instance @ref{notebook}), (arg-1 @ref{widget}), (arg-2 @code{integer}) @result{} void. Options: run-last.
-@item @anchor{signal.notebook.page-added}"page-added". Signature: (instance @ref{notebook}), (arg-1 @ref{widget}), (arg-2 @code{integer}) @result{} void. Options: run-last.
 @item @anchor{signal.notebook.create-window}"create-window". Signature: (instance @ref{notebook}), (arg-1 @ref{widget}), (arg-2 @code{integer}), (arg-3 @code{integer}) @result{} @ref{notebook}. Options: run-last.
+@item @anchor{signal.notebook.focus-tab}"focus-tab". Signature: (instance @ref{notebook}), (arg-1 @ref{notebook-tab}) @result{} @code{boolean}. Options: run-last, action.
+@item @anchor{signal.notebook.move-focus-out}"move-focus-out". Signature: (instance @ref{notebook}), (arg-1 @ref{direction-type}) @result{} void. Options: run-last, action.
+@item @anchor{signal.notebook.page-added}"page-added". Signature: (instance @ref{notebook}), (arg-1 @ref{widget}), (arg-2 @code{integer}) @result{} void. Options: run-last.
+@item @anchor{signal.notebook.page-removed}"page-removed". Signature: (instance @ref{notebook}), (arg-1 @ref{widget}), (arg-2 @code{integer}) @result{} void. Options: run-last.
+@item @anchor{signal.notebook.page-reordered}"page-reordered". Signature: (instance @ref{notebook}), (arg-1 @ref{widget}), (arg-2 @code{integer}) @result{} void. Options: run-last.
+@item @anchor{signal.notebook.reorder-tab}"reorder-tab". Signature: (instance @ref{notebook}), (arg-1 @ref{direction-type}), (arg-2 @code{boolean}) @result{} @code{boolean}. Options: run-last, action.
+@item @anchor{signal.notebook.select-page}"select-page". Signature: (instance @ref{notebook}), (arg-1 @code{boolean}) @result{} @code{boolean}. Options: run-last, action.
+@item @anchor{signal.notebook.switch-page}"switch-page". Signature: (instance @ref{notebook}), (arg-1 gpointer), (arg-2 @code{integer}) @result{} void. Options: run-last.
 @end itemize
 
 
@@ -1598,32 +1606,32 @@ Signals:
 @node old-editable
 @section old-editable
 @Class old-editable
-Superclass: @ref{widget}
+Superclass: @ref{widget} @ref{atk-implementor-iface} @ref{buildable} @ref{editable}
 
 Subclasses: @ref{text}
 
 Slots:
 @itemize
-@item @anchor{slot.old-editable.text-position}text-position. Type: @code{integer}. Accessor: @anchor{fn.old-editable-text-position}@code{old-editable-text-position}.
 @item @anchor{slot.old-editable.editable}editable. Type: @code{boolean}. Accessor: @anchor{fn.old-editable-editable}@code{old-editable-editable}.
+@item @anchor{slot.old-editable.text-position}text-position. Type: @code{integer}. Accessor: @anchor{fn.old-editable-text-position}@code{old-editable-text-position}.
 @end itemize
 
 
 Signals:
 @itemize
 @item @anchor{signal.old-editable.activate}"activate". Signature: (instance @ref{old-editable}) @result{} void. Options: run-last, action.
-@item @anchor{signal.old-editable.move-cursor}"move-cursor". Signature: (instance @ref{old-editable}), (arg-1 @code{integer}), (arg-2 @code{integer}) @result{} void. Options: run-last, action.
 @item @anchor{signal.old-editable.copy-clipboard}"copy-clipboard". Signature: (instance @ref{old-editable}) @result{} void. Options: run-last, action.
 @item @anchor{signal.old-editable.cut-clipboard}"cut-clipboard". Signature: (instance @ref{old-editable}) @result{} void. Options: run-last, action.
+@item @anchor{signal.old-editable.kill-char}"kill-char". Signature: (instance @ref{old-editable}), (arg-1 @code{integer}) @result{} void. Options: run-last, action.
+@item @anchor{signal.old-editable.kill-line}"kill-line". Signature: (instance @ref{old-editable}), (arg-1 @code{integer}) @result{} void. Options: run-last, action.
+@item @anchor{signal.old-editable.kill-word}"kill-word". Signature: (instance @ref{old-editable}), (arg-1 @code{integer}) @result{} void. Options: run-last, action.
+@item @anchor{signal.old-editable.move-cursor}"move-cursor". Signature: (instance @ref{old-editable}), (arg-1 @code{integer}), (arg-2 @code{integer}) @result{} void. Options: run-last, action.
+@item @anchor{signal.old-editable.move-page}"move-page". Signature: (instance @ref{old-editable}), (arg-1 @code{integer}), (arg-2 @code{integer}) @result{} void. Options: run-last, action.
+@item @anchor{signal.old-editable.move-to-column}"move-to-column". Signature: (instance @ref{old-editable}), (arg-1 @code{integer}) @result{} void. Options: run-last, action.
+@item @anchor{signal.old-editable.move-to-row}"move-to-row". Signature: (instance @ref{old-editable}), (arg-1 @code{integer}) @result{} void. Options: run-last, action.
+@item @anchor{signal.old-editable.move-word}"move-word". Signature: (instance @ref{old-editable}), (arg-1 @code{integer}) @result{} void. Options: run-last, action.
 @item @anchor{signal.old-editable.paste-clipboard}"paste-clipboard". Signature: (instance @ref{old-editable}) @result{} void. Options: run-last, action.
 @item @anchor{signal.old-editable.set-editable}"set-editable". Signature: (instance @ref{old-editable}), (arg-1 @code{boolean}) @result{} void. Options: run-last, action.
-@item @anchor{signal.old-editable.move-word}"move-word". Signature: (instance @ref{old-editable}), (arg-1 @code{integer}) @result{} void. Options: run-last, action.
-@item @anchor{signal.old-editable.move-page}"move-page". Signature: (instance @ref{old-editable}), (arg-1 @code{integer}), (arg-2 @code{integer}) @result{} void. Options: run-last, action.
-@item @anchor{signal.old-editable.move-to-row}"move-to-row". Signature: (instance @ref{old-editable}), (arg-1 @code{integer}) @result{} void. Options: run-last, action.
-@item @anchor{signal.old-editable.move-to-column}"move-to-column". Signature: (instance @ref{old-editable}), (arg-1 @code{integer}) @result{} void. Options: run-last, action.
-@item @anchor{signal.old-editable.kill-char}"kill-char". Signature: (instance @ref{old-editable}), (arg-1 @code{integer}) @result{} void. Options: run-last, action.
-@item @anchor{signal.old-editable.kill-word}"kill-word". Signature: (instance @ref{old-editable}), (arg-1 @code{integer}) @result{} void. Options: run-last, action.
-@item @anchor{signal.old-editable.kill-line}"kill-line". Signature: (instance @ref{old-editable}), (arg-1 @code{integer}) @result{} void. Options: run-last, action.
 @end itemize
 
 
@@ -1632,27 +1640,27 @@ Signals:
 @node paned
 @section paned
 @Class paned
-Superclass: @ref{container}
+Superclass: @ref{container} @ref{atk-implementor-iface} @ref{buildable} @ref{orientable}
 
 Subclasses: @ref{v-paned} @ref{h-paned}
 
 Slots:
 @itemize
+@item @anchor{slot.paned.max-position}max-position. Type: @code{integer}. Accessor: @anchor{fn.paned-max-position}@code{paned-max-position}. Read-only.
+@item @anchor{slot.paned.min-position}min-position. Type: @code{integer}. Accessor: @anchor{fn.paned-min-position}@code{paned-min-position}. Read-only.
 @item @anchor{slot.paned.position}position. Type: @code{integer}. Accessor: @anchor{fn.paned-position}@code{paned-position}.
 @item @anchor{slot.paned.position-set}position-set. Type: @code{boolean}. Accessor: @anchor{fn.paned-position-set}@code{paned-position-set}.
-@item @anchor{slot.paned.min-position}min-position. Type: @code{integer}. Accessor: @anchor{fn.paned-min-position}@code{paned-min-position}. Read-only.
-@item @anchor{slot.paned.max-position}max-position. Type: @code{integer}. Accessor: @anchor{fn.paned-max-position}@code{paned-max-position}. Read-only.
 @end itemize
 
 
 Signals:
 @itemize
-@item @anchor{signal.paned.cycle-child-focus}"cycle-child-focus". Signature: (instance @ref{paned}), (arg-1 @code{boolean}) @result{} @code{boolean}. Options: run-last, action.
-@item @anchor{signal.paned.toggle-handle-focus}"toggle-handle-focus". Signature: (instance @ref{paned}) @result{} @code{boolean}. Options: run-last, action.
-@item @anchor{signal.paned.move-handle}"move-handle". Signature: (instance @ref{paned}), (arg-1 @ref{scroll-type}) @result{} @code{boolean}. Options: run-last, action.
-@item @anchor{signal.paned.cycle-handle-focus}"cycle-handle-focus". Signature: (instance @ref{paned}), (arg-1 @code{boolean}) @result{} @code{boolean}. Options: run-last, action.
 @item @anchor{signal.paned.accept-position}"accept-position". Signature: (instance @ref{paned}) @result{} @code{boolean}. Options: run-last, action.
 @item @anchor{signal.paned.cancel-position}"cancel-position". Signature: (instance @ref{paned}) @result{} @code{boolean}. Options: run-last, action.
+@item @anchor{signal.paned.cycle-child-focus}"cycle-child-focus". Signature: (instance @ref{paned}), (arg-1 @code{boolean}) @result{} @code{boolean}. Options: run-last, action.
+@item @anchor{signal.paned.cycle-handle-focus}"cycle-handle-focus". Signature: (instance @ref{paned}), (arg-1 @code{boolean}) @result{} @code{boolean}. Options: run-last, action.
+@item @anchor{signal.paned.move-handle}"move-handle". Signature: (instance @ref{paned}), (arg-1 @ref{scroll-type}) @result{} @code{boolean}. Options: run-last, action.
+@item @anchor{signal.paned.toggle-handle-focus}"toggle-handle-focus". Signature: (instance @ref{paned}) @result{} @code{boolean}. Options: run-last, action.
 @end itemize
 
 
@@ -1661,7 +1669,7 @@ Signals:
 @node plug
 @section plug
 @Class plug
-Superclass: @ref{gtk-window}
+Superclass: @ref{gtk-window} @ref{atk-implementor-iface} @ref{buildable}
 
 Slots:
 @itemize
@@ -1681,7 +1689,7 @@ Signals:
 @node progress
 @section progress
 @Class progress
-Superclass: @ref{widget}
+Superclass: @ref{widget} @ref{atk-implementor-iface} @ref{buildable}
 
 Subclasses: @ref{progress-bar}
 
@@ -1704,20 +1712,20 @@ Signals:
 @node progress-bar
 @section progress-bar
 @Class progress-bar
-Superclass: @ref{progress}
+Superclass: @ref{progress} @ref{atk-implementor-iface} @ref{buildable}
 
 Slots:
 @itemize
-@item @anchor{slot.progress-bar.fraction}fraction. Type: @code{double-float}. Accessor: @anchor{fn.progress-bar-fraction}@code{progress-bar-fraction}.
-@item @anchor{slot.progress-bar.pulse-step}pulse-step. Type: @code{double-float}. Accessor: @anchor{fn.progress-bar-pulse-step}@code{progress-bar-pulse-step}.
-@item @anchor{slot.progress-bar.orientation}orientation. Type: @ref{progress-bar-orientation}. Accessor: @anchor{fn.progress-bar-orientation}@code{progress-bar-orientation}.
-@item @anchor{slot.progress-bar.text}text. Type: @code{string}. Accessor: @anchor{fn.progress-bar-text}@code{progress-bar-text}.
-@item @anchor{slot.progress-bar.ellipsize}ellipsize. Type: @code{PangoEllipsizeMode}. Accessor: @anchor{fn.progress-bar-ellipsize}@code{progress-bar-ellipsize}.
+@item @anchor{slot.progress-bar.activity-blocks}activity-blocks. Type: @code{integer}. Accessor: @anchor{fn.progress-bar-activity-blocks}@code{progress-bar-activity-blocks}.
+@item @anchor{slot.progress-bar.activity-step}activity-step. Type: @code{integer}. Accessor: @anchor{fn.progress-bar-activity-step}@code{progress-bar-activity-step}.
 @item @anchor{slot.progress-bar.adjustment}adjustment. Type: @ref{adjustment}. Accessor: @anchor{fn.progress-bar-adjustment}@code{progress-bar-adjustment}.
 @item @anchor{slot.progress-bar.bar-style}bar-style. Type: @ref{progress-bar-style}. Accessor: @anchor{fn.progress-bar-bar-style}@code{progress-bar-bar-style}.
-@item @anchor{slot.progress-bar.activity-step}activity-step. Type: @code{integer}. Accessor: @anchor{fn.progress-bar-activity-step}@code{progress-bar-activity-step}.
-@item @anchor{slot.progress-bar.activity-blocks}activity-blocks. Type: @code{integer}. Accessor: @anchor{fn.progress-bar-activity-blocks}@code{progress-bar-activity-blocks}.
 @item @anchor{slot.progress-bar.discrete-blocks}discrete-blocks. Type: @code{integer}. Accessor: @anchor{fn.progress-bar-discrete-blocks}@code{progress-bar-discrete-blocks}.
+@item @anchor{slot.progress-bar.ellipsize}ellipsize. Type: @code{PangoEllipsizeMode}. Accessor: @anchor{fn.progress-bar-ellipsize}@code{progress-bar-ellipsize}.
+@item @anchor{slot.progress-bar.fraction}fraction. Type: @code{double-float}. Accessor: @anchor{fn.progress-bar-fraction}@code{progress-bar-fraction}.
+@item @anchor{slot.progress-bar.orientation}orientation. Type: @ref{progress-bar-orientation}. Accessor: @anchor{fn.progress-bar-orientation}@code{progress-bar-orientation}.
+@item @anchor{slot.progress-bar.pulse-step}pulse-step. Type: @code{double-float}. Accessor: @anchor{fn.progress-bar-pulse-step}@code{progress-bar-pulse-step}.
+@item @anchor{slot.progress-bar.text}text. Type: @code{string}. Accessor: @anchor{fn.progress-bar-text}@code{progress-bar-text}.
 @end itemize
 
 
@@ -1731,7 +1739,7 @@ Signals:
 @node radio-button
 @section radio-button
 @Class radio-button
-Superclass: @ref{check-button}
+Superclass: @ref{check-button} @ref{atk-implementor-iface} @ref{activatable} @ref{buildable}
 
 Slots:
 @itemize
@@ -1750,7 +1758,7 @@ Signals:
 @node radio-menu-item
 @section radio-menu-item
 @Class radio-menu-item
-Superclass: @ref{check-menu-item}
+Superclass: @ref{check-menu-item} @ref{atk-implementor-iface} @ref{activatable} @ref{buildable}
 
 Slots:
 @itemize
@@ -1769,7 +1777,7 @@ Signals:
 @node radio-tool-button
 @section radio-tool-button
 @Class radio-tool-button
-Superclass: @ref{toggle-tool-button}
+Superclass: @ref{toggle-tool-button} @ref{atk-implementor-iface} @ref{activatable} @ref{buildable}
 
 Slots:
 @itemize
@@ -1787,29 +1795,29 @@ Signals:
 @node range
 @section range
 @Class range
-Superclass: @ref{widget}
+Superclass: @ref{widget} @ref{atk-implementor-iface} @ref{buildable} @ref{orientable}
 
 Subclasses: @ref{scrollbar} @ref{scale}
 
 Slots:
 @itemize
-@item @anchor{slot.range.update-policy}update-policy. Type: @ref{update-type}. Accessor: @anchor{fn.range-update-policy}@code{range-update-policy}.
 @item @anchor{slot.range.adjustment}adjustment. Type: @ref{adjustment}. Accessor: @anchor{fn.range-adjustment}@code{range-adjustment}.
+@item @anchor{slot.range.fill-level}fill-level. Type: @code{double-float}. Accessor: @anchor{fn.range-fill-level}@code{range-fill-level}.
 @item @anchor{slot.range.inverted}inverted. Type: @code{boolean}. Accessor: @anchor{fn.range-inverted}@code{range-inverted}.
 @item @anchor{slot.range.lower-stepper-sensitivity}lower-stepper-sensitivity. Type: @ref{sensitivity-type}. Accessor: @anchor{fn.range-lower-stepper-sensitivity}@code{range-lower-stepper-sensitivity}.
-@item @anchor{slot.range.upper-stepper-sensitivity}upper-stepper-sensitivity. Type: @ref{sensitivity-type}. Accessor: @anchor{fn.range-upper-stepper-sensitivity}@code{range-upper-stepper-sensitivity}.
-@item @anchor{slot.range.show-fill-level}show-fill-level. Type: @code{boolean}. Accessor: @anchor{fn.range-show-fill-level}@code{range-show-fill-level}.
 @item @anchor{slot.range.restrict-to-fill-level}restrict-to-fill-level. Type: @code{boolean}. Accessor: @anchor{fn.range-restrict-to-fill-level}@code{range-restrict-to-fill-level}.
-@item @anchor{slot.range.fill-level}fill-level. Type: @code{double-float}. Accessor: @anchor{fn.range-fill-level}@code{range-fill-level}.
+@item @anchor{slot.range.show-fill-level}show-fill-level. Type: @code{boolean}. Accessor: @anchor{fn.range-show-fill-level}@code{range-show-fill-level}.
+@item @anchor{slot.range.update-policy}update-policy. Type: @ref{update-type}. Accessor: @anchor{fn.range-update-policy}@code{range-update-policy}.
+@item @anchor{slot.range.upper-stepper-sensitivity}upper-stepper-sensitivity. Type: @ref{sensitivity-type}. Accessor: @anchor{fn.range-upper-stepper-sensitivity}@code{range-upper-stepper-sensitivity}.
 @end itemize
 
 
 Signals:
 @itemize
-@item @anchor{signal.range.value-changed}"value-changed". Signature: (instance @ref{range}) @result{} void. Options: run-last.
 @item @anchor{signal.range.adjust-bounds}"adjust-bounds". Signature: (instance @ref{range}), (arg-1 @code{double-float}) @result{} void. Options: run-last.
-@item @anchor{signal.range.move-slider}"move-slider". Signature: (instance @ref{range}), (arg-1 @ref{scroll-type}) @result{} void. Options: run-last, action.
 @item @anchor{signal.range.change-value}"change-value". Signature: (instance @ref{range}), (arg-1 @ref{scroll-type}), (arg-2 @code{double-float}) @result{} @code{boolean}. Options: run-last.
+@item @anchor{signal.range.move-slider}"move-slider". Signature: (instance @ref{range}), (arg-1 @ref{scroll-type}) @result{} void. Options: run-last, action.
+@item @anchor{signal.range.value-changed}"value-changed". Signature: (instance @ref{range}) @result{} void. Options: run-last.
 @end itemize
 
 
@@ -1818,7 +1826,7 @@ Signals:
 @node recent-chooser-dialog
 @section recent-chooser-dialog
 @Class recent-chooser-dialog
-Superclass: @ref{dialog}
+Superclass: @ref{dialog} @ref{atk-implementor-iface} @ref{buildable} @ref{recent-chooser}
 
 Slots:
 @itemize
@@ -1835,7 +1843,7 @@ Signals:
 @node recent-chooser-menu
 @section recent-chooser-menu
 @Class recent-chooser-menu
-Superclass: @ref{menu}
+Superclass: @ref{menu} @ref{atk-implementor-iface} @ref{activatable} @ref{buildable} @ref{recent-chooser}
 
 Slots:
 @itemize
@@ -1853,7 +1861,7 @@ Signals:
 @node recent-chooser-widget
 @section recent-chooser-widget
 @Class recent-chooser-widget
-Superclass: @ref{v-box}
+Superclass: @ref{v-box} @ref{atk-implementor-iface} @ref{buildable} @ref{orientable} @ref{recent-chooser}
 
 Slots:
 @itemize
@@ -1870,17 +1878,17 @@ Signals:
 @node ruler
 @section ruler
 @Class ruler
-Superclass: @ref{widget}
+Superclass: @ref{widget} @ref{atk-implementor-iface} @ref{buildable} @ref{orientable}
 
 Subclasses: @ref{v-ruler} @ref{h-ruler}
 
 Slots:
 @itemize
 @item @anchor{slot.ruler.lower}lower. Type: @code{double-float}. Accessor: @anchor{fn.ruler-lower}@code{ruler-lower}.
-@item @anchor{slot.ruler.upper}upper. Type: @code{double-float}. Accessor: @anchor{fn.ruler-upper}@code{ruler-upper}.
-@item @anchor{slot.ruler.position}position. Type: @code{double-float}. Accessor: @anchor{fn.ruler-position}@code{ruler-position}.
 @item @anchor{slot.ruler.max-size}max-size. Type: @code{double-float}. Accessor: @anchor{fn.ruler-max-size}@code{ruler-max-size}.
 @item @anchor{slot.ruler.metric}metric. Type: @ref{metric-type}. Accessor: @anchor{fn.ruler-metric}@code{ruler-metric}.
+@item @anchor{slot.ruler.position}position. Type: @code{double-float}. Accessor: @anchor{fn.ruler-position}@code{ruler-position}.
+@item @anchor{slot.ruler.upper}upper. Type: @code{double-float}. Accessor: @anchor{fn.ruler-upper}@code{ruler-upper}.
 @end itemize
 
 
@@ -1894,7 +1902,7 @@ Signals:
 @node scale
 @section scale
 @Class scale
-Superclass: @ref{range}
+Superclass: @ref{range} @ref{atk-implementor-iface} @ref{buildable} @ref{orientable}
 
 Subclasses: @ref{v-scale} @ref{h-scale}
 
@@ -1917,24 +1925,24 @@ Signals:
 @node scale-button
 @section scale-button
 @Class scale-button
-Superclass: @ref{button}
+Superclass: @ref{button} @ref{atk-implementor-iface} @ref{activatable} @ref{buildable} @ref{orientable}
 
 Subclasses: @ref{volume-button}
 
 Slots:
 @itemize
-@item @anchor{slot.scale-button.value}value. Type: @code{double-float}. Accessor: @anchor{fn.scale-button-value}@code{scale-button-value}.
-@item @anchor{slot.scale-button.size}size. Type: @ref{icon-size}. Accessor: @anchor{fn.scale-button-size}@code{scale-button-size}.
 @item @anchor{slot.scale-button.adjustment}adjustment. Type: @ref{adjustment}. Accessor: @anchor{fn.scale-button-adjustment}@code{scale-button-adjustment}.
 @item @anchor{slot.scale-button.icons}icons. Type: @code{GStrv}. Accessor: @anchor{fn.scale-button-icons}@code{scale-button-icons}.
+@item @anchor{slot.scale-button.size}size. Type: @ref{icon-size}. Accessor: @anchor{fn.scale-button-size}@code{scale-button-size}.
+@item @anchor{slot.scale-button.value}value. Type: @code{double-float}. Accessor: @anchor{fn.scale-button-value}@code{scale-button-value}.
 @end itemize
 
 
 Signals:
 @itemize
-@item @anchor{signal.scale-button.value-changed}"value-changed". Signature: (instance @ref{scale-button}), (arg-1 @code{double-float}) @result{} void. Options: run-last.
-@item @anchor{signal.scale-button.popup}"popup". Signature: (instance @ref{scale-button}) @result{} void. Options: run-last, action.
 @item @anchor{signal.scale-button.popdown}"popdown". Signature: (instance @ref{scale-button}) @result{} void. Options: run-last, action.
+@item @anchor{signal.scale-button.popup}"popup". Signature: (instance @ref{scale-button}) @result{} void. Options: run-last, action.
+@item @anchor{signal.scale-button.value-changed}"value-changed". Signature: (instance @ref{scale-button}), (arg-1 @code{double-float}) @result{} void. Options: run-last.
 @end itemize
 
 
@@ -1943,7 +1951,7 @@ Signals:
 @node scrollbar
 @section scrollbar
 @Class scrollbar
-Superclass: @ref{range}
+Superclass: @ref{range} @ref{atk-implementor-iface} @ref{buildable} @ref{orientable}
 
 Subclasses: @ref{v-scrollbar} @ref{h-scrollbar}
 
@@ -1962,17 +1970,17 @@ Signals:
 @node scrolled-window
 @section scrolled-window
 @Class scrolled-window
-Superclass: @ref{bin}
+Superclass: @ref{bin} @ref{atk-implementor-iface} @ref{buildable}
 
 Slots:
 @itemize
 @item @anchor{slot.scrolled-window.hadjustment}hadjustment. Type: @ref{adjustment}. Accessor: @anchor{fn.scrolled-window-hadjustment}@code{scrolled-window-hadjustment}.
-@item @anchor{slot.scrolled-window.vadjustment}vadjustment. Type: @ref{adjustment}. Accessor: @anchor{fn.scrolled-window-vadjustment}@code{scrolled-window-vadjustment}.
 @item @anchor{slot.scrolled-window.hscrollbar-policy}hscrollbar-policy. Type: @ref{policy-type}. Accessor: @anchor{fn.scrolled-window-hscrollbar-policy}@code{scrolled-window-hscrollbar-policy}.
+@item @anchor{slot.scrolled-window.shadow-type}shadow-type. Type: @ref{shadow-type}. Accessor: @anchor{fn.scrolled-window-shadow-type}@code{scrolled-window-shadow-type}.
+@item @anchor{slot.scrolled-window.vadjustment}vadjustment. Type: @ref{adjustment}. Accessor: @anchor{fn.scrolled-window-vadjustment}@code{scrolled-window-vadjustment}.
 @item @anchor{slot.scrolled-window.vscrollbar-policy}vscrollbar-policy. Type: @ref{policy-type}. Accessor: @anchor{fn.scrolled-window-vscrollbar-policy}@code{scrolled-window-vscrollbar-policy}.
 @item @anchor{slot.scrolled-window.window-placement}window-placement. Type: @ref{corner-type}. Accessor: @anchor{fn.scrolled-window-window-placement}@code{scrolled-window-window-placement}.
 @item @anchor{slot.scrolled-window.window-placement-set}window-placement-set. Type: @code{boolean}. Accessor: @anchor{fn.scrolled-window-window-placement-set}@code{scrolled-window-window-placement-set}.
-@item @anchor{slot.scrolled-window.shadow-type}shadow-type. Type: @ref{shadow-type}. Accessor: @anchor{fn.scrolled-window-shadow-type}@code{scrolled-window-shadow-type}.
 @end itemize
 
 
@@ -1988,7 +1996,7 @@ Signals:
 @node separator
 @section separator
 @Class separator
-Superclass: @ref{widget}
+Superclass: @ref{widget} @ref{atk-implementor-iface} @ref{buildable} @ref{orientable}
 
 Subclasses: @ref{v-separator} @ref{h-separator}
 
@@ -2007,7 +2015,7 @@ Signals:
 @node separator-menu-item
 @section separator-menu-item
 @Class separator-menu-item
-Superclass: @ref{menu-item}
+Superclass: @ref{menu-item} @ref{atk-implementor-iface} @ref{activatable} @ref{buildable}
 
 Slots:
 @itemize
@@ -2024,7 +2032,7 @@ Signals:
 @node separator-tool-item
 @section separator-tool-item
 @Class separator-tool-item
-Superclass: @ref{tool-item}
+Superclass: @ref{tool-item} @ref{atk-implementor-iface} @ref{activatable} @ref{buildable}
 
 Slots:
 @itemize
@@ -2042,7 +2050,7 @@ Signals:
 @node socket
 @section socket
 @Class socket
-Superclass: @ref{container}
+Superclass: @ref{container} @ref{atk-implementor-iface} @ref{buildable}
 
 Slots:
 @itemize
@@ -2051,6 +2059,8 @@ Slots:
 
 Signals:
 @itemize
+@item @anchor{signal.socket.plug-added}"plug-added". Signature: (instance @ref{socket}) @result{} void. Options: run-last.
+@item @anchor{signal.socket.plug-removed}"plug-removed". Signature: (instance @ref{socket}) @result{} @code{boolean}. Options: run-last.
 @end itemize
 
 
@@ -2059,27 +2069,27 @@ Signals:
 @node spin-button
 @section spin-button
 @Class spin-button
-Superclass: @ref{entry}
+Superclass: @ref{entry} @ref{atk-implementor-iface} @ref{buildable} @ref{cell-editable} @ref{editable}
 
 Slots:
 @itemize
 @item @anchor{slot.spin-button.adjustment}adjustment. Type: @ref{adjustment}. Accessor: @anchor{fn.spin-button-adjustment}@code{spin-button-adjustment}.
 @item @anchor{slot.spin-button.climb-rate}climb-rate. Type: @code{double-float}. Accessor: @anchor{fn.spin-button-climb-rate}@code{spin-button-climb-rate}.
 @item @anchor{slot.spin-button.digits}digits. Type: @code{integer}. Accessor: @anchor{fn.spin-button-digits}@code{spin-button-digits}.
-@item @anchor{slot.spin-button.snap-to-ticks}snap-to-ticks. Type: @code{boolean}. Accessor: @anchor{fn.spin-button-snap-to-ticks}@code{spin-button-snap-to-ticks}.
 @item @anchor{slot.spin-button.numeric}numeric. Type: @code{boolean}. Accessor: @anchor{fn.spin-button-numeric}@code{spin-button-numeric}.
-@item @anchor{slot.spin-button.wrap}wrap. Type: @code{boolean}. Accessor: @anchor{fn.spin-button-wrap}@code{spin-button-wrap}.
+@item @anchor{slot.spin-button.snap-to-ticks}snap-to-ticks. Type: @code{boolean}. Accessor: @anchor{fn.spin-button-snap-to-ticks}@code{spin-button-snap-to-ticks}.
 @item @anchor{slot.spin-button.update-policy}update-policy. Type: @ref{spin-button-update-policy}. Accessor: @anchor{fn.spin-button-update-policy}@code{spin-button-update-policy}.
 @item @anchor{slot.spin-button.value}value. Type: @code{double-float}. Accessor: @anchor{fn.spin-button-value}@code{spin-button-value}.
+@item @anchor{slot.spin-button.wrap}wrap. Type: @code{boolean}. Accessor: @anchor{fn.spin-button-wrap}@code{spin-button-wrap}.
 @end itemize
 
 
 Signals:
 @itemize
-@item @anchor{signal.spin-button.value-changed}"value-changed". Signature: (instance @ref{spin-button}) @result{} void. Options: run-last.
 @item @anchor{signal.spin-button.change-value}"change-value". Signature: (instance @ref{spin-button}), (arg-1 @ref{scroll-type}) @result{} void. Options: run-last, action.
 @item @anchor{signal.spin-button.input}"input". Signature: (instance @ref{spin-button}), (arg-1 gpointer) @result{} @code{integer}. Options: run-last.
 @item @anchor{signal.spin-button.output}"output". Signature: (instance @ref{spin-button}) @result{} @code{boolean}. Options: run-last.
+@item @anchor{signal.spin-button.value-changed}"value-changed". Signature: (instance @ref{spin-button}) @result{} void. Options: run-last.
 @item @anchor{signal.spin-button.wrapped}"wrapped". Signature: (instance @ref{spin-button}) @result{} void. Options: run-last.
 @end itemize
 
@@ -2089,7 +2099,7 @@ Signals:
 @node statusbar
 @section statusbar
 @Class statusbar
-Superclass: @ref{h-box}
+Superclass: @ref{h-box} @ref{atk-implementor-iface} @ref{buildable} @ref{orientable}
 
 Slots:
 @itemize
@@ -2099,8 +2109,8 @@ Slots:
 
 Signals:
 @itemize
-@item @anchor{signal.statusbar.text-pushed}"text-pushed". Signature: (instance @ref{statusbar}), (arg-1 @code{integer}), (arg-2 @code{string}) @result{} void. Options: run-last.
 @item @anchor{signal.statusbar.text-popped}"text-popped". Signature: (instance @ref{statusbar}), (arg-1 @code{integer}), (arg-2 @code{string}) @result{} void. Options: run-last.
+@item @anchor{signal.statusbar.text-pushed}"text-pushed". Signature: (instance @ref{statusbar}), (arg-1 @code{integer}), (arg-2 @code{string}) @result{} void. Options: run-last.
 @end itemize
 
 
@@ -2109,15 +2119,15 @@ Signals:
 @node table
 @section table
 @Class table
-Superclass: @ref{container}
+Superclass: @ref{container} @ref{atk-implementor-iface} @ref{buildable}
 
 Slots:
 @itemize
-@item @anchor{slot.table.n-rows}n-rows. Type: @code{integer}. Accessor: @anchor{fn.table-n-rows}@code{table-n-rows}.
-@item @anchor{slot.table.n-columns}n-columns. Type: @code{integer}. Accessor: @anchor{fn.table-n-columns}@code{table-n-columns}.
 @item @anchor{slot.table.column-spacing}column-spacing. Type: @code{integer}. Accessor: @anchor{fn.table-column-spacing}@code{table-column-spacing}.
-@item @anchor{slot.table.row-spacing}row-spacing. Type: @code{integer}. Accessor: @anchor{fn.table-row-spacing}@code{table-row-spacing}.
 @item @anchor{slot.table.homogeneous}homogeneous. Type: @code{boolean}. Accessor: @anchor{fn.table-homogeneous}@code{table-homogeneous}.
+@item @anchor{slot.table.n-columns}n-columns. Type: @code{integer}. Accessor: @anchor{fn.table-n-columns}@code{table-n-columns}.
+@item @anchor{slot.table.n-rows}n-rows. Type: @code{integer}. Accessor: @anchor{fn.table-n-rows}@code{table-n-rows}.
+@item @anchor{slot.table.row-spacing}row-spacing. Type: @code{integer}. Accessor: @anchor{fn.table-row-spacing}@code{table-row-spacing}.
 @end itemize
 
 
@@ -2131,7 +2141,7 @@ Signals:
 @node tearoff-menu-item
 @section tearoff-menu-item
 @Class tearoff-menu-item
-Superclass: @ref{menu-item}
+Superclass: @ref{menu-item} @ref{atk-implementor-iface} @ref{activatable} @ref{buildable}
 
 Slots:
 @itemize
@@ -2148,13 +2158,13 @@ Signals:
 @node text
 @section text
 @Class text
-Superclass: @ref{old-editable}
+Superclass: @ref{old-editable} @ref{atk-implementor-iface} @ref{buildable} @ref{editable}
 
 Slots:
 @itemize
 @item @anchor{slot.text.hadjustment}hadjustment. Type: @ref{adjustment}. Accessor: @anchor{fn.text-hadjustment}@code{text-hadjustment}.
-@item @anchor{slot.text.vadjustment}vadjustment. Type: @ref{adjustment}. Accessor: @anchor{fn.text-vadjustment}@code{text-vadjustment}.
 @item @anchor{slot.text.line-wrap}line-wrap. Type: @code{boolean}. Accessor: @anchor{fn.text-line-wrap}@code{text-line-wrap}.
+@item @anchor{slot.text.vadjustment}vadjustment. Type: @ref{adjustment}. Accessor: @anchor{fn.text-vadjustment}@code{text-vadjustment}.
 @item @anchor{slot.text.word-wrap}word-wrap. Type: @code{boolean}. Accessor: @anchor{fn.text-word-wrap}@code{text-word-wrap}.
 @end itemize
 
@@ -2170,45 +2180,45 @@ Signals:
 @node text-view
 @section text-view
 @Class text-view
-Superclass: @ref{container}
+Superclass: @ref{container} @ref{atk-implementor-iface} @ref{buildable}
 
 Slots:
 @itemize
+@item @anchor{slot.text-view.accepts-tab}accepts-tab. Type: @code{boolean}. Accessor: @anchor{fn.text-view-accepts-tab}@code{text-view-accepts-tab}.
+@item @anchor{slot.text-view.buffer}buffer. Type: @ref{text-buffer}. Accessor: @anchor{fn.text-view-buffer}@code{text-view-buffer}.
+@item @anchor{slot.text-view.cursor-visible}cursor-visible. Type: @code{boolean}. Accessor: @anchor{fn.text-view-cursor-visible}@code{text-view-cursor-visible}.
+@item @anchor{slot.text-view.editable}editable. Type: @code{boolean}. Accessor: @anchor{fn.text-view-editable}@code{text-view-editable}.
+@item @anchor{slot.text-view.im-module}im-module. Type: @code{string}. Accessor: @anchor{fn.text-view-im-module}@code{text-view-im-module}.
+@item @anchor{slot.text-view.indent}indent. Type: @code{integer}. Accessor: @anchor{fn.text-view-indent}@code{text-view-indent}.
+@item @anchor{slot.text-view.justification}justification. Type: @ref{justification}. Accessor: @anchor{fn.text-view-justification}@code{text-view-justification}.
+@item @anchor{slot.text-view.left-margin}left-margin. Type: @code{integer}. Accessor: @anchor{fn.text-view-left-margin}@code{text-view-left-margin}.
+@item @anchor{slot.text-view.overwrite}overwrite. Type: @code{boolean}. Accessor: @anchor{fn.text-view-overwrite}@code{text-view-overwrite}.
 @item @anchor{slot.text-view.pixels-above-lines}pixels-above-lines. Type: @code{integer}. Accessor: @anchor{fn.text-view-pixels-above-lines}@code{text-view-pixels-above-lines}.
 @item @anchor{slot.text-view.pixels-below-lines}pixels-below-lines. Type: @code{integer}. Accessor: @anchor{fn.text-view-pixels-below-lines}@code{text-view-pixels-below-lines}.
 @item @anchor{slot.text-view.pixels-inside-wrap}pixels-inside-wrap. Type: @code{integer}. Accessor: @anchor{fn.text-view-pixels-inside-wrap}@code{text-view-pixels-inside-wrap}.
-@item @anchor{slot.text-view.editable}editable. Type: @code{boolean}. Accessor: @anchor{fn.text-view-editable}@code{text-view-editable}.
-@item @anchor{slot.text-view.wrap-mode}wrap-mode. Type: @ref{wrap-mode}. Accessor: @anchor{fn.text-view-wrap-mode}@code{text-view-wrap-mode}.
-@item @anchor{slot.text-view.justification}justification. Type: @ref{justification}. Accessor: @anchor{fn.text-view-justification}@code{text-view-justification}.
-@item @anchor{slot.text-view.left-margin}left-margin. Type: @code{integer}. Accessor: @anchor{fn.text-view-left-margin}@code{text-view-left-margin}.
 @item @anchor{slot.text-view.right-margin}right-margin. Type: @code{integer}. Accessor: @anchor{fn.text-view-right-margin}@code{text-view-right-margin}.
-@item @anchor{slot.text-view.indent}indent. Type: @code{integer}. Accessor: @anchor{fn.text-view-indent}@code{text-view-indent}.
 @item @anchor{slot.text-view.tabs}tabs. Type: @code{PangoTabArray}. Accessor: @anchor{fn.text-view-tabs}@code{text-view-tabs}.
-@item @anchor{slot.text-view.cursor-visible}cursor-visible. Type: @code{boolean}. Accessor: @anchor{fn.text-view-cursor-visible}@code{text-view-cursor-visible}.
-@item @anchor{slot.text-view.buffer}buffer. Type: @ref{text-buffer}. Accessor: @anchor{fn.text-view-buffer}@code{text-view-buffer}.
-@item @anchor{slot.text-view.overwrite}overwrite. Type: @code{boolean}. Accessor: @anchor{fn.text-view-overwrite}@code{text-view-overwrite}.
-@item @anchor{slot.text-view.accepts-tab}accepts-tab. Type: @code{boolean}. Accessor: @anchor{fn.text-view-accepts-tab}@code{text-view-accepts-tab}.
-@item @anchor{slot.text-view.im-module}im-module. Type: @code{string}. Accessor: @anchor{fn.text-view-im-module}@code{text-view-im-module}.
+@item @anchor{slot.text-view.wrap-mode}wrap-mode. Type: @ref{wrap-mode}. Accessor: @anchor{fn.text-view-wrap-mode}@code{text-view-wrap-mode}.
 @end itemize
 
 
 Signals:
 @itemize
-@item @anchor{signal.text-view.insert-at-cursor}"insert-at-cursor". Signature: (instance @ref{text-view}), (arg-1 @code{string}) @result{} void. Options: run-last, action.
-@item @anchor{signal.text-view.set-scroll-adjustments}"set-scroll-adjustments". Signature: (instance @ref{text-view}), (arg-1 @ref{adjustment}), (arg-2 @ref{adjustment}) @result{} void. Options: run-last, action.
-@item @anchor{signal.text-view.move-cursor}"move-cursor". Signature: (instance @ref{text-view}), (arg-1 @ref{movement-step}), (arg-2 @code{integer}), (arg-3 @code{boolean}) @result{} void. Options: run-last, action.
-@item @anchor{signal.text-view.select-all}"select-all". Signature: (instance @ref{text-view}), (arg-1 @code{boolean}) @result{} void. Options: run-last, action.
-@item @anchor{signal.text-view.copy-clipboard}"copy-clipboard". Signature: (instance @ref{text-view}) @result{} void. Options: run-last, action.
-@item @anchor{signal.text-view.populate-popup}"populate-popup". Signature: (instance @ref{text-view}), (arg-1 @ref{menu}) @result{} void. Options: run-last.
-@item @anchor{signal.text-view.delete-from-cursor}"delete-from-cursor". Signature: (instance @ref{text-view}), (arg-1 @ref{delete-type}), (arg-2 @code{integer}) @result{} void. Options: run-last, action.
 @item @anchor{signal.text-view.backspace}"backspace". Signature: (instance @ref{text-view}) @result{} void. Options: run-last, action.
+@item @anchor{signal.text-view.copy-clipboard}"copy-clipboard". Signature: (instance @ref{text-view}) @result{} void. Options: run-last, action.
 @item @anchor{signal.text-view.cut-clipboard}"cut-clipboard". Signature: (instance @ref{text-view}) @result{} void. Options: run-last, action.
-@item @anchor{signal.text-view.paste-clipboard}"paste-clipboard". Signature: (instance @ref{text-view}) @result{} void. Options: run-last, action.
-@item @anchor{signal.text-view.toggle-overwrite}"toggle-overwrite". Signature: (instance @ref{text-view}) @result{} void. Options: run-last, action.
-@item @anchor{signal.text-view.page-horizontally}"page-horizontally". Signature: (instance @ref{text-view}), (arg-1 @code{integer}), (arg-2 @code{boolean}) @result{} void. Options: run-last, action.
+@item @anchor{signal.text-view.delete-from-cursor}"delete-from-cursor". Signature: (instance @ref{text-view}), (arg-1 @ref{delete-type}), (arg-2 @code{integer}) @result{} void. Options: run-last, action.
+@item @anchor{signal.text-view.insert-at-cursor}"insert-at-cursor". Signature: (instance @ref{text-view}), (arg-1 @code{string}) @result{} void. Options: run-last, action.
+@item @anchor{signal.text-view.move-cursor}"move-cursor". Signature: (instance @ref{text-view}), (arg-1 @ref{movement-step}), (arg-2 @code{integer}), (arg-3 @code{boolean}) @result{} void. Options: run-last, action.
 @item @anchor{signal.text-view.move-viewport}"move-viewport". Signature: (instance @ref{text-view}), (arg-1 @ref{scroll-step}), (arg-2 @code{integer}) @result{} void. Options: run-last, action.
+@item @anchor{signal.text-view.page-horizontally}"page-horizontally". Signature: (instance @ref{text-view}), (arg-1 @code{integer}), (arg-2 @code{boolean}) @result{} void. Options: run-last, action.
+@item @anchor{signal.text-view.paste-clipboard}"paste-clipboard". Signature: (instance @ref{text-view}) @result{} void. Options: run-last, action.
+@item @anchor{signal.text-view.populate-popup}"populate-popup". Signature: (instance @ref{text-view}), (arg-1 @ref{menu}) @result{} void. Options: run-last.
+@item @anchor{signal.text-view.select-all}"select-all". Signature: (instance @ref{text-view}), (arg-1 @code{boolean}) @result{} void. Options: run-last, action.
 @item @anchor{signal.text-view.set-anchor}"set-anchor". Signature: (instance @ref{text-view}) @result{} void. Options: run-last, action.
+@item @anchor{signal.text-view.set-scroll-adjustments}"set-scroll-adjustments". Signature: (instance @ref{text-view}), (arg-1 @ref{adjustment}), (arg-2 @ref{adjustment}) @result{} void. Options: run-last, action.
 @item @anchor{signal.text-view.toggle-cursor-visible}"toggle-cursor-visible". Signature: (instance @ref{text-view}) @result{} void. Options: run-last, action.
+@item @anchor{signal.text-view.toggle-overwrite}"toggle-overwrite". Signature: (instance @ref{text-view}) @result{} void. Options: run-last, action.
 @end itemize
 
 
@@ -2217,15 +2227,15 @@ Signals:
 @node toggle-button
 @section toggle-button
 @Class toggle-button
-Superclass: @ref{button}
+Superclass: @ref{button} @ref{atk-implementor-iface} @ref{activatable} @ref{buildable}
 
 Subclasses: @ref{check-button}
 
 Slots:
 @itemize
 @item @anchor{slot.toggle-button.active}active. Type: @code{boolean}. Accessor: @anchor{fn.toggle-button-active}@code{toggle-button-active}.
-@item @anchor{slot.toggle-button.inconsistent}inconsistent. Type: @code{boolean}. Accessor: @anchor{fn.toggle-button-inconsistent}@code{toggle-button-inconsistent}.
 @item @anchor{slot.toggle-button.draw-indicator}draw-indicator. Type: @code{boolean}. Accessor: @anchor{fn.toggle-button-draw-indicator}@code{toggle-button-draw-indicator}.
+@item @anchor{slot.toggle-button.inconsistent}inconsistent. Type: @code{boolean}. Accessor: @anchor{fn.toggle-button-inconsistent}@code{toggle-button-inconsistent}.
 @end itemize
 
 
@@ -2240,7 +2250,7 @@ Signals:
 @node toggle-tool-button
 @section toggle-tool-button
 @Class toggle-tool-button
-Superclass: @ref{tool-button}
+Superclass: @ref{tool-button} @ref{atk-implementor-iface} @ref{activatable} @ref{buildable}
 
 Subclasses: @ref{radio-tool-button}
 
@@ -2261,18 +2271,18 @@ Signals:
 @node tool-button
 @section tool-button
 @Class tool-button
-Superclass: @ref{tool-item}
+Superclass: @ref{tool-item} @ref{atk-implementor-iface} @ref{activatable} @ref{buildable}
 
 Subclasses: @ref{toggle-tool-button} @ref{menu-tool-button}
 
 Slots:
 @itemize
-@item @anchor{slot.tool-button.label}label. Type: @code{string}. Accessor: @anchor{fn.tool-button-label}@code{tool-button-label}.
-@item @anchor{slot.tool-button.use-underline}use-underline. Type: @code{boolean}. Accessor: @anchor{fn.tool-button-use-underline}@code{tool-button-use-underline}.
-@item @anchor{slot.tool-button.label-widget}label-widget. Type: @ref{widget}. Accessor: @anchor{fn.tool-button-label-widget}@code{tool-button-label-widget}.
-@item @anchor{slot.tool-button.stock-id}stock-id. Type: @code{string}. Accessor: @anchor{fn.tool-button-stock-id}@code{tool-button-stock-id}.
 @item @anchor{slot.tool-button.icon-name}icon-name. Type: @code{string}. Accessor: @anchor{fn.tool-button-icon-name}@code{tool-button-icon-name}.
 @item @anchor{slot.tool-button.icon-widget}icon-widget. Type: @ref{widget}. Accessor: @anchor{fn.tool-button-icon-widget}@code{tool-button-icon-widget}.
+@item @anchor{slot.tool-button.label}label. Type: @code{string}. Accessor: @anchor{fn.tool-button-label}@code{tool-button-label}.
+@item @anchor{slot.tool-button.label-widget}label-widget. Type: @ref{widget}. Accessor: @anchor{fn.tool-button-label-widget}@code{tool-button-label-widget}.
+@item @anchor{slot.tool-button.stock-id}stock-id. Type: @code{string}. Accessor: @anchor{fn.tool-button-stock-id}@code{tool-button-stock-id}.
+@item @anchor{slot.tool-button.use-underline}use-underline. Type: @code{boolean}. Accessor: @anchor{fn.tool-button-use-underline}@code{tool-button-use-underline}.
 @end itemize
 
 
@@ -2287,29 +2297,29 @@ Signals:
 @node tool-item
 @section tool-item
 @Class tool-item
-Superclass: @ref{bin}
+Superclass: @ref{bin} @ref{atk-implementor-iface} @ref{activatable} @ref{buildable}
 
 Subclasses: @ref{separator-tool-item} @ref{tool-button}
 
 Slots:
 @itemize
+@item @anchor{slot.tool-item.expand}expand. Type: @code{boolean}. Accessor: @anchor{fn.tool-item-expand}@code{tool-item-expand}.
+@item @anchor{slot.tool-item.icon-size}icon-size. Type: @ref{icon-size}. Accessor: @anchor{fn.tool-item-icon-size}@code{tool-item-icon-size}. Read-only.
+@item @anchor{slot.tool-item.is-important}is-important. Type: @code{boolean}. Accessor: @anchor{fn.tool-item-is-important}@code{tool-item-is-important}.
+@item @anchor{slot.tool-item.orientation}orientation. Type: @ref{orientation}. Accessor: @anchor{fn.tool-item-orientation}@code{tool-item-orientation}. Read-only.
+@item @anchor{slot.tool-item.relief-style}relief-style. Type: @ref{relief-style}. Accessor: @anchor{fn.tool-item-relief-style}@code{tool-item-relief-style}. Read-only.
+@item @anchor{slot.tool-item.toolbar-style}toolbar-style. Type: @ref{toolbar-style}. Accessor: @anchor{fn.tool-item-toolbar-style}@code{tool-item-toolbar-style}. Read-only.
+@item @anchor{slot.tool-item.use-drag-window}use-drag-window. Type: @code{boolean}. Accessor: @anchor{fn.tool-item-use-drag-window}@code{tool-item-use-drag-window}.
 @item @anchor{slot.tool-item.visible-horizontal}visible-horizontal. Type: @code{boolean}. Accessor: @anchor{fn.tool-item-visible-horizontal}@code{tool-item-visible-horizontal}.
 @item @anchor{slot.tool-item.visible-vertical}visible-vertical. Type: @code{boolean}. Accessor: @anchor{fn.tool-item-visible-vertical}@code{tool-item-visible-vertical}.
-@item @anchor{slot.tool-item.is-important}is-important. Type: @code{boolean}. Accessor: @anchor{fn.tool-item-is-important}@code{tool-item-is-important}.
-@item @anchor{slot.tool-item.expand}expand. Type: @code{boolean}. Accessor: @anchor{fn.tool-item-expand}@code{tool-item-expand}.
-@item @anchor{slot.tool-item.use-drag-window}use-drag-window. Type: @code{boolean}. Accessor: @anchor{fn.tool-item-use-drag-window}@code{tool-item-use-drag-window}.
-@item @anchor{slot.tool-item.icon-size}icon-size. Type: @ref{icon-size}. Accessor: @anchor{fn.tool-item-icon-size}@code{tool-item-icon-size}. Read-only.
-@item @anchor{slot.tool-item.orientation}orientation. Type: @ref{orientation}. Accessor: @anchor{fn.tool-item-orientation}@code{tool-item-orientation}. Read-only.
-@item @anchor{slot.tool-item.toolbar-style}toolbar-style. Type: @ref{toolbar-style}. Accessor: @anchor{fn.tool-item-toolbar-style}@code{tool-item-toolbar-style}. Read-only.
-@item @anchor{slot.tool-item.relief-style}relief-style. Type: @ref{relief-style}. Accessor: @anchor{fn.tool-item-relief-style}@code{tool-item-relief-style}. Read-only.
 @end itemize
 
 
 Signals:
 @itemize
 @item @anchor{signal.tool-item.create-menu-proxy}"create-menu-proxy". Signature: (instance @ref{tool-item}) @result{} @code{boolean}. Options: run-last.
-@item @anchor{signal.tool-item.toolbar-reconfigured}"toolbar-reconfigured". Signature: (instance @ref{tool-item}) @result{} void. Options: run-last.
 @item @anchor{signal.tool-item.set-tooltip}"set-tooltip". Signature: (instance @ref{tool-item}), (arg-1 @ref{tooltips}), (arg-2 @code{string}), (arg-3 @code{string}) @result{} @code{boolean}. Options: run-last.
+@item @anchor{signal.tool-item.toolbar-reconfigured}"toolbar-reconfigured". Signature: (instance @ref{tool-item}) @result{} void. Options: run-last.
 @end itemize
 
 
@@ -2318,24 +2328,24 @@ Signals:
 @node toolbar
 @section toolbar
 @Class toolbar
-Superclass: @ref{container}
+Superclass: @ref{container} @ref{atk-implementor-iface} @ref{buildable} @ref{orientable} @ref{tool-shell}
 
 Slots:
 @itemize
-@item @anchor{slot.toolbar.toolbar-style}toolbar-style. Type: @ref{toolbar-style}. Accessor: @anchor{fn.toolbar-toolbar-style}@code{toolbar-toolbar-style}.
-@item @anchor{slot.toolbar.show-arrow}show-arrow. Type: @code{boolean}. Accessor: @anchor{fn.toolbar-show-arrow}@code{toolbar-show-arrow}.
-@item @anchor{slot.toolbar.tooltips}tooltips. Type: @code{boolean}. Accessor: @anchor{fn.toolbar-tooltips}@code{toolbar-tooltips}.
 @item @anchor{slot.toolbar.icon-size}icon-size. Type: @code{integer}. Accessor: @anchor{fn.toolbar-icon-size}@code{toolbar-icon-size}.
 @item @anchor{slot.toolbar.icon-size-set}icon-size-set. Type: @code{boolean}. Accessor: @anchor{fn.toolbar-icon-size-set}@code{toolbar-icon-size-set}.
+@item @anchor{slot.toolbar.show-arrow}show-arrow. Type: @code{boolean}. Accessor: @anchor{fn.toolbar-show-arrow}@code{toolbar-show-arrow}.
+@item @anchor{slot.toolbar.toolbar-style}toolbar-style. Type: @ref{toolbar-style}. Accessor: @anchor{fn.toolbar-toolbar-style}@code{toolbar-toolbar-style}.
+@item @anchor{slot.toolbar.tooltips}tooltips. Type: @code{boolean}. Accessor: @anchor{fn.toolbar-tooltips}@code{toolbar-tooltips}.
 @end itemize
 
 
 Signals:
 @itemize
-@item @anchor{signal.toolbar.orientation-changed}"orientation-changed". Signature: (instance @ref{toolbar}), (arg-1 @ref{orientation}) @result{} void. Options: run-first.
-@item @anchor{signal.toolbar.style-changed}"style-changed". Signature: (instance @ref{toolbar}), (arg-1 @ref{toolbar-style}) @result{} void. Options: run-first.
-@item @anchor{signal.toolbar.popup-context-menu}"popup-context-menu". Signature: (instance @ref{toolbar}), (arg-1 @code{integer}), (arg-2 @code{integer}), (arg-3 @code{integer}) @result{} @code{boolean}. Options: run-last.
 @item @anchor{signal.toolbar.focus-home-or-end}"focus-home-or-end". Signature: (instance @ref{toolbar}), (arg-1 @code{boolean}) @result{} @code{boolean}. Options: run-last, action.
+@item @anchor{signal.toolbar.orientation-changed}"orientation-changed". Signature: (instance @ref{toolbar}), (arg-1 @ref{orientation}) @result{} void. Options: run-first.
+@item @anchor{signal.toolbar.popup-context-menu}"popup-context-menu". Signature: (instance @ref{toolbar}), (arg-1 @code{integer}), (arg-2 @code{integer}), (arg-3 @code{integer}) @result{} @code{boolean}. Options: run-last.
+@item @anchor{signal.toolbar.style-changed}"style-changed". Signature: (instance @ref{toolbar}), (arg-1 @ref{toolbar-style}) @result{} void. Options: run-first.
 @end itemize
 
 
@@ -2344,7 +2354,7 @@ Signals:
 @node tree
 @section tree
 @Class tree
-Superclass: @ref{container}
+Superclass: @ref{container} @ref{atk-implementor-iface} @ref{buildable}
 
 Slots:
 @itemize
@@ -2353,6 +2363,9 @@ Slots:
 
 Signals:
 @itemize
+@item @anchor{signal.tree.select-child}"select-child". Signature: (instance @ref{tree}), (arg-1 @ref{widget}) @result{} void. Options: run-first.
+@item @anchor{signal.tree.selection-changed}"selection-changed". Signature: (instance @ref{tree}) @result{} void. Options: run-first.
+@item @anchor{signal.tree.unselect-child}"unselect-child". Signature: (instance @ref{tree}), (arg-1 @ref{widget}) @result{} void. Options: run-first.
 @end itemize
 
 
@@ -2361,7 +2374,7 @@ Signals:
 @node tree-item
 @section tree-item
 @Class tree-item
-Superclass: @ref{item}
+Superclass: @ref{item} @ref{atk-implementor-iface} @ref{buildable}
 
 Slots:
 @itemize
@@ -2370,6 +2383,8 @@ Slots:
 
 Signals:
 @itemize
+@item @anchor{signal.tree-item.collapse}"collapse". Signature: (instance @ref{tree-item}) @result{} void. Options: run-first.
+@item @anchor{signal.tree-item.expand}"expand". Signature: (instance @ref{tree-item}) @result{} void. Options: run-first.
 @end itemize
 
 
@@ -2378,57 +2393,57 @@ Signals:
 @node tree-view
 @section tree-view
 @Class tree-view
-Superclass: @ref{container}
+Superclass: @ref{container} @ref{atk-implementor-iface} @ref{buildable}
 
 Slots:
 @itemize
-@item @anchor{slot.tree-view.model}model. Type: @ref{tree-model}. Accessor: @anchor{fn.tree-view-model}@code{tree-view-model}.
-@item @anchor{slot.tree-view.hadjustment}hadjustment. Type: @ref{adjustment}. Accessor: @anchor{fn.tree-view-hadjustment}@code{tree-view-hadjustment}.
-@item @anchor{slot.tree-view.vadjustment}vadjustment. Type: @ref{adjustment}. Accessor: @anchor{fn.tree-view-vadjustment}@code{tree-view-vadjustment}.
-@item @anchor{slot.tree-view.headers-visible}headers-visible. Type: @code{boolean}. Accessor: @anchor{fn.tree-view-headers-visible}@code{tree-view-headers-visible}.
-@item @anchor{slot.tree-view.headers-clickable}headers-clickable. Type: @code{boolean}. Accessor: @anchor{fn.tree-view-headers-clickable}@code{tree-view-headers-clickable}.
-@item @anchor{slot.tree-view.expander-column}expander-column. Type: @ref{tree-view-column}. Accessor: @anchor{fn.tree-view-expander-column}@code{tree-view-expander-column}.
-@item @anchor{slot.tree-view.reorderable}reorderable. Type: @code{boolean}. Accessor: @anchor{fn.tree-view-reorderable}@code{tree-view-reorderable}.
-@item @anchor{slot.tree-view.rules-hint}rules-hint. Type: @code{boolean}. Accessor: @anchor{fn.tree-view-rules-hint}@code{tree-view-rules-hint}.
-@item @anchor{slot.tree-view.enable-search}enable-search. Type: @code{boolean}. Accessor: @anchor{fn.tree-view-enable-search}@code{tree-view-enable-search}.
-@item @anchor{slot.tree-view.search-column}search-column. Type: @code{integer}. Accessor: @anchor{fn.tree-view-search-column}@code{tree-view-search-column}.
-@item @anchor{slot.tree-view.fixed-height-mode}fixed-height-mode. Type: @code{boolean}. Accessor: @anchor{fn.tree-view-fixed-height-mode}@code{tree-view-fixed-height-mode}.
-@item @anchor{slot.tree-view.hover-selection}hover-selection. Type: @code{boolean}. Accessor: @anchor{fn.tree-view-hover-selection}@code{tree-view-hover-selection}.
-@item @anchor{slot.tree-view.hover-expand}hover-expand. Type: @code{boolean}. Accessor: @anchor{fn.tree-view-hover-expand}@code{tree-view-hover-expand}.
-@item @anchor{slot.tree-view.show-expanders}show-expanders. Type: @code{boolean}. Accessor: @anchor{fn.tree-view-show-expanders}@code{tree-view-show-expanders}.
-@item @anchor{slot.tree-view.level-indentation}level-indentation. Type: @code{integer}. Accessor: @anchor{fn.tree-view-level-indentation}@code{tree-view-level-indentation}.
-@item @anchor{slot.tree-view.rubber-banding}rubber-banding. Type: @code{boolean}. Accessor: @anchor{fn.tree-view-rubber-banding}@code{tree-view-rubber-banding}.
-@item @anchor{slot.tree-view.enable-grid-lines}enable-grid-lines. Type: @ref{tree-view-grid-lines}. Accessor: @anchor{fn.tree-view-enable-grid-lines}@code{tree-view-enable-grid-lines}.
-@item @anchor{slot.tree-view.enable-tree-lines}enable-tree-lines. Type: @code{boolean}. Accessor: @anchor{fn.tree-view-enable-tree-lines}@code{tree-view-enable-tree-lines}.
-@item @anchor{slot.tree-view.tooltip-column}tooltip-column. Type: @code{integer}. Accessor: @anchor{fn.tree-view-tooltip-column}@code{tree-view-tooltip-column}.
-@item @anchor{slot.tree-view.selection}selection. Type: @ref{g-object}. Accessor: @anchor{fn.tree-view-selection}@code{tree-view-selection}. Read-only.
-@item @anchor{slot.tree-view.column-drag-function}column-drag-function. Type: ????. Accessor: @anchor{fn.tree-view-column-drag-function}@code{tree-view-column-drag-function}. Write-only.
 @item @anchor{slot.tree-view.bin-window}bin-window. Type: @ref{g-object}. Accessor: @anchor{fn.tree-view-bin-window}@code{tree-view-bin-window}. Read-only.
-@item @anchor{slot.tree-view.search-equal-func}search-equal-func. Type: ????. Accessor: @anchor{fn.tree-view-search-equal-func}@code{tree-view-search-equal-func}. Write-only.
-@item @anchor{slot.tree-view.search-entry}search-entry. Type: @ref{g-object}. Accessor: @anchor{fn.tree-view-search-entry}@code{tree-view-search-entry}.
-@item @anchor{slot.tree-view.search-position-func}search-position-func. Type: ????. Accessor: @anchor{fn.tree-view-search-position-func}@code{tree-view-search-position-func}. Write-only.
+@item @anchor{slot.tree-view.column-drag-function}column-drag-function. Type: ????. Accessor: @anchor{fn.tree-view-column-drag-function}@code{tree-view-column-drag-function}. Write-only.
+@item @anchor{slot.tree-view.enable-grid-lines}enable-grid-lines. Type: @ref{tree-view-grid-lines}. Accessor: @anchor{fn.tree-view-enable-grid-lines}@code{tree-view-enable-grid-lines}.
+@item @anchor{slot.tree-view.enable-search}enable-search. Type: @code{boolean}. Accessor: @anchor{fn.tree-view-enable-search}@code{tree-view-enable-search}.
+@item @anchor{slot.tree-view.enable-tree-lines}enable-tree-lines. Type: @code{boolean}. Accessor: @anchor{fn.tree-view-enable-tree-lines}@code{tree-view-enable-tree-lines}.
+@item @anchor{slot.tree-view.expander-column}expander-column. Type: @ref{tree-view-column}. Accessor: @anchor{fn.tree-view-expander-column}@code{tree-view-expander-column}.
+@item @anchor{slot.tree-view.fixed-height-mode}fixed-height-mode. Type: @code{boolean}. Accessor: @anchor{fn.tree-view-fixed-height-mode}@code{tree-view-fixed-height-mode}.
+@item @anchor{slot.tree-view.hadjustment}hadjustment. Type: @ref{adjustment}. Accessor: @anchor{fn.tree-view-hadjustment}@code{tree-view-hadjustment}.
+@item @anchor{slot.tree-view.headers-clickable}headers-clickable. Type: @code{boolean}. Accessor: @anchor{fn.tree-view-headers-clickable}@code{tree-view-headers-clickable}.
+@item @anchor{slot.tree-view.headers-visible}headers-visible. Type: @code{boolean}. Accessor: @anchor{fn.tree-view-headers-visible}@code{tree-view-headers-visible}.
+@item @anchor{slot.tree-view.hover-expand}hover-expand. Type: @code{boolean}. Accessor: @anchor{fn.tree-view-hover-expand}@code{tree-view-hover-expand}.
+@item @anchor{slot.tree-view.hover-selection}hover-selection. Type: @code{boolean}. Accessor: @anchor{fn.tree-view-hover-selection}@code{tree-view-hover-selection}.
+@item @anchor{slot.tree-view.level-indentation}level-indentation. Type: @code{integer}. Accessor: @anchor{fn.tree-view-level-indentation}@code{tree-view-level-indentation}.
+@item @anchor{slot.tree-view.model}model. Type: @ref{tree-model}. Accessor: @anchor{fn.tree-view-model}@code{tree-view-model}.
+@item @anchor{slot.tree-view.reorderable}reorderable. Type: @code{boolean}. Accessor: @anchor{fn.tree-view-reorderable}@code{tree-view-reorderable}.
 @item @anchor{slot.tree-view.row-separator-func}row-separator-func. Type: ????. Accessor: @anchor{fn.tree-view-row-separator-func}@code{tree-view-row-separator-func}. Write-only.
+@item @anchor{slot.tree-view.rubber-banding}rubber-banding. Type: @code{boolean}. Accessor: @anchor{fn.tree-view-rubber-banding}@code{tree-view-rubber-banding}.
+@item @anchor{slot.tree-view.rules-hint}rules-hint. Type: @code{boolean}. Accessor: @anchor{fn.tree-view-rules-hint}@code{tree-view-rules-hint}.
+@item @anchor{slot.tree-view.search-column}search-column. Type: @code{integer}. Accessor: @anchor{fn.tree-view-search-column}@code{tree-view-search-column}.
+@item @anchor{slot.tree-view.search-entry}search-entry. Type: @ref{g-object}. Accessor: @anchor{fn.tree-view-search-entry}@code{tree-view-search-entry}.
+@item @anchor{slot.tree-view.search-equal-func}search-equal-func. Type: ????. Accessor: @anchor{fn.tree-view-search-equal-func}@code{tree-view-search-equal-func}. Write-only.
+@item @anchor{slot.tree-view.search-position-func}search-position-func. Type: ????. Accessor: @anchor{fn.tree-view-search-position-func}@code{tree-view-search-position-func}. Write-only.
+@item @anchor{slot.tree-view.selection}selection. Type: @ref{g-object}. Accessor: @anchor{fn.tree-view-selection}@code{tree-view-selection}. Read-only.
+@item @anchor{slot.tree-view.show-expanders}show-expanders. Type: @code{boolean}. Accessor: @anchor{fn.tree-view-show-expanders}@code{tree-view-show-expanders}.
+@item @anchor{slot.tree-view.tooltip-column}tooltip-column. Type: @code{integer}. Accessor: @anchor{fn.tree-view-tooltip-column}@code{tree-view-tooltip-column}.
+@item @anchor{slot.tree-view.vadjustment}vadjustment. Type: @ref{adjustment}. Accessor: @anchor{fn.tree-view-vadjustment}@code{tree-view-vadjustment}.
 @end itemize
 
 
 Signals:
 @itemize
-@item @anchor{signal.tree-view.set-scroll-adjustments}"set-scroll-adjustments". Signature: (instance @ref{tree-view}), (arg-1 @ref{adjustment}), (arg-2 @ref{adjustment}) @result{} void. Options: run-last, action.
-@item @anchor{signal.tree-view.row-activated}"row-activated". Signature: (instance @ref{tree-view}), (arg-1 @ref{tree-path}), (arg-2 @ref{tree-view-column}) @result{} void. Options: run-last, action.
-@item @anchor{signal.tree-view.test-expand-row}"test-expand-row". Signature: (instance @ref{tree-view}), (arg-1 @ref{tree-iter}), (arg-2 @ref{tree-path}) @result{} @code{boolean}. Options: run-last.
-@item @anchor{signal.tree-view.test-collapse-row}"test-collapse-row". Signature: (instance @ref{tree-view}), (arg-1 @ref{tree-iter}), (arg-2 @ref{tree-path}) @result{} @code{boolean}. Options: run-last.
-@item @anchor{signal.tree-view.row-expanded}"row-expanded". Signature: (instance @ref{tree-view}), (arg-1 @ref{tree-iter}), (arg-2 @ref{tree-path}) @result{} void. Options: run-last.
-@item @anchor{signal.tree-view.row-collapsed}"row-collapsed". Signature: (instance @ref{tree-view}), (arg-1 @ref{tree-iter}), (arg-2 @ref{tree-path}) @result{} void. Options: run-last.
 @item @anchor{signal.tree-view.columns-changed}"columns-changed". Signature: (instance @ref{tree-view}) @result{} void. Options: run-last.
 @item @anchor{signal.tree-view.cursor-changed}"cursor-changed". Signature: (instance @ref{tree-view}) @result{} void. Options: run-last.
-@item @anchor{signal.tree-view.move-cursor}"move-cursor". Signature: (instance @ref{tree-view}), (arg-1 @ref{movement-step}), (arg-2 @code{integer}) @result{} @code{boolean}. Options: run-last, action.
-@item @anchor{signal.tree-view.select-all}"select-all". Signature: (instance @ref{tree-view}) @result{} @code{boolean}. Options: run-last, action.
-@item @anchor{signal.tree-view.unselect-all}"unselect-all". Signature: (instance @ref{tree-view}) @result{} @code{boolean}. Options: run-last, action.
-@item @anchor{signal.tree-view.select-cursor-row}"select-cursor-row". Signature: (instance @ref{tree-view}), (arg-1 @code{boolean}) @result{} @code{boolean}. Options: run-last, action.
-@item @anchor{signal.tree-view.toggle-cursor-row}"toggle-cursor-row". Signature: (instance @ref{tree-view}) @result{} @code{boolean}. Options: run-last, action.
 @item @anchor{signal.tree-view.expand-collapse-cursor-row}"expand-collapse-cursor-row". Signature: (instance @ref{tree-view}), (arg-1 @code{boolean}), (arg-2 @code{boolean}), (arg-3 @code{boolean}) @result{} @code{boolean}. Options: run-last, action.
+@item @anchor{signal.tree-view.move-cursor}"move-cursor". Signature: (instance @ref{tree-view}), (arg-1 @ref{movement-step}), (arg-2 @code{integer}) @result{} @code{boolean}. Options: run-last, action.
+@item @anchor{signal.tree-view.row-activated}"row-activated". Signature: (instance @ref{tree-view}), (arg-1 @ref{tree-path}), (arg-2 @ref{tree-view-column}) @result{} void. Options: run-last, action.
+@item @anchor{signal.tree-view.row-collapsed}"row-collapsed". Signature: (instance @ref{tree-view}), (arg-1 @ref{tree-iter}), (arg-2 @ref{tree-path}) @result{} void. Options: run-last.
+@item @anchor{signal.tree-view.row-expanded}"row-expanded". Signature: (instance @ref{tree-view}), (arg-1 @ref{tree-iter}), (arg-2 @ref{tree-path}) @result{} void. Options: run-last.
+@item @anchor{signal.tree-view.select-all}"select-all". Signature: (instance @ref{tree-view}) @result{} @code{boolean}. Options: run-last, action.
 @item @anchor{signal.tree-view.select-cursor-parent}"select-cursor-parent". Signature: (instance @ref{tree-view}) @result{} @code{boolean}. Options: run-last, action.
+@item @anchor{signal.tree-view.select-cursor-row}"select-cursor-row". Signature: (instance @ref{tree-view}), (arg-1 @code{boolean}) @result{} @code{boolean}. Options: run-last, action.
+@item @anchor{signal.tree-view.set-scroll-adjustments}"set-scroll-adjustments". Signature: (instance @ref{tree-view}), (arg-1 @ref{adjustment}), (arg-2 @ref{adjustment}) @result{} void. Options: run-last, action.
 @item @anchor{signal.tree-view.start-interactive-search}"start-interactive-search". Signature: (instance @ref{tree-view}) @result{} @code{boolean}. Options: run-last, action.
+@item @anchor{signal.tree-view.test-collapse-row}"test-collapse-row". Signature: (instance @ref{tree-view}), (arg-1 @ref{tree-iter}), (arg-2 @ref{tree-path}) @result{} @code{boolean}. Options: run-last.
+@item @anchor{signal.tree-view.test-expand-row}"test-expand-row". Signature: (instance @ref{tree-view}), (arg-1 @ref{tree-iter}), (arg-2 @ref{tree-path}) @result{} @code{boolean}. Options: run-last.
+@item @anchor{signal.tree-view.toggle-cursor-row}"toggle-cursor-row". Signature: (instance @ref{tree-view}) @result{} @code{boolean}. Options: run-last, action.
+@item @anchor{signal.tree-view.unselect-all}"unselect-all". Signature: (instance @ref{tree-view}) @result{} @code{boolean}. Options: run-last, action.
 @end itemize
 
 
@@ -2437,7 +2452,7 @@ Signals:
 @node v-box
 @section v-box
 @Class v-box
-Superclass: @ref{box}
+Superclass: @ref{box} @ref{atk-implementor-iface} @ref{buildable} @ref{orientable}
 
 Subclasses: @ref{recent-chooser-widget} @ref{gamma-curve} @ref{font-selection} @ref{file-chooser-widget} @ref{color-selection}
 
@@ -2456,7 +2471,7 @@ Signals:
 @node v-button-box
 @section v-button-box
 @Class v-button-box
-Superclass: @ref{button-box}
+Superclass: @ref{button-box} @ref{atk-implementor-iface} @ref{buildable} @ref{orientable}
 
 Slots:
 @itemize
@@ -2473,7 +2488,7 @@ Signals:
 @node v-paned
 @section v-paned
 @Class v-paned
-Superclass: @ref{paned}
+Superclass: @ref{paned} @ref{atk-implementor-iface} @ref{buildable} @ref{orientable}
 
 Slots:
 @itemize
@@ -2490,7 +2505,7 @@ Signals:
 @node v-ruler
 @section v-ruler
 @Class v-ruler
-Superclass: @ref{ruler}
+Superclass: @ref{ruler} @ref{atk-implementor-iface} @ref{buildable} @ref{orientable}
 
 Slots:
 @itemize
@@ -2507,7 +2522,7 @@ Signals:
 @node v-scale
 @section v-scale
 @Class v-scale
-Superclass: @ref{scale}
+Superclass: @ref{scale} @ref{atk-implementor-iface} @ref{buildable} @ref{orientable}
 
 Slots:
 @itemize
@@ -2524,7 +2539,7 @@ Signals:
 @node v-scrollbar
 @section v-scrollbar
 @Class v-scrollbar
-Superclass: @ref{scrollbar}
+Superclass: @ref{scrollbar} @ref{atk-implementor-iface} @ref{buildable} @ref{orientable}
 
 Slots:
 @itemize
@@ -2541,7 +2556,7 @@ Signals:
 @node v-separator
 @section v-separator
 @Class v-separator
-Superclass: @ref{separator}
+Superclass: @ref{separator} @ref{atk-implementor-iface} @ref{buildable} @ref{orientable}
 
 Slots:
 @itemize
@@ -2558,13 +2573,13 @@ Signals:
 @node viewport
 @section viewport
 @Class viewport
-Superclass: @ref{bin}
+Superclass: @ref{bin} @ref{atk-implementor-iface} @ref{buildable}
 
 Slots:
 @itemize
 @item @anchor{slot.viewport.hadjustment}hadjustment. Type: @ref{adjustment}. Accessor: @anchor{fn.viewport-hadjustment}@code{viewport-hadjustment}.
-@item @anchor{slot.viewport.vadjustment}vadjustment. Type: @ref{adjustment}. Accessor: @anchor{fn.viewport-vadjustment}@code{viewport-vadjustment}.
 @item @anchor{slot.viewport.shadow-type}shadow-type. Type: @ref{shadow-type}. Accessor: @anchor{fn.viewport-shadow-type}@code{viewport-shadow-type}.
+@item @anchor{slot.viewport.vadjustment}vadjustment. Type: @ref{adjustment}. Accessor: @anchor{fn.viewport-vadjustment}@code{viewport-vadjustment}.
 @end itemize
 
 
@@ -2579,7 +2594,7 @@ Signals:
 @node volume-button
 @section volume-button
 @Class volume-button
-Superclass: @ref{scale-button}
+Superclass: @ref{scale-button} @ref{atk-implementor-iface} @ref{activatable} @ref{buildable} @ref{orientable}
 
 Slots:
 @itemize
@@ -2596,112 +2611,112 @@ Signals:
 @node widget
 @section widget
 @Class widget
-Superclass: @ref{gtk-object}
+Superclass: @ref{gtk-object} @ref{atk-implementor-iface} @ref{buildable}
 
 Subclasses: @ref{old-editable} @ref{progress} @ref{invisible} @ref{h-s-v} @ref{separator} @ref{range} @ref{ruler} @ref{entry} @ref{drawing-area} @ref{cell-view} @ref{calendar} @ref{misc} @ref{container}
 
 Slots:
 @itemize
-@item @anchor{slot.widget.name}name. Type: @code{string}. Accessor: @anchor{fn.widget-name}@code{widget-name}.
-@item @anchor{slot.widget.parent}parent. Type: @ref{container}. Accessor: @anchor{fn.widget-parent}@code{widget-parent}.
-@item @anchor{slot.widget.width-request}width-request. Type: @code{integer}. Accessor: @anchor{fn.widget-width-request}@code{widget-width-request}.
-@item @anchor{slot.widget.height-request}height-request. Type: @code{integer}. Accessor: @anchor{fn.widget-height-request}@code{widget-height-request}.
-@item @anchor{slot.widget.visible}visible. Type: @code{boolean}. Accessor: @anchor{fn.widget-visible}@code{widget-visible}.
-@item @anchor{slot.widget.sensitive}sensitive. Type: @code{boolean}. Accessor: @anchor{fn.widget-sensitive}@code{widget-sensitive}.
+@item @anchor{slot.widget.accessible}accessible. Type: @ref{g-object}. Accessor: @anchor{fn.widget-accessible}@code{widget-accessible}. Read-only.
 @item @anchor{slot.widget.app-paintable}app-paintable. Type: @code{boolean}. Accessor: @anchor{fn.widget-app-paintable}@code{widget-app-paintable}.
-@item @anchor{slot.widget.can-focus}can-focus. Type: @code{boolean}. Accessor: @anchor{fn.widget-can-focus}@code{widget-can-focus}.
-@item @anchor{slot.widget.has-focus}has-focus. Type: @code{boolean}. Accessor: @anchor{fn.widget-has-focus}@code{widget-has-focus}.
-@item @anchor{slot.widget.is-focus}is-focus. Type: @code{boolean}. Accessor: @anchor{fn.widget-is-focus}@code{widget-is-focus}.
 @item @anchor{slot.widget.can-default}can-default. Type: @code{boolean}. Accessor: @anchor{fn.widget-can-default}@code{widget-can-default}.
-@item @anchor{slot.widget.has-default}has-default. Type: @code{boolean}. Accessor: @anchor{fn.widget-has-default}@code{widget-has-default}.
-@item @anchor{slot.widget.receives-default}receives-default. Type: @code{boolean}. Accessor: @anchor{fn.widget-receives-default}@code{widget-receives-default}.
+@item @anchor{slot.widget.can-focus}can-focus. Type: @code{boolean}. Accessor: @anchor{fn.widget-can-focus}@code{widget-can-focus}.
 @item @anchor{slot.widget.composite-child}composite-child. Type: @code{boolean}. Accessor: @anchor{fn.widget-composite-child}@code{widget-composite-child}. Read-only.
-@item @anchor{slot.widget.style}style. Type: @ref{style}. Accessor: @anchor{fn.widget-style}@code{widget-style}.
+@item @anchor{slot.widget.composite-name}composite-name. Type: @code{string}. Accessor: @anchor{fn.widget-composite-name}@code{widget-composite-name}.
+@item @anchor{slot.widget.direction}direction. Type: @ref{text-direction}. Accessor: @anchor{fn.widget-direction}@code{widget-direction}.
 @item @anchor{slot.widget.events}events. Type: @ref{event-mask}. Accessor: @anchor{fn.widget-events}@code{widget-events}.
 @item @anchor{slot.widget.extension-events}extension-events. Type: @ref{gdk-extension-mode}. Accessor: @anchor{fn.widget-extension-events}@code{widget-extension-events}.
-@item @anchor{slot.widget.no-show-all}no-show-all. Type: @code{boolean}. Accessor: @anchor{fn.widget-no-show-all}@code{widget-no-show-all}.
+@item @anchor{slot.widget.has-default}has-default. Type: @code{boolean}. Accessor: @anchor{fn.widget-has-default}@code{widget-has-default}.
+@item @anchor{slot.widget.has-focus}has-focus. Type: @code{boolean}. Accessor: @anchor{fn.widget-has-focus}@code{widget-has-focus}.
 @item @anchor{slot.widget.has-tooltip}has-tooltip. Type: @code{boolean}. Accessor: @anchor{fn.widget-has-tooltip}@code{widget-has-tooltip}.
+@item @anchor{slot.widget.height-request}height-request. Type: @code{integer}. Accessor: @anchor{fn.widget-height-request}@code{widget-height-request}.
+@item @anchor{slot.widget.is-focus}is-focus. Type: @code{boolean}. Accessor: @anchor{fn.widget-is-focus}@code{widget-is-focus}.
+@item @anchor{slot.widget.name}name. Type: @code{string}. Accessor: @anchor{fn.widget-name}@code{widget-name}.
+@item @anchor{slot.widget.no-show-all}no-show-all. Type: @code{boolean}. Accessor: @anchor{fn.widget-no-show-all}@code{widget-no-show-all}.
+@item @anchor{slot.widget.parent}parent. Type: @ref{container}. Accessor: @anchor{fn.widget-parent}@code{widget-parent}.
+@item @anchor{slot.widget.receives-default}receives-default. Type: @code{boolean}. Accessor: @anchor{fn.widget-receives-default}@code{widget-receives-default}.
+@item @anchor{slot.widget.redraw-on-allocate}redraw-on-allocate. Type: @code{boolean}. Accessor: @anchor{fn.widget-redraw-on-allocate}@code{widget-redraw-on-allocate}. Write-only.
+@item @anchor{slot.widget.sensitive}sensitive. Type: @code{boolean}. Accessor: @anchor{fn.widget-sensitive}@code{widget-sensitive}.
+@item @anchor{slot.widget.style}style. Type: @ref{style}. Accessor: @anchor{fn.widget-style}@code{widget-style}.
 @item @anchor{slot.widget.tooltip-markup}tooltip-markup. Type: @code{string}. Accessor: @anchor{fn.widget-tooltip-markup}@code{widget-tooltip-markup}.
 @item @anchor{slot.widget.tooltip-text}tooltip-text. Type: @code{string}. Accessor: @anchor{fn.widget-tooltip-text}@code{widget-tooltip-text}.
-@item @anchor{slot.widget.window}window. Type: @ref{gdk-window}. Accessor: @anchor{fn.widget-window}@code{widget-window}. Read-only.
-@item @anchor{slot.widget.direction}direction. Type: @ref{text-direction}. Accessor: @anchor{fn.widget-direction}@code{widget-direction}.
-@item @anchor{slot.widget.composite-name}composite-name. Type: @code{string}. Accessor: @anchor{fn.widget-composite-name}@code{widget-composite-name}.
-@item @anchor{slot.widget.redraw-on-allocate}redraw-on-allocate. Type: @code{boolean}. Accessor: @anchor{fn.widget-redraw-on-allocate}@code{widget-redraw-on-allocate}. Write-only.
-@item @anchor{slot.widget.accessible}accessible. Type: @ref{g-object}. Accessor: @anchor{fn.widget-accessible}@code{widget-accessible}. Read-only.
 @item @anchor{slot.widget.tooltip-window}tooltip-window. Type: @ref{g-object}. Accessor: @anchor{fn.widget-tooltip-window}@code{widget-tooltip-window}.
+@item @anchor{slot.widget.visible}visible. Type: @code{boolean}. Accessor: @anchor{fn.widget-visible}@code{widget-visible}.
+@item @anchor{slot.widget.width-request}width-request. Type: @code{integer}. Accessor: @anchor{fn.widget-width-request}@code{widget-width-request}.
+@item @anchor{slot.widget.window}window. Type: @ref{gdk-window}. Accessor: @anchor{fn.widget-window}@code{widget-window}. Read-only.
 @end itemize
 
 
 Signals:
 @itemize
-@item @anchor{signal.widget.composited-changed}"composited-changed". Signature: (instance @ref{widget}) @result{} void. Options: run-last, action.
-@item @anchor{signal.widget.show}"show". Signature: (instance @ref{widget}) @result{} void. Options: run-first.
-@item @anchor{signal.widget.hide}"hide". Signature: (instance @ref{widget}) @result{} void. Options: run-first.
-@item @anchor{signal.widget.map}"map". Signature: (instance @ref{widget}) @result{} void. Options: run-first.
-@item @anchor{signal.widget.unmap}"unmap". Signature: (instance @ref{widget}) @result{} void. Options: run-first.
-@item @anchor{signal.widget.realize}"realize". Signature: (instance @ref{widget}) @result{} void. Options: run-first.
-@item @anchor{signal.widget.unrealize}"unrealize". Signature: (instance @ref{widget}) @result{} void. Options: run-last.
-@item @anchor{signal.widget.size-request}"size-request". Signature: (instance @ref{widget}), (arg-1 @code{GtkRequisition}) @result{} void. Options: run-first.
-@item @anchor{signal.widget.size-allocate}"size-allocate". Signature: (instance @ref{widget}), (arg-1 @ref{rectangle}) @result{} void. Options: run-first.
-@item @anchor{signal.widget.state-changed}"state-changed". Signature: (instance @ref{widget}), (arg-1 @ref{state-type}) @result{} void. Options: run-first.
-@item @anchor{signal.widget.parent-set}"parent-set". Signature: (instance @ref{widget}), (arg-1 @ref{widget}) @result{} void. Options: run-first.
-@item @anchor{signal.widget.hierarchy-changed}"hierarchy-changed". Signature: (instance @ref{widget}), (arg-1 @ref{widget}) @result{} void. Options: run-last.
-@item @anchor{signal.widget.style-set}"style-set". Signature: (instance @ref{widget}), (arg-1 @ref{style}) @result{} void. Options: run-first.
-@item @anchor{signal.widget.direction-changed}"direction-changed". Signature: (instance @ref{widget}), (arg-1 @ref{text-direction}) @result{} void. Options: run-first.
-@item @anchor{signal.widget.grab-notify}"grab-notify". Signature: (instance @ref{widget}), (arg-1 @code{boolean}) @result{} void. Options: run-first.
-@item @anchor{signal.widget.child-notify}"child-notify". Signature: (instance @ref{widget}), (arg-1 GParam) @result{} void. Options: run-first, no-recurse, detailed, no-hooks.
-@item @anchor{signal.widget.mnemonic-activate}"mnemonic-activate". Signature: (instance @ref{widget}), (arg-1 @code{boolean}) @result{} @code{boolean}. Options: run-last.
-@item @anchor{signal.widget.grab-focus}"grab-focus". Signature: (instance @ref{widget}) @result{} void. Options: run-last, action.
-@item @anchor{signal.widget.focus}"focus". Signature: (instance @ref{widget}), (arg-1 @ref{direction-type}) @result{} @code{boolean}. Options: run-last.
-@item @anchor{signal.widget.move-focus}"move-focus". Signature: (instance @ref{widget}), (arg-1 @ref{direction-type}) @result{} void. Options: run-last, action.
-@item @anchor{signal.widget.event}"event". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
-@item @anchor{signal.widget.event-after}"event-after". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} void. Options: .
+@item @anchor{signal.widget.accel-closures-changed}"accel-closures-changed". Signature: (instance @ref{widget}) @result{} void. Options: .
 @item @anchor{signal.widget.button-press-event}"button-press-event". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
 @item @anchor{signal.widget.button-release-event}"button-release-event". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
-@item @anchor{signal.widget.scroll-event}"scroll-event". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
-@item @anchor{signal.widget.motion-notify-event}"motion-notify-event". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
-@item @anchor{signal.widget.keynav-failed}"keynav-failed". Signature: (instance @ref{widget}), (arg-1 @ref{direction-type}) @result{} @code{boolean}. Options: run-last.
+@item @anchor{signal.widget.can-activate-accel}"can-activate-accel". Signature: (instance @ref{widget}), (arg-1 @code{integer}) @result{} @code{boolean}. Options: run-last.
+@item @anchor{signal.widget.child-notify}"child-notify". Signature: (instance @ref{widget}), (arg-1 GParam) @result{} void. Options: run-first, no-recurse, detailed, no-hooks.
+@item @anchor{signal.widget.client-event}"client-event". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
+@item @anchor{signal.widget.composited-changed}"composited-changed". Signature: (instance @ref{widget}) @result{} void. Options: run-last, action.
+@item @anchor{signal.widget.configure-event}"configure-event". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
+@item @anchor{signal.widget.damage-event}"damage-event". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
 @item @anchor{signal.widget.delete-event}"delete-event". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
 @item @anchor{signal.widget.destroy-event}"destroy-event". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
-@item @anchor{signal.widget.expose-event}"expose-event". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
-@item @anchor{signal.widget.key-press-event}"key-press-event". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
-@item @anchor{signal.widget.key-release-event}"key-release-event". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
-@item @anchor{signal.widget.enter-notify-event}"enter-notify-event". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
-@item @anchor{signal.widget.leave-notify-event}"leave-notify-event". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
-@item @anchor{signal.widget.configure-event}"configure-event". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
-@item @anchor{signal.widget.focus-in-event}"focus-in-event". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
-@item @anchor{signal.widget.focus-out-event}"focus-out-event". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
-@item @anchor{signal.widget.map-event}"map-event". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
-@item @anchor{signal.widget.unmap-event}"unmap-event". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
-@item @anchor{signal.widget.property-notify-event}"property-notify-event". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
-@item @anchor{signal.widget.selection-clear-event}"selection-clear-event". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
-@item @anchor{signal.widget.selection-request-event}"selection-request-event". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
-@item @anchor{signal.widget.selection-notify-event}"selection-notify-event". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
-@item @anchor{signal.widget.selection-received}"selection-received". Signature: (instance @ref{widget}), (arg-1 @code{GtkSelectionData}), (arg-2 @code{integer}) @result{} void. Options: run-last.
-@item @anchor{signal.widget.selection-get}"selection-get". Signature: (instance @ref{widget}), (arg-1 @code{GtkSelectionData}), (arg-2 @code{integer}), (arg-3 @code{integer}) @result{} void. Options: run-last.
-@item @anchor{signal.widget.proximity-in-event}"proximity-in-event". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
-@item @anchor{signal.widget.proximity-out-event}"proximity-out-event". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
-@item @anchor{signal.widget.drag-leave}"drag-leave". Signature: (instance @ref{widget}), (arg-1 @ref{drag-context}), (arg-2 @code{integer}) @result{} void. Options: run-last.
+@item @anchor{signal.widget.direction-changed}"direction-changed". Signature: (instance @ref{widget}), (arg-1 @ref{text-direction}) @result{} void. Options: run-first.
 @item @anchor{signal.widget.drag-begin}"drag-begin". Signature: (instance @ref{widget}), (arg-1 @ref{drag-context}) @result{} void. Options: run-last.
-@item @anchor{signal.widget.drag-end}"drag-end". Signature: (instance @ref{widget}), (arg-1 @ref{drag-context}) @result{} void. Options: run-last.
 @item @anchor{signal.widget.drag-data-delete}"drag-data-delete". Signature: (instance @ref{widget}), (arg-1 @ref{drag-context}) @result{} void. Options: run-last.
-@item @anchor{signal.widget.drag-failed}"drag-failed". Signature: (instance @ref{widget}), (arg-1 @ref{drag-context}), (arg-2 @ref{drag-result}) @result{} @code{boolean}. Options: run-last.
-@item @anchor{signal.widget.drag-motion}"drag-motion". Signature: (instance @ref{widget}), (arg-1 @ref{drag-context}), (arg-2 @code{integer}), (arg-3 @code{integer}), (arg-4 @code{integer}) @result{} @code{boolean}. Options: run-last.
-@item @anchor{signal.widget.drag-drop}"drag-drop". Signature: (instance @ref{widget}), (arg-1 @ref{drag-context}), (arg-2 @code{integer}), (arg-3 @code{integer}), (arg-4 @code{integer}) @result{} @code{boolean}. Options: run-last.
 @item @anchor{signal.widget.drag-data-get}"drag-data-get". Signature: (instance @ref{widget}), (arg-1 @ref{drag-context}), (arg-2 @code{GtkSelectionData}), (arg-3 @code{integer}), (arg-4 @code{integer}) @result{} void. Options: run-last.
 @item @anchor{signal.widget.drag-data-received}"drag-data-received". Signature: (instance @ref{widget}), (arg-1 @ref{drag-context}), (arg-2 @code{integer}), (arg-3 @code{integer}), (arg-4 @code{GtkSelectionData}), (arg-5 @code{integer}), (arg-6 @code{integer}) @result{} void. Options: run-last.
-@item @anchor{signal.widget.visibility-notify-event}"visibility-notify-event". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
-@item @anchor{signal.widget.client-event}"client-event". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
-@item @anchor{signal.widget.no-expose-event}"no-expose-event". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
-@item @anchor{signal.widget.window-state-event}"window-state-event". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
-@item @anchor{signal.widget.damage-event}"damage-event". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
+@item @anchor{signal.widget.drag-drop}"drag-drop". Signature: (instance @ref{widget}), (arg-1 @ref{drag-context}), (arg-2 @code{integer}), (arg-3 @code{integer}), (arg-4 @code{integer}) @result{} @code{boolean}. Options: run-last.
+@item @anchor{signal.widget.drag-end}"drag-end". Signature: (instance @ref{widget}), (arg-1 @ref{drag-context}) @result{} void. Options: run-last.
+@item @anchor{signal.widget.drag-failed}"drag-failed". Signature: (instance @ref{widget}), (arg-1 @ref{drag-context}), (arg-2 @ref{drag-result}) @result{} @code{boolean}. Options: run-last.
+@item @anchor{signal.widget.drag-leave}"drag-leave". Signature: (instance @ref{widget}), (arg-1 @ref{drag-context}), (arg-2 @code{integer}) @result{} void. Options: run-last.
+@item @anchor{signal.widget.drag-motion}"drag-motion". Signature: (instance @ref{widget}), (arg-1 @ref{drag-context}), (arg-2 @code{integer}), (arg-3 @code{integer}), (arg-4 @code{integer}) @result{} @code{boolean}. Options: run-last.
+@item @anchor{signal.widget.enter-notify-event}"enter-notify-event". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
+@item @anchor{signal.widget.event}"event". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
+@item @anchor{signal.widget.event-after}"event-after". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} void. Options: .
+@item @anchor{signal.widget.expose-event}"expose-event". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
+@item @anchor{signal.widget.focus}"focus". Signature: (instance @ref{widget}), (arg-1 @ref{direction-type}) @result{} @code{boolean}. Options: run-last.
+@item @anchor{signal.widget.focus-in-event}"focus-in-event". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
+@item @anchor{signal.widget.focus-out-event}"focus-out-event". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
 @item @anchor{signal.widget.grab-broken-event}"grab-broken-event". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
-@item @anchor{signal.widget.query-tooltip}"query-tooltip". Signature: (instance @ref{widget}), (arg-1 @code{integer}), (arg-2 @code{integer}), (arg-3 @code{boolean}), (arg-4 @ref{tooltip}) @result{} @code{boolean}. Options: run-last.
+@item @anchor{signal.widget.grab-focus}"grab-focus". Signature: (instance @ref{widget}) @result{} void. Options: run-last, action.
+@item @anchor{signal.widget.grab-notify}"grab-notify". Signature: (instance @ref{widget}), (arg-1 @code{boolean}) @result{} void. Options: run-first.
+@item @anchor{signal.widget.hide}"hide". Signature: (instance @ref{widget}) @result{} void. Options: run-first.
+@item @anchor{signal.widget.hierarchy-changed}"hierarchy-changed". Signature: (instance @ref{widget}), (arg-1 @ref{widget}) @result{} void. Options: run-last.
+@item @anchor{signal.widget.key-press-event}"key-press-event". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
+@item @anchor{signal.widget.key-release-event}"key-release-event". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
+@item @anchor{signal.widget.keynav-failed}"keynav-failed". Signature: (instance @ref{widget}), (arg-1 @ref{direction-type}) @result{} @code{boolean}. Options: run-last.
+@item @anchor{signal.widget.leave-notify-event}"leave-notify-event". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
+@item @anchor{signal.widget.map}"map". Signature: (instance @ref{widget}) @result{} void. Options: run-first.
+@item @anchor{signal.widget.map-event}"map-event". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
+@item @anchor{signal.widget.mnemonic-activate}"mnemonic-activate". Signature: (instance @ref{widget}), (arg-1 @code{boolean}) @result{} @code{boolean}. Options: run-last.
+@item @anchor{signal.widget.motion-notify-event}"motion-notify-event". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
+@item @anchor{signal.widget.move-focus}"move-focus". Signature: (instance @ref{widget}), (arg-1 @ref{direction-type}) @result{} void. Options: run-last, action.
+@item @anchor{signal.widget.no-expose-event}"no-expose-event". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
+@item @anchor{signal.widget.parent-set}"parent-set". Signature: (instance @ref{widget}), (arg-1 @ref{widget}) @result{} void. Options: run-first.
 @item @anchor{signal.widget.popup-menu}"popup-menu". Signature: (instance @ref{widget}) @result{} @code{boolean}. Options: run-last, action.
-@item @anchor{signal.widget.show-help}"show-help". Signature: (instance @ref{widget}), (arg-1 @ref{widget-help-type}) @result{} @code{boolean}. Options: run-last, action.
-@item @anchor{signal.widget.accel-closures-changed}"accel-closures-changed". Signature: (instance @ref{widget}) @result{} void. Options: .
+@item @anchor{signal.widget.property-notify-event}"property-notify-event". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
+@item @anchor{signal.widget.proximity-in-event}"proximity-in-event". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
+@item @anchor{signal.widget.proximity-out-event}"proximity-out-event". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
+@item @anchor{signal.widget.query-tooltip}"query-tooltip". Signature: (instance @ref{widget}), (arg-1 @code{integer}), (arg-2 @code{integer}), (arg-3 @code{boolean}), (arg-4 @ref{tooltip}) @result{} @code{boolean}. Options: run-last.
+@item @anchor{signal.widget.realize}"realize". Signature: (instance @ref{widget}) @result{} void. Options: run-first.
 @item @anchor{signal.widget.screen-changed}"screen-changed". Signature: (instance @ref{widget}), (arg-1 @ref{screen}) @result{} void. Options: run-last.
-@item @anchor{signal.widget.can-activate-accel}"can-activate-accel". Signature: (instance @ref{widget}), (arg-1 @code{integer}) @result{} @code{boolean}. Options: run-last.
+@item @anchor{signal.widget.scroll-event}"scroll-event". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
+@item @anchor{signal.widget.selection-clear-event}"selection-clear-event". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
+@item @anchor{signal.widget.selection-get}"selection-get". Signature: (instance @ref{widget}), (arg-1 @code{GtkSelectionData}), (arg-2 @code{integer}), (arg-3 @code{integer}) @result{} void. Options: run-last.
+@item @anchor{signal.widget.selection-notify-event}"selection-notify-event". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
+@item @anchor{signal.widget.selection-received}"selection-received". Signature: (instance @ref{widget}), (arg-1 @code{GtkSelectionData}), (arg-2 @code{integer}) @result{} void. Options: run-last.
+@item @anchor{signal.widget.selection-request-event}"selection-request-event". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
+@item @anchor{signal.widget.show}"show". Signature: (instance @ref{widget}) @result{} void. Options: run-first.
+@item @anchor{signal.widget.show-help}"show-help". Signature: (instance @ref{widget}), (arg-1 @ref{widget-help-type}) @result{} @code{boolean}. Options: run-last, action.
+@item @anchor{signal.widget.size-allocate}"size-allocate". Signature: (instance @ref{widget}), (arg-1 @ref{rectangle}) @result{} void. Options: run-first.
+@item @anchor{signal.widget.size-request}"size-request". Signature: (instance @ref{widget}), (arg-1 @code{GtkRequisition}) @result{} void. Options: run-first.
+@item @anchor{signal.widget.state-changed}"state-changed". Signature: (instance @ref{widget}), (arg-1 @ref{state-type}) @result{} void. Options: run-first.
+@item @anchor{signal.widget.style-set}"style-set". Signature: (instance @ref{widget}), (arg-1 @ref{style}) @result{} void. Options: run-first.
+@item @anchor{signal.widget.unmap}"unmap". Signature: (instance @ref{widget}) @result{} void. Options: run-first.
+@item @anchor{signal.widget.unmap-event}"unmap-event". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
+@item @anchor{signal.widget.unrealize}"unrealize". Signature: (instance @ref{widget}) @result{} void. Options: run-last.
+@item @anchor{signal.widget.visibility-notify-event}"visibility-notify-event". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
+@item @anchor{signal.widget.window-state-event}"window-state-event". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
 @end itemize
 
 

@@ -22,7 +22,7 @@
 @Enum colorspace
 Values: 
 @itemize
-@item :rgb
+@item @anchor{enum.colorspace.rgb}:rgb
 @end itemize
 
 
@@ -31,12 +31,12 @@ Values:
 @Enum crossing-mode
 Values: 
 @itemize
-@item :normal
-@item :grab
-@item :ungrab
-@item :gtk-grab
-@item :gtk-ungrab
-@item :state-changed
+@item @anchor{enum.crossing-mode.grab}:grab
+@item @anchor{enum.crossing-mode.gtk-grab}:gtk-grab
+@item @anchor{enum.crossing-mode.gtk-ungrab}:gtk-ungrab
+@item @anchor{enum.crossing-mode.normal}:normal
+@item @anchor{enum.crossing-mode.state-changed}:state-changed
+@item @anchor{enum.crossing-mode.ungrab}:ungrab
 @end itemize
 
 
@@ -45,86 +45,86 @@ Values:
 @Enum cursor-type
 Values: 
 @itemize
-@item :x-cursor
-@item :arrow
-@item :based-arrow-down
-@item :based-arrow-up
-@item :boat
-@item :bogosity
-@item :bottom-left-corner
-@item :bottom-right-corner
-@item :bottom-side
-@item :bottom-tee
-@item :box-spiral
-@item :center-ptr
-@item :circle
-@item :clock
-@item :coffee-mug
-@item :cross
-@item :cross-reverse
-@item :crosshair
-@item :diamond-cross
-@item :dot
-@item :dotbox
-@item :double-arrow
-@item :draft-large
-@item :draft-small
-@item :draped-box
-@item :exchange
-@item :fleur
-@item :gobbler
-@item :gumby
-@item :hand1
-@item :hand2
-@item :heart
-@item :icon
-@item :iron-cross
-@item :left-ptr
-@item :left-side
-@item :left-tee
-@item :leftbutton
-@item :ll-angle
-@item :lr-angle
-@item :man
-@item :middlebutton
-@item :mouse
-@item :pencil
-@item :pirate
-@item :plus
-@item :question-arrow
-@item :right-ptr
-@item :right-side
-@item :right-tee
-@item :rightbutton
-@item :rtl-logo
-@item :sailboat
-@item :sb-down-arrow
-@item :sb-h-double-arrow
-@item :sb-left-arrow
-@item :sb-right-arrow
-@item :sb-up-arrow
-@item :sb-v-double-arrow
-@item :shuttle
-@item :sizing
-@item :spider
-@item :spraycan
-@item :star
-@item :target
-@item :tcross
-@item :top-left-arrow
-@item :top-left-corner
-@item :top-right-corner
-@item :top-side
-@item :top-tee
-@item :trek
-@item :ul-angle
-@item :umbrella
-@item :ur-angle
-@item :watch
-@item :xterm
-@item :last-cursor
-@item :blank-cursor
-@item :cursor-is-pixmap
+@item @anchor{enum.cursor-type.arrow}:arrow
+@item @anchor{enum.cursor-type.based-arrow-down}:based-arrow-down
+@item @anchor{enum.cursor-type.based-arrow-up}:based-arrow-up
+@item @anchor{enum.cursor-type.blank-cursor}:blank-cursor
+@item @anchor{enum.cursor-type.boat}:boat
+@item @anchor{enum.cursor-type.bogosity}:bogosity
+@item @anchor{enum.cursor-type.bottom-left-corner}:bottom-left-corner
+@item @anchor{enum.cursor-type.bottom-right-corner}:bottom-right-corner
+@item @anchor{enum.cursor-type.bottom-side}:bottom-side
+@item @anchor{enum.cursor-type.bottom-tee}:bottom-tee
+@item @anchor{enum.cursor-type.box-spiral}:box-spiral
+@item @anchor{enum.cursor-type.center-ptr}:center-ptr
+@item @anchor{enum.cursor-type.circle}:circle
+@item @anchor{enum.cursor-type.clock}:clock
+@item @anchor{enum.cursor-type.coffee-mug}:coffee-mug
+@item @anchor{enum.cursor-type.cross}:cross
+@item @anchor{enum.cursor-type.cross-reverse}:cross-reverse
+@item @anchor{enum.cursor-type.crosshair}:crosshair
+@item @anchor{enum.cursor-type.cursor-is-pixmap}:cursor-is-pixmap
+@item @anchor{enum.cursor-type.diamond-cross}:diamond-cross
+@item @anchor{enum.cursor-type.dot}:dot
+@item @anchor{enum.cursor-type.dotbox}:dotbox
+@item @anchor{enum.cursor-type.double-arrow}:double-arrow
+@item @anchor{enum.cursor-type.draft-large}:draft-large
+@item @anchor{enum.cursor-type.draft-small}:draft-small
+@item @anchor{enum.cursor-type.draped-box}:draped-box
+@item @anchor{enum.cursor-type.exchange}:exchange
+@item @anchor{enum.cursor-type.fleur}:fleur
+@item @anchor{enum.cursor-type.gobbler}:gobbler
+@item @anchor{enum.cursor-type.gumby}:gumby
+@item @anchor{enum.cursor-type.hand1}:hand1
+@item @anchor{enum.cursor-type.hand2}:hand2
+@item @anchor{enum.cursor-type.heart}:heart
+@item @anchor{enum.cursor-type.icon}:icon
+@item @anchor{enum.cursor-type.iron-cross}:iron-cross
+@item @anchor{enum.cursor-type.last-cursor}:last-cursor
+@item @anchor{enum.cursor-type.left-ptr}:left-ptr
+@item @anchor{enum.cursor-type.left-side}:left-side
+@item @anchor{enum.cursor-type.left-tee}:left-tee
+@item @anchor{enum.cursor-type.leftbutton}:leftbutton
+@item @anchor{enum.cursor-type.ll-angle}:ll-angle
+@item @anchor{enum.cursor-type.lr-angle}:lr-angle
+@item @anchor{enum.cursor-type.man}:man
+@item @anchor{enum.cursor-type.middlebutton}:middlebutton
+@item @anchor{enum.cursor-type.mouse}:mouse
+@item @anchor{enum.cursor-type.pencil}:pencil
+@item @anchor{enum.cursor-type.pirate}:pirate
+@item @anchor{enum.cursor-type.plus}:plus
+@item @anchor{enum.cursor-type.question-arrow}:question-arrow
+@item @anchor{enum.cursor-type.right-ptr}:right-ptr
+@item @anchor{enum.cursor-type.right-side}:right-side
+@item @anchor{enum.cursor-type.right-tee}:right-tee
+@item @anchor{enum.cursor-type.rightbutton}:rightbutton
+@item @anchor{enum.cursor-type.rtl-logo}:rtl-logo
+@item @anchor{enum.cursor-type.sailboat}:sailboat
+@item @anchor{enum.cursor-type.sb-down-arrow}:sb-down-arrow
+@item @anchor{enum.cursor-type.sb-h-double-arrow}:sb-h-double-arrow
+@item @anchor{enum.cursor-type.sb-left-arrow}:sb-left-arrow
+@item @anchor{enum.cursor-type.sb-right-arrow}:sb-right-arrow
+@item @anchor{enum.cursor-type.sb-up-arrow}:sb-up-arrow
+@item @anchor{enum.cursor-type.sb-v-double-arrow}:sb-v-double-arrow
+@item @anchor{enum.cursor-type.shuttle}:shuttle
+@item @anchor{enum.cursor-type.sizing}:sizing
+@item @anchor{enum.cursor-type.spider}:spider
+@item @anchor{enum.cursor-type.spraycan}:spraycan
+@item @anchor{enum.cursor-type.star}:star
+@item @anchor{enum.cursor-type.target}:target
+@item @anchor{enum.cursor-type.tcross}:tcross
+@item @anchor{enum.cursor-type.top-left-arrow}:top-left-arrow
+@item @anchor{enum.cursor-type.top-left-corner}:top-left-corner
+@item @anchor{enum.cursor-type.top-right-corner}:top-right-corner
+@item @anchor{enum.cursor-type.top-side}:top-side
+@item @anchor{enum.cursor-type.top-tee}:top-tee
+@item @anchor{enum.cursor-type.trek}:trek
+@item @anchor{enum.cursor-type.ul-angle}:ul-angle
+@item @anchor{enum.cursor-type.umbrella}:umbrella
+@item @anchor{enum.cursor-type.ur-angle}:ur-angle
+@item @anchor{enum.cursor-type.watch}:watch
+@item @anchor{enum.cursor-type.x-cursor}:x-cursor
+@item @anchor{enum.cursor-type.xterm}:xterm
 @end itemize
 
 
@@ -133,44 +133,44 @@ Values:
 @Enum event-type
 Values: 
 @itemize
-@item :nothing
-@item :delete
-@item :destroy
-@item :expose
-@item :motion-notify
-@item :button-press
-@item :2button-press
-@item :3button-press
-@item :button-release
-@item :key-press
-@item :key-release
-@item :enter-notify
-@item :leave-notify
-@item :focus-change
-@item :configure
-@item :map
-@item :unmap
-@item :property-notify
-@item :selection-clear
-@item :selection-request
-@item :selection-notify
-@item :proximity-in
-@item :proximity-out
-@item :drag-enter
-@item :drag-leave
-@item :drag-motion
-@item :drag-status
-@item :drop-start
-@item :drop-finished
-@item :client-event
-@item :visibility-notify
-@item :no-expose
-@item :scroll
-@item :window-state
-@item :setting
-@item :owner-change
-@item :grab-broken
-@item :damage
+@item @anchor{enum.event-type.2button-press}:2button-press
+@item @anchor{enum.event-type.3button-press}:3button-press
+@item @anchor{enum.event-type.button-press}:button-press
+@item @anchor{enum.event-type.button-release}:button-release
+@item @anchor{enum.event-type.client-event}:client-event
+@item @anchor{enum.event-type.configure}:configure
+@item @anchor{enum.event-type.damage}:damage
+@item @anchor{enum.event-type.delete}:delete
+@item @anchor{enum.event-type.destroy}:destroy
+@item @anchor{enum.event-type.drag-enter}:drag-enter
+@item @anchor{enum.event-type.drag-leave}:drag-leave
+@item @anchor{enum.event-type.drag-motion}:drag-motion
+@item @anchor{enum.event-type.drag-status}:drag-status
+@item @anchor{enum.event-type.drop-finished}:drop-finished
+@item @anchor{enum.event-type.drop-start}:drop-start
+@item @anchor{enum.event-type.enter-notify}:enter-notify
+@item @anchor{enum.event-type.expose}:expose
+@item @anchor{enum.event-type.focus-change}:focus-change
+@item @anchor{enum.event-type.grab-broken}:grab-broken
+@item @anchor{enum.event-type.key-press}:key-press
+@item @anchor{enum.event-type.key-release}:key-release
+@item @anchor{enum.event-type.leave-notify}:leave-notify
+@item @anchor{enum.event-type.map}:map
+@item @anchor{enum.event-type.motion-notify}:motion-notify
+@item @anchor{enum.event-type.no-expose}:no-expose
+@item @anchor{enum.event-type.nothing}:nothing
+@item @anchor{enum.event-type.owner-change}:owner-change
+@item @anchor{enum.event-type.property-notify}:property-notify
+@item @anchor{enum.event-type.proximity-in}:proximity-in
+@item @anchor{enum.event-type.proximity-out}:proximity-out
+@item @anchor{enum.event-type.scroll}:scroll
+@item @anchor{enum.event-type.selection-clear}:selection-clear
+@item @anchor{enum.event-type.selection-notify}:selection-notify
+@item @anchor{enum.event-type.selection-request}:selection-request
+@item @anchor{enum.event-type.setting}:setting
+@item @anchor{enum.event-type.unmap}:unmap
+@item @anchor{enum.event-type.visibility-notify}:visibility-notify
+@item @anchor{enum.event-type.window-state}:window-state
 @end itemize
 
 
@@ -179,8 +179,8 @@ Values:
 @Enum font-type
 Values: 
 @itemize
-@item :font
-@item :fontset
+@item @anchor{enum.font-type.font}:font
+@item @anchor{enum.font-type.fontset}:fontset
 @end itemize
 
 
@@ -189,9 +189,9 @@ Values:
 @Enum gdk-extension-mode
 Values: 
 @itemize
-@item :none
-@item :all
-@item :cursor
+@item @anchor{enum.gdk-extension-mode.all}:all
+@item @anchor{enum.gdk-extension-mode.cursor}:cursor
+@item @anchor{enum.gdk-extension-mode.none}:none
 @end itemize
 
 
@@ -200,20 +200,20 @@ Values:
 @Enum gdk-window-type-hint
 Values: 
 @itemize
-@item :normal
-@item :dialog
-@item :menu
-@item :toolbar
-@item :splashscreen
-@item :utility
-@item :dock
-@item :desktop
-@item :dropdown-menu
-@item :popup-menu
-@item :tooltip
-@item :notification
-@item :combo
-@item :dnd
+@item @anchor{enum.gdk-window-type-hint.combo}:combo
+@item @anchor{enum.gdk-window-type-hint.desktop}:desktop
+@item @anchor{enum.gdk-window-type-hint.dialog}:dialog
+@item @anchor{enum.gdk-window-type-hint.dnd}:dnd
+@item @anchor{enum.gdk-window-type-hint.dock}:dock
+@item @anchor{enum.gdk-window-type-hint.dropdown-menu}:dropdown-menu
+@item @anchor{enum.gdk-window-type-hint.menu}:menu
+@item @anchor{enum.gdk-window-type-hint.normal}:normal
+@item @anchor{enum.gdk-window-type-hint.notification}:notification
+@item @anchor{enum.gdk-window-type-hint.popup-menu}:popup-menu
+@item @anchor{enum.gdk-window-type-hint.splashscreen}:splashscreen
+@item @anchor{enum.gdk-window-type-hint.toolbar}:toolbar
+@item @anchor{enum.gdk-window-type-hint.tooltip}:tooltip
+@item @anchor{enum.gdk-window-type-hint.utility}:utility
 @end itemize
 
 
@@ -222,11 +222,11 @@ Values:
 @Enum grab-status
 Values: 
 @itemize
-@item :success
-@item :already-grabbed
-@item :invalid-time
-@item :not-viewable
-@item :frozen
+@item @anchor{enum.grab-status.already-grabbed}:already-grabbed
+@item @anchor{enum.grab-status.frozen}:frozen
+@item @anchor{enum.grab-status.invalid-time}:invalid-time
+@item @anchor{enum.grab-status.not-viewable}:not-viewable
+@item @anchor{enum.grab-status.success}:success
 @end itemize
 
 
@@ -235,16 +235,16 @@ Values:
 @Enum gravity
 Values: 
 @itemize
-@item :north-west
-@item :north
-@item :north-east
-@item :west
-@item :center
-@item :east
-@item :south-west
-@item :south
-@item :south-east
-@item :static
+@item @anchor{enum.gravity.center}:center
+@item @anchor{enum.gravity.east}:east
+@item @anchor{enum.gravity.north}:north
+@item @anchor{enum.gravity.north-east}:north-east
+@item @anchor{enum.gravity.north-west}:north-west
+@item @anchor{enum.gravity.south}:south
+@item @anchor{enum.gravity.south-east}:south-east
+@item @anchor{enum.gravity.south-west}:south-west
+@item @anchor{enum.gravity.static}:static
+@item @anchor{enum.gravity.west}:west
 @end itemize
 
 
@@ -253,12 +253,12 @@ Values:
 @Enum notify-type
 Values: 
 @itemize
-@item :ancestor
-@item :virtual
-@item :inferior
-@item :nonlinear
-@item :nonlinear-virtual
-@item :unknown
+@item @anchor{enum.notify-type.ancestor}:ancestor
+@item @anchor{enum.notify-type.inferior}:inferior
+@item @anchor{enum.notify-type.nonlinear}:nonlinear
+@item @anchor{enum.notify-type.nonlinear-virtual}:nonlinear-virtual
+@item @anchor{enum.notify-type.unknown}:unknown
+@item @anchor{enum.notify-type.virtual}:virtual
 @end itemize
 
 
@@ -267,9 +267,9 @@ Values:
 @Enum owner-change
 Values: 
 @itemize
-@item :new-owner
-@item :destroy
-@item :close
+@item @anchor{enum.owner-change.close}:close
+@item @anchor{enum.owner-change.destroy}:destroy
+@item @anchor{enum.owner-change.new-owner}:new-owner
 @end itemize
 
 
@@ -278,8 +278,8 @@ Values:
 @Enum property-state
 Values: 
 @itemize
-@item :new-value
-@item :delete
+@item @anchor{enum.property-state.delete}:delete
+@item @anchor{enum.property-state.new-value}:new-value
 @end itemize
 
 
@@ -288,10 +288,10 @@ Values:
 @Enum scroll-direction
 Values: 
 @itemize
-@item :up
-@item :down
-@item :left
-@item :right
+@item @anchor{enum.scroll-direction.down}:down
+@item @anchor{enum.scroll-direction.left}:left
+@item @anchor{enum.scroll-direction.right}:right
+@item @anchor{enum.scroll-direction.up}:up
 @end itemize
 
 
@@ -300,9 +300,9 @@ Values:
 @Enum setting-action
 Values: 
 @itemize
-@item :new
-@item :changed
-@item :deleted
+@item @anchor{enum.setting-action.changed}:changed
+@item @anchor{enum.setting-action.deleted}:deleted
+@item @anchor{enum.setting-action.new}:new
 @end itemize
 
 
@@ -311,9 +311,9 @@ Values:
 @Enum visibility-state
 Values: 
 @itemize
-@item :unobscured
-@item :partial
-@item :fully-obscured
+@item @anchor{enum.visibility-state.fully-obscured}:fully-obscured
+@item @anchor{enum.visibility-state.partial}:partial
+@item @anchor{enum.visibility-state.unobscured}:unobscured
 @end itemize
 
 
@@ -322,14 +322,14 @@ Values:
 @Enum window-edge
 Values: 
 @itemize
-@item :north-west
-@item :north
-@item :north-east
-@item :west
-@item :east
-@item :south-west
-@item :south
-@item :south-east
+@item @anchor{enum.window-edge.east}:east
+@item @anchor{enum.window-edge.north}:north
+@item @anchor{enum.window-edge.north-east}:north-east
+@item @anchor{enum.window-edge.north-west}:north-west
+@item @anchor{enum.window-edge.south}:south
+@item @anchor{enum.window-edge.south-east}:south-east
+@item @anchor{enum.window-edge.south-west}:south-west
+@item @anchor{enum.window-edge.west}:west
 @end itemize
 
 
