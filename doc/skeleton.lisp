@@ -2,8 +2,6 @@
   (:use :cl :gtk :gdk :gobject :iter :c2mop :glib)
   (:export :widget-skeleton
            :widgets-chapter-skeleton
-           :*gtk-widgets*
-           :all-gtk-widgets
            :enum-skeleton
            :flags-skeleton
            :all-enums
@@ -39,47 +37,29 @@
            (write-string (widget-skeleton w :section section :use-refs use-refs) output)
            (format output "~%~%")))))
 
-(defparameter *gtk-widgets* '(about-dialog accel-label alignment arrow
-  aspect-frame assistant bin box button button-box calendar cell-view
-  check-button check-menu-item color-button color-selection
-  color-selection-dialog combo-box combo-box-entry container curve
-  dialog drawing-area entry event-box expander file-chooser-button
-  file-chooser-dialog file-chooser-widget fixed font-button
-  font-selection font-selection-dialog frame gamma-curve gtk-window
-  h-box h-button-box h-paned h-ruler h-s-v h-scale h-scrollbar
-  h-separator handle-box icon-view image image-menu-item input-dialog
-  invisible item label layout link-button menu menu-bar menu-item
-  menu-shell menu-tool-button message-dialog misc notebook
-  old-editable paned plug progress progress-bar radio-button
-  radio-menu-item radio-tool-button range recent-chooser-dialog
-  recent-chooser-menu recent-chooser-widget ruler scale scale-button
-  scrollbar scrolled-window separator separator-menu-item
-  separator-tool-item socket spin-button statusbar table
-  tearoff-menu-item text text-view toggle-button toggle-tool-button
-  tool-button tool-item toolbar tree tree-item tree-view v-box
-  v-button-box v-paned v-ruler v-scale v-scrollbar v-separator
-  viewport volume-button widget))
+(defparameter *exclusions* '(gdk:display gdk:screen))
 
-(defun all-gtk-widgets ()
-  (all-widgets (find-package :gtk)))
+(defparameter *ref-exclusions* '(gtk-demo::custom-window gtkglext:gl-drawing-area gtkglext:gdk-gl-window gtkglext:gdk-gl-pixmap))
 
 (defun all-widgets (package)
   (sort (iter (for symbol in-package (find-package package) :external-only t)
-              (for class = (find-class symbol nil))
-              (when (and class (subclassp class (find-class 'gtk:widget)))
-                (collect symbol)))
+              (unless (member symbol *exclusions*)
+                (for class = (find-class symbol nil))
+                (when (and class (subclassp class (find-class 'gtk:widget)))
+                  (collect symbol))))
         #'string<))
 
 (defun all-classes (package)
   (sort (iter (for symbol in-package (find-package package) :external-only t)
-              (for class = (find-class symbol nil))
-              (when (and class
-                         (not (subclassp class (find-class 'condition)))
-                         (not (subclassp class (find-class 'gtk:widget)))
-                         (or (not (typep class 'gobject::gobject-class))
-                             (not (gobject::gobject-class-interface-p class)))
-                         (not (typep class 'structure-class)))
-                (collect symbol)))
+              (unless (member symbol *exclusions*)
+                (for class = (find-class symbol nil))
+                (when (and class
+                           (not (subclassp class (find-class 'condition)))
+                           (not (subclassp class (find-class 'gtk:widget)))
+                           (or (not (typep class 'gobject::gobject-class))
+                               (not (gobject::gobject-class-interface-p class)))
+                           (not (typep class 'structure-class)))
+                  (collect symbol))))
         #'string<))
 
 ;; (widget-skeleton widget &key (sectioning-command "section"))
@@ -123,13 +103,13 @@
       (format stream "@Class ~A~%" (class-name widget))
       (format stream "Superclass:")
       (iter (for super in (class-direct-superclasses widget))
-            (unless (and (typep super 'gobject-class) (gobject::gobject-class-interface-p super))
-              (format stream " ~A" (format-ref (class-name super)))))
+            (format stream " ~A" (format-ref (class-name super))))
       (when (class-direct-subclasses widget)
         (format stream "~%~%")
         (format stream "Subclasses:")
         (iter (for sub in (class-direct-subclasses widget))
-              (format stream " ~A" (format-ref (class-name sub)))))
+              (unless (member (class-name sub) *ref-exclusions*)
+                (format stream " ~A" (format-ref (class-name sub))))))
       (format stream "~%~%")
       (widget-slots stream widget)
       (format stream "~%~%")
@@ -140,7 +120,7 @@
 (defun widget-slots (stream widget)
   (format stream "Slots:~%")
   (format stream "@itemize~%")
-  (iter (for slot in (class-direct-slots widget))
+  (iter (for slot in (sort (copy-list (class-direct-slots widget)) #'string< :key #'slot-definition-name))
         (when (typep slot 'gobject::gobject-direct-slot-definition)
           (format stream "@item @anchor{slot.~A.~A}~A. Type: ~A. Accessor: ~A."
                   (class-name widget) (slot-definition-name slot)
@@ -160,7 +140,7 @@
         (format stream "Signals:~%")
         (format stream "@itemize~%")
         ;; @item @anchor{signal.$widget.$signal}"$signal". Signature: Type1 Arg1, .., Typen Argn => return-type. Options: $(signal-options)
-        (iter (for signal in (type-signals g-type))
+        (iter (for signal in (sort (copy-list (type-signals g-type)) #'string< :key #'signal-info-name))
               (format stream "@item @anchor{signal.~A.~A}\"~A\". Signature: ~A. Options: ~A."
                       (class-name widget)
                       (signal-info-name signal)
@@ -180,7 +160,7 @@
               (format stream "Child properties:~%")
               (format stream "@itemize~%")
               ;; @item @anchor{signal.$widget.$signal}"$signal". Signature: Type1 Arg1, .., Typen Argn => return-type. Options: $(signal-options)
-              (iter (for prop in props)
+              (iter (for prop in (sort (copy-list props) #'string< :key #'g-class-property-definition-name))
                     (for accessor = (format nil "~A-child-~A"
                                             (string-downcase (symbol-name (class-name widget)))
                                             (g-class-property-definition-name prop)))
@@ -334,8 +314,11 @@
     (format stream "@Enum ~A~%" (string-downcase enum))
     (format stream "Values: ~%")
     (format stream "@itemize~%")
-    (iter (for item in (cffi:foreign-enum-keyword-list enum))
-          (format stream "@item :~A~%" (string-downcase (symbol-name item))))
+    (iter (for item in (sort (copy-list (cffi:foreign-enum-keyword-list enum)) #'string<))
+          (format stream "@item @anchor{enum.~A.~A}:~A~%"
+                  (string-downcase enum)
+                  (string-downcase (symbol-name item))
+                  (string-downcase (symbol-name item))))
     (format stream "@end itemize~%")))
 
 (defun flags-skeleton (flags &key (section "section"))
@@ -345,20 +328,25 @@
     (format stream "@Flags ~A~%" (string-downcase flags))
     (format stream "Values: ~%")
     (format stream "@itemize~%")
-    (iter (for item in (cffi:foreign-bitfield-symbol-list flags))
-          (format stream "@item :~A~%" (string-downcase (symbol-name item))))
+    (iter (for item in (sort (copy-list (cffi:foreign-bitfield-symbol-list flags)) #'string<))
+          (format stream "@item @anchor{flags.~A.~A}:~A~%"
+                  (string-downcase flags)
+                  (string-downcase (symbol-name item))
+                  (string-downcase (symbol-name item))))
     (format stream "@end itemize~%")))
 
 (defun all-enums (package)
   (sort (iter (for symbol in-package package :external-only t)
-              (when (ignore-errors (cffi:foreign-enum-keyword-list symbol))
-                (collect symbol)))
+              (unless (member symbol *exclusions*)
+                (when (ignore-errors (cffi:foreign-enum-keyword-list symbol))
+                  (collect symbol))))
         #'string<))
 
 (defun all-flags (package)
   (sort (iter (for symbol in-package package :external-only t)
-              (when (ignore-errors (cffi:foreign-bitfield-symbol-list symbol))
-                (collect symbol)))
+              (unless (member symbol *exclusions*)
+                (when (ignore-errors (cffi:foreign-bitfield-symbol-list symbol))
+                  (collect symbol))))
         #'string<))
 
 (defun enum-chapter-skeleton (output enums &key (section "section"))
@@ -422,14 +410,15 @@
         (format stream "~%~%")
         (format stream "Subclasses:")
         (iter (for sub in (class-direct-subclasses struct))
-              (format stream " ~A" (format-ref (class-name sub)))))
+              (unless (member (class-name sub) *ref-exclusions*)
+                (format stream " ~A" (format-ref (class-name sub))))))
       (format stream "~%~%")
       (struct-slots stream struct))))
 
 (defun struct-slots (stream struct)
   (format stream "Slots:~%")
   (format stream "@itemize~%")
-  (iter (for slot in (class-direct-slots struct))
+  (iter (for slot in (sort (copy-list (class-direct-slots struct)) #'string< :key #'slot-definition-name))
         (format stream "@item @anchor{slot.~A.~A}~A. Accessor: ~A."
                 (class-name struct) (string-downcase (slot-definition-name slot))
                 (string-downcase (slot-definition-name slot))
@@ -439,9 +428,10 @@
 
 (defun all-structs (package)
   (sort (iter (for symbol in-package package :external-only t)
-              (for class = (find-class symbol nil))
-              (when (and class (typep class (find-class 'structure-class)))
-                (collect symbol)))
+              (unless (member symbol *exclusions*)
+                (for class = (find-class symbol nil))
+                (when (and class (typep class (find-class 'structure-class)))
+                  (collect symbol))))
         #'string<))
 
 (defun struct-chapter-skeleton (output structs &key (section "section") (use-refs t))
@@ -478,11 +468,12 @@
 
 (defun all-interfaces (package)
   (sort (iter (for symbol in-package package :external-only t)
-              (for class = (find-class symbol nil))
-              (when (and class
-                         (typep class 'gobject:gobject-class)
-                         (gobject::gobject-class-interface-p class))
-                (collect symbol)))
+              (unless (member symbol *exclusions*)
+                (for class = (find-class symbol nil))
+                (when (and class
+                           (typep class 'gobject:gobject-class)
+                           (gobject::gobject-class-interface-p class))
+                  (collect symbol))))
         #'string<))
 
 ;; (interface-skeleton interface &key (sectioning-command "section"))
@@ -520,18 +511,24 @@
       (format stream "@node ~A~%" (class-name interface))
       (format stream "@~A ~A~%" section (class-name interface))
       (format stream "@Class ~A~%" (class-name interface))
+      (when (class-direct-subclasses interface)
+        (format stream "~%~%")
+        (format stream "Subclasses:")
+        (iter (for sub in (class-direct-subclasses interface))
+              (unless (member (class-name sub) *ref-exclusions*)
+                (format stream " ~A" (format-ref (class-name sub))))))
       (format stream "~%~%")
       (widget-slots stream interface)
       (format stream "~%~%")
       (widget-signals stream interface))))
 
 (defun all-gtk-skeletons (dir)
-  (widgets-chapter-skeleton (merge-pathnames "gdk.objects.texi" dir) (all-classes (find-package :gdk)))
-  (widgets-chapter-skeleton (merge-pathnames "gtk.objects.texi" dir) (all-classes (find-package :gtk)))
-  (struct-chapter-skeleton (merge-pathnames "gtk.structs.texi" dir) (all-structs (find-package :gtk)))
-  (struct-chapter-skeleton (merge-pathnames "gdk.structs.texi" dir) (all-structs (find-package :gdk)))
-  (widgets-chapter-skeleton (merge-pathnames "gtk.widgets.texi" dir) (all-widgets (find-package :gtk)))
-  (interface-chapter-skeleton (merge-pathnames "gtk.interfaces.texi" dir) (all-interfaces (find-package :gtk)))
+  (widgets-chapter-skeleton (merge-pathnames "gdk.objects.texi" dir) (all-classes :gdk))
+  (widgets-chapter-skeleton (merge-pathnames "gtk.objects.texi" dir) (all-classes :gtk))
+  (struct-chapter-skeleton (merge-pathnames "gtk.structs.texi" dir) (all-structs :gtk))
+  (struct-chapter-skeleton (merge-pathnames "gdk.structs.texi" dir) (all-structs :gdk))
+  (widgets-chapter-skeleton (merge-pathnames "gtk.widgets.texi" dir) (all-widgets :gtk))
+  (interface-chapter-skeleton (merge-pathnames "gtk.interfaces.texi" dir) (all-interfaces :gtk))
   (enum-chapter-skeleton (merge-pathnames "gtk.enums.texi" dir) (all-enums :gtk))
   (enum-chapter-skeleton (merge-pathnames "gdk.enums.texi" dir) (all-enums :gdk))
   (flags-chapter-skeleton (merge-pathnames "gtk.flags.texi" dir) (all-flags :gtk))
