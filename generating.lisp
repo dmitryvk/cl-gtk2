@@ -69,7 +69,7 @@
                 "GtkTextBuffer" "GtkTextChildAnchor" "GtkTextMark" "GtkTextTag"
                 "GtkTextTagTable" "GtkTreeModelFilter" "GtkTreeModelSort"
                 "GtkTreeSelection" "GtkTreeStore" "GtkUIManager" "GtkWindowGroup"
-                "GtkToggleAction" "GtkRecentAction" "GtkRadioAction")
+                "GtkToggleAction" "GtkRecentAction" "GtkRadioAction" "GtkItemFactory")
      :flags '("GtkTextSearchFlags" "GtkAccelFlags" "GtkArgFlags" "GtkAttachOptions"
               "GtkButtonAction" "GtkCalendarDisplayOptions" "GtkCellRendererState"
               "GtkDebugFlag" "GtkDestDefaults" "GtkDialogFlags" "GtkFileFilterFlags"

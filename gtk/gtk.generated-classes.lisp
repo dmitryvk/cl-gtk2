@@ -38,10 +38,6 @@
                 "gtk_tree_view_column_sizing_get_type")
                (:grow-only 0) (:autosize 1) (:fixed 2))
 
-(define-g-enum "GtkSortType" sort-type
-               (:export t :type-initializer "gtk_sort_type_get_type")
-               (:ascending 0) (:descending 1))
-
 (define-g-enum "GtkProgressBarOrientation" progress-bar-orientation
                (:export t :type-initializer
                 "gtk_progress_bar_orientation_get_type")
@@ -78,26 +74,26 @@
                (:export t :type-initializer "gtk_arrow_type_get_type") (:up 0)
                (:down 1) (:left 2) (:right 3) (:none 4))
 
+(define-g-enum "GtkSortType" sort-type
+               (:export t :type-initializer "gtk_sort_type_get_type")
+               (:ascending 0) (:descending 1))
+
 (define-g-enum "GtkToolbarStyle" toolbar-style
                (:export t :type-initializer "gtk_toolbar_style_get_type")
                (:icons 0) (:text 1) (:both 2) (:both-horiz 3))
-
-(define-g-enum "GtkJustification" justification
-               (:export t :type-initializer "gtk_justification_get_type")
-               (:left 0) (:right 1) (:center 2) (:fill 3))
 
 (define-g-enum "GtkWrapMode" wrap-mode
                (:export t :type-initializer "gtk_wrap_mode_get_type") (:none 0)
                (:char 1) (:word 2) (:word-char 3))
 
+(define-g-enum "GtkJustification" justification
+               (:export t :type-initializer "gtk_justification_get_type")
+               (:left 0) (:right 1) (:center 2) (:fill 3))
+
 (define-g-enum "GtkButtonBoxStyle" button-box-style
                (:export t :type-initializer "gtk_button_box_style_get_type")
                (:default-style 0) (:spread 1) (:edge 2) (:start 3) (:end 4)
                (:center 5))
-
-(define-g-enum "GtkOrientation" orientation
-               (:export t :type-initializer "gtk_orientation_get_type")
-               (:horizontal 0) (:vertical 1))
 
 (define-g-enum "GtkSelectionMode" selection-mode
                (:export t :type-initializer "gtk_selection_mode_get_type")
@@ -133,6 +129,10 @@
                (:invalid 0) (:menu 1) (:small-toolbar 2) (:large-toolbar 3)
                (:button 4) (:dnd 5) (:dialog 6))
 
+(define-g-enum "GtkOrientation" orientation
+               (:export t :type-initializer "gtk_orientation_get_type")
+               (:horizontal 0) (:vertical 1))
+
 (define-g-enum "GtkPositionType" position-type
                (:export t :type-initializer "gtk_position_type_get_type")
                (:left 0) (:right 1) (:top 2) (:bottom 3))
@@ -150,28 +150,18 @@
                (:none 0) (:ok 1) (:close 2) (:cancel 3) (:yes-no 4)
                (:ok-cancel 5))
 
+(define-g-enum "GtkWindowType" window-type
+               (:export t :type-initializer "gtk_window_type_get_type")
+               (:toplevel 0) (:popup 1))
+
 (define-g-enum "GtkWindowPosition" window-position
                (:export t :type-initializer "gtk_window_position_get_type")
                (:none 0) (:center 1) (:mouse 2) (:center-always 3)
                (:center-on-parent 4))
 
-(define-g-enum "GtkWindowType" window-type
-               (:export t :type-initializer "gtk_window_type_get_type")
-               (:toplevel 0) (:popup 1))
-
 (define-g-enum "GtkResizeMode" resize-mode
                (:export t :type-initializer "gtk_resize_mode_get_type")
                (:parent 0) (:queue 1) (:immediate 2))
-
-(define-g-flags "GdkModifierType" gdk-modifier-type
-                (:export t :type-initializer "gdk_modifier_type_get_type")
-                (:shift-mask 1) (:lock-mask 2) (:control-mask 4) (:mod1-mask 8)
-                (:mod2-mask 16) (:mod3-mask 32) (:mod4-mask 64)
-                (:mod5-mask 128) (:button1-mask 256) (:button2-mask 512)
-                (:button3-mask 1024) (:button4-mask 2048) (:button5-mask 4096)
-                (:super-mask 67108864) (:hyper-mask 134217728)
-                (:meta-mask 268435456) (:release-mask 1073741824)
-                (:modifier-mask 1543512063))
 
 (define-g-enum "GtkTextBufferTargetInfo" text-buffer-target-info
                (:export t :type-initializer
@@ -563,28 +553,28 @@
 
 (define-g-interface "GtkFileChooser" file-chooser
                     (:export t :type-initializer "gtk_file_chooser_get_type")
+                    (preview-widget file-chooser-preview-widget
+                     "preview-widget" "GtkWidget" t t)
+                    (select-multiple file-chooser-select-multiple
+                     "select-multiple" "gboolean" t t)
+                    (extra-widget file-chooser-extra-widget "extra-widget"
+                     "GtkWidget" t t)
+                    (file-system-backend file-chooser-file-system-backend
+                     "file-system-backend" "gchararray" nil nil)
+                    (action file-chooser-action "action" "GtkFileChooserAction"
+                     t t)
+                    (show-hidden file-chooser-show-hidden "show-hidden"
+                     "gboolean" t t)
+                    (preview-widget-active file-chooser-preview-widget-active
+                     "preview-widget-active" "gboolean" t t)
+                    (local-only file-chooser-local-only "local-only" "gboolean"
+                     t t)
+                    (filter file-chooser-filter "filter" "GtkFileFilter" t t)
+                    (use-preview-label file-chooser-use-preview-label
+                     "use-preview-label" "gboolean" t t)
                     (do-overwrite-confirmation
                      file-chooser-do-overwrite-confirmation
                      "do-overwrite-confirmation" "gboolean" t t)
-                    (select-multiple file-chooser-select-multiple
-                     "select-multiple" "gboolean" t t)
-                    (filter file-chooser-filter "filter" "GtkFileFilter" t t)
-                    (local-only file-chooser-local-only "local-only" "gboolean"
-                     t t)
-                    (preview-widget file-chooser-preview-widget
-                     "preview-widget" "GtkWidget" t t)
-                    (use-preview-label file-chooser-use-preview-label
-                     "use-preview-label" "gboolean" t t)
-                    (preview-widget-active file-chooser-preview-widget-active
-                     "preview-widget-active" "gboolean" t t)
-                    (file-system-backend file-chooser-file-system-backend
-                     "file-system-backend" "gchararray" nil nil)
-                    (extra-widget file-chooser-extra-widget "extra-widget"
-                     "GtkWidget" t t)
-                    (show-hidden file-chooser-show-hidden "show-hidden"
-                     "gboolean" t t)
-                    (action file-chooser-action "action" "GtkFileChooserAction"
-                     t t)
                     (:cffi current-name file-chooser-current-name
                      (:string :free-to-foreign t :encoding :utf-8) nil
                      "gtk_file_chooser_set_current_name")
@@ -631,25 +621,25 @@
 
 (define-g-interface "GtkRecentChooser" recent-chooser
                     (:export t :type-initializer "gtk_recent_chooser_get_type")
-                    (show-private recent-chooser-show-private "show-private"
-                     "gboolean" t t)
+                    (sort-type recent-chooser-sort-type "sort-type"
+                     "GtkRecentSortType" t t)
+                    (select-multiple recent-chooser-select-multiple
+                     "select-multiple" "gboolean" t t)
+                    (limit recent-chooser-limit "limit" "gint" t t)
                     (show-tips recent-chooser-show-tips "show-tips" "gboolean"
                      t t)
-                    (filter recent-chooser-filter "filter" "GtkRecentFilter" t
-                     t)
                     (show-not-found recent-chooser-show-not-found
                      "show-not-found" "gboolean" t t)
                     (recent-manager recent-chooser-recent-manager
                      "recent-manager" "GtkRecentManager" nil nil)
-                    (limit recent-chooser-limit "limit" "gint" t t)
+                    (show-private recent-chooser-show-private "show-private"
+                     "gboolean" t t)
                     (show-icons recent-chooser-show-icons "show-icons"
                      "gboolean" t t)
+                    (filter recent-chooser-filter "filter" "GtkRecentFilter" t
+                     t)
                     (local-only recent-chooser-local-only "local-only"
-                     "gboolean" t t)
-                    (sort-type recent-chooser-sort-type "sort-type"
-                     "GtkRecentSortType" t t)
-                    (select-multiple recent-chooser-select-multiple
-                     "select-multiple" "gboolean" t t))
+                     "gboolean" t t))
 
 (define-g-interface "GtkToolShell" tool-shell
                     (:export t :type-initializer "gtk_tool_shell_get_type"))
@@ -1825,6 +1815,11 @@
                         (min-y curve-min-y "min-y" "gfloat" t t)
                         (max-y curve-max-y "max-y" "gfloat" t t)))
 
+(define-g-object-class "GtkGLDrawingArea" g-l-drawing-area
+                       (:superclass drawing-area :export t :interfaces
+                        ("AtkImplementorIface" "GtkBuildable"))
+                       nil)
+
 (define-g-object-class "GtkEntry" entry
                        (:superclass widget :export t :interfaces
                         ("AtkImplementorIface" "GtkBuildable" "GtkCellEditable"
@@ -2376,6 +2371,11 @@
 (define-g-object-class "GtkTooltips" tooltips
                        (:superclass gtk-object :export t :interfaces nil
                         :type-initializer "gtk_tooltips_get_type")
+                       nil)
+
+(define-g-object-class "GtkItemFactory" item-factory
+                       (:superclass gtk-object :export t :interfaces nil
+                        :type-initializer "gtk_item_factory_get_type")
                        nil)
 
 (define-g-object-class "GtkSettings" settings
@@ -2977,4 +2977,9 @@
                          t)
                         (current-value radio-action-current-value
                          "current-value" "gint" t t)))
+
+(define-g-object-class "GtkItemFactory" item-factory
+                       (:superclass gtk-object :export t :interfaces nil
+                        :type-initializer "gtk_item_factory_get_type")
+                       nil)
 
