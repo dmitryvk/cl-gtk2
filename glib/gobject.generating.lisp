@@ -234,6 +234,10 @@
     (write-string "_get_type" stream)))
 
 (defun get-g-class-definition (type &optional lisp-name-package)
+  (when (and (stringp type) (zerop (g-type-numeric type)))
+    (let ((type-init-name (probable-type-init-name type)))
+      (when (foreign-symbol-pointer type-init-name)
+        (foreign-funcall-pointer (foreign-symbol-pointer type-init-name) () :int))))
   (let* ((*lisp-name-package* (or lisp-name-package *lisp-name-package* *package*))
          (g-type (ensure-g-type type))
          (g-name (g-type-name g-type))
