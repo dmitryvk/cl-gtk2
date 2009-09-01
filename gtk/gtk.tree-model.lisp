@@ -145,7 +145,7 @@
 (defcfun (tree-model-flags "gtk_tree_model_get_flags") tree-model-flags
   (tree-model g-object))
 
-(export 'tree-modelg-flags)
+(export 'tree-model-flags)
 
 (defcfun (tree-model-n-columns "gtk_tree_model_get_n_columns") :int
   (tree-model g-object))
