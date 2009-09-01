@@ -1,7 +1,7 @@
 body {font-family: century schoolbook, serif;
       line-height: 1.3;
       padding-left: 5em; padding-right: 1em;
-      padding-bottom: 1em; max-width: 60em;}
+      padding-bottom: 1em; /*max-width: 60em;*/}
 table {border-collapse: collapse}
 span.roman { font-family: century schoolbook, serif; font-weight: normal; }
 h1, h2, h3, h4, h5, h6 {font-family:  Helvetica, sans-serif}
@@ -46,3 +46,7 @@ span.paren5 { color: #777777; }
 span.paren5:hover { color: #777777; background-color: #CAFFCA; }
 span.paren6 { color: #777777; }
 span.paren6:hover { color: #777777; background-color: #FFBAFF; }
+
+li p { margin-top: 0px; margin-bottom: 0px; }
+li { margin-top: 3px; margin-bottom: 3px; }
+li dl { margin-top: 1em; }
