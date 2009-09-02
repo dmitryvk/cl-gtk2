@@ -19,8 +19,6 @@
 
 (gtk-init)
 
-(defcfun gtk-events-pending :boolean)
-
 (defcfun gtk-main :void)
 
 #+thread-support
