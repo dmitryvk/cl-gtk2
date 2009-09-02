@@ -147,7 +147,7 @@
   (accel-signal :string)
   (accel-group g-object)
   (accel-key :uint)
-  (accel-mods gdk-modifier-type)
+  (accel-mods modifier-type)
   (accel-flags accel-flags))
 
 (export 'widget-add-accelerator)
@@ -156,7 +156,7 @@
   (widget g-object)
   (accel-group g-object)
   (accel-key :uint)
-  (accel-mods gdk-modifier-type))
+  (accel-mods modifier-type))
 
 (export 'widget-remove-accelerator)
 
