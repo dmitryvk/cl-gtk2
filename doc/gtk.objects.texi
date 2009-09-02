@@ -490,30 +490,113 @@ Superclass: @ref{gtk-object}
 
 Subclasses: @ref{cell-renderer-toggle} @ref{cell-renderer-progress} @ref{cell-renderer-pixbuf} @ref{cell-renderer-text}
 
+The @ref{cell-renderer} is a base class of a set of objects used for rendering a cell to a @ref{drawable}. These objects are used primarily by the @ref{tree-view} widget, though they aren't tied to them in any specific way. It is worth noting that @ref{cell-renderer} is not a @ref{widget} and cannot be treated as such.
+
+The primary use of a @ref{cell-renderer} is for drawing a certain graphical elements on a @ref{drawable}. Typically, one cell renderer is used to draw many cells on the screen. To this extent, it isn't expected that a @ref{cell-renderer} keep any permanent state around. Instead, any state is set just prior to use. Then, the cell is measured using gtk_cell_renderer_get_size(). Finally, the cell is rendered in the correct location using gtk_cell_renderer_render().
+
+There are a number of rules that must be followed when writing a new @ref{cell-renderer}. First and formost, it's important that a certain set of properties will always yield a cell renderer of the same size, barring a @ref{style} change. The @ref{cell-renderer} also has a number of generic properties that are expected to be honored by all children.
+
+Beyond merely rendering a cell, cell renderers can optionally provide active user interface elements. A cell renderer can be activatable like @ref{cell-renderer-toggle}, which toggles when it gets activated by a mouse click, or it can be editable like @ref{cell-renderer-text}, which allows the user to edit the text using a @ref{entry}. To make a cell renderer activatable or editable, you have to implement the @code{activate} or @code{start_editing} virtual functions, respectively.
+
 Slots:
 @itemize
 @item @anchor{slot.cell-renderer.cell-background}cell-background. Type: @code{string}. Accessor: @anchor{fn.cell-renderer-cell-background}@code{cell-renderer-cell-background}. Write-only.
+
+Cell background color as a string.
+
+Default value: NIL
 @item @anchor{slot.cell-renderer.cell-background-gdk}cell-background-gdk. Type: @ref{color}. Accessor: @anchor{fn.cell-renderer-cell-background-gdk}@code{cell-renderer-cell-background-gdk}.
+
+Cell background color as a @ref{color} structure.
 @item @anchor{slot.cell-renderer.cell-background-set}cell-background-set. Type: @code{boolean}. Accessor: @anchor{fn.cell-renderer-cell-background-set}@code{cell-renderer-cell-background-set}.
+
+Whether this tag affects the cell background color.
+
+Default value: FALSE
 @item @anchor{slot.cell-renderer.editing}editing. Type: @code{boolean}. Accessor: @anchor{fn.cell-renderer-editing}@code{cell-renderer-editing}. Read-only.
+
+Whether the cell renderer is currently in editing mode.
+
+Default value: FALSE
 @item @anchor{slot.cell-renderer.height}height. Type: @code{integer}. Accessor: @anchor{fn.cell-renderer-height}@code{cell-renderer-height}.
+
+The fixed height.
+
+Default value: -1
 @item @anchor{slot.cell-renderer.is-expanded}is-expanded. Type: @code{boolean}. Accessor: @anchor{fn.cell-renderer-is-expanded}@code{cell-renderer-is-expanded}.
+
+Row is an expander row, and is expanded.
+
+Default value: FALSE
 @item @anchor{slot.cell-renderer.is-expander}is-expander. Type: @code{boolean}. Accessor: @anchor{fn.cell-renderer-is-expander}@code{cell-renderer-is-expander}.
+
+Row has children.
+
+Default value: FALSE
 @item @anchor{slot.cell-renderer.mode}mode. Type: @ref{cell-renderer-mode}. Accessor: @anchor{fn.cell-renderer-mode}@code{cell-renderer-mode}.
+
+Editable mode of the @ref{cell-renderer}.
+
+Default value: @code{:inert}
 @item @anchor{slot.cell-renderer.sensitive}sensitive. Type: @code{boolean}. Accessor: @anchor{fn.cell-renderer-sensitive}@code{cell-renderer-sensitive}.
+
+Display the cell sensitive.
+
+Default value: TRUE
 @item @anchor{slot.cell-renderer.visible}visible. Type: @code{boolean}. Accessor: @anchor{fn.cell-renderer-visible}@code{cell-renderer-visible}.
+
+Display the cell.
+
+Default value: TRUE
 @item @anchor{slot.cell-renderer.width}width. Type: @code{integer}. Accessor: @anchor{fn.cell-renderer-width}@code{cell-renderer-width}.
+
+The fixed width.
+
+Default value: -1
 @item @anchor{slot.cell-renderer.xalign}xalign. Type: @code{single-float}. Accessor: @anchor{fn.cell-renderer-xalign}@code{cell-renderer-xalign}.
+
+The x-align.
+
+Allowed values: [0,1]
+
+Default value: 0.5
 @item @anchor{slot.cell-renderer.xpad}xpad. Type: @code{integer}. Accessor: @anchor{fn.cell-renderer-xpad}@code{cell-renderer-xpad}.
+
+The xpad.
+
+Default value: 0
 @item @anchor{slot.cell-renderer.yalign}yalign. Type: @code{single-float}. Accessor: @anchor{fn.cell-renderer-yalign}@code{cell-renderer-yalign}.
+
+The y-align.
+
+Allowed values: [0,1]
+
+Default value: 0.5
 @item @anchor{slot.cell-renderer.ypad}ypad. Type: @code{integer}. Accessor: @anchor{fn.cell-renderer-ypad}@code{cell-renderer-ypad}.
+
+The ypad.
+
+Default value: 0
 @end itemize
 
 
 Signals:
 @itemize
 @item @anchor{signal.cell-renderer.editing-canceled}"editing-canceled". Signature: (instance @ref{cell-renderer}) @result{} void. Options: run-first.
-@item @anchor{signal.cell-renderer.editing-started}"editing-started". Signature: (instance @ref{cell-renderer}), (arg-1 @ref{cell-editable}), (arg-2 @code{string}) @result{} void. Options: run-first.
+
+This signal gets emitted when the user cancels the process of editing a cell. For example, an editable cell renderer could be written to cancel editing when the user presses Escape.
+
+See also: gtk_cell_renderer_stop_editing().
+@item @anchor{signal.cell-renderer.editing-started}"editing-started". Signature: (instance @ref{cell-renderer}), (editable @ref{cell-editable}), (path @code{string}) @result{} void. Options: run-first.
+
+This signal gets emitted when a cell starts to be edited. The indended use of this signal is to do special setup on editable, e.g. adding a @ref{entry-completion} or setting up additional columns in a @ref{combo-box}.
+
+Note that GTK+ doesn't guarantee that cell renderers will continue to use the same kind of widget for editing in future releases, therefore you should check the type of editable before doing any specific setup.
+
+@table @var
+@item @var{path}
+the path identifying the edited cell
+@end table
 @end itemize
 
 
@@ -524,19 +607,51 @@ Signals:
 @Class cell-renderer-accel
 Superclass: @ref{cell-renderer-text}
 
+@ref{cell-renderer-accel} displays a keyboard accelerator (i.e. a key combination like @code{<Control>-a}). If the cell renderer is editable, the accelerator can be changed by simply typing the new combination.
+
 Slots:
 @itemize
 @item @anchor{slot.cell-renderer-accel.accel-key}accel-key. Type: @code{integer}. Accessor: @anchor{fn.cell-renderer-accel-accel-key}@code{cell-renderer-accel-accel-key}.
+
+The keyval of the accelerator.
+
+Default value: 0
 @item @anchor{slot.cell-renderer-accel.accel-mode}accel-mode. Type: @ref{cell-renderer-accel-mode}. Accessor: @anchor{fn.cell-renderer-accel-accel-mode}@code{cell-renderer-accel-accel-mode}.
+
+Determines if the edited accelerators are GTK+ accelerators. If they are, consumed modifiers are suppressed, only accelerators accepted by GTK+ are allowed, and the accelerators are rendered in the same way as they are in menus.
+
+Default value: @code{:gtk}
 @item @anchor{slot.cell-renderer-accel.accel-mods}accel-mods. Type: @ref{gdk-modifier-type}. Accessor: @anchor{fn.cell-renderer-accel-accel-mods}@code{cell-renderer-accel-accel-mods}.
+
+The modifier mask of the accelerator.
 @item @anchor{slot.cell-renderer-accel.keycode}keycode. Type: @code{integer}. Accessor: @anchor{fn.cell-renderer-accel-keycode}@code{cell-renderer-accel-keycode}.
+
+The hardware keycode of the accelerator. Note that the hardware keycode is only relevant if the key does not have a keyval. Normally, the keyboard configuration should assign keyvals to all keys.
+
+Default value: 0
 @end itemize
 
 
 Signals:
 @itemize
-@item @anchor{signal.cell-renderer-accel.accel-cleared}"accel-cleared". Signature: (instance @ref{cell-renderer-accel}), (arg-1 @code{string}) @result{} void. Options: run-last.
-@item @anchor{signal.cell-renderer-accel.accel-edited}"accel-edited". Signature: (instance @ref{cell-renderer-accel}), (arg-1 @code{string}), (arg-2 @code{integer}), (arg-3 @ref{gdk-modifier-type}), (arg-4 @code{integer}) @result{} void. Options: run-last.
+@item @anchor{signal.cell-renderer-accel.accel-cleared}"accel-cleared". Signature: (instance @ref{cell-renderer-accel}), (path @code{string}) @result{} void. Options: run-last.
+
+Gets emitted when the user has removed the accelerator.
+
+@var{path} is the path identifying the row of the edited cell
+@item @anchor{signal.cell-renderer-accel.accel-edited}"accel-edited". Signature: (instance @ref{cell-renderer-accel}), (path @code{string}), (accel-key @code{integer}), (accel-mods @ref{gdk-modifier-type}), (hardware-keycode @code{integer}) @result{} void. Options: run-last.
+
+Gets emitted when the user has selected a new accelerator.
+@table @var
+@item @var{path}
+the path identifying the row of the edited cell
+@item @var{accel-key}
+the new accelerator keyval
+@item @var{accel-mods}
+the new acclerator modifier mask
+@item @var{hardware-keycode}
+the keycode of the new accelerator
+@end table
 @end itemize
 
 
@@ -547,17 +662,39 @@ Signals:
 @Class cell-renderer-combo
 Superclass: @ref{cell-renderer-text}
 
+@ref{cell-renderer-combo} renders text in a cell like @ref{cell-renderer-text} from which it is derived. But while @ref{cell-renderer-text} offers a simple entry to edit the text, @ref{cell-renderer-combo} offers a @ref{combo-box} or @ref{combo-box-entry} widget to edit the text. The values to display in the combo box are taken from the tree model specified in the model property.
+
+The combo cell renderer takes care of adding a text cell renderer to the combo box and sets it to display the column specified by its text-column property. Further properties of the comnbo box can be set in a handler for the editing-started signal.
+
 Slots:
 @itemize
 @item @anchor{slot.cell-renderer-combo.has-entry}has-entry. Type: @code{boolean}. Accessor: @anchor{fn.cell-renderer-combo-has-entry}@code{cell-renderer-combo-has-entry}.
+
+If TRUE, the cell renderer will include an entry and allow to enter values other than the ones in the popup list.
+
+Default value: TRUE
 @item @anchor{slot.cell-renderer-combo.model}model. Type: @ref{tree-model}. Accessor: @anchor{fn.cell-renderer-combo-model}@code{cell-renderer-combo-model}.
+
+Holds a tree model containing the possible values for the combo box. Use the @SlotRef{cell-renderer-combo,text-column} to specify the column holding the values.
 @item @anchor{slot.cell-renderer-combo.text-column}text-column. Type: @code{integer}. Accessor: @anchor{fn.cell-renderer-combo-text-column}@code{cell-renderer-combo-text-column}.
+
+Specifies the model column which holds the possible values for the combo box.
+
+Note that this refers to the model specified in the model property, not the model backing the tree view to which this cell renderer is attached.
+
+@ref{cell-renderer-combo} automatically adds a text cell renderer for this column to its combo box.
+
+Default value: -1
 @end itemize
 
 
 Signals:
 @itemize
-@item @anchor{signal.cell-renderer-combo.changed}"changed". Signature: (instance @ref{cell-renderer-combo}), (arg-1 @code{string}), (arg-2 @ref{tree-iter}) @result{} void. Options: run-last.
+@item @anchor{signal.cell-renderer-combo.changed}"changed". Signature: (instance @ref{cell-renderer-combo}), (path @code{string}), (iter @ref{tree-iter}) @result{} void. Options: run-last.
+
+This signal is emitted each time after the user selected an item in the combo box, either by using the mouse or the arrow keys. Contrary to @ref{combo-box}, @code{changed} is not emitted for changes made to a selected item in the entry. The argument @var{iter} corresponds to the newly selected item in the combo box and it is relative to the @ref{tree-model} set via the model property on @ref{cell-renderer-combo}.
+
+Note that as soon as you change the model displayed in the tree view, the tree view will immediately cease the editing operating. This means that you most probably want to refrain from changing the model until the combo cell renderer emits the @SignalRef{cell-renderer-text,edited} or @SignalRef{cell-renderer,editing-canceled} signal.
 @end itemize
 
 
@@ -568,17 +705,49 @@ Signals:
 @Class cell-renderer-pixbuf
 Superclass: @ref{cell-renderer}
 
+A @ref{cell-renderer-pixbuf} can be used to render an image in a cell. It allows to render either a given @ref{pixbuf} (set via the @SlotRef{cell-renderer-pixbuf,pixbuf} property) or a stock icon (set via the @SlotRef{cell-renderer-pixbuf,stock-id} property).
+
+To support the tree view, @ref{cell-renderer-pixbuf} also supports rendering two alternative pixbufs, when the @SlotRef{cell-renderer,is-expander} property is TRUE. If the @SlotRef{cell-renderer,is-expanded} property is TRUE and the @SlotRef{cell-renderer-pixbuf,pixbuf-expander-open} property is set to a @ref{pixbuf}, it renders that @ref{pixbuf}, if the @SlotRef{cell-renderer,is-expanded} property is FALSE and the @SlotRef{cell-renderer-pixbuf,pixbuf-expander-closed} property is set to a @ref{pixbuf}, it renders that one.
+
 Slots:
 @itemize
 @item @anchor{slot.cell-renderer-pixbuf.follow-state}follow-state. Type: @code{boolean}. Accessor: @anchor{fn.cell-renderer-pixbuf-follow-state}@code{cell-renderer-pixbuf-follow-state}.
+
+Specifies whether the rendered pixbuf should be colorized according to the @ref{cell-renderer-state}.
+
+Default value: FALSE
 @item @anchor{slot.cell-renderer-pixbuf.gicon}gicon. Type: @code{GIcon}. Accessor: @anchor{fn.cell-renderer-pixbuf-gicon}@code{cell-renderer-pixbuf-gicon}.
+
+The GIcon representing the icon to display. If the icon theme is changed, the image will be updated automatically.
 @item @anchor{slot.cell-renderer-pixbuf.icon-name}icon-name. Type: @code{string}. Accessor: @anchor{fn.cell-renderer-pixbuf-icon-name}@code{cell-renderer-pixbuf-icon-name}.
+
+The name of the themed icon to display. This property only has an effect if not overridden by @SlotRef{cell-renderer-pixbuf,stock-id} or @SlotRef{cell-renderer-pixbuf,pixbuf} properties.
+
+Default value: NIL
 @item @anchor{slot.cell-renderer-pixbuf.pixbuf}pixbuf. Type: @ref{pixbuf}. Accessor: @anchor{fn.cell-renderer-pixbuf-pixbuf}@code{cell-renderer-pixbuf-pixbuf}.
+
+The pixbuf to render.
 @item @anchor{slot.cell-renderer-pixbuf.pixbuf-expander-closed}pixbuf-expander-closed. Type: @ref{pixbuf}. Accessor: @anchor{fn.cell-renderer-pixbuf-pixbuf-expander-closed}@code{cell-renderer-pixbuf-pixbuf-expander-closed}.
+
+Pixbuf for closed expander.
 @item @anchor{slot.cell-renderer-pixbuf.pixbuf-expander-open}pixbuf-expander-open. Type: @ref{pixbuf}. Accessor: @anchor{fn.cell-renderer-pixbuf-pixbuf-expander-open}@code{cell-renderer-pixbuf-pixbuf-expander-open}.
+
+Pixbuf for open expander.
 @item @anchor{slot.cell-renderer-pixbuf.stock-detail}stock-detail. Type: @code{string}. Accessor: @anchor{fn.cell-renderer-pixbuf-stock-detail}@code{cell-renderer-pixbuf-stock-detail}.
+
+Render detail to pass to the theme engine.
+
+Default value: NIL
 @item @anchor{slot.cell-renderer-pixbuf.stock-id}stock-id. Type: @code{string}. Accessor: @anchor{fn.cell-renderer-pixbuf-stock-id}@code{cell-renderer-pixbuf-stock-id}.
+
+The stock ID of the stock icon to render.
+
+Default value: NIL
 @item @anchor{slot.cell-renderer-pixbuf.stock-size}stock-size. Type: @code{integer}. Accessor: @anchor{fn.cell-renderer-pixbuf-stock-size}@code{cell-renderer-pixbuf-stock-size}.
+
+The @ref{icon-size} value that specifies the size of the rendered icon.
+
+Default value: 1
 @end itemize
 
 
@@ -594,14 +763,50 @@ Signals:
 @Class cell-renderer-progress
 Superclass: @ref{cell-renderer}
 
+@ref{cell-renderer-progress} renders a numeric value as a progress par in a cell. Additionally, it can display a text on top of the progress bar.
+
 Slots:
 @itemize
 @item @anchor{slot.cell-renderer-progress.orientation}orientation. Type: @ref{progress-bar-orientation}. Accessor: @anchor{fn.cell-renderer-progress-orientation}@code{cell-renderer-progress-orientation}.
+
+The "orientation" property controls the direction and growth direction of the progress bar
+
+Default value: @code{:left-to-right}
 @item @anchor{slot.cell-renderer-progress.pulse}pulse. Type: @code{integer}. Accessor: @anchor{fn.cell-renderer-progress-pulse}@code{cell-renderer-progress-pulse}.
+
+Setting this to a non-negative value causes the cell renderer to enter "activity mode", where a block bounces back and forth to indicate that some progress is made, without specifying exactly how much.
+
+Each increment of the property causes the block to move by a little bit.
+
+To indicate that the activity has not started yet, set the property to zero. To indicate completion, set the property to @code{(expt 2 (1- (* 8 (cffi:foreign-type-size :int))))}.
+
+Default value: -1
 @item @anchor{slot.cell-renderer-progress.text}text. Type: @code{string}. Accessor: @anchor{fn.cell-renderer-progress-text}@code{cell-renderer-progress-text}.
+
+Determines the label which will be drawn over the progress bar. Setting this property to NIL causes the default label to be displayed. Setting this property to an empty string causes no label to be displayed.
+
+Default value: NIL
 @item @anchor{slot.cell-renderer-progress.text-xalign}text-xalign. Type: @code{single-float}. Accessor: @anchor{fn.cell-renderer-progress-text-xalign}@code{cell-renderer-progress-text-xalign}.
+
+Controls the horizontal alignment of the text in the progress bar. Valid values range from 0 (left) to 1 (right). Reserved for RTL layouts.
+
+Allowed values: [0,1]
+
+Default value: 0.5
 @item @anchor{slot.cell-renderer-progress.text-yalign}text-yalign. Type: @code{single-float}. Accessor: @anchor{fn.cell-renderer-progress-text-yalign}@code{cell-renderer-progress-text-yalign}.
+
+Controls the vertical alignment of the text in the progress bar. Valid values range from 0 (top) to 1 (bottom).
+
+Allowed values: [0,1]
+
+Default value: 0.5
 @item @anchor{slot.cell-renderer-progress.value}value. Type: @code{integer}. Accessor: @anchor{fn.cell-renderer-progress-value}@code{cell-renderer-progress-value}.
+
+The "value" property determines the percentage to which the progress bar will be "filled in".
+
+Allowed values: [0,100]
+
+Default value: 0
 @end itemize
 
 
@@ -617,11 +822,29 @@ Signals:
 @Class cell-renderer-spin
 Superclass: @ref{cell-renderer-text}
 
+@ref{cell-renderer-spin} renders text in a cell like @ref{cell-renderer-text} from which it is derived. But while @ref{cell-renderer-text} offers a simple entry to edit the text, @ref{cell-renderer-spin} offers a @ref{spin-button} widget. Of course, that means that the text has to be parseable as a floating point number.
+
+The range of the @ref{spin-button} is taken from the @SlotRef{cell-renderer-spin,adjustment} property of the cell renderer, which can be set explicitly or mapped to a column in the tree model, like all properties of cell renders. @ref{cell-renderer-spin} also has properties for the climb rate and the number of digits to display. Other @ref{spin-button} properties can be set in a handler for the @SignalRef{cell-renderer,editing-started} signal.
+
 Slots:
 @itemize
 @item @anchor{slot.cell-renderer-spin.adjustment}adjustment. Type: @ref{adjustment}. Accessor: @anchor{fn.cell-renderer-spin-adjustment}@code{cell-renderer-spin-adjustment}.
+
+The adjustment that holds the value of the spinbutton. This must be non-NIL for the cell renderer to be editable.
 @item @anchor{slot.cell-renderer-spin.climb-rate}climb-rate. Type: @code{double-float}. Accessor: @anchor{fn.cell-renderer-spin-climb-rate}@code{cell-renderer-spin-climb-rate}.
+
+The acceleration rate when you hold down a button.
+
+Allowed values: >= 0
+
+Default value: 0
 @item @anchor{slot.cell-renderer-spin.digits}digits. Type: @code{integer}. Accessor: @anchor{fn.cell-renderer-spin-digits}@code{cell-renderer-spin-digits}.
+
+The number of decimal places to display.
+
+Allowed values: <= 20
+
+Default value: 0
 @end itemize
 
 
@@ -639,58 +862,246 @@ Superclass: @ref{cell-renderer}
 
 Subclasses: @ref{cell-renderer-spin} @ref{cell-renderer-combo} @ref{cell-renderer-accel}
 
+A @ref{cell-renderer-text} renders a given text in its cell, using the font, color and style information provided by its properties. The text will be ellipsized if it is too long and the @SlotRef{cell-renderer-text,ellipsize} property allows it.
+
 Slots:
 @itemize
 @item @anchor{slot.cell-renderer-text.align-set}align-set. Type: @code{boolean}. Accessor: @anchor{fn.cell-renderer-text-align-set}@code{cell-renderer-text-align-set}.
+
+Whether this tag affects the alignment mode.
+
+Default value: FALSE
 @item @anchor{slot.cell-renderer-text.alignment}alignment. Type: @code{PangoAlignment}. Accessor: @anchor{fn.cell-renderer-text-alignment}@code{cell-renderer-text-alignment}.
+
+Specifies how to align the lines of text with respect to each other.
+
+Note that this property describes how to align the lines of text in case there are several of them. The "xalign" property of @ref{cell-renderer}, on the other hand, sets the horizontal alignment of the whole text.
+
+Default value: PANGO_ALIGN_LEFT
 @item @anchor{slot.cell-renderer-text.attributes}attributes. Type: @code{PangoAttrList}. Accessor: @anchor{fn.cell-renderer-text-attributes}@code{cell-renderer-text-attributes}.
+
+A list of style attributes to apply to the text of the renderer.
 @item @anchor{slot.cell-renderer-text.background}background. Type: @code{string}. Accessor: @anchor{fn.cell-renderer-text-background}@code{cell-renderer-text-background}. Write-only.
+
+Background color as a string.
+
+Default value: NIL
 @item @anchor{slot.cell-renderer-text.background-gdk}background-gdk. Type: @ref{color}. Accessor: @anchor{fn.cell-renderer-text-background-gdk}@code{cell-renderer-text-background-gdk}.
+
+Background color as a @ref{color}
 @item @anchor{slot.cell-renderer-text.background-set}background-set. Type: @code{boolean}. Accessor: @anchor{fn.cell-renderer-text-background-set}@code{cell-renderer-text-background-set}.
+
+Whether this tag affects the background color.
+
+Default value: FALSE
 @item @anchor{slot.cell-renderer-text.editable}editable. Type: @code{boolean}. Accessor: @anchor{fn.cell-renderer-text-editable}@code{cell-renderer-text-editable}.
+
+Whether the text can be modified by the user.
+
+Default value: FALSE
 @item @anchor{slot.cell-renderer-text.editable-set}editable-set. Type: @code{boolean}. Accessor: @anchor{fn.cell-renderer-text-editable-set}@code{cell-renderer-text-editable-set}.
+
+Whether this tag affects text editability.
+
+Default value: FALSE
 @item @anchor{slot.cell-renderer-text.ellipsize}ellipsize. Type: @code{PangoEllipsizeMode}. Accessor: @anchor{fn.cell-renderer-text-ellipsize}@code{cell-renderer-text-ellipsize}.
+
+Specifies the preferred place to ellipsize the string, if the cell renderer does not have enough room to display the entire string. Setting it to PANGO_ELLIPSIZE_NONE turns off ellipsizing. See the wrap-width property for another way of making the text fit into a given width.
+
+Default value: PANGO_ELLIPSIZE_NONE
 @item @anchor{slot.cell-renderer-text.ellipsize-set}ellipsize-set. Type: @code{boolean}. Accessor: @anchor{fn.cell-renderer-text-ellipsize-set}@code{cell-renderer-text-ellipsize-set}.
+
+Whether this tag affects the ellipsize mode.
+
+Default value: FALSE
 @item @anchor{slot.cell-renderer-text.family}family. Type: @code{string}. Accessor: @anchor{fn.cell-renderer-text-family}@code{cell-renderer-text-family}.
+
+Name of the font family, e.g. Sans, Helvetica, Times, Monospace.
+
+Default value: NIL
 @item @anchor{slot.cell-renderer-text.family-set}family-set. Type: @code{boolean}. Accessor: @anchor{fn.cell-renderer-text-family-set}@code{cell-renderer-text-family-set}.
+
+Whether this tag affects the font family.
+
+Default value: FALSE
 @item @anchor{slot.cell-renderer-text.font}font. Type: @code{string}. Accessor: @anchor{fn.cell-renderer-text-font}@code{cell-renderer-text-font}.
+
+Font description as a string, e.g. "Sans Italic 12".
+
+Default value: NULL
 @item @anchor{slot.cell-renderer-text.font-desc}font-desc. Type: @code{PangoFontDescription}. Accessor: @anchor{fn.cell-renderer-text-font-desc}@code{cell-renderer-text-font-desc}.
+
+Font description as a PangoFontDescription struct.
 @item @anchor{slot.cell-renderer-text.foreground}foreground. Type: @code{string}. Accessor: @anchor{fn.cell-renderer-text-foreground}@code{cell-renderer-text-foreground}. Write-only.
+
+Foreground color as a string.
+
+Default value: NULL
 @item @anchor{slot.cell-renderer-text.foreground-gdk}foreground-gdk. Type: @ref{color}. Accessor: @anchor{fn.cell-renderer-text-foreground-gdk}@code{cell-renderer-text-foreground-gdk}.
+
+Foreground color as a @ref{color}.
 @item @anchor{slot.cell-renderer-text.foreground-set}foreground-set. Type: @code{boolean}. Accessor: @anchor{fn.cell-renderer-text-foreground-set}@code{cell-renderer-text-foreground-set}.
+
+Whether this tag affects the foreground color.
+
+Default value: FALSE
 @item @anchor{slot.cell-renderer-text.language}language. Type: @code{string}. Accessor: @anchor{fn.cell-renderer-text-language}@code{cell-renderer-text-language}.
+
+The language this text is in, as an ISO code. Pango can use this as a hint when rendering the text. If you don't understand this parameter, you probably don't need it.
+
+Default value: NULL
 @item @anchor{slot.cell-renderer-text.language-set}language-set. Type: @code{boolean}. Accessor: @anchor{fn.cell-renderer-text-language-set}@code{cell-renderer-text-language-set}.
+
+Whether this tag affects the language the text is rendered as.
+
+Default value: FALSE
 @item @anchor{slot.cell-renderer-text.markup}markup. Type: @code{string}. Accessor: @anchor{fn.cell-renderer-text-markup}@code{cell-renderer-text-markup}. Write-only.
+
+Marked up text to render.
+
+Default value: NULL
 @item @anchor{slot.cell-renderer-text.rise}rise. Type: @code{integer}. Accessor: @anchor{fn.cell-renderer-text-rise}@code{cell-renderer-text-rise}.
+
+Offset of text above the baseline (below the baseline if rise is negative).
+
+Allowed values: >= -2147483647
+
+Default value: 0
 @item @anchor{slot.cell-renderer-text.rise-set}rise-set. Type: @code{boolean}. Accessor: @anchor{fn.cell-renderer-text-rise-set}@code{cell-renderer-text-rise-set}.
+
+Whether this tag affects the rise.
+
+Default value: FALSE
 @item @anchor{slot.cell-renderer-text.scale}scale. Type: @code{double-float}. Accessor: @anchor{fn.cell-renderer-text-scale}@code{cell-renderer-text-scale}.
+
+Font scaling factor.
+
+Allowed values: >= 0
+
+Default value: 1
 @item @anchor{slot.cell-renderer-text.scale-set}scale-set. Type: @code{boolean}. Accessor: @anchor{fn.cell-renderer-text-scale-set}@code{cell-renderer-text-scale-set}.
+
+Whether this tag scales the font size by a factor.
+
+Default value: FALSE
 @item @anchor{slot.cell-renderer-text.single-paragraph-mode}single-paragraph-mode. Type: @code{boolean}. Accessor: @anchor{fn.cell-renderer-text-single-paragraph-mode}@code{cell-renderer-text-single-paragraph-mode}.
+
+Whether or not to keep all text in a single paragraph.
+
+Default value: FALSE
 @item @anchor{slot.cell-renderer-text.size}size. Type: @code{integer}. Accessor: @anchor{fn.cell-renderer-text-size}@code{cell-renderer-text-size}.
+
+Font size.
+
+Allowed values: >= 0
+
+Default value: 0
 @item @anchor{slot.cell-renderer-text.size-points}size-points. Type: @code{double-float}. Accessor: @anchor{fn.cell-renderer-text-size-points}@code{cell-renderer-text-size-points}.
+
+Font size in points.
+
+Allowed values: >= 0
+
+Default value: 0
 @item @anchor{slot.cell-renderer-text.size-set}size-set. Type: @code{boolean}. Accessor: @anchor{fn.cell-renderer-text-size-set}@code{cell-renderer-text-size-set}.
+
+Whether this tag affects the font size.
+
+Default value: FALSE
 @item @anchor{slot.cell-renderer-text.stretch}stretch. Type: @code{PangoStretch}. Accessor: @anchor{fn.cell-renderer-text-stretch}@code{cell-renderer-text-stretch}.
+
+Font stretch.
+
+Default value: PANGO_STRETCH_NORMAL
 @item @anchor{slot.cell-renderer-text.stretch-set}stretch-set. Type: @code{boolean}. Accessor: @anchor{fn.cell-renderer-text-stretch-set}@code{cell-renderer-text-stretch-set}.
+
+Whether this tag affects the font stretch.
+
+Default value: FALSE
 @item @anchor{slot.cell-renderer-text.strikethrough}strikethrough. Type: @code{boolean}. Accessor: @anchor{fn.cell-renderer-text-strikethrough}@code{cell-renderer-text-strikethrough}.
+
+Whether to strike through the text.
+
+Default value: FALSE
 @item @anchor{slot.cell-renderer-text.strikethrough-set}strikethrough-set. Type: @code{boolean}. Accessor: @anchor{fn.cell-renderer-text-strikethrough-set}@code{cell-renderer-text-strikethrough-set}.
+
+Whether this tag affects strikethrough.
+
+Default value: FALSE
 @item @anchor{slot.cell-renderer-text.style}style. Type: @code{PangoStyle}. Accessor: @anchor{fn.cell-renderer-text-style}@code{cell-renderer-text-style}.
+
+Font style.
+
+Default value: PANGO_STYLE_NORMAL
 @item @anchor{slot.cell-renderer-text.style-set}style-set. Type: @code{boolean}. Accessor: @anchor{fn.cell-renderer-text-style-set}@code{cell-renderer-text-style-set}.
+
+Whether this tag affects the font style.
+
+Default value: FALSE
+
+
 @item @anchor{slot.cell-renderer-text.text}text. Type: @code{string}. Accessor: @anchor{fn.cell-renderer-text-text}@code{cell-renderer-text-text}.
+
+Text to render.
+
+Default value: NIL
 @item @anchor{slot.cell-renderer-text.underline}underline. Type: @code{PangoUnderline}. Accessor: @anchor{fn.cell-renderer-text-underline}@code{cell-renderer-text-underline}.
+
+Style of underline for this text.
+
+Default value: PANGO_UNDERLINE_NONE
 @item @anchor{slot.cell-renderer-text.underline-set}underline-set. Type: @code{boolean}. Accessor: @anchor{fn.cell-renderer-text-underline-set}@code{cell-renderer-text-underline-set}.
+
+Whether this tag affects underlining.
+
+Default value: FALSE
 @item @anchor{slot.cell-renderer-text.variant}variant. Type: @code{PangoVariant}. Accessor: @anchor{fn.cell-renderer-text-variant}@code{cell-renderer-text-variant}.
+
+Font variant.
+
+Default value: PANGO_VARIANT_NORMAL
 @item @anchor{slot.cell-renderer-text.variant-set}variant-set. Type: @code{boolean}. Accessor: @anchor{fn.cell-renderer-text-variant-set}@code{cell-renderer-text-variant-set}.
+
+Whether this tag affects the font variant.
+
+Default value: FALSE
 @item @anchor{slot.cell-renderer-text.weight}weight. Type: @code{integer}. Accessor: @anchor{fn.cell-renderer-text-weight}@code{cell-renderer-text-weight}.
+
+Font weight.
+
+Allowed values: >= 0
+
+Default value: 400
 @item @anchor{slot.cell-renderer-text.weight-set}weight-set. Type: @code{boolean}. Accessor: @anchor{fn.cell-renderer-text-weight-set}@code{cell-renderer-text-weight-set}.
+
+Whether this tag affects the font weight.
+
+Default value: FALSE
 @item @anchor{slot.cell-renderer-text.width-chars}width-chars. Type: @code{integer}. Accessor: @anchor{fn.cell-renderer-text-width-chars}@code{cell-renderer-text-width-chars}.
+
+The desired width of the cell, in characters. If this property is set to -1, the width will be calculated automatically, otherwise the cell will request either 3 characters or the property value, whichever is greater.
+
+Default value: -1
 @item @anchor{slot.cell-renderer-text.wrap-mode}wrap-mode. Type: @code{PangoWrapMode}. Accessor: @anchor{fn.cell-renderer-text-wrap-mode}@code{cell-renderer-text-wrap-mode}.
+
+Specifies how to break the string into multiple lines, if the cell renderer does not have enough room to display the entire string. This property has no effect unless the wrap-width property is set.
+
+Default value: PANGO_WRAP_CHAR
 @item @anchor{slot.cell-renderer-text.wrap-width}wrap-width. Type: @code{integer}. Accessor: @anchor{fn.cell-renderer-text-wrap-width}@code{cell-renderer-text-wrap-width}.
+
+Specifies the width at which the text is wrapped. The wrap-mode property can be used to influence at what character positions the line breaks can be placed. Setting wrap-width to -1 turns wrapping off.
+
+Default value: -1
 @end itemize
 
 
 Signals:
 @itemize
-@item @anchor{signal.cell-renderer-text.edited}"edited". Signature: (instance @ref{cell-renderer-text}), (arg-1 @code{string}), (arg-2 @code{string}) @result{} void. Options: run-last.
+@item @anchor{signal.cell-renderer-text.edited}"edited". Signature: (instance @ref{cell-renderer-text}), (path @code{string}), (new-text @code{string}) @result{} void. Options: run-last.
+
+This signal is emitted after renderer has been edited.
+
+It is the responsibility of the application to update the model and store @var{new-text} at the position indicated by @var{path}.
 @end itemize
 
 
@@ -701,19 +1112,45 @@ Signals:
 @Class cell-renderer-toggle
 Superclass: @ref{cell-renderer}
 
+@ref{cell-renderer-toggle} renders a toggle button in a cell. The button is drawn as a radio- or checkbutton, depending on the @SlotRef{cell-renderer-toggle,radio} property. When activated, it emits the @SignalRef{cell-renderer-toggle,toggled} signal.
+
 Slots:
 @itemize
 @item @anchor{slot.cell-renderer-toggle.activatable}activatable. Type: @code{boolean}. Accessor: @anchor{fn.cell-renderer-toggle-activatable}@code{cell-renderer-toggle-activatable}.
+
+The toggle button can be activated.
+
+Default value: TRUE
 @item @anchor{slot.cell-renderer-toggle.active}active. Type: @code{boolean}. Accessor: @anchor{fn.cell-renderer-toggle-active}@code{cell-renderer-toggle-active}.
+
+The toggle state of the button.
+
+Default value: FALSE
 @item @anchor{slot.cell-renderer-toggle.inconsistent}inconsistent. Type: @code{boolean}. Accessor: @anchor{fn.cell-renderer-toggle-inconsistent}@code{cell-renderer-toggle-inconsistent}.
+
+The inconsistent state of the button.
+
+Default value: FALSE
 @item @anchor{slot.cell-renderer-toggle.indicator-size}indicator-size. Type: @code{integer}. Accessor: @anchor{fn.cell-renderer-toggle-indicator-size}@code{cell-renderer-toggle-indicator-size}.
+
+Size of check or radio indicator.
+
+Allowed values: >= 0
+
+Default value: 13
 @item @anchor{slot.cell-renderer-toggle.radio}radio. Type: @code{boolean}. Accessor: @anchor{fn.cell-renderer-toggle-radio}@code{cell-renderer-toggle-radio}.
+
+Draw the toggle button as a radio button.
+
+Default value: FALSE
 @end itemize
 
 
 Signals:
 @itemize
-@item @anchor{signal.cell-renderer-toggle.toggled}"toggled". Signature: (instance @ref{cell-renderer-toggle}), (arg-1 @code{string}) @result{} void. Options: run-last.
+@item @anchor{signal.cell-renderer-toggle.toggled}"toggled". Signature: (instance @ref{cell-renderer-toggle}), (path @code{string}) @result{} void. Options: run-last.
+
+The signal is emitted when the cell of the row identified by @var{path} is toggled.
 @end itemize
 
 
