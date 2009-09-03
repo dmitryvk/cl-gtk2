@@ -248,9 +248,8 @@
          (properties (class-properties g-type))
          (type-init-name (probable-type-init-name g-name))
          (own-properties
-          (remove-if-not (lambda (property)
-                           (g-type= g-type (g-class-property-definition-owner-type property)))
-                         properties)))
+          (sort (copy-list (remove g-type properties :key #'g-class-property-definition-owner-type :test-not #'g-type=))
+                #'string< :key #'g-class-property-definition-owner-type)))
     `(define-g-object-class ,g-name ,name 
          (:superclass ,superclass-name
                       :export t
@@ -264,11 +263,16 @@
           ,@(cdr (find g-name *additional-properties* :key 'car :test 'string=))))))
 
 (defun get-g-interface-definition (interface &optional lisp-name-package)
+  (when (and (stringp interface) (zerop (g-type-numeric interface)))
+    (let ((type-init-name (probable-type-init-name interface)))
+      (when (foreign-symbol-pointer type-init-name)
+        (foreign-funcall-pointer (foreign-symbol-pointer type-init-name) () :int))))
   (let* ((*lisp-name-package* (or lisp-name-package *lisp-name-package* *package*))
          (type (ensure-g-type interface))
          (g-name (g-type-name type))
          (name (g-name->name g-name))
-         (properties (interface-properties type))
+         (properties (sort (copy-list (interface-properties type))
+                           #'string< :key #'g-class-property-definition-name))
          (probable-type-initializer (probable-type-init-name g-name)))
     `(define-g-interface ,g-name ,name
          (:export t
@@ -284,7 +288,7 @@
     (cons (get-g-class-definition type)
           (reduce #'append
                   (mapcar #'get-g-class-definitions-for-root-1
-                          (g-type-children type))))))
+                          (sort (copy-list (g-type-children type)) #'string< :key #'g-type-string))))))
 
 (defun get-g-class-definitions-for-root (type)
   (setf type (ensure-g-type type))
@@ -304,17 +308,17 @@
                               for property in (class-or-interface-properties type)
                               when (g-type= type (g-class-property-definition-owner-type property))
                               collect (g-class-property-definition-type property))
-                           #'<
-                           :key #'g-type-numeric)
+                           #'string<
+                           :key #'g-type-string)
                      :test 'equal))
 
 (defun get-referenced-types-1 (type)
   (setf type (ensure-g-type type))
   (loop
-     for property-type in (get-shallow-referenced-types type)
+     for property-type in (sort (copy-list (get-shallow-referenced-types type)) #'string> :key #'g-type-string)
      do (pushnew property-type *referenced-types* :test 'g-type=))
   (loop
-     for type in (g-type-children type)
+     for type in (sort (copy-list (g-type-children type)) #'string< :key #'g-type-string)
      do (get-referenced-types-1 type)))
 
 (defun get-referenced-types (root-type)
@@ -366,6 +370,10 @@ If non-@code{NIL}, specifies the function that initializes the type: string spec
     `(,value-name ,numeric-value)))
 
 (defun get-g-enum-definition (type &optional lisp-name-package)
+  (when (and (stringp type) (zerop (g-type-numeric type)))
+    (let ((type-init-name (probable-type-init-name type)))
+      (when (foreign-symbol-pointer type-init-name)
+        (foreign-funcall-pointer (foreign-symbol-pointer type-init-name) () :int))))
   (let* ((*lisp-name-package* (or lisp-name-package *lisp-name-package* *package*))
          (g-type (ensure-g-type type))
          (g-name (g-type-name g-type))
@@ -411,6 +419,10 @@ If non-@code{NIL}, specifies the function that initializes the type: string spec
     `(,value-name ,numeric-value)))
 
 (defun get-g-flags-definition (type &optional lisp-name-package)
+  (when (and (stringp type) (zerop (g-type-numeric type)))
+    (let ((type-init-name (probable-type-init-name type)))
+      (when (foreign-symbol-pointer type-init-name)
+        (foreign-funcall-pointer (foreign-symbol-pointer type-init-name) () :int))))
   (let* ((*lisp-name-package* (or lisp-name-package *lisp-name-package* *package*))
          (g-type (ensure-g-type type))
          (g-name (g-type-name g-type))
