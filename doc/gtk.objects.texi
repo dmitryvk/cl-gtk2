@@ -1161,6 +1161,16 @@ The signal is emitted when the cell of the row identified by @var{path} is toggl
 @Class clipboard
 Superclass: @ref{g-object}
 
+The @ref{clipboard} object represents a clipboard of data shared between different processes or between different widgets in the same process. Each clipboard is identified by a name encoded as a GdkAtom. (Conversion to and from strings can be done with gdk_atom_intern() and gdk_atom_name().) The default clipboard corresponds to the "CLIPBOARD" atom; another commonly used clipboard is the "PRIMARY" clipboard, which, in X, traditionally contains the currently selected text.
+
+To support having a number of different formats on the clipboard at the same time, the clipboard mechanism allows providing callbacks instead of the actual data. When you set the contents of the clipboard, you can either supply the data directly (via functions like gtk_clipboard_set_text()), or you can supply a callback to be called at a later time when the data is needed (via gtk_clipboard_set_with_data() or gtk_clipboard_set_with_owner().) Providing a callback also avoids having to make copies of the data when it is not needed.
+
+gtk_clipboard_set_with_data() and gtk_clipboard_set_with_owner() are quite similar; the choice between the two depends mostly on which is more convenient in a particular situation. The former is most useful when you want to have a blob of data with callbacks to convert it into the various data types that you advertise. When the clear_func you provided is called, you simply free the data blob. The latter is more useful when the contents of clipboard reflect the internal state of a GObject (As an example, for the PRIMARY clipboard, when an entry widget provides the clipboard's contents the contents are simply the text within the selected region.) If the contents change, the entry widget can call gtk_clipboard_set_with_owner() to update the timestamp for clipboard ownership, without having to worry about clear_func being called.
+
+Requesting the data from the clipboard is essentially asynchronous. If the contents of the clipboard are provided within the same process, then a direct function call will be made to retrieve the data, but if they are provided by another process, then the data needs to be retrieved from the other process, which may take some time. To avoid blocking the user interface, the call to request the selection, gtk_clipboard_request_contents() takes a callback that will be called when the contents are received (or when the request fails.) If you don't want to deal with providing a separate callback, you can also use gtk_clipboard_wait_for_contents(). What this does is run the GLib main loop recursively waiting for the contents. This can simplify the code flow, but you still have to be aware that other callbacks in your program can be called while this recursive mainloop is running.
+
+Along with the functions to get the clipboard contents as an arbitrary data chunk, there are also functions to retrieve it as text, gtk_clipboard_request_text() and gtk_clipboard_wait_for_text(). These functions take care of determining which formats are advertised by the clipboard provider, asking for the clipboard in the best available format and converting the results into the UTF-8 encoding. (The standard form for representing strings in GTK+.)
+
 Slots:
 @itemize
 @end itemize
@@ -1168,7 +1178,9 @@ Slots:
 
 Signals:
 @itemize
-@item @anchor{signal.clipboard.owner-change}"owner-change". Signature: (instance @ref{clipboard}), (arg-1 @ref{event}) @result{} void. Options: run-first.
+@item @anchor{signal.clipboard.owner-change}"owner-change". Signature: (instance @ref{clipboard}), (event @ref{event-owner-change}) @result{} void. Options: run-first.
+
+This signal is emitted when GTK+ receives an event that indicates that the ownership of the selection associated with clipboard has changed.
 @end itemize
 
 
@@ -1177,27 +1189,79 @@ Signals:
 @node entry-completion
 @section entry-completion
 @Class entry-completion
-Superclass: @ref{g-object}
+Superclass: @ref{g-object} @ref{buildable} @ref{cell-layout}
+
+@ref{entry-completion} is an auxiliary object to be used in conjunction with @ref{entry} to provide the completion functionality. It implements the @ref{cell-layout} interface, to allow the user to add extra cells to the @ref{tree-view} with completion matches.
+
+"Completion functionality" means that when the user modifies the text in the entry, @ref{entry-completion} checks which rows in the model match the current content of the entry, and displays a list of matches. By default, the matching is done by comparing the entry text case-insensitively against the text column of the model (see @SlotRef{entry-completion,text-column}), but this can be overridden with a custom match function (see gtk_entry_completion_set_match_func()).
+
+When the user selects a completion, the content of the entry is updated. By default, the content of the entry is replaced by the text column of the model, but this can be overridden by connecting to the @SignalRef{entry-completion,match-selected} signal and updating the entry in the signal handler. Note that you should return TRUE from the signal handler to suppress the default behaviour.
+
+To add completion functionality to an entry, use gtk_entry_set_completion().
+
+In addition to regular completion matches, which will be inserted into the entry when they are selected, GtkEntryCompletion also allows to display "actions" in the popup window. Their appearance is similar to menuitems, to differentiate them clearly from completion strings. When an action is selected, the @SignalRef{entry-completion,action-activated} signal is emitted.
 
 Slots:
 @itemize
 @item @anchor{slot.entry-completion.inline-completion}inline-completion. Type: @code{boolean}. Accessor: @anchor{fn.entry-completion-inline-completion}@code{entry-completion-inline-completion}.
+
+Determines whether the common prefix of the possible completions should be inserted automatically in the entry. Note that this requires text-column to be set, even if you are using a custom match function.
+
+Default value: FALSE
 @item @anchor{slot.entry-completion.inline-selection}inline-selection. Type: @code{boolean}. Accessor: @anchor{fn.entry-completion-inline-selection}@code{entry-completion-inline-selection}.
+
+Determines whether the possible completions on the popup will appear in the entry as you navigate through them.
+
+Default value: FALSE
 @item @anchor{slot.entry-completion.minimum-key-length}minimum-key-length. Type: @code{integer}. Accessor: @anchor{fn.entry-completion-minimum-key-length}@code{entry-completion-minimum-key-length}.
+
+Minimum length of the search key in order to look up matches.
+
+Allowed values: >= 0
+
+Default value: 1
 @item @anchor{slot.entry-completion.model}model. Type: @ref{tree-model}. Accessor: @anchor{fn.entry-completion-model}@code{entry-completion-model}.
+
+The model to find matches in.
 @item @anchor{slot.entry-completion.popup-completion}popup-completion. Type: @code{boolean}. Accessor: @anchor{fn.entry-completion-popup-completion}@code{entry-completion-popup-completion}.
+
+Determines whether the possible completions should be shown in a popup window.
+
+Default value: TRUE
 @item @anchor{slot.entry-completion.popup-set-width}popup-set-width. Type: @code{boolean}. Accessor: @anchor{fn.entry-completion-popup-set-width}@code{entry-completion-popup-set-width}.
+
+Determines whether the completions popup window will be resized to the width of the entry.
+
+Default value: TRUE
 @item @anchor{slot.entry-completion.popup-single-match}popup-single-match. Type: @code{boolean}. Accessor: @anchor{fn.entry-completion-popup-single-match}@code{entry-completion-popup-single-match}.
+
+Determines whether the completions popup window will shown for a single possible completion. You probably want to set this to FALSE if you are using inline completion.
+
+Default value: TRUE
 @item @anchor{slot.entry-completion.text-column}text-column. Type: @code{integer}. Accessor: @anchor{fn.entry-completion-text-column}@code{entry-completion-text-column}.
+
+The column of the model containing the strings.
+
+Default value: -1
 @end itemize
 
 
 Signals:
 @itemize
-@item @anchor{signal.entry-completion.action-activated}"action-activated". Signature: (instance @ref{entry-completion}), (arg-1 @code{integer}) @result{} void. Options: run-last.
-@item @anchor{signal.entry-completion.cursor-on-match}"cursor-on-match". Signature: (instance @ref{entry-completion}), (arg-1 @ref{tree-model}), (arg-2 @ref{tree-iter}) @result{} @code{boolean}. Options: run-last.
-@item @anchor{signal.entry-completion.insert-prefix}"insert-prefix". Signature: (instance @ref{entry-completion}), (arg-1 @code{string}) @result{} @code{boolean}. Options: run-last.
-@item @anchor{signal.entry-completion.match-selected}"match-selected". Signature: (instance @ref{entry-completion}), (arg-1 @ref{tree-model}), (arg-2 @ref{tree-iter}) @result{} @code{boolean}. Options: run-last.
+@item @anchor{signal.entry-completion.action-activated}"action-activated". Signature: (instance @ref{entry-completion}), (index @code{integer}) @result{} void. Options: run-last.
+
+Gets emitted when an action is activated. @var{index} is the index of activated action.
+@item @anchor{signal.entry-completion.cursor-on-match}"cursor-on-match". Signature: (instance @ref{entry-completion}), (model @ref{tree-model}), (iter @ref{tree-iter}) @result{} @code{boolean}. Options: run-last.
+
+Gets emitted when a match from the cursor is on a match of the list.The default behaviour is to replace the contents of the entry with the contents of the text column in the row pointed to by iter.
+@item @anchor{signal.entry-completion.insert-prefix}"insert-prefix". Signature: (instance @ref{entry-completion}), (prefix @code{string}) @result{} @code{boolean}. Options: run-last.
+
+Gets emitted when the inline autocompletion is triggered. The default behaviour is to make the entry display the whole prefix and select the newly inserted part.
+
+Applications may connect to this signal in order to insert only a smaller part of the prefix into the entry - e.g. the entry used in the @ref{file-chooser} inserts only the part of the prefix up to the next '/'.
+@item @anchor{signal.entry-completion.match-selected}"match-selected". Signature: (instance @ref{entry-completion}), (model @ref{tree-model}), (iter @ref{tree-iter}) @result{} @code{boolean}. Options: run-last.
+
+Gets emitted when a match from the list is selected. The default behaviour is to replace the contents of the entry with the contents of the text column in the row pointed to by iter.
 @end itemize
 
 
@@ -1208,6 +1272,11 @@ Signals:
 @Class file-filter
 Superclass: @ref{gtk-object}
 
+A @ref{file-filter} can be used to restrict the files being shown in a @ref{file-chooser}. Files can be filtered based on their name (with gtk_file_filter_add_pattern()), on their mime type (with gtk_file_filter_add_mime_type()), or by a custom filter function (with gtk_file_filter_add_custom()).
+
+Filtering by mime types handles aliasing and subclassing of mime types; e.g. a filter for text/plain also matches a file with mime type application/rtf, since application/rtf is a subclass of text/plain. Note that GtkFileFilter allows wildcards for the subtype of a mime type, so you can e.g. filter for image/*.
+
+Normally, filters are used by adding them to a GtkFileChooser, see gtk_file_chooser_add_filter(), but it is also possible to manually use a filter on a file with gtk_file_filter_filter().
 Slots:
 @itemize
 @item @anchor{slot.file-filter.name}name. Type: @code{string}. Accessor: @anchor{fn.file-filter-name}@code{file-filter-name}.
@@ -1228,15 +1297,23 @@ Superclass: @ref{g-initially-unowned}
 
 Subclasses: @ref{item-factory} @ref{tooltips} @ref{recent-filter} @ref{file-filter} @ref{cell-renderer} @ref{tree-view-column} @ref{adjustment} @ref{widget}
 
+@ref{gtk-object} is the base class for all widgets, and for a few non-widget objects such as @ref{adjustment}. @ref{gtk-object} predates @ref{g-object}; non-widgets that derive from @ref{gtk-object} rather than @ref{g-object} do so for backward compatibility reasons.
+
+The @SignalRef{gtk-object,destroy} signal asks all code owning a reference to an object to release said reference. So, for example, if you call gtk_object_destroy() on a @ref{gtk-window}, GTK+ will release the reference count that it owns; if you call gtk_object_destroy() on a @ref{button}, then the button will be removed from its parent container and the parent container will release its reference to the button. Because these references are released, calling gtk_object_destroy() should result in freeing all memory associated with an object, unless some buggy code fails to release its references in response to the "destroy" signal.
+
 Slots:
 @itemize
 @item @anchor{slot.gtk-object.user-data}user-data. Type: gpointer. Accessor: @anchor{fn.gtk-object-user-data}@code{gtk-object-user-data}.
+
+Anonymous User Data Pointer.
 @end itemize
 
 
 Signals:
 @itemize
 @item @anchor{signal.gtk-object.destroy}"destroy". Signature: (instance @ref{gtk-object}) @result{} void. Options: run-cleanup, no-recurse, no-hooks.
+
+Signals that all holders of a reference to the @ref{gtk-object} should release the reference that they hold. May result in finalization of the object if all references are released.
 @end itemize
 
 
@@ -1247,6 +1324,15 @@ Signals:
 @Class i-m-context
 Superclass: @ref{g-object}
 
+
+@ref{i-m-context} defines the interface for GTK+ input methods. An input method is used by GTK+ text input widgets like @ref{entry} to map from key events to Unicode character strings.
+
+The user may change the current input method via a context menu, unless the @SlotRef{settings,gtk-show-input-method-menu} property is set to FALSE. The default input method can be set programmatically via the @SlotRef{settings,gtk-im-module} property. Alternatively, you may set the GTK_IM_MODULE environment variable as documented in gtk-running.
+
+The @SlotRef{entry,im-module} and @SlotRev{text-view,im-module} properties may also be used to set input methods for specific widget instances. For instance, a certain entry widget might be expected to contain certain characters which would be easier to input with a certain input method.
+
+An input method may consume multiple key events in sequence and finally output the composed result. This is called preediting, and an input method may provide feedback about this process by displaying the intermediate composition states as preedit text. For instance, the default GTK+ input method implements the input of arbitrary Unicode code points by holding down the Control and Shift keys and then typing "U" followed by the hexadecimal digits of the code point. When releasing the Control and Shift keys, preediting ends and the character is inserted as text. Ctrl+Shift+u20AC for example results in the € sign.
+
 Slots:
 @itemize
 @end itemize
@@ -1254,12 +1340,30 @@ Slots:
 
 Signals:
 @itemize
-@item @anchor{signal.i-m-context.commit}"commit". Signature: (instance @ref{i-m-context}), (arg-1 @code{string}) @result{} void. Options: run-last.
-@item @anchor{signal.i-m-context.delete-surrounding}"delete-surrounding". Signature: (instance @ref{i-m-context}), (arg-1 @code{integer}), (arg-2 @code{integer}) @result{} @code{boolean}. Options: run-last.
+@item @anchor{signal.i-m-context.commit}"commit". Signature: (instance @ref{i-m-context}), (str @code{string}) @result{} void. Options: run-last.
+
+The signal is emitted when a complete input sequence has been entered by the user. This can be a single character immediately after a key press or the final result of preediting.
+@item @anchor{signal.i-m-context.delete-surrounding}"delete-surrounding". Signature: (instance @ref{i-m-context}), (offset @code{integer}), (n-chars @code{integer}) @result{} @code{boolean}. Options: run-last.
+
+The signal is emitted when the input method needs to delete all or part of the context surrounding the cursor.
+@table @var
+@item @var{offset}
+the character offset from the cursor position of the text to be deleted. A negative value indicates a position before the cursor.
+@item @var{n-chars}
+the number of characters to be deleted
+@end table
 @item @anchor{signal.i-m-context.preedit-changed}"preedit-changed". Signature: (instance @ref{i-m-context}) @result{} void. Options: run-last.
+
+The signal is emitted whenever the preedit sequence currently being entered has changed. It is also emitted at the end of a preedit sequence, in which case gtk_im_context_get_preedit_string() returns the empty string.
 @item @anchor{signal.i-m-context.preedit-end}"preedit-end". Signature: (instance @ref{i-m-context}) @result{} void. Options: run-last.
+
+The signal is emitted when a preediting sequence has been completed or canceled.
 @item @anchor{signal.i-m-context.preedit-start}"preedit-start". Signature: (instance @ref{i-m-context}) @result{} void. Options: run-last.
+
+The signal is emitted when a new preediting sequence starts.
 @item @anchor{signal.i-m-context.retrieve-surrounding}"retrieve-surrounding". Signature: (instance @ref{i-m-context}) @result{} @code{boolean}. Options: run-last.
+
+The signal is emitted when the input method requires the context surrounding the cursor. The callback should set the input method surrounding context by calling the gtk_im_context_set_surrounding() method.
 @end itemize
 
 
@@ -1269,6 +1373,10 @@ Signals:
 @section icon-factory
 @Class icon-factory
 Superclass: @ref{g-object}
+
+An icon factory manages a collection of GtkIconSet; a GtkIconSet manages a set of variants of a particular icon (i.e. a GtkIconSet contains variants for different sizes and widget states). Icons in an icon factory are named by a stock ID, which is a simple string identifying the icon. Each @ref{style} has a list of @ref{icon-factory} derived from the current theme; those icon factories are consulted first when searching for an icon. If the theme doesn't set a particular icon, GTK+ looks for the icon in a list of default icon factories, maintained by gtk_icon_factory_add_default() and gtk_icon_factory_remove_default(). Applications with icons should add a default icon factory with their icons, which will allow themes to override the icons for the application.
+
+To display an icon, always use gtk_style_lookup_icon_set() on the widget that will display the icon, or the convenience function gtk_widget_render_icon(). These functions take the theme into account when looking up the icon to use for a given stock ID.
 
 Slots:
 @itemize
@@ -1286,6 +1394,22 @@ Signals:
 @section icon-theme
 @Class icon-theme
 Superclass: @ref{g-object}
+
+
+
+@ref{icon-theme} provides a facility for looking up icons by name and size. The main reason for using a name rather than simply providing a filename is to allow different icons to be used depending on what icon theme is selecetd by the user. The operation of icon themes on Linux and Unix follows the Icon Theme Specification. There is a default icon theme, named hicolor where applications should install their icons, but more additional application themes can be installed as operating system vendors and users choose.
+
+Named icons are similar to the Themeable Stock Images(3) facility, and the distinction between the two may be a bit confusing. A few things to keep in mind:
+
+Stock images usually are used in conjunction with Stock Items(3)., such as GTK_STOCK_OK or GTK_STOCK_OPEN. Named icons are easier to set up and therefore are more useful for new icons that an application wants to add, such as application icons or window icons.
+
+Stock images can only be loaded at the symbolic sizes defined by the GtkIconSize enumeration, or by custom sizes defined by gtk_icon_size_register(), while named icons are more flexible and any pixel size can be specified.
+
+Because stock images are closely tied to stock items, and thus to actions in the user interface, stock images may come in multiple variants for different widget states or writing directions.
+
+A good rule of thumb is that if there is a stock image for what you want to use, use it, otherwise use a named icon. It turns out that internally stock images are generally defined in terms of one or more named icons. (An example of the more than one case is icons that depend on writing direction; GTK_STOCK_GO_FORWARD uses the two themed icons "gtk-stock-go-forward-ltr" and "gtk-stock-go-forward-rtl".)
+
+In many cases, named themes are used indirectly, via GtkImage or stock items, rather than directly, but looking up icons directly is also simple. The GtkIconTheme object acts as a database of all the icons in the current theme. You can create new GtkIconTheme objects, but its much more efficient to use the standard icon theme for the GdkScreen so that the icon information is shared with other people looking up icons.
 
 Slots:
 @itemize
@@ -1305,6 +1429,9 @@ Signals:
 @Class item-factory
 Superclass: @ref{gtk-object}
 
+@ref{item-factory} has been deprecated in favour of @ref{ui-manager}.
+
+
 Slots:
 @itemize
 @end itemize
@@ -1322,6 +1449,12 @@ Signals:
 @Class list-store
 Superclass: @ref{g-object}
 
+Note: see also @ref{array-list-store}
+
+The @ref{list-store} object is a list model for use with a @ref{tree-view} widget. It implements the @ref{tree-model} interface, and consequentialy, can use all of the methods available there. It also implements the @ref{tree-sortable} interface so it can be sorted by the view. Finally, it also implements the tree drag and drop interfaces.
+
+The @ref{list-store} can accept most GObject types as a column type, though it can't accept all custom types. Internally, it will keep a copy of data passed in (such as a string or a boxed pointer). Columns that accept GObjects are handled a little differently. The @ref{list-store} will keep a reference to the object instead of copying the value. As a result, if the object is modified, it is up to the application writer to call gtk_tree_model_row_changed to emit the "row_changed" signal. This most commonly affects lists with @ref{pixbuf}s stored.
+
 Slots:
 @itemize
 @end itemize
@@ -1338,6 +1471,8 @@ Signals:
 @section page-setup
 @Class page-setup
 Superclass: @ref{g-object}
+
+
 
 Slots:
 @itemize
