@@ -13,9 +13,8 @@
   (:documentation
    "Base class for GObject classes hierarchy."))
 
-(defvar *foreign-gobjects* (make-weak-hash-table :test 'equal :weakness :value))
-(defvar *foreign-gobjects-ref-count* (make-hash-table :test 'equal))
-(defvar *lisp-objects-pointers* (make-hash-table :test 'equal))
+(defvar *foreign-gobjects-weak* (make-weak-hash-table :test 'equal :weakness :value))
+(defvar *foreign-gobjects-strong* (make-hash-table :test 'equal))
 (defvar *current-creating-object* nil)
 
 (defun ref-count (pointer)
@@ -32,6 +31,7 @@
          (s (format nil "~A" obj)))
     (finalize obj
               (lambda ()
+                (debugf "~A is queued for GC (having ~A refs)~%" pointer (ref-count pointer))
                 (handler-case
                     (g-object-dispose-carefully pointer)
                   (error (e) (format t "Error in finalizer for ~A: ~A~%" s e))))))
@@ -47,7 +47,7 @@
       (debugf "activating gc hooks for objects: ~A~%" *gobject-gc-hooks*)
       (loop
          for pointer in *gobject-gc-hooks*
-         do (g-object-unref pointer))
+         do (g-object-remove-toggle-ref pointer (callback gobject-toggle-ref-toggled) (null-pointer)))
       (setf *gobject-gc-hooks* nil))))
 
 (defcallback g-idle-gc-hook :boolean ((data :pointer))
@@ -68,67 +68,54 @@
       (register-gobject-for-gc pointer)
     (error (e) (format t "Error in dispose: ~A~%" e))))
 
-(defcallback weak-notify-print :void ((data :pointer) (object-pointer :pointer))
-  (declare (ignore data)
-           (ignorable object-pointer))
-  (debugf "g-object has finalized ~A ~A~%" (g-type-name (g-type-from-object object-pointer)) object-pointer))
-
-(defun erase-pointer (data object-pointer)
-  (declare (ignore data))
-  (remhash (pointer-address object-pointer) *lisp-objects-pointers*))
-
-(defcallback weak-notify-erase-pointer :void ((data :pointer) (object-pointer :pointer))
-  (erase-pointer data object-pointer))
-
 (defun should-ref-sink-at-creation (object)
 ;;If object was not created from lisp-side, we should ref it
 ;;If an object is regular g-object, we should not ref-sink it
 ;;If an object is GInitiallyUnowned, then it is created with a floating reference, we should ref-sink it
 ;;A special case is GtkWindow: we should ref-sink it anyway
-  (if (g-object-has-reference object)
-      (let ((object-type (g-type-from-object (pointer object)))
-            (initially-unowned-type (g-type-from-name "GInitiallyUnowned")))
-        (g-type-is-a object-type initially-unowned-type))
-      t))
+  (let ((r (cond
+             ((eq object *current-creating-object*)  ;; g_object_new returns objects with ref = 1, we should save _this_ ref
+              (g-object-is-floating (pointer object))) ;; but floating objects should be ref_sunk
+             (t t))))
+    (debugf "(should-ref-sink-at-creation ~A) => ~A~%" object r)
+    r))
+
+(defcallback gobject-toggle-ref-toggled :void
+    ((data :pointer) (pointer :pointer) (is-last-ref :boolean))
+  (declare (ignore data))
+  (debugf "~A is now ~A with ~A refs~%" pointer (if is-last-ref "weak pointer" "strong pointer") (ref-count pointer))
+  (debugf "obj: ~A~%" (or (gethash (pointer-address pointer) *foreign-gobjects-strong*)
+                            (gethash (pointer-address pointer) *foreign-gobjects-weak*)))
+  (if is-last-ref
+      (let ((obj (gethash (pointer-address pointer) *foreign-gobjects-strong*)))
+        (if obj
+            (progn
+              (remhash (pointer-address pointer) *foreign-gobjects-strong*)
+              (setf (gethash (pointer-address pointer) *foreign-gobjects-weak*) obj))
+            (warn "GObject at ~A has no lisp-side (strong) reference" pointer)))
+      (let ((obj (gethash (pointer-address pointer) *foreign-gobjects-weak*)))
+        (unless obj (warn "GObject at ~A has no lisp-side (weak) reference" pointer))
+        (remhash (pointer-address pointer) *foreign-gobjects-weak*)
+        (setf (gethash (pointer-address pointer) *foreign-gobjects-strong*) obj))))
+
+(defcallback gobject-weak-ref-finalized :void
+    ((data :pointer) (pointer :pointer))
+  (declare (ignore data))
+  (debugf "~A is weak-ref-finalized with ~A refs~%" pointer (ref-count pointer))
+  (remhash (pointer-address pointer) *foreign-gobjects-weak*)
+  (when (gethash (pointer-address pointer) *foreign-gobjects-strong*)
+    (warn "GObject at ~A was weak-ref-finalized while still holding lisp-side strong reference to it" pointer))
+  (remhash (pointer-address pointer) *foreign-gobjects-strong*))
 
 (defun register-g-object (obj)
   (debugf "registered GObject ~A with gobject ref-count ~A ~A~%" (pointer obj) (ref-count obj) (if (g-object-is-floating (pointer obj)) "(floating)" ""))
   (when (should-ref-sink-at-creation obj)
     (debugf "g_object_ref_sink(~A)~%" (pointer obj))
     (g-object-ref-sink (pointer obj)))
-  (g-object-weak-ref (pointer obj) (callback weak-notify-print) (null-pointer))
-  (g-object-weak-ref (pointer obj) (callback weak-notify-erase-pointer) (null-pointer))
   (setf (g-object-has-reference obj) t)
-  (setf (gethash (pointer-address (pointer obj)) *foreign-gobjects*)
-        obj)
-  (setf (gethash (pointer-address (pointer obj)) *foreign-gobjects-ref-count*) 1))
-
-(defun g-object-dispose (pointer)
-  (unless (gethash (pointer-address pointer) *foreign-gobjects-ref-count*)
-    (debugf "GObject ~A is already disposed, signalling error~%" pointer)
-    (error "GObject ~A is already disposed" pointer))
-  (debugf "g_object_unref(~A) (of type ~A, lisp-value ~A) (lisp ref-count ~A, gobject ref-count ~A)~%"
-          pointer
-          (g-type-name (g-type-from-object pointer))
-          (gethash (pointer-address pointer) *foreign-gobjects*)
-          (gethash (pointer-address pointer) *foreign-gobjects-ref-count*)
-          (ref-count pointer))
-  (let ((object (gethash (pointer-address pointer) *foreign-gobjects*)))
-    (when object
-      (setf (pointer object) nil)
-      (cancel-finalization object)))
-  (remhash (pointer-address pointer) *foreign-gobjects*)
-  (remhash (pointer-address pointer) *foreign-gobjects-ref-count*)
-  (g-object-unref pointer))
-
-(defmethod release ((object g-object))
-  (debugf "Releasing object ~A (type ~A, lisp-value ~A)~%" (pointer object) (when (pointer object) (g-type-name (g-type-from-object (pointer object)))) object)
-  (unless (and (pointer object) (gethash (pointer-address (pointer object)) *foreign-gobjects-ref-count*))
-    (error "Object ~A already disposed of from lisp side" object))
-  (decf (gethash (pointer-address (pointer object)) *foreign-gobjects-ref-count*))
-  (when (zerop (gethash (pointer-address (pointer object)) *foreign-gobjects-ref-count*))
-    (g-object-dispose (pointer object)))
-  (activate-gc-hooks))
+  (setf (gethash (pointer-address (pointer obj)) *foreign-gobjects-strong*) obj)
+  (g-object-add-toggle-ref (pointer obj) (callback gobject-toggle-ref-toggled) (null-pointer))
+  (g-object-unref (pointer obj)))
 
 (defvar *registered-object-types* (make-hash-table :test 'equal))
 (defun register-object-type (name type)
@@ -175,12 +162,9 @@
 
 (defun get-g-object-for-pointer (pointer)
   (unless (null-pointer-p pointer)
-    (let ((object (gethash (pointer-address pointer) *foreign-gobjects*)))
-      (if object
-          (prog1 object
-            (incf (gethash (pointer-address pointer) *foreign-gobjects-ref-count*))
-            (debugf "increfering object ~A~%" pointer))
-          (make-g-object-from-pointer pointer)))))
+    (or (gethash (pointer-address pointer) *foreign-gobjects-strong*)
+        (gethash (pointer-address pointer) *foreign-gobjects-weak*)
+        (make-g-object-from-pointer pointer))))
 
 (defmethod translate-from-foreign (pointer (type foreign-g-object-type))
   (get-g-object-for-pointer pointer))

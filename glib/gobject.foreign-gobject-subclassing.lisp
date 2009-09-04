@@ -4,32 +4,17 @@
 
 (defstruct object-type name class parent interfaces properties)
 
-(defvar *lisp-objects-references* (make-hash-table :test 'equal))
-
-(defun object-toggle-pointer (data object is-last-ref)
-  (declare (ignore data))
-  (debugf "Toggling pointer on ~a (~A) to being ~A~%" object (gethash (pointer-address object) *lisp-objects-references*) (if is-last-ref "last ref" "not last ref"))
-  (if is-last-ref
-      (remhash (pointer-address object) *lisp-objects-references*)
-      (setf (gethash (pointer-address object) *lisp-objects-references*) (gethash (pointer-address object) *foreign-gobjects*))))
-
 (defun instance-init (instance class)
   (debugf "Initializing instance ~A for type ~A (creating ~A)~%" instance (g-type-name (foreign-slot-value class 'g-type-class :type)) *current-creating-object*)
-  (unless (gethash (pointer-address instance) *lisp-objects-pointers*)
+  (unless (or *current-creating-object*
+              (gethash (pointer-address instance) *foreign-gobjects-strong*)
+              (gethash (pointer-address instance) *foreign-gobjects-weak*))
     (debugf "  Proceeding with initialization...")
-    (setf (gethash (pointer-address instance) *lisp-objects-pointers*) t
-          (gethash (pointer-address instance) *lisp-objects-references*)
-          (or *current-creating-object*
-              (let* ((g-type (foreign-slot-value class 'g-type-class :type))
-                     (type-name (g-type-name g-type))
-                     (lisp-type-info (gethash type-name *registered-types*))
-                     (lisp-class (object-type-class lisp-type-info)))
-                (make-instance lisp-class :pointer instance))))
-    (g-object-add-toggle-ref instance (callback c-object-toggle-pointer) (null-pointer))
-    (g-object-unref instance)))
-
-(defcallback c-object-toggle-pointer :void ((data :pointer) (object :pointer) (is-last-ref :boolean))
-  (object-toggle-pointer data object is-last-ref))
+    (let* ((g-type (foreign-slot-value class 'g-type-class :type))
+           (type-name (g-type-name g-type))
+           (lisp-type-info (gethash type-name *registered-types*))
+           (lisp-class (object-type-class lisp-type-info)))
+      (make-instance lisp-class :pointer instance))))
 
 (defcallback c-instance-init :void ((instance :pointer) (class :pointer))
   (instance-init instance class))
@@ -161,7 +146,8 @@
 
 (defun object-property-get (object property-id g-value pspec)
   (declare (ignore property-id))
-  (let* ((lisp-object (gethash (pointer-address object) *lisp-objects-references*))
+  (let* ((lisp-object (or (gethash (pointer-address object) *foreign-gobjects-strong*)
+                          (gethash (pointer-address object) *foreign-gobjects-weak*)))
          (property-name (foreign-slot-value pspec 'g-param-spec :name))
          (property-type (foreign-slot-value pspec 'g-param-spec :value-type))
          (type-name (g-type-name (foreign-slot-value pspec 'g-param-spec :owner-type)))
@@ -179,7 +165,8 @@
 
 (defun object-property-set (object property-id value pspec)
   (declare (ignore property-id))
-  (let* ((lisp-object (gethash (pointer-address object) *lisp-objects-references*))
+  (let* ((lisp-object (or (gethash (pointer-address object) *foreign-gobjects-strong*)
+                          (gethash (pointer-address object) *foreign-gobjects-weak*)))
          (property-name (foreign-slot-value pspec 'g-param-spec :name))
          (type-name (g-type-name (foreign-slot-value pspec 'g-param-spec :owner-type)))
          (lisp-type-info (gethash type-name *registered-types*))
