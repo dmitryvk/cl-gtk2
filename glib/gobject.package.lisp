@@ -243,6 +243,15 @@ GObject uses GValues as a generic way to pass values. It is used when calling cl
 
 (defvar *gobject-debug* nil)
 
-(defmacro debugf (&rest args)
-  (when *gobject-debug*
-    (apply 'format t args)))
+(defvar *debug-gc* nil)
+(defvar *debug-subclass* nil)
+
+(defvar *debug-stream* t)
+
+(defmacro log-for (categories control-string &rest args)
+  (let ((vars (iter (for sym in (if (listp categories) categories (list categories)))
+                    (collect (intern (format nil "*DEBUG-~A*" (symbol-name sym)) (find-package :gobject))))))
+    `(progn
+       (when (or ,@vars)
+         (format *debug-stream* ,control-string ,@args))
+       nil)))

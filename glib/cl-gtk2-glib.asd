@@ -24,10 +24,10 @@
                (:file "gobject.gvalue")
                (:file "gobject.foreign")
                (:file "gobject.stable-pointer")
-               (:file "gobject.closure")
                (:file "gobject.object.low")
                (:file "gobject.object.high")
-
+               (:file "gobject.signals")
+               
                (:file "gobject.meta")
                (:file "gobject.generating")
                (:file "gobject.object-defs")
