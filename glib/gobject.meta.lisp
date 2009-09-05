@@ -205,15 +205,17 @@
     (apply #'call-next-method instance filtered-initargs)))
 
 (defmethod make-instance ((class gobject-class) &rest initargs &key pointer)
-  (if pointer
-      (progn
-        (assert (= (length initargs) 2) nil "POINTER can not be combined with other initargs (~A)" initargs)
-        (call-next-method))
-      (let* ((default-initargs (iter (for (arg value) in (class-default-initargs class))
-                                     (nconcing (list arg value))))
-             (effective-initargs (append initargs default-initargs))
-             (pointer (create-gobject-from-class-and-initargs class effective-initargs)))
-        (apply #'call-next-method class :pointer pointer effective-initargs))))
+  (log-for :subclass "(make-instance ~A ~{~A~^ ~})~%" class initargs)
+  (let ((*currently-making-object-p* t))
+    (if pointer
+        (progn
+          (assert (= (length initargs) 2) nil "POINTER can not be combined with other initargs (~A)" initargs)
+          (call-next-method))
+        (let* ((default-initargs (iter (for (arg value) in (class-default-initargs class))
+                                       (nconcing (list arg value))))
+               (effective-initargs (append initargs default-initargs))
+               (pointer (create-gobject-from-class-and-initargs class effective-initargs)))
+          (apply #'call-next-method class :pointer pointer effective-initargs)))))
 
 (defmethod slot-boundp-using-class ((class gobject-class) object (slot gobject-property-effective-slot-definition))
   (handler-case

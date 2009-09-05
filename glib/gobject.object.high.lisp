@@ -21,12 +21,16 @@
 (defvar *foreign-gobjects-strong* (make-hash-table :test 'equal))
 (defvar *current-creating-object* nil)
 (defvar *current-object-from-pointer* nil)
+(defvar *currently-making-object-p* nil)
 
 (defun ref-count (pointer)
   (foreign-slot-value (if (pointerp pointer) pointer (pointer pointer)) 'g-object-struct :ref-count))
 
 (defmethod initialize-instance :around ((obj g-object) &key)
+  (when *currently-making-object-p*
+    (setf *currently-making-object-p* t))
   (let ((*current-creating-object* obj))
+    (log-for :subclass "initialize-instance :around; *current-creating-object* = ~A~%" obj)
     (call-next-method)))
 
 (defmethod initialize-instance :after ((obj g-object) &key &allow-other-keys)

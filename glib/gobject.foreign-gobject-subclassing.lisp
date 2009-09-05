@@ -5,11 +5,13 @@
 (defstruct object-type name class parent interfaces properties)
 
 (defun instance-init (instance class)
+  (log-for :subclass "(instance-init ~A ~A)~%" instance class)
   (log-for :subclass "Initializing instance ~A for type ~A (creating ~A)~%" instance (g-type-name (foreign-slot-value class 'g-type-class :type)) *current-creating-object*)
   (unless (or *current-creating-object*
+              *currently-making-object-p*
               (gethash (pointer-address instance) *foreign-gobjects-strong*)
               (gethash (pointer-address instance) *foreign-gobjects-weak*))
-    (log-for :subclass "  Proceeding with initialization...")
+    (log-for :subclass "Proceeding with initialization...~%")
     (let* ((g-type (foreign-slot-value class 'g-type-class :type))
            (type-name (g-type-name g-type))
            (lisp-type-info (gethash type-name *registered-types*))
@@ -198,8 +200,10 @@
                                         (callback c-instance-init) nil))
        (add-interfaces ,name))
      (defmethod initialize-instance :before ((object ,class) &key pointer)
+       (log-for :subclass "(initialize-instance ~A :pointer ~A) :before~%" object pointer)
        (unless (or pointer (and (slot-boundp object 'gobject::pointer)
                                 (gobject::pointer object)))
+         (log-for :subclass "calling g-object-constructor~%")
          (setf (gobject::pointer object) (gobject::g-object-call-constructor ,name nil nil)
                (gobject::g-object-has-reference object) t)))
      (progn
