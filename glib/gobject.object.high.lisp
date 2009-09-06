@@ -164,11 +164,15 @@
       (make-instance lisp-type :pointer pointer))))
 
 (define-foreign-type foreign-g-object-type ()
-  ((sub-type :reader sub-type :initarg :sub-type :initform 'g-object))
+  ((sub-type :reader sub-type :initarg :sub-type :initform 'g-object)
+   (already-referenced :reader foreign-g-object-type-already-referenced :initarg :already-referenced :initform nil))
   (:actual-type :pointer))
 
-(define-parse-method g-object (&optional (sub-type 'g-object))
-  (make-instance 'foreign-g-object-type :sub-type sub-type))
+(define-parse-method g-object (&rest args)
+  (let* ((sub-type (first (remove-if #'keywordp args)))
+         (flags (remove-if-not #'keywordp args))
+         (already-referenced (not (null (find :already-referenced flags)))))
+    (make-instance 'foreign-g-object-type :sub-type sub-type :already-referenced already-referenced)))
 
 (defmethod translate-to-foreign (object (type foreign-g-object-type))
   (cond
@@ -178,9 +182,10 @@
     ((null (pointer object))
      (error "Object ~A has been disposed" object))
     ((typep object 'g-object)
-     (assert (typep object (sub-type type))
-             nil
-             "Object ~A is not a subtype of ~A" object (sub-type type))
+     (when (sub-type type)
+       (assert (typep object (sub-type type))
+               nil
+               "Object ~A is not a subtype of ~A" object (sub-type type)))
      (pointer object))
     (t (error "Object ~A is not translatable as GObject*" object))))
 
@@ -192,7 +197,10 @@
                (make-g-object-from-pointer pointer)))))
 
 (defmethod translate-from-foreign (pointer (type foreign-g-object-type))
-  (get-g-object-for-pointer pointer))
+  (let ((object (get-g-object-for-pointer pointer)))
+    (when (foreign-g-object-type-already-referenced type)
+      (g-object-unref (pointer object)))
+    object))
 
 (register-object-type "GObject" 'g-object)
 
