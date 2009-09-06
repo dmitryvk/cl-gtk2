@@ -1329,7 +1329,7 @@ Superclass: @ref{g-object}
 
 The user may change the current input method via a context menu, unless the @SlotRef{settings,gtk-show-input-method-menu} property is set to FALSE. The default input method can be set programmatically via the @SlotRef{settings,gtk-im-module} property. Alternatively, you may set the GTK_IM_MODULE environment variable as documented in gtk-running.
 
-The @SlotRef{entry,im-module} and @SlotRev{text-view,im-module} properties may also be used to set input methods for specific widget instances. For instance, a certain entry widget might be expected to contain certain characters which would be easier to input with a certain input method.
+The @SlotRef{entry,im-module} and @SlotRef{text-view,im-module} properties may also be used to set input methods for specific widget instances. For instance, a certain entry widget might be expected to contain certain characters which would be easier to input with a certain input method.
 
 An input method may consume multiple key events in sequence and finally output the composed result. This is called preediting, and an input method may provide feedback about this process by displaying the intermediate composition states as preedit text. For instance, the default GTK+ input method implements the input of arbitrary Unicode code points by holding down the Control and Shift keys and then typing "U" followed by the hexadecimal digits of the code point. When releasing the Control and Shift keys, preediting ends and the character is inserted as text. Ctrl+Shift+u20AC for example results in the € sign.
 
