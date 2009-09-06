@@ -61,7 +61,8 @@
 ")))
 
 (setf gobject::*debug-stream* *standard-output*
-      gobject::*debug-gc* t)
+      gobject::*debug-gc* t
+      gobject::*debug-subclass* t)
 
 (defclass my-button (gtk:button) () (:metaclass gobject-class))
 
