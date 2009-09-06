@@ -357,7 +357,7 @@
 
 (export 'widget-get-pango-context)
 
-(defcfun (widget-create-pango-layout "gtk_widget_create_pango_layout") (g-object gdk::pango-layout)
+(defcfun (widget-create-pango-layout "gtk_widget_create_pango_layout") (g-object gdk::pango-layout :already-referenced)
   (widget (g-object widget))
   (text :string))
 

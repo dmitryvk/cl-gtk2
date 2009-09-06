@@ -19,7 +19,7 @@
 (defun (setf gdk-window-events) (new-value window)
   (gdk-window-set-events window new-value))
 
-(defcfun gdk-gc-new (g-object graphics-context)
+(defcfun gdk-gc-new (g-object graphics-context :already-referenced)
   (drawable (g-object drawable)))
 
 (defcfun gdk-draw-line :void
