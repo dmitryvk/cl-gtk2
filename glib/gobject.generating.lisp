@@ -249,7 +249,7 @@
          (type-init-name (probable-type-init-name g-name))
          (own-properties
           (sort (copy-list (remove g-type properties :key #'g-class-property-definition-owner-type :test-not #'g-type=))
-                #'string< :key #'g-class-property-definition-owner-type)))
+                #'string< :key #'g-class-property-definition-name)))
     `(define-g-object-class ,g-name ,name 
          (:superclass ,superclass-name
                       :export t

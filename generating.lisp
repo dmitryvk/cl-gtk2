@@ -104,7 +104,7 @@
               "GtkSubmenuDirection" "GtkSubmenuPlacement" "GtkTextWindowType"
               "GtkToolbarChildType" "GtkToolbarSpaceStyle" "GtkTreeViewDropPosition"
               "GtkTreeViewMode" "GtkVisibility")
-     :exclusions '("PangoStretch" "PangoVariant" "PangoStyle" "PangoUnderline")
+     :exclusions '("PangoStretch" "PangoVariant" "PangoStyle" "PangoUnderline" "GtkGLDrawingArea")
      :additional-properties
      '(("GtkTreeViewColumn"
         (:cffi gtk::tree-view gtk::tree-view-column-tree-view g-object "gtk_tree_view_column_get_tree_view" nil)
