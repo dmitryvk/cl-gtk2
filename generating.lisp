@@ -177,7 +177,15 @@
         (:cffi gtk::composite-name gtk::widget-composite-name (glib:g-string :free-from-foreign t :free-to-foreign t) "gtk_widget_get_composite_name" "gtk_widget_set_composite_name")
         (:cffi gtk::redraw-on-allocate gtk::widget-redraw-on-allocate :boolean nil "gtk_widget_set_redraw_on_allocate")
         (:cffi gtk::accessible gtk::widget-accessible g-object "gtk_widget_get_accessible" nil)
-        (:cffi gtk::tooltip-window gtk::widget-tooltip-window g-object "gtk_widget_get_tooltip_window" "gtk_widget_set_tooltip_window"))
+        (:cffi gtk::tooltip-window gtk::widget-tooltip-window g-object "gtk_widget_get_tooltip_window" "gtk_widget_set_tooltip_window")
+
+	(:cffi gtk::parent-window gtk::widget-parent-window (g-object gdk::window) "gtk_widget_get_parent_window" "gtk_widget_set_parent_window")
+	(:cffi gtk::toplevel gtk::widget-toplevel (g-object gtk::widget) "gtk_widget_get_toplevel" nil)
+	(:cffi gtk::colormap gtk::widget-colormap (g-object gdk::gdk-colormap) "gtk_widget_get_colormap" "gtk_widget_set_colormap")
+	(:cffi gtk::visual gtk::widget-visual (g-object gdk::visual) "gtk_widget_get_visual" nil)
+	(:cffi gtk::modifier-style gtk::widget-modifier-style (g-object gtk::rc-style) "gtk_widget_get_modifier_style" "gtk_widget_modify_style")
+	(:cffi gtk::pango-context gtk::widget-pango-context g-object "gtk_widget_get_pango_context" nil)
+	(:cffi gtk::child-visible gtk::widget-child-visible :boolean "gtk_widget_get_child_visible" "gtk_widget_set_child_visible"))
        ("GtkTextTag"
         (:cffi gtk::priority gtk::text-tag-priority :int "gtk_text_tag_get_priority" "gtk_text_tag_set_priority"))))))
 

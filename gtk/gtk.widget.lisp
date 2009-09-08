@@ -331,10 +331,6 @@
 
 (export 'widget-path)
 
-; TODO: gtk_widget_modify_style
-
-; TODO: gtk_widget_get_modifier_style
-
 ; TODO: gtk_widget_modify_fg
 
 ; TODO: gtk_widget_modify_bg
