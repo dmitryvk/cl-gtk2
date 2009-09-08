@@ -70,7 +70,7 @@
                 "GtkTextTagTable" "GtkTreeModelFilter" "GtkTreeModelSort"
                 "GtkTreeSelection" "GtkTreeStore" "GtkUIManager" "GtkWindowGroup"
                 "GtkToggleAction" "GtkRecentAction" "GtkRadioAction" "GtkItemFactory"
-		"GtkFileSelection")
+		"GtkFileSelection" "GtkPageSetupUnixDialog" "GtkPrintUnixDialog")
      :flags '("GtkTextSearchFlags" "GtkAccelFlags" "GtkArgFlags" "GtkAttachOptions"
               "GtkButtonAction" "GtkCalendarDisplayOptions" "GtkCellRendererState"
               "GtkDebugFlag" "GtkDestDefaults" "GtkDialogFlags" "GtkFileFilterFlags"
@@ -198,7 +198,10 @@
 	(:cffi gtk::pango-context gtk::widget-pango-context g-object "gtk_widget_get_pango_context" nil)
 	(:cffi gtk::child-visible gtk::widget-child-visible :boolean "gtk_widget_get_child_visible" "gtk_widget_set_child_visible"))
        ("GtkTextTag"
-        (:cffi gtk::priority gtk::text-tag-priority :int "gtk_text_tag_get_priority" "gtk_text_tag_set_priority"))))))
+        (:cffi gtk::priority gtk::text-tag-priority :int "gtk_text_tag_get_priority" "gtk_text_tag_set_priority"))
+       ("GtkPageSetupUnixDialog"
+	(:cffi gtk::page-setup gtk::page-setup-unix-dialog-page-setup (g-object gtk::page-setup) "gtk_page_setup_unix_dialog_get_page_setup" "gtk_page_setup_unix_dialog_set_page_setup")
+	(:cffi gtk::print-settings gtk::page-setup-unix-dialog-print-settings (g-object gtk::print-settings) "gtk_page_setup_unix_dialog_get_print_settings" "gtk_page_setup_unix_dialog_set_print_settings"))))))
 
 (defun gtk-generate-child-properties (filename)
   (with-open-file (stream filename :direction :output :if-exists :supersede)
