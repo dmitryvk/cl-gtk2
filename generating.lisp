@@ -113,6 +113,9 @@
 	(:cffi gtk::mnemonic-modifier gtk::gtk-window-mnemonic-modifier (g-object gdk::modifier-type) "gtk_window_get_mnemonic_modifier" "gtk_window_set_mnemonic_modifier")
 	(:cffi gtk::icon-list gtk::gtk-window-icon-list (glist gtk::pixbuf :free-from-foreign t :free-to-foreign t) "gtk_window_get_icon_list" "gtk_window_set_icon_list")
 	(:cffi gtk::group gtk::gtk-window-group (g-object gtk::window-group) "gtk_window_get_group" nil))
+       ("GtkDialog"
+	(:cffi gtk::action-area gtk::dialog-action-area (g-object gtk::widget) "gtk_dialog_get_action_area" nil)
+	(:cffi gtk::content-area gtk::dialog-content-area (g-object gtk::widget) "gtk_dialog_get_content_area" nil))
        ("GtkTreeViewColumn"
         (:cffi gtk::tree-view gtk::tree-view-column-tree-view g-object "gtk_tree_view_column_get_tree_view" nil)
         (:cffi gtk::sort-column-id gtk::tree-view-column-sort-column-id :int "gtk_tree_view_column_get_sort_column_id" "gtk_tree_view_column_set_sort_column_id")

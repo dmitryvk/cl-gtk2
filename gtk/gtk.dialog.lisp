@@ -40,21 +40,13 @@
   (response response-type)
   (setting :boolean))
 
+(export 'dialog-set-response-sensitive)
+
 (defcfun (dialog-response-for-widget "gtk_dialog_get_response_for_widget") :int
   (dialog (g-object dialog))
   (widget (g-object widget)))
 
 (export 'dialog-response-for-widget)
-
-(defcfun (dialog-action-area "gtk_dialog_get_action_area") (g-object widget)
-  (dialog (g-object dialog)))
-
-(export 'dialog-action-area)
-
-(defcfun (dialog-content-area "gtk_dialog_get_content_area") (g-object widget)
-  (dialog (g-object dialog)))
-
-(export 'dialog-content-area)
 
 (defcfun (dialog-alternative-button-order-on-screen "gtk_alternative_dialog_button_order") :boolean
   (screen (g-object screen)))
