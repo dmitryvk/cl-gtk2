@@ -1530,9 +1530,9 @@ Example:
 To enable passing GObject instance between Lisp code and foreign code, @code{g-object} foreign type is introduced.
 
 This type has the following syntax:
-@code{(g-object &optional type)} or @code{g-object}.
+@code{(g-object [type] [:already-referenced])} or @code{g-object}. (Brackets indicate optional arguments)
 
-When the @code{g-object} foreign type is specified as a return type of a function, the value is converted to instance of corresponding CLOS class. If @code{type} is specified then it is checked that object is of this type.
+When the @code{g-object} foreign type is specified as a return type of a function, the value is converted to instance of corresponding CLOS class. If @code{type} is specified then it is checked that object is of this type. If @code{:already-referenced} is included then it is assumed that the function returns already referenced object (so that it is not needed to call @code{g-object-ref} on returned object).
 
 When the @code{g-object} foreign type is specified as a type of function's argument, the value is converted to pointer to GObject. If @code{type} is specified then it is checked that the object is of this type.
 
@@ -1559,6 +1559,16 @@ This defines the function that returns an instance of GObject class:
   (bin-child window))
 @result{}
 #<GTK:BUTTON @{1002DE74B1@}>
+@end lisp
+
+This example shows the use of @code{:already-referenced} option:
+@lisp
+(defcfun (widget-create-pango-layout "gtk_widget_create_pango_layout") (g-object gdk::pango-layout :already-referenced)
+  (widget (g-object widget))
+  (text :string))
+
+(defcfun gdk-gc-new (g-object graphics-context :already-referenced)
+  (drawable (g-object drawable)))
 @end lisp
 
 @node Creating GObjects classes and implementing GInterfaces

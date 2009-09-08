@@ -9,20 +9,28 @@
    (has-reference
     :type boolean
     :accessor g-object-has-reference
-    :initform nil))
+    :initform nil)
+   (signal-handlers
+    :type (array t *)
+    :initform (make-array 0 :adjustable t :fill-pointer t)
+    :reader g-object-signal-handlers))
   (:documentation
    "Base class for GObject classes hierarchy."))
 
-(defvar *foreign-gobjects* (make-weak-hash-table :test 'equal :weakness :value))
-(defvar *foreign-gobjects-ref-count* (make-hash-table :test 'equal))
-(defvar *lisp-objects-pointers* (make-hash-table :test 'equal))
+(defvar *foreign-gobjects-weak* (make-weak-hash-table :test 'equal :weakness :value))
+(defvar *foreign-gobjects-strong* (make-hash-table :test 'equal))
 (defvar *current-creating-object* nil)
+(defvar *current-object-from-pointer* nil)
+(defvar *currently-making-object-p* nil)
 
 (defun ref-count (pointer)
   (foreign-slot-value (if (pointerp pointer) pointer (pointer pointer)) 'g-object-struct :ref-count))
 
 (defmethod initialize-instance :around ((obj g-object) &key)
+  (when *currently-making-object-p*
+    (setf *currently-making-object-p* t))
   (let ((*current-creating-object* obj))
+    (log-for :subclass "initialize-instance :around; *current-creating-object* = ~A~%" obj)
     (call-next-method)))
 
 (defmethod initialize-instance :after ((obj g-object) &key &allow-other-keys)
@@ -32,9 +40,13 @@
          (s (format nil "~A" obj)))
     (finalize obj
               (lambda ()
+                (log-for :gc "~A ~A is queued for GC (having ~A refs)~%"
+                         (g-type-from-object pointer) pointer (ref-count pointer))
                 (handler-case
                     (g-object-dispose-carefully pointer)
-                  (error (e) (format t "Error in finalizer for ~A: ~A~%" s e))))))
+                  (error (e)
+                    (log-for :gc "Error in finalizer for ~A: ~A~%" s e)
+                    (format t "Error in finalizer for ~A: ~A~%" s e))))))
   (register-g-object obj)
   (activate-gc-hooks))
 
@@ -44,10 +56,10 @@
 (defun activate-gc-hooks ()
   (with-recursive-lock-held (*gobject-gc-hooks-lock*)
     (when *gobject-gc-hooks*
-      (debugf "activating gc hooks for objects: ~A~%" *gobject-gc-hooks*)
+      (log-for :gc "activating gc hooks for objects: ~A~%" *gobject-gc-hooks*)
       (loop
          for pointer in *gobject-gc-hooks*
-         do (g-object-unref pointer))
+         do (g-object-remove-toggle-ref pointer (callback gobject-toggle-ref-toggled) (null-pointer)))
       (setf *gobject-gc-hooks* nil))))
 
 (defcallback g-idle-gc-hook :boolean ((data :pointer))
@@ -60,75 +72,74 @@
     (let ((locks-were-present (not (null *gobject-gc-hooks*))))
       (push pointer *gobject-gc-hooks*)
       (unless locks-were-present
-        (debugf "adding idle-gc-hook to main loop~%")
+        (log-for :gc "adding idle-gc-hook to main loop~%")
         (g-idle-add (callback g-idle-gc-hook) (null-pointer))))))
 
 (defun g-object-dispose-carefully (pointer)
   (handler-case
       (register-gobject-for-gc pointer)
-    (error (e) (format t "Error in dispose: ~A~%" e))))
-
-(defcallback weak-notify-print :void ((data :pointer) (object-pointer :pointer))
-  (declare (ignore data)
-           (ignorable object-pointer))
-  (debugf "g-object has finalized ~A ~A~%" (g-type-name (g-type-from-object object-pointer)) object-pointer))
-
-(defun erase-pointer (data object-pointer)
-  (declare (ignore data))
-  (remhash (pointer-address object-pointer) *lisp-objects-pointers*))
-
-(defcallback weak-notify-erase-pointer :void ((data :pointer) (object-pointer :pointer))
-  (erase-pointer data object-pointer))
+    (error (e)
+      (log-for :gc  "Error in dispose: ~A~%" e)
+      (format t "Error in dispose: ~A~%" e))))
 
 (defun should-ref-sink-at-creation (object)
 ;;If object was not created from lisp-side, we should ref it
 ;;If an object is regular g-object, we should not ref-sink it
 ;;If an object is GInitiallyUnowned, then it is created with a floating reference, we should ref-sink it
 ;;A special case is GtkWindow: we should ref-sink it anyway
-  (if (g-object-has-reference object)
-      (let ((object-type (g-type-from-object (pointer object)))
-            (initially-unowned-type (g-type-from-name "GInitiallyUnowned")))
-        (g-type-is-a object-type initially-unowned-type))
-      t))
+  (let ((r (cond
+             ((equal *current-object-from-pointer* (pointer object))
+              (log-for :gc "*cur-obj-from-ptr* ")
+              t)  ;; not new objects should be ref_sunk
+             ((eq object *current-creating-object*) ;; g_object_new returns objects with ref = 1, we should save _this_ ref
+              (typep object 'g-initially-unowned)) ;; but GInitiallyUnowned objects should be ref_sunk
+             (t t))))
+    (log-for :gc "(should-ref-sink-at-creation ~A) => ~A~%" object r)
+    r))
+
+(defcallback gobject-toggle-ref-toggled :void
+    ((data :pointer) (pointer :pointer) (is-last-ref :boolean))
+  (declare (ignore data))
+  (log-for :gc "~A is now ~A with ~A refs~%" pointer (if is-last-ref "weak pointer" "strong pointer") (ref-count pointer))
+  (log-for :gc "obj: ~A~%" (or (gethash (pointer-address pointer) *foreign-gobjects-strong*)
+                            (gethash (pointer-address pointer) *foreign-gobjects-weak*)))
+  (if is-last-ref
+      (let ((obj (gethash (pointer-address pointer) *foreign-gobjects-strong*)))
+        (if obj
+            (progn
+              (remhash (pointer-address pointer) *foreign-gobjects-strong*)
+              (setf (gethash (pointer-address pointer) *foreign-gobjects-weak*) obj))
+            (progn
+              (log-for :gc "GObject at ~A has no lisp-side (strong) reference" pointer)
+              (warn "GObject at ~A has no lisp-side (strong) reference" pointer))))
+      (let ((obj (gethash (pointer-address pointer) *foreign-gobjects-weak*)))
+        (unless obj
+          (log-for :gc "GObject at ~A has no lisp-side (weak) reference" pointer)
+          (warn "GObject at ~A has no lisp-side (weak) reference" pointer))
+        (remhash (pointer-address pointer) *foreign-gobjects-weak*)
+        (setf (gethash (pointer-address pointer) *foreign-gobjects-strong*) obj))))
+
+(defcallback gobject-weak-ref-finalized :void
+    ((data :pointer) (pointer :pointer))
+  (declare (ignore data))
+  (log-for :gc "~A is weak-ref-finalized with ~A refs~%" pointer (ref-count pointer))
+  (remhash (pointer-address pointer) *foreign-gobjects-weak*)
+  (when (gethash (pointer-address pointer) *foreign-gobjects-strong*)
+    (warn "GObject at ~A was weak-ref-finalized while still holding lisp-side strong reference to it" pointer)
+    (log-for :gc "GObject at ~A was weak-ref-finalized while still holding lisp-side strong reference to it" pointer))
+  (remhash (pointer-address pointer) *foreign-gobjects-strong*))
 
 (defun register-g-object (obj)
-  (debugf "registered GObject ~A with gobject ref-count ~A ~A~%" (pointer obj) (ref-count obj) (if (g-object-is-floating (pointer obj)) "(floating)" ""))
+  (log-for :gc "registered GObject ~A (~A) with initial ref-count ~A ~A~%"
+           (pointer obj) obj
+           (ref-count obj) (if (g-object-is-floating (pointer obj)) "(floating)" ""))
   (when (should-ref-sink-at-creation obj)
-    (debugf "g_object_ref_sink(~A)~%" (pointer obj))
+    (log-for :gc "g_object_ref_sink(~A)~%" (pointer obj))
     (g-object-ref-sink (pointer obj)))
-  (g-object-weak-ref (pointer obj) (callback weak-notify-print) (null-pointer))
-  (g-object-weak-ref (pointer obj) (callback weak-notify-erase-pointer) (null-pointer))
   (setf (g-object-has-reference obj) t)
-  (setf (gethash (pointer-address (pointer obj)) *foreign-gobjects*)
-        obj)
-  (setf (gethash (pointer-address (pointer obj)) *foreign-gobjects-ref-count*) 1))
-
-(defun g-object-dispose (pointer)
-  (unless (gethash (pointer-address pointer) *foreign-gobjects-ref-count*)
-    (debugf "GObject ~A is already disposed, signalling error~%" pointer)
-    (error "GObject ~A is already disposed" pointer))
-  (debugf "g_object_unref(~A) (of type ~A, lisp-value ~A) (lisp ref-count ~A, gobject ref-count ~A)~%"
-          pointer
-          (g-type-name (g-type-from-object pointer))
-          (gethash (pointer-address pointer) *foreign-gobjects*)
-          (gethash (pointer-address pointer) *foreign-gobjects-ref-count*)
-          (ref-count pointer))
-  (let ((object (gethash (pointer-address pointer) *foreign-gobjects*)))
-    (when object
-      (setf (pointer object) nil)
-      (cancel-finalization object)))
-  (remhash (pointer-address pointer) *foreign-gobjects*)
-  (remhash (pointer-address pointer) *foreign-gobjects-ref-count*)
-  (g-object-unref pointer))
-
-(defmethod release ((object g-object))
-  (debugf "Releasing object ~A (type ~A, lisp-value ~A)~%" (pointer object) (when (pointer object) (g-type-name (g-type-from-object (pointer object)))) object)
-  (unless (and (pointer object) (gethash (pointer-address (pointer object)) *foreign-gobjects-ref-count*))
-    (error "Object ~A already disposed of from lisp side" object))
-  (decf (gethash (pointer-address (pointer object)) *foreign-gobjects-ref-count*))
-  (when (zerop (gethash (pointer-address (pointer object)) *foreign-gobjects-ref-count*))
-    (g-object-dispose (pointer object)))
-  (activate-gc-hooks))
+  (setf (gethash (pointer-address (pointer obj)) *foreign-gobjects-strong*) obj)
+  (g-object-add-toggle-ref (pointer obj) (callback gobject-toggle-ref-toggled) (null-pointer))
+  (g-object-unref (pointer obj)))
 
 (defvar *registered-object-types* (make-hash-table :test 'equal))
 (defun register-object-type (name type)
@@ -149,15 +160,19 @@
     (unless lisp-type
       (error "Type ~A is not registered with REGISTER-OBJECT-TYPE"
              (g-type-name g-type)))
-    (g-object-ref pointer)
-    (make-instance lisp-type :pointer pointer)))
+    (let ((*current-object-from-pointer* pointer))
+      (make-instance lisp-type :pointer pointer))))
 
 (define-foreign-type foreign-g-object-type ()
-  ((sub-type :reader sub-type :initarg :sub-type :initform 'g-object))
+  ((sub-type :reader sub-type :initarg :sub-type :initform 'g-object)
+   (already-referenced :reader foreign-g-object-type-already-referenced :initarg :already-referenced :initform nil))
   (:actual-type :pointer))
 
-(define-parse-method g-object (&optional (sub-type 'g-object))
-  (make-instance 'foreign-g-object-type :sub-type sub-type))
+(define-parse-method g-object (&rest args)
+  (let* ((sub-type (first (remove-if #'keywordp args)))
+         (flags (remove-if-not #'keywordp args))
+         (already-referenced (not (null (find :already-referenced flags)))))
+    (make-instance 'foreign-g-object-type :sub-type sub-type :already-referenced already-referenced)))
 
 (defmethod translate-to-foreign (object (type foreign-g-object-type))
   (cond
@@ -167,23 +182,25 @@
     ((null (pointer object))
      (error "Object ~A has been disposed" object))
     ((typep object 'g-object)
-     (assert (typep object (sub-type type))
-             nil
-             "Object ~A is not a subtype of ~A" object (sub-type type))
+     (when (sub-type type)
+       (assert (typep object (sub-type type))
+               nil
+               "Object ~A is not a subtype of ~A" object (sub-type type)))
      (pointer object))
     (t (error "Object ~A is not translatable as GObject*" object))))
 
 (defun get-g-object-for-pointer (pointer)
   (unless (null-pointer-p pointer)
-    (let ((object (gethash (pointer-address pointer) *foreign-gobjects*)))
-      (if object
-          (prog1 object
-            (incf (gethash (pointer-address pointer) *foreign-gobjects-ref-count*))
-            (debugf "increfering object ~A~%" pointer))
-          (make-g-object-from-pointer pointer)))))
+    (or (gethash (pointer-address pointer) *foreign-gobjects-strong*)
+        (gethash (pointer-address pointer) *foreign-gobjects-weak*)
+        (progn (log-for :gc "Now creating object for ~A~%" pointer)
+               (make-g-object-from-pointer pointer)))))
 
 (defmethod translate-from-foreign (pointer (type foreign-g-object-type))
-  (get-g-object-for-pointer pointer))
+  (let ((object (get-g-object-for-pointer pointer)))
+    (when (foreign-g-object-type-already-referenced type)
+      (g-object-unref (pointer object)))
+    object))
 
 (register-object-type "GObject" 'g-object)
 
@@ -221,48 +238,3 @@
 
 (defmethod set-gvalue-for-type (gvalue-ptr (type-numeric (eql +g-type-interface+)) value)
   (set-gvalue-object gvalue-ptr value))
-
-(defun g-signal-connect (object signal handler &key after)
-  "Deprecated alias for @fun{connect-signal}"
-  (connect-signal object signal handler :after after))
-
-(defun connect-signal (object signal handler &key after)
-  "Connects the function to a signal for a particular object.
-If @code{after} is true, then the function will be called after the default handler of the signal.
-
-@arg[object]{an instance of @class{gobject}}
-@arg[signal]{a string; names the signal}
-@arg[handler]{a function; handles the signal. Number (and type) of arguments and return value type depends on the signal}
-@arg[after]{a boolean}"
-  (g-signal-connect-closure (ensure-object-pointer object)
-                            signal
-                            (create-g-closure handler)
-                            after))
-
-(defun emit-signal (object signal-name &rest args)
-  "Emits the signal.
-@arg[object]{an instance of @class{g-object}. Signal is emitted on this object}
-@arg[signal-name]{a string specifying the signal}
-@arg[args]{arguments for the signal}
-@return{none}"
-  (let* ((object-type (g-type-from-object (pointer object)))
-         (signal-info (parse-signal-name object-type signal-name)))
-    (unless signal-info
-      (error "Signal ~A not found on object ~A" signal-name object))
-    (let ((params-count (length (signal-info-param-types signal-info))))
-      (with-foreign-object (params 'g-value (1+ params-count))
-        (set-g-value (mem-aref params 'g-value 0) object object-type :zero-g-value t)
-        (iter (for i from 0 below params-count)
-              (for arg in args)
-              (for type in (signal-info-param-types signal-info))
-              (set-g-value (mem-aref params 'g-value (1+ i)) arg type :zero-g-value t))
-        (prog1
-            (if (g-type= (signal-info-return-type signal-info) +g-type-void+)
-                (g-signal-emitv params (signal-info-id signal-info) signal-name (null-pointer))
-                (with-foreign-object (return-value 'g-value)
-                  (g-value-zero return-value)
-                  (g-value-init return-value (signal-info-return-type signal-info))
-                  (prog1 (parse-g-value return-value)
-                    (g-value-unset return-value))))
-          (iter (for i from 0 below (1+ params-count))
-                (g-value-unset (mem-aref params 'g-value i))))))))

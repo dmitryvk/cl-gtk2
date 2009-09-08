@@ -18,34 +18,6 @@ Example:
 
 (at-init () (%g-type-init))
 
-(defcfun (g-type-name "g_type_name") :string
-  "Returns the name of a GType.@see{g-type-from-name}
-
-Example:
-@pre{
-\(g-type-from-name \"GtkLabel\")
-=> 7151952
-\(g-type-name 7151952)
-=> \"GtkLabel\"
-}
-@arg[type]{GType designator (see @class{g-type-designator})}
-@return{a string}"
-  (type g-type-designator))
-
-(defcfun (g-type-from-name "g_type_from_name") g-type
-  "Returns the numeric identifier of a GType by its name. @see{g-type-name}
-
-Example:
-@pre{
-\(g-type-from-name \"GtkLabel\")
-=> 7151952
-\(g-type-name 7151952)
-=> \"GtkLabel\"
-}
-@arg[name]{a string - name of GType}
-@return{an integer}"
-  (name :string))
-
 (defcfun g-type-parent g-type-designator
   "Returns the parent of a GType. @see{g-type-chilren}
 

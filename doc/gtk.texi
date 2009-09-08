@@ -154,6 +154,10 @@ Type: \type\
 @ref{slot.\class\.\slot\,\class\-\slot\}
 @end macro
 
+@macro SignalRef {class, signal}
+@ref{signal.\class\.\signal\,\class\::\signal\}
+@end macro
+
 @macro cffi
 @acronym{CFFI}
 @end macro
