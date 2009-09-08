@@ -106,10 +106,17 @@
               "GtkTreeViewMode" "GtkVisibility")
      :exclusions '("PangoStretch" "PangoVariant" "PangoStyle" "PangoUnderline")
      :additional-properties
-     '(("GtkTreeViewColumn"
+     '(("GtkWindow"
+	(:cffi gtk::focus gtk::gtk-window-focus (g-object gtk::widget) "gtk_window_get_focus" "gtk_window_set_focus")
+	(:cffi gtk::default-widget gtk::gtk-window-default-widget (g-object gtk::widget) "gtk_window_get_default_widget" "gtk_window_set_default")
+	(:cffi gtk::has-frame gtk::gtk-window-has-frame :boolean "gtk_window_get_has_frame" "gtk_window_set_has_frame")
+	(:cffi gtk::mnemonic-modifier gtk::gtk-window-mnemonic-modifier (g-object gdk::modifier-type) "gtk_window_get_mnemonic_modifier" "gtk_window_set_mnemonic_modifier")
+	(:cffi gtk::icon-list gtk::gtk-window-icon-list (glist gtk::pixbuf :free-from-foreign t :free-to-foreign t) "gtk_window_get_icon_list" "gtk_window_set_icon_list")
+	(:cffi gtk::group gtk::gtk-window-group (g-object gtk::window-group) "gtk_window_get_group" nil))
+       ("GtkTreeViewColumn"
         (:cffi gtk::tree-view gtk::tree-view-column-tree-view g-object "gtk_tree_view_column_get_tree_view" nil)
         (:cffi gtk::sort-column-id gtk::tree-view-column-sort-column-id :int "gtk_tree_view_column_get_sort_column_id" "gtk_tree_view_column_set_sort_column_id")
-        (:cffi gtk::cell-renderers gtk::tree-view-column-cell-renderers (glist g-object  :free-from-foreign t) "gtk_tree_view_column_get_cell_renderers" nil))
+        (:cffi gtk::cell-renderers gtk::tree-view-column-cell-renderers (glist g-object :free-from-foreign t) "gtk_tree_view_column_get_cell_renderers" nil))
        ("GtkTreeSelection"
         (:cffi gtk::mode gtk::tree-selection-mode gtk::selection-mode "gtk_tree_selection_get_mode" "gtk_tree_selection_set_mode")
         (:cffi gtk::select-function gtk::tree-selection-select-function nil gtk::tree-selection-get-selection-function gtk::tree-selection-set-select-function))
