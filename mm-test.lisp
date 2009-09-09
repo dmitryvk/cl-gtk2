@@ -6,6 +6,11 @@
 
 (in-package :mm-test)
 
+(defun get-object (ptr)
+  (when (cffi:pointerp ptr) (setf ptr (cffi:pointer-address ptr)))
+  (or (gethash ptr gobject::*foreign-gobjects-strong*)
+      (gethash ptr gobject::*foreign-gobjects-weak*)))
+
 (defun do-gc ()
   (gc :full t)
   (gobject::activate-gc-hooks)
@@ -16,10 +21,16 @@
   (gobject::activate-gc-hooks)
   (gc :full t))
 
+(defun object-handlers (object)
+  (when object
+    (remove nil (gobject::g-object-signal-handlers object))))
+
 (defun print-refs-table (table &optional (stream *standard-output*))
   (iter (for (ptr object) in-hashtable table)
-        (format stream "~A => ~A (~A refs)~%"
-                ptr object (gobject::ref-count object))))
+        (format stream "~A => ~A (~A refs~@[~*, floating~])~@[ handlers: ~A~]~%"
+                ptr object (gobject::ref-count object)
+                (gobject.ffi:g-object-is-floating (cffi:make-pointer ptr))
+                (object-handlers object))))
 
 (defun print-refs (&optional (stream *standard-output*))
   (format stream "Strong:~%")
@@ -135,3 +146,16 @@
       (gc :full t)
       (gobject::activate-gc-hooks))
     nil))
+
+(defun make-builder (&optional return)
+  (let* ((builder (make-instance 'gtk:builder
+                                 :from-file (namestring (merge-pathnames "demo/demo1.ui" gtk-demo::*src-location*))))
+         (text-view (builder-get-object builder "textview1"))
+         (window (builder-get-object builder "window1")))
+    (builder-connect-signals-simple
+     builder
+     `(("quit_cb"
+        ,(lambda (&rest args)
+                 (print args)
+                 (object-destroy window)))))
+    (when return builder)))
