@@ -35,6 +35,10 @@ Superclass: @ref{\name\}
 @end deftp
 @end macro
 
+@macro EnumVRef {name,value}
+@ref{enum.\name\.\value\,\value\}
+@end macro
+
 @macro Flags {name}
 @deftp {Flags} \name\
 @end deftp
@@ -55,6 +59,11 @@ Type: \type\
 
 @macro GenericFunction {name}
 @deffn {Generic Function} \name\
+@end deffn
+@end macro
+
+@macro Method {name}
+@deffn {Method} \name\
 @end deffn
 @end macro
 
@@ -127,6 +136,11 @@ Type: \type\
 
 @macro RGenericFunction {name}
 @anchor{\name\}@deffn {Generic Function} \name\
+@end deffn
+@end macro
+
+@macro RMethod {name}
+@anchor{\name\}@deffn {Method} \name\
 @end deffn
 @end macro
 
