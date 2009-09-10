@@ -615,20 +615,143 @@ Superclass: @ref{gtk-window} @ref{atk-implementor-iface} @ref{buildable}
 
 Subclasses: @ref{recent-chooser-dialog} @ref{message-dialog} @ref{input-dialog} @ref{font-selection-dialog} @ref{file-chooser-dialog} @ref{color-selection-dialog} @ref{about-dialog}
 
+Dialog boxes are a convenient way to prompt the user for a small amount of input, e.g. to display a message, ask a question, or anything else that does not require extensive effort on the user's part.
+
+GTK+ treats a dialog as a window split vertically. The top section is a @ref{v-box}, and is where widgets such as a @ref{label} or a @ref{entry} should be packed. The bottom area is known as the @SlotRef{dialog,action-area}. This is generally used for packing buttons into the dialog which may perform functions such as cancel, ok, or apply. The two areas are separated by a @ref{h-separator}.
+
+If 'dialog' is a newly created dialog, the two primary areas of the window can be accessed through @SlotRef{dialog,content-area} and @SlotRef{dialog,action-area}.
+
+A 'modal' dialog (that is, one which freezes the rest of the application from user input), can be created by setting @SlotRef{gtk-window,modal} (e.g., by specifying @code{:modal t} initarg).
+
+If you add buttons to @ref{dialog} using @ref{dialog-add-button}, or @ref{dialog-add-action-widget}, clicking the button will emit a @SignalRef{dialog,response} signal with a response ID that was specified. GTK+ will never assign a meaning to positive response IDs; these are entirely user-defined. But for convenience, you can use the response IDs in the @ref{response-type} enumeration (these all have values less than zero). If a dialog receives a delete event, the @SignalRef{dialog,response} signal will be emitted with a response ID of @EnumVRef{response-type,delete-event}.
+
+TODO: cl-gtk2 does not yet support specifying custom response IDs.
+
+If you want to block waiting for a dialog to return before returning control flow to your code, you can call @ref{dialog-run}. This function enters a recursive main loop and waits for the user to respond to the dialog, returning the response ID corresponding to the button the user clicked.
+
+For the simple dialog in the following example, in reality you'd probably use @ref{message-dialog} to save yourself some effort. But you'd need to create the dialog contents manually if you had more than a simple message in the dialog.
+
+@lisp
+(defun quick-message (message)
+  "Function to open a dialog box display the MESSAGE"
+  (let ((dialog (make-instance 'gtk:dialog :title "Message")))
+    (gtk:dialog-add-button dialog "gtk-ok" :none)
+    (gtk:container-add (gtk:dialog-content-area dialog)
+                       (make-instance 'gtk:label :label message))
+    (gobject:connect-signal dialog "response"
+                            (lambda (dialog1 response-id)
+                              (declare (ignore dialog1 response-id))
+                              (gtk:object-destroy dialog)))
+    (gtk:widget-show dialog)))
+@end lisp
+
 Slots:
 @itemize
+@item @anchor{slot.dialog.action-area}action-area. Type: @ref{v-box}. Accessor: @anchor{fn.dialog-action-area}@code{dialog-action-area}. Read-only.
+
+The action area of dialog.
+@item @anchor{slot.dialog.alternative-button-order}alternative-button-order. Type: @code{list of @ref{response-type}}. Accessor: @anchor{fn.dialog-alternative-button-order}@code{dialog-alternative-button-order}. Write-only.
+
+Sets an alternative button order. If the "gtk-alternative-button-order" setting is set to TRUE, the dialog buttons are reordered according to the order of the response ids passed to this function.
+
+By default, GTK+ dialogs use the button order advocated by the Gnome Human Interface Guidelines with the affirmative button at the far right, and the cancel button left of it. But the builtin GTK+ dialogs and @ref{message-dialog}s do provide an alternative button order, which is more suitable on some platforms, e.g. Windows.
+
+Set this after adding all the buttons to your dialog, as the following example shows:
+
+@lisp
+(setf (dialog-alternative-button-order dialog) '(:ok :cancel :help))
+@end lisp
+
+@item @anchor{slot.dialog.content-area}content-area. Type: @ref{widget}. Accessor: @anchor{fn.dialog-content-area}@code{dialog-content-area}. Read-only.
+
+The content area of dialog.
+
+@item @anchor{slot.dialog.default-response}default-response. Type: @ref{response-type}. Accessor: @anchor{fn.dialog-default-response}@code{dialog-default-response}. Write-only.
+
+The widget in the dialog's action area with the given this response is the default widget for the dialog. Pressing "Enter" normally activates the default widget.
 @item @anchor{slot.dialog.has-separator}has-separator. Type: @code{boolean}. Accessor: @anchor{fn.dialog-has-separator}@code{dialog-has-separator}.
+
+
+When True, the dialog has a separator bar above its buttons.
+
+Default value: True
 @end itemize
 
 
 Signals:
 @itemize
 @item @anchor{signal.dialog.close}"close". Signature: (instance @ref{dialog}) @result{} void. Options: run-last, action.
-@item @anchor{signal.dialog.response}"response". Signature: (instance @ref{dialog}), (arg-1 @code{integer}) @result{} void. Options: run-last.
+
+The close signal is a keybinding signal which gets emitted when the user uses a keybinding to close the dialog.
+
+The default binding for this signal is the Escape key.
+@item @anchor{signal.dialog.response}"response". Signature: (instance @ref{dialog}), (response-id @code{integer}) @result{} void. Options: run-last.
+
+Emitted when an action widget is clicked, the dialog receives a delete event, or the application programmer calls @ref{dialog-response}. On a delete event, the response ID is @EnumVRef{response-type,delete-event}. Otherwise, it depends on which action widget was clicked.
+
+Note: because of some limitations, @var{response-id} is an integer. Use @code{(cffi:foreign-enum-keyword 'gtk:response-type response-id)} to get the value of type @ref{response-type}.
 @end itemize
 
+@RMethod dialog-run
+@lisp
+(dialog-run dialog) @result{} response
+@end lisp
 
+Blocks in a recursive main loop until the dialog either emits the @SignalRef{dialog,response} signal, or is destroyed. If the dialog is destroyed during the call to @ref{dialog-run}, it returns @EnumVRef{response-type,none}. Otherwise, it returns the response ID from the @SignalRef{dialog,response} signal emission.
 
+Before entering the recursive main loop, @ref{dialog-run} calls @code{widget-show} on the dialog for you. Note that you still need to show any children of the dialog yourself.
+
+During @ref{dialog-run}, the default behavior of @SignalRef{widget,delete-event} is disabled; if the dialog receives @SignalRef{widget,delete-event}, it will not be destroyed as windows usually are, and @ref{dialog-run} will return @EnumVRef{response-type,delete-event}. Also, during @ref{dialog-run} the dialog will be modal. You can force @ref{dialog-run} to return at any time by calling @ref{dialog-response} to emit the @SignalRef{dialog,response} signal. Destroying the dialog during @ref{dialog-run} is a very bad idea, because your post-run code won't know whether the dialog was destroyed or not.
+
+After @ref{dialog-run} returns, you are responsible for hiding or destroying the dialog if you wish to do so.
+
+Note that even though the recursive main loop gives the effect of a modal dialog (it prevents the user from interacting with other windows in the same window group while the dialog is run), callbacks such as timeouts, IO channel watches, DND drops, etc, will be triggered during a @ref{dialog-run} call.
+
+@RMethod dialog-response
+@lisp
+(dialog-response dialog response)
+@end lisp
+
+Emits the @SignalRef{dialog,response} signal with the given @var{response} (of type @ref{response-type}). Used to indicate that the user has responded to the @var{dialog} in some way; typically either you or @ref{dialog-run} will be monitoring the @SignalRef{dialog,response} signal and take appropriate action.
+
+@RMethod dialog-add-button
+@lisp
+(dialog-add-button dialog text response) @result{} button
+@end lisp
+
+Adds a button with the given @var{text} (or a stock button, if @var{text} is a stock ID) and sets things up so that clicking the button will emit the @SignalRef{dialog,response} signal with the given @var{response}. The button is appended to the end of the dialog's action area. The @ref{button} widget is returned, but usually you don't need it.
+
+@RMethod dialog-add-action-widget
+@lisp
+(dialog-add-action-widget dialog widget response)
+@end lisp
+
+Adds an activatable @var{widget} to the action area of a @var{dialog}, connecting a signal handler that will emit the @SignalRef{dialog,response} signal on the dialog when the @var{widget} is activated. The @var{widget} is appended to the end of the dialog's action area. If you want to add a non-activatable widget, simply pack it into the @SlotRef{dialog,action-area} field of the @ref{dialog}.
+
+@RMethod dialog-set-response-sensitive
+@lisp
+(dialog-set-response-sensitive dialog response setting)
+@end lisp
+
+Sets the @SlotRef{widget,sensitive} for each widget in the dialog's action area with the given @var{response}. A convenient way to sensitize/desensitize dialog buttons.
+
+@RMethod dialog-response-for-widget
+@lisp
+(dialog-response-for-widget dialog widget) @result{} response
+@end lisp
+
+Gets the @var{response} (of type @ref{response-type}) of a @var{widget} in the action area of a @var{dialog}.
+
+@RMethod dialog-alternative-button-order-on-screen
+@lisp
+(dialog-alternative-button-order-on-screen screen) @result{} boolean
+@end lisp
+
+Returns True if dialogs are expected to use an alternative button order on the @ref{screen} @var{screen}. See @SlotRef{dialog,alternative-button-order} for more details about alternative button order.
+
+If you need to use this method, you should probably connect to the ::notify:gtk-alternative-button-order signal on the GtkSettings object associated to screen, in order to be notified if the button order setting changes.
+
+@var{screen}: a @ref{screen} or a NIL if to use a default screen.
 
 @node drawing-area
 @section drawing-area
