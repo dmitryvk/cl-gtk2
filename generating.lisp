@@ -179,7 +179,11 @@
         (:cffi gtk::accessible gtk::widget-accessible g-object "gtk_widget_get_accessible" nil)
         (:cffi gtk::tooltip-window gtk::widget-tooltip-window g-object "gtk_widget_get_tooltip_window" "gtk_widget_set_tooltip_window"))
        ("GtkTextTag"
-        (:cffi gtk::priority gtk::text-tag-priority :int "gtk_text_tag_get_priority" "gtk_text_tag_set_priority"))))))
+        (:cffi gtk::priority gtk::text-tag-priority :int "gtk_text_tag_get_priority" "gtk_text_tag_set_priority"))
+       ("GtkDialog"
+        (:cffi gtk::content-area gtk::dialog-content-area (g-object gtk::v-box) "gtk_dialog_get_content_area" nil)
+        (:cffi gtk::action-area gtk::dialog-action-area (g-object gtk::widget) "gtk_dialog_get_action_area" nil)
+        (:cffi gtk::default-response gtk::dialog-default-response gtk::response-type nil "gtk_dialog_set_default_response"))))))
 
 (defun gtk-generate-child-properties (filename)
   (with-open-file (stream filename :direction :output :if-exists :supersede)

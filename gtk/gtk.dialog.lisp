@@ -25,36 +25,18 @@
 
 (export 'dialog-add-action-widget)
 
-(defcfun (dialog-set-default-response "gtk_dialog_set_default_response") :void
-  (dialog (g-object dialog))
-  (response response-type))
-
-(defun (setf dialog-default-response) (response dialog)
-  (dialog-set-default-response dialog response)
-  response)
-
-(export 'dialog-default-response)
-
 (defcfun (dialog-set-response-sensitive "gtk_dialog_set_response_sensitive") :void
   (dialog (g-object dialog))
   (response response-type)
   (setting :boolean))
+
+(export 'dialog-set-response-sensitive)
 
 (defcfun (dialog-response-for-widget "gtk_dialog_get_response_for_widget") :int
   (dialog (g-object dialog))
   (widget (g-object widget)))
 
 (export 'dialog-response-for-widget)
-
-(defcfun (dialog-action-area "gtk_dialog_get_action_area") (g-object widget)
-  (dialog (g-object dialog)))
-
-(export 'dialog-action-area)
-
-(defcfun (dialog-content-area "gtk_dialog_get_content_area") (g-object widget)
-  (dialog (g-object dialog)))
-
-(export 'dialog-content-area)
 
 (defcfun (dialog-alternative-button-order-on-screen "gtk_alternative_dialog_button_order") :boolean
   (screen (g-object screen)))
@@ -66,7 +48,7 @@
   (n-params :int)
   (new-order (:pointer response-type)))
 
-(defun (setf dialog-alternative-button-order) (response-list dialog)
+(defun set-dialog-alternative-button-order (dialog response-list)
   (with-foreign-object (new-order 'response-type (length response-list))
     (loop
        for i from 0
@@ -74,8 +56,6 @@
        do (setf (mem-aref new-order 'response-type i) response))
     (dialog-set-alternative-button-order-from-array dialog (length response-list) new-order))
   response-list)
-
-(export 'dialog-alternative-button-order)
 
 (defmacro with-gtk-message-error-handler (&body body)
   (let ((dialog (gensym))

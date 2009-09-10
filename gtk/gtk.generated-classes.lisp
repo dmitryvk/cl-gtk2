@@ -1505,7 +1505,13 @@
                         ("AtkImplementorIface" "GtkBuildable")
                         :type-initializer "gtk_dialog_get_type")
                        ((has-separator dialog-has-separator "has-separator"
-                         "gboolean" t t)))
+                         "gboolean" t t)
+                        (:cffi content-area dialog-content-area
+                         (g-object v-box) "gtk_dialog_get_content_area" nil)
+                        (:cffi action-area dialog-action-area (g-object widget)
+                         "gtk_dialog_get_action_area" nil)
+                        (:cffi default-response dialog-default-response
+                         response-type nil "gtk_dialog_set_default_response")))
 
 (define-g-object-class "GtkAboutDialog" about-dialog
                        (:superclass dialog :export t :interfaces
