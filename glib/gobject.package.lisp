@@ -190,7 +190,8 @@
            #:create-signal-handler-closure
            #:save-handler-to-object
            #:retrieve-handler-from-object
-           #:delete-handler-from-object)
+           #:delete-handler-from-object
+           #:disconnect-signal)
   (:documentation
    "CL-GTK2-GOBJECT is a binding to GObject type system.
 For information on GObject, see its @a[http://library.gnome.org/devel/gobject/stable/]{documentation}.

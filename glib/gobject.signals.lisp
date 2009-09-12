@@ -132,5 +132,3 @@ If @code{after} is true, then the function will be called after the default hand
 (defcfun (disconnect-signal "g_signal_handler_disconnect") :void
   (object g-object)
   (handler-id :ulong))
-
-(export 'disconnect-signal)
