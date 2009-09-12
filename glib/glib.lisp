@@ -25,7 +25,8 @@
            #:g-idle-add-full
            #:g-idle-add
            #:g-timeout-add-full
-           #:g-source-remove)
+           #:g-source-remove
+           #:at-finalize)
   (:documentation
    "Cl-gtk2-glib is wrapper for @a[http://library.gnome.org/devel/glib/]{GLib}."))
 
@@ -37,11 +38,27 @@
   (defun register-initializer (key fn)
     (unless (gethash key *initializers-table*)
       (setf (gethash key *initializers-table*) t
-            *initializers* (nconc *initializers* (list fn))))))
+            *initializers* (nconc *initializers* (list fn)))))
+  (defvar *finalizers-table* (make-hash-table :test 'equalp))
+  (defvar *finalizers* nil)
+  (defun register-finalizer (key fn)
+    (unless (gethash key *finalizers-table*)
+      (setf (gethash key *finalizers-table*) t
+            *finalizers* (nconc *finalizers* (list fn))))))
 
 (defun run-initializers ()
   (iter (for fn in *initializers*)
         (funcall fn)))
+
+(defun run-finalizers ()
+  (iter (for fn in *finalizers*)
+        (funcall fn)))
+
+#+sbcl
+(pushnew 'run-initializers sb-ext:*init-hooks*)
+
+#+sbcl
+(pushnew 'run-finalizers sb-ext:*save-hooks*)
 
 (defmacro at-init ((&rest keys) &body body)
   "
@@ -63,6 +80,9 @@ In this example, for every @code{class}, @code{(initialize-gobject-class-g-type 
 "
   `(progn (register-initializer (list ,@keys ',body) (lambda () ,@body))
           ,@body))
+
+(defmacro at-finalize ((&rest keys) &body body)
+  `(register-finalizer (list ,@keys ',body) (lambda () ,@body)))
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
   (define-foreign-library glib

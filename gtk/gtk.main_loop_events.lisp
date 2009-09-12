@@ -17,7 +17,7 @@
            (error "Cannot initialize Gtk+"))
       (foreign-free (mem-ref argv '(:pointer :string))))))
 
-(gtk-init)
+(at-init () (gtk-init))
 
 (defcfun gtk-main :void)
 
@@ -25,11 +25,17 @@
 (defvar *main-thread* nil)
 
 #+thread-support
+(at-finalize ()
+  (when (and *main-thread* (bt:thread-alive-p *main-thread*))
+    (bt:destroy-thread *main-thread*)
+    (setf *main-thread* nil)))
+
+#+thread-support
 (defun ensure-gtk-main ()
   (when (and *main-thread* (not (bt:thread-alive-p *main-thread*)))
     (setf *main-thread* nil))
   (unless *main-thread*
-    (setf *main-thread* (bt:make-thread (lambda () (gtk:gtk-main)) :name "cl-gtk2 main thread"))))
+    (setf *main-thread* (bt:make-thread (lambda () (gtk-main)) :name "cl-gtk2 main thread"))))
 
 #+thread-support
 (defun join-main-thread ()

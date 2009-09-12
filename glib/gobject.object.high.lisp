@@ -23,6 +23,13 @@
 (defvar *current-object-from-pointer* nil)
 (defvar *currently-making-object-p* nil)
 
+(at-finalize ()
+  (clrhash *foreign-gobjects-weak*)
+  (clrhash *foreign-gobjects-strong*)
+  (setf *current-creating-object* nil
+        *current-object-from-pointer* nil
+        *currently-making-object-p* nil))
+
 (defun ref-count (pointer)
   (foreign-slot-value (if (pointerp pointer) pointer (pointer pointer)) 'g-object-struct :ref-count))
 

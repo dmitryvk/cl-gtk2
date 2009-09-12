@@ -53,6 +53,6 @@
 (defmacro with-main-loop (&body body)
   `(progn
      ,@body
-     (gtk-main)))
+     (ensure-gtk-main)))
 
 (export 'with-main-loop)
