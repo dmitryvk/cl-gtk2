@@ -2958,7 +2958,9 @@
 (define-g-object-class "GtkWindowGroup" window-group
                        (:superclass g-object :export t :interfaces nil
                         :type-initializer "gtk_window_group_get_type")
-                       nil)
+                       ((:cffi windows window-group-windows
+                         (glist (g-object window))
+                         "gtk_window_group_list_windows" nil)))
 
 (define-g-object-class "GtkToggleAction" toggle-action
                        (:superclass action :export t :interfaces

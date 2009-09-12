@@ -181,6 +181,8 @@
        ("GtkWindow"
         (:cffi gtk::default-widget gtk::window-default-widget (g-object gtk::widget) "gtk_window_get_default_widget" "gtk_window_set_default")
         (:cffi gtk::focus gtk::window-focus (g-object gtk::widget) "gtk_window_get_focus" "gtk_window_set_focus"))
+       ("GtkWindowGroup"
+        (:cffi gtk::windows gtk::window-group-windows (glist (g-object gtk::window)) "gtk_window_group_list_windows" nil))
        ("GtkTextTag"
         (:cffi gtk::priority gtk::text-tag-priority :int "gtk_text_tag_get_priority" "gtk_text_tag_set_priority"))
        ("GtkDialog"
