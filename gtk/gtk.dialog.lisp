@@ -57,6 +57,8 @@
     (dialog-set-alternative-button-order-from-array dialog (length response-list) new-order))
   response-list)
 
+(export 'set-dialog-alternative-button-order)
+
 (defmacro with-gtk-message-error-handler (&body body)
   (let ((dialog (gensym))
         (e (gensym)))

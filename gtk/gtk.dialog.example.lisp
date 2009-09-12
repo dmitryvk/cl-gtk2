@@ -13,7 +13,7 @@
                                                    (dialog-add-button dialog "Yes" :yes)
                                                    (dialog-add-button dialog "Cancel" :cancel)
                                                    (setf (dialog-default-response dialog) :cancel)
-                                                   (setf (dialog-alternative-button-order dialog) (list :yes :cancel :ok))
+                                                   (set-dialog-alternative-button-order dialog (list :yes :cancel :ok))
                                                    (format t "Response was: ~S~%" (dialog-run dialog))
                                                    (object-destroy dialog)))))
     (let ((button (make-instance 'button :label "About")))
