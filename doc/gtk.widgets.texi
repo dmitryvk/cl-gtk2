@@ -113,24 +113,84 @@
 @Class about-dialog
 Superclass: @ref{dialog} @ref{atk-implementor-iface} @ref{buildable}
 
+The @ref{about-dialog} offers a simple way to display information about a program like its logo, name, copyright, website and license. It is also possible to give credits to the authors, documenters, translators and artists who have worked on the program. An about dialog is typically opened when the user selects the About option from the Help menu. All parts of the dialog are optional.
+
+About dialog often contain links and email addresses. @ref{about-dialog} supports this by offering global hooks (TODO: not implemented in cl-gtk2), which are called when the user clicks on a link or email address, see gtk_about_dialog_set_email_hook() and gtk_about_dialog_set_url_hook(). Email addresses in the authors, documenters and artists properties are recognized by looking for @code{<user@@host>}, URLs are recognized by looking for @code{http://url}, with url extending to the next space, tab or line break.
+
+When setting the website and email hooks for the @ref{about-dialog} widget, you should remember that the order is important: you should set the hook functions before setting the website and email URL properties. Otherwise the @ref{about-dialog} widget will not display the website and the email addresses as clickable.
+
+Note that GTK+ sets a default title of @code{_("About %s")} on the dialog window (where @code{%s} is replaced by the name of the application, but in order to ensure proper translation of the title, applications should set the title property explicitly when constructing a @ref{about-dialog}, as shown in the following example:
+
+@lisp
+(make-instance 'gtk:about-dialog :program-name "ExampleCode" :title "About ExampleCode")
+@end lisp
+
+
 Slots:
 @itemize
-@item @anchor{slot.about-dialog.artists}artists. Type: @code{GStrv}. Accessor: @anchor{fn.about-dialog-artists}@code{about-dialog-artists}.
-@item @anchor{slot.about-dialog.authors}authors. Type: @code{GStrv}. Accessor: @anchor{fn.about-dialog-authors}@code{about-dialog-authors}.
-@item @anchor{slot.about-dialog.comments}comments. Type: @code{string}. Accessor: @anchor{fn.about-dialog-comments}@code{about-dialog-comments}.
-@item @anchor{slot.about-dialog.copyright}copyright. Type: @code{string}. Accessor: @anchor{fn.about-dialog-copyright}@code{about-dialog-copyright}.
-@item @anchor{slot.about-dialog.documenters}documenters. Type: @code{GStrv}. Accessor: @anchor{fn.about-dialog-documenters}@code{about-dialog-documenters}.
-@item @anchor{slot.about-dialog.license}license. Type: @code{string}. Accessor: @anchor{fn.about-dialog-license}@code{about-dialog-license}.
-@item @anchor{slot.about-dialog.logo}logo. Type: @ref{pixbuf}. Accessor: @anchor{fn.about-dialog-logo}@code{about-dialog-logo}.
-@item @anchor{slot.about-dialog.logo-icon-name}logo-icon-name. Type: @code{string}. Accessor: @anchor{fn.about-dialog-logo-icon-name}@code{about-dialog-logo-icon-name}.
-@item @anchor{slot.about-dialog.program-name}program-name. Type: @code{string}. Accessor: @anchor{fn.about-dialog-program-name}@code{about-dialog-program-name}.
-@item @anchor{slot.about-dialog.translator-credits}translator-credits. Type: @code{string}. Accessor: @anchor{fn.about-dialog-translator-credits}@code{about-dialog-translator-credits}.
-@item @anchor{slot.about-dialog.version}version. Type: @code{string}. Accessor: @anchor{fn.about-dialog-version}@code{about-dialog-version}.
-@item @anchor{slot.about-dialog.website}website. Type: @code{string}. Accessor: @anchor{fn.about-dialog-website}@code{about-dialog-website}.
-@item @anchor{slot.about-dialog.website-label}website-label. Type: @code{string}. Accessor: @anchor{fn.about-dialog-website-label}@code{about-dialog-website-label}.
-@item @anchor{slot.about-dialog.wrap-license}wrap-license. Type: @code{boolean}. Accessor: @anchor{fn.about-dialog-wrap-license}@code{about-dialog-wrap-license}.
-@end itemize
+@item @anchor{slot.about-dialog.artists}artists. Type: list of @code{string}. Accessor: @anchor{fn.about-dialog-artists}@code{about-dialog-artists}.
 
+The people who contributed artwork to the program, as a list of strings. Each string may contain email addresses and URLs, which will be displayed as links, see the description for more details.
+@item @anchor{slot.about-dialog.authors}authors. Type: list of @code{string}. Accessor: @anchor{fn.about-dialog-authors}@code{about-dialog-authors}.
+
+The authors of the program, as a list of strings. Each string may contain email addresses and URLs, which will be displayed as links, see the introduction for more details.
+@item @anchor{slot.about-dialog.comments}comments. Type: @code{string}. Accessor: @anchor{fn.about-dialog-comments}@code{about-dialog-comments}.
+
+Comments about the program. This string is displayed in a label in the main dialog, thus it should be a short explanation of the main purpose of the program, not a detailed list of features.
+
+Default value: NIL
+@item @anchor{slot.about-dialog.copyright}copyright. Type: @code{string}. Accessor: @anchor{fn.about-dialog-copyright}@code{about-dialog-copyright}.
+
+Copyright information for the program.
+
+Default value: NIL
+@item @anchor{slot.about-dialog.documenters}documenters. Type: list of @code{string}. Accessor: @anchor{fn.about-dialog-documenters}@code{about-dialog-documenters}.
+
+The people documenting the program, as a list of strings. Each string may contain email addresses and URLs, which will be displayed as links, see the introduction for more details.
+@item @anchor{slot.about-dialog.license}license. Type: @code{string}. Accessor: @anchor{fn.about-dialog-license}@code{about-dialog-license}.
+
+The license of the program. This string is displayed in a text view in a secondary dialog, therefore it is fine to use a long multi-paragraph text. Note that the text is only wrapped in the text view if the @SlotRef{about-dialog,wrap-license} property is set to True; otherwise the text itself must contain the intended linebreaks.
+
+Default value: NIL
+@item @anchor{slot.about-dialog.logo}logo. Type: @ref{pixbuf}. Accessor: @anchor{fn.about-dialog-logo}@code{about-dialog-logo}.
+
+A logo for the about box. If this is not set, it defaults to gtk_window_get_default_icon_list().
+@item @anchor{slot.about-dialog.logo-icon-name}logo-icon-name. Type: @code{string}. Accessor: @anchor{fn.about-dialog-logo-icon-name}@code{about-dialog-logo-icon-name}.
+
+A named icon to use as the logo for the about box. This property overrides the @SlotRef{about-dialog,logo} property.
+
+Default value: NIL
+@item @anchor{slot.about-dialog.program-name}program-name. Type: @code{string}. Accessor: @anchor{fn.about-dialog-program-name}@code{about-dialog-program-name}.
+
+The name of the program. If this is not set, it defaults to g_get_application_name().
+
+Default value: NIL
+@item @anchor{slot.about-dialog.translator-credits}translator-credits. Type: @code{string}. Accessor: @anchor{fn.about-dialog-translator-credits}@code{about-dialog-translator-credits}.
+
+Credits to the translators. This string should be marked as translatable. The string may contain email addresses and URLs, which will be displayed as links, see the introduction for more details.
+
+Default value: NIL
+@item @anchor{slot.about-dialog.version}version. Type: @code{string}. Accessor: @anchor{fn.about-dialog-version}@code{about-dialog-version}.
+
+The version of the program.
+
+Default value: NIL
+@item @anchor{slot.about-dialog.website}website. Type: @code{string}. Accessor: @anchor{fn.about-dialog-website}@code{about-dialog-website}.
+
+The URL for the link to the website of the program. This should be a string starting with "http://.
+
+Default value: NIL
+@item @anchor{slot.about-dialog.website-label}website-label. Type: @code{string}. Accessor: @anchor{fn.about-dialog-website-label}@code{about-dialog-website-label}.
+
+The label for the link to the website of the program. If this is not set, it defaults to the URL specified in the website property.
+
+Default value: NIL
+@item @anchor{slot.about-dialog.wrap-license}wrap-license. Type: @code{boolean}. Accessor: @anchor{fn.about-dialog-wrap-license}@code{about-dialog-wrap-license}.
+
+Whether to wrap the text in the license dialog.
+
+Default value: False
+@end itemize
 
 Signals:
 @itemize
