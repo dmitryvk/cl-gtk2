@@ -1077,15 +1077,17 @@ Example:
 
 Closure are anonymous functions that capture their lexical environment.
 
-GObject supports using closures (as instances of type GClosure) as signal handlers and in some other places where a function is expected. Function @code{create-g-closure} create closure from lisp function. The GClosure is finalized automatically when GObject no longer needs it (e.g., when GClosure is disconnected from signal).
+GObject supports using closures (as instances of type GClosure) as signal handlers and in some other places where a function is expected. Function @code{create-signal-handler-closure} create closure from lisp function that can be used a signal handler. The GClosure is finalized automatically when GObject no longer needs it (e.g., when GClosure is disconnected from signal).
 
-@section create-g-closure
-@Function create-g-closure
+@section create-signal-handler-closure
+@Function create-signal-handler-closure
 @lisp
-(create-g-closure fn) @result{} closure
+(create-signal-handler-closure object fn) @result{} closure
 @end lisp
 
 @table @var
+@item @var{object}
+An object for which the closure is created
 @item @var{fn}
 A function that will be called by closure invokation
 @item @var{closure}
@@ -1096,7 +1098,7 @@ Allocates the closure. The closure is destroyed automatically by GObject.
 
 Example:
 @lisp
-(create-g-closure (lambda (x) (+ x 10)))
+(create-signal-handler-closure obj (lambda (x) (+ x 10)))
 @result{}
 #.(SB-SYS:INT-SAP #X006D7B20)
 @end lisp
@@ -1106,7 +1108,7 @@ Example of usage from GObject binding code:
 (defun connect-signal (object signal handler &key after)
   (g-signal-connect-closure (ensure-object-pointer object)
                             signal
-                            (create-g-closure handler)
+                            (create-signal-handler-closure object handler)
                             after))
 @end lisp
 
@@ -1441,11 +1443,11 @@ NIL
 @node Signals
 @section Signals
 
-To connect handler to a signal, @code{connect-signal} function is used.
+To connect handler to a signal, @code{connect-signal} function is used. Function @code{disconnect-signal} removes the connected signal.
 
-@Function connect-signals
+@Function connect-signal
 @lisp
-(connect-signal object signal handler &key after)
+(connect-signal object signal handler &key after) @result{} handler-id
 @end lisp
 
 @table @var
@@ -1457,9 +1459,18 @@ A signal name
 A function
 @item @var{after}
 A boolean specifying whether the handler should be called after the default handler
+@item @var{handler-id}
+An integer - identifier of signal handler; can be used to disconnect the signal handler with @code{disconnect-signal}
 @end table
 
 Connects the @code{handler} to signal @code{signal} on object @code{object}. Signature of @code{handler} should comply with signature of a signal. @code{handler} will be called with arguments of type specified by signal with the object (on which the signal was emitted) prepended to them and it should return the value of the signal's return type.
+
+@Function disconnect-signal
+@lisp
+(disconnect-signal object handler-id)
+@end lisp
+
+Disconnects the signal handler identified by @var{handler-id} from the corresponding signal for @var{object}. @var{handler-id} is the integer identifying the signal handler; @code{connect-signal} returns handler identifiers.
 
 Example:
 @lisp
@@ -1486,6 +1497,7 @@ Example:
 
 Function @code{emit-signal} is used to emit signals on objects.
 
+@Function emit-signal
 @code{(emit-signal object signal-name &rest args) @result{} return-value}
 
 @table @var
