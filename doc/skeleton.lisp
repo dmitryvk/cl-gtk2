@@ -198,6 +198,7 @@
 (defun type-string-f (type)
   (let ((l (ensure-list type)))
     (case (first l)
+      (glib:gstrv "list of @code{string}")
       ((:string glib:g-string) "@code{string}")
       ((:int :uint :long :ulong :char :uchar :int64 :uint64) "@code{integer}")
       ((:boolean :bool) "@code{boolean}")
@@ -213,6 +214,7 @@
 
 (defun type-string-s (type)
   (cond
+    ((g-type= type "GStrv") "list of @code{string}")
     ((g-type= type +g-type-string+) "@code{string}")
     ((g-type= type +g-type-boolean+) "@code{boolean}")
     ((g-type= type +g-type-float+) "@code{single-float}")
