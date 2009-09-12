@@ -135,3 +135,7 @@ A condition inheriting from @code{error} that is used to signal the fact that th
 @RFunction gtk-call-aborted-condition
 
 Returns the error that caused call to aborted.
+
+@RFunction grab-add
+
+Undocumented yet

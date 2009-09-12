@@ -2233,8 +2233,13 @@ Signals:
 @Class window-group
 Superclass: @ref{g-object}
 
+Window-group limits the effect of grabs. Grabs added with @ref{grab-add} only affect windows within the same @ref{window-group}.
+
 Slots:
 @itemize
+@item @anchor{slot.window-group.windows}windows. Type: list of @ref{gtk-window}. Accessor: @anchor{fn.window-group-windows}@code{window-group-windows}. Read-only.
+
+A list of the @ref{gtk-window}s that belong to @ref{window-group}.
 @end itemize
 
 
@@ -2242,6 +2247,17 @@ Signals:
 @itemize
 @end itemize
 
+@RMethod window-group-add-window
+@lisp
+(window-group-add-window window-group window)
+@end lisp
 
+Adds a @var{window} (a @ref{gtk-window}) to a @var{window-group} (a @ref{window-group})
 
+@RMethod window-group-remove-window
+@lisp
+(window-group-remove-window window-group window
+@end lisp
+
+Removes a @var{window} (a @ref{gtk-window}) from a @var{window-group} (a @ref{window-group})
 
