@@ -44,6 +44,10 @@ Superclass: @ref{\name\}
 @end deftp
 @end macro
 
+@macro FlagsVRef {name,value}
+@ref{flags.\name\.\value\,\value\}
+@end macro
+
 @macro Accessor {name}
 @deffn {Accessor} \name\
 @end deffn
