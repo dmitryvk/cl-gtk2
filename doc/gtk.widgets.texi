@@ -288,21 +288,93 @@ Signals:
 @Class assistant
 Superclass: @ref{gtk-window} @ref{atk-implementor-iface} @ref{buildable}
 
+A @ref{assistant} is a widget used to represent a generally complex operation splitted in several steps, guiding the user through its pages and controlling the page flow to collect the necessary data.
+
 Slots:
 @itemize
+@item @anchor{slot.assistant.current-page}current-page. Type: @code{integer}. Accessor: @anchor{fn.assistant-current-page}@code{assistant-current-page}.
+
+The index (starting from 0) of the current page in the assistant, or -1 if the assistant has no pages.
+@item @anchor{slot.assistant.forward-page-function}forward-page-function. function. Accessor: @anchor{fn.assistant-forward-page-function}@code{assistant-forward-page-function}. Write-only.
+
+Page forwarding function is used to determine what will be the next page when the user presses the forward button. Setting this to NIL will make the assistant to use the default forward function, which just goes to the next visible page.
+The function called both for computing the next page when the user presses the "forward" button and for handling the behavior of the "last" button. The function accepts a single integer - the current page number and returns the page number for the next page.
+@item @anchor{slot.assistant.n-pages}n-pages. Type: @code{integer}. Accessor: @anchor{fn.assistant-n-pages}@code{assistant-n-pages}. Read-only.
+
+The number of pages in the assistant
 @end itemize
 
 
 Signals:
 @itemize
 @item @anchor{signal.assistant.apply}"apply". Signature: (instance @ref{assistant}) @result{} void. Options: run-last.
+
+This signal is emitted when the apply button is clicked. The default behavior of the @ref{assistant} is to switch to the page after the current page, unless the current page is the last one.
+
+A handler for the @SignalRef{assistant,apply} signal should carry out the actions for which the wizard has collected data. If the action takes a long time to complete, you might consider to put a page of type @EnumVRef{assistant-page-type,progress} after the confirmation page and handle this operation within the @SignalRef{assistant,prepare} signal of the progress page.
 @item @anchor{signal.assistant.cancel}"cancel". Signature: (instance @ref{assistant}) @result{} void. Options: run-last.
+
+This signal is emitted when then the cancel button is clicked.
 @item @anchor{signal.assistant.close}"close". Signature: (instance @ref{assistant}) @result{} void. Options: run-last.
-@item @anchor{signal.assistant.prepare}"prepare". Signature: (instance @ref{assistant}), (arg-1 @ref{widget}) @result{} void. Options: run-last.
+
+This signal is emitted either when the close button of a summary page is clicked, or when the apply button in the last page in the flow (of type @EnumVRef{assistant-page-type,confirm}) is clicked.
+@item @anchor{signal.assistant.prepare}"prepare". Signature: (instance @ref{assistant}), (page @ref{widget}) @result{} void. Options: run-last.
+
+This signal is emitted when a new page is set as the assistant's current page, before making the new page visible. A handler for this signal can do any preparation which are necessary before showing page.
 @end itemize
 
+@RMethod assistant-nth-page
+@lisp
+(assistant-nth-page assistant page-number) @result{} page-widget
+@end lisp
 
+Returns the child widget (a @ref{widget}) contained in page number @var{page-number} (an integer).
 
+@RMethod assistant-append-page
+@lisp
+(assistant-append-page assistant page)
+@end lisp
+
+Appends a @var{page} (a @ref{widget}) to the @var{assistant} (a @ref{assistant}).
+
+@RMethod assistant-prepend-page
+@lisp
+(assistant-prepend-page assistant page)
+@end lisp
+
+Prepends a @var{page} (a @ref{widget}) to the @var{assistant} (a @ref{assistant}).
+
+@RMethod assistant-insert-page
+@lisp
+(assistant-insert-page assistant page position) @result{} page-number
+@end lisp
+
+Inserts a @var{page} (a @ref{widget}) in the @var{assistant} (a @ref{assistant}) at a given @var{position}. @var{position} is the index (starting at 0) at which to insert the page, or -1 to append the page. Returns the index of inserted @var{page}.
+
+@RMethod assistant-add-action-widget
+@lisp
+(assistant-add-action-widget assistant widget)
+@end lisp
+
+Adds the @var{widget} (a @ref{widget}) to the action area of a @var{assistant} (a @ref{assistant}).
+
+@RMethod assistant-remove-action-widget
+@lisp
+(assistant-remove-action-widget assistant widget)
+@end lisp
+
+Removes the @var{widget} (a @ref{widget}) from the action area of a @var{assistant} (a @ref{assistant}).
+
+@RMethod assistant-update-buttons-state
+@lisp
+(assistant-update-buttons-state assistant)
+@end lisp
+
+Forces @var{assistant} (a @ref{assistant}) to recompute the buttons state.
+
+GTK+ automatically takes care of this in most situations, e.g. when the user goes to a different page, or when the visibility or completeness of a page changes.
+
+One situation where it can be necessary to call this function is when changing a value on the current page affects the future page flow of the assistant.
 
 @node bin
 @section bin
