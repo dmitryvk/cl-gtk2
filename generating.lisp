@@ -105,7 +105,7 @@
               "GtkSubmenuDirection" "GtkSubmenuPlacement" "GtkTextWindowType"
               "GtkToolbarChildType" "GtkToolbarSpaceStyle" "GtkTreeViewDropPosition"
               "GtkTreeViewMode" "GtkVisibility")
-     :exclusions '("PangoStretch" "PangoVariant" "PangoStyle" "PangoUnderline")
+     :exclusions '("PangoStretch" "PangoVariant" "PangoStyle" "PangoUnderline" "GtkGLDrawingArea")
      :additional-properties
      '(("GtkWindow"
 	(:cffi gtk::focus gtk::gtk-window-focus (g-object gtk::widget) "gtk_window_get_focus" "gtk_window_set_focus")
@@ -114,9 +114,6 @@
 	(:cffi gtk::mnemonic-modifier gtk::gtk-window-mnemonic-modifier (g-object gdk::modifier-type) "gtk_window_get_mnemonic_modifier" "gtk_window_set_mnemonic_modifier")
 	(:cffi gtk::icon-list gtk::gtk-window-icon-list (glist gtk::pixbuf :free-from-foreign t :free-to-foreign t) "gtk_window_get_icon_list" "gtk_window_set_icon_list")
 	(:cffi gtk::group gtk::gtk-window-group (g-object gtk::window-group) "gtk_window_get_group" nil))
-       ("GtkDialog"
-	(:cffi gtk::action-area gtk::dialog-action-area (g-object gtk::widget) "gtk_dialog_get_action_area" nil)
-	(:cffi gtk::content-area gtk::dialog-content-area (g-object gtk::widget) "gtk_dialog_get_content_area" nil))
        ("GtkTreeViewColumn"
         (:cffi gtk::tree-view gtk::tree-view-column-tree-view g-object "gtk_tree_view_column_get_tree_view" nil)
         (:cffi gtk::sort-column-id gtk::tree-view-column-sort-column-id :int "gtk_tree_view_column_get_sort_column_id" "gtk_tree_view_column_set_sort_column_id")
@@ -201,7 +198,13 @@
         (:cffi gtk::priority gtk::text-tag-priority :int "gtk_text_tag_get_priority" "gtk_text_tag_set_priority"))
        ("GtkPageSetupUnixDialog"
 	(:cffi gtk::page-setup gtk::page-setup-unix-dialog-page-setup (g-object gtk::page-setup) "gtk_page_setup_unix_dialog_get_page_setup" "gtk_page_setup_unix_dialog_set_page_setup")
-	(:cffi gtk::print-settings gtk::page-setup-unix-dialog-print-settings (g-object gtk::print-settings) "gtk_page_setup_unix_dialog_get_print_settings" "gtk_page_setup_unix_dialog_set_print_settings"))))))
+	(:cffi gtk::print-settings gtk::page-setup-unix-dialog-print-settings (g-object gtk::print-settings) "gtk_page_setup_unix_dialog_get_print_settings" "gtk_page_setup_unix_dialog_set_print_settings"))
+       ("GtkWindowGroup"
+        (:cffi gtk::windows gtk::window-group-windows (glist (g-object gtk::window)) "gtk_window_group_list_windows" nil))
+       ("GtkDialog"
+        (:cffi gtk::content-area gtk::dialog-content-area (g-object gtk::v-box) "gtk_dialog_get_content_area" nil)
+        (:cffi gtk::action-area gtk::dialog-action-area (g-object gtk::widget) "gtk_dialog_get_action_area" nil)
+        (:cffi gtk::default-response gtk::dialog-default-response gtk::response-type nil "gtk_dialog_set_default_response"))))))
 
 (defun gtk-generate-child-properties (filename)
   (with-open-file (stream filename :direction :output :if-exists :supersede)

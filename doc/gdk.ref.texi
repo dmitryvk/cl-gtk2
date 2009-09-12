@@ -115,7 +115,42 @@ The default screen of the @var{display}.
 @subsection screen
 
 @Class screen
-@Superclass g-object
+Superclass: @ref{g-object}
+
+Slots:
+@itemize
+@item @anchor{slot.screen.active-window}active-window. Type: @ref{gdk-window}. Accessor: @anchor{fn.screen-active-window}@code{screen-active-window}. Read-only.
+@item @anchor{slot.screen.composited-p}composited-p. Type: @code{boolean}. Accessor: @anchor{fn.screen-composited-p}@code{screen-composited-p}. Read-only.
+@item @anchor{slot.screen.default-colormap}default-colormap. Type: @ref{gdk-colormap}. Accessor: @anchor{fn.screen-default-colormap}@code{screen-default-colormap}.
+@item @anchor{slot.screen.display}display. Type: @ref{display}. Accessor: @anchor{fn.screen-display}@code{screen-display}. Read-only.
+@item @anchor{slot.screen.display-name}display-name. Type: @code{string}. Accessor: @anchor{fn.screen-display-name}@code{screen-display-name}. Read-only.
+@item @anchor{slot.screen.font-options}font-options. Type: gpointer. Accessor: @anchor{fn.screen-font-options}@code{screen-font-options}.
+@item @anchor{slot.screen.height}height. Type: @code{integer}. Accessor: @anchor{fn.screen-height}@code{screen-height}. Read-only.
+@item @anchor{slot.screen.height-mm}height-mm. Type: @code{integer}. Accessor: @anchor{fn.screen-height-mm}@code{screen-height-mm}. Read-only.
+@item @anchor{slot.screen.n-monitors}n-monitors. Type: @code{integer}. Accessor: @anchor{fn.screen-n-monitors}@code{screen-n-monitors}. Read-only.
+@item @anchor{slot.screen.number}number. Type: @code{integer}. Accessor: @anchor{fn.screen-number}@code{screen-number}. Read-only.
+@item @anchor{slot.screen.resolution}resolution. Type: @code{double-float}. Accessor: @anchor{fn.screen-resolution}@code{screen-resolution}.
+@item @anchor{slot.screen.rgb-colormap}rgb-colormap. Type: @ref{gdk-colormap}. Accessor: @anchor{fn.screen-rgb-colormap}@code{screen-rgb-colormap}. Read-only.
+@item @anchor{slot.screen.rgb-visual}rgb-visual. Type: @ref{visual}. Accessor: @anchor{fn.screen-rgb-visual}@code{screen-rgb-visual}. Read-only.
+@item @anchor{slot.screen.rgba-colormap}rgba-colormap. Type: @ref{gdk-colormap}. Accessor: @anchor{fn.screen-rgba-colormap}@code{screen-rgba-colormap}. Read-only.
+@item @anchor{slot.screen.rgba-visual}rgba-visual. Type: @ref{visual}. Accessor: @anchor{fn.screen-rgba-visual}@code{screen-rgba-visual}. Read-only.
+@item @anchor{slot.screen.root-window}root-window. Type: @ref{gdk-window}. Accessor: @anchor{fn.screen-root-window}@code{screen-root-window}. Read-only.
+@item @anchor{slot.screen.system-colormap}system-colormap. Type: @ref{gdk-colormap}. Accessor: @anchor{fn.screen-system-colormap}@code{screen-system-colormap}. Read-only.
+@item @anchor{slot.screen.system-visual}system-visual. Type: @ref{visual}. Accessor: @anchor{fn.screen-system-visual}@code{screen-system-visual}. Read-only.
+@item @anchor{slot.screen.toplevel-windows}toplevel-windows. Type: list of @ref{gdk-window}. Accessor: @anchor{fn.screen-toplevel-windows}@code{screen-toplevel-windows}. Read-only.
+@item @anchor{slot.screen.visuals}visuals. Type: list of @ref{visual}. Accessor: @anchor{fn.screen-visuals}@code{screen-visuals}. Read-only.
+@item @anchor{slot.screen.width}width. Type: @code{integer}. Accessor: @anchor{fn.screen-width}@code{screen-width}. Read-only.
+@item @anchor{slot.screen.width-mm}width-mm. Type: @code{integer}. Accessor: @anchor{fn.screen-width-mm}@code{screen-width-mm}. Read-only.
+@item @anchor{slot.screen.window-stack}window-stack. Type: list of @ref{gdk-window}. Accessor: @anchor{fn.screen-window-stack}@code{screen-window-stack}. Read-only.
+@end itemize
+
+
+Signals:
+@itemize
+@item @anchor{signal.screen.composited-changed}\"composited-changed\". Signature: (instance @ref{screen}) @result{} void. Options: run-last.
+@item @anchor{signal.screen.monitors-changed}\"monitors-changed\". Signature: (instance @ref{screen}) @result{} void. Options: run-last.
+@item @anchor{signal.screen.size-changed}\"size-changed\". Signature: (instance @ref{screen}) @result{} void. Options: run-last.
+@end itemize
 
 @node Gdk Objects
 @section Gdk Objects

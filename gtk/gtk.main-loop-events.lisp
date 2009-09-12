@@ -17,7 +17,7 @@
 
 ; TODO: gtk_main_do_event
 
-(defcfun (grad-add "gtk_grab_add") :void
+(defcfun (grab-add "gtk_grab_add") :void
   (widget g-object))
 
 (export 'grab-add)
