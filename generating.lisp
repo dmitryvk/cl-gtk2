@@ -178,6 +178,9 @@
         (:cffi gtk::redraw-on-allocate gtk::widget-redraw-on-allocate :boolean nil "gtk_widget_set_redraw_on_allocate")
         (:cffi gtk::accessible gtk::widget-accessible g-object "gtk_widget_get_accessible" nil)
         (:cffi gtk::tooltip-window gtk::widget-tooltip-window g-object "gtk_widget_get_tooltip_window" "gtk_widget_set_tooltip_window"))
+       ("GtkWindow"
+        (:cffi gtk::default-widget gtk::window-default-widget (g-object gtk::widget) "gtk_window_get_default_widget" "gtk_window_set_default")
+        (:cffi gtk::focus gtk::window-focus (g-object gtk::widget) "gtk_window_get_focus" "gtk_window_set_focus"))
        ("GtkTextTag"
         (:cffi gtk::priority gtk::text-tag-priority :int "gtk_text_tag_get_priority" "gtk_text_tag_set_priority"))
        ("GtkDialog"

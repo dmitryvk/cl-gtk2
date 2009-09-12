@@ -1492,7 +1492,12 @@
                         (urgency-hint gtk-window-urgency-hint "urgency-hint"
                          "gboolean" t t)
                         (window-position gtk-window-window-position
-                         "window-position" "GtkWindowPosition" t t)))
+                         "window-position" "GtkWindowPosition" t t)
+                        (:cffi default-widget window-default-widget
+                         (g-object widget) "gtk_window_get_default_widget"
+                         "gtk_window_set_default")
+                        (:cffi focus window-focus (g-object widget)
+                         "gtk_window_get_focus" "gtk_window_set_focus")))
 
 (define-g-object-class "GtkAssistant" assistant
                        (:superclass gtk-window :export t :interfaces

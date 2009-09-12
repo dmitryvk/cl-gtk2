@@ -104,45 +104,45 @@
 
 (export 'present-window-with-time)
 
-(defcfun (iconify-window "gtk_window_iconify") :void
+(defcfun (window-iconify "gtk_window_iconify") :void
   (window (g-object gtk-window)))
 
-(export 'iconify-window)
+(export 'window-iconify)
 
-(defcfun (deiconify-window "gtk_window_deiconify") :void
+(defcfun (window-deiconify "gtk_window_deiconify") :void
   (window (g-object gtk-window)))
 
-(export 'deiconify-window)
+(export 'window-deiconify)
 
-(defcfun (stick-window "gtk_window_stick") :void
+(defcfun (window-stick "gtk_window_stick") :void
   (window (g-object gtk-window)))
 
-(export 'stick-window)
+(export 'window-stick)
 
-(defcfun (unstick-window "gtk_window_unstick") :void
+(defcfun (window-unstick "gtk_window_unstick") :void
   (window (g-object gtk-window)))
 
-(export 'unstick-window)
+(export 'window-unstick)
 
-(defcfun (maximize-window "gtk_window_maximize") :void
+(defcfun (window-maximize "gtk_window_maximize") :void
   (window (g-object gtk-window)))
 
-(export 'maximize-window)
+(export 'window-maximize)
 
-(defcfun (unmaximize-window "gtk_window_unmaximize") :void
+(defcfun (window-unmaximize "gtk_window_unmaximize") :void
   (window (g-object gtk-window)))
 
-(export 'unmaximize-window)
+(export 'window-unmaximize)
 
-(defcfun (fullscreen-window "gtk_window_fullscreen") :void
+(defcfun (window-fullscreen "gtk_window_fullscreen") :void
   (window (g-object gtk-window)))
 
-(export 'fullscreen-window)
+(export 'window-fullscreen)
 
-(defcfun (unfullscreen-window "gtk_window_unfullscreen") :void
+(defcfun (window-unfullscreen "gtk_window_unfullscreen") :void
   (window (g-object gtk-window)))
 
-(export 'unfullscreen-window)
+(export 'window-unfullscreen)
 
 (defcfun (window-set-keep-above "gtk_window_set_keep_above") :void
   (window (g-object gtk-window))
@@ -239,12 +239,12 @@
 
 (export 'window-group)
 
-(defcfun (move-window "gtk_window_move") :void
+(defcfun (window-move "gtk_window_move") :void
   (window (g-object gtk-window))
   (x :int)
   (y :int))
 
-(export 'move-window)
+(export 'window-move)
 
 (defcfun (window-parse-geometry "gtk_window_parse_geometry") :boolean
   (window (g-object gtk-window))
@@ -257,17 +257,17 @@
 
 (export 'reshow-window-with-initial-size)
 
-(defcfun (resize-window "gtk_window_resize") :void
+(defcfun (window-resize "gtk_window_resize") :void
   (window (g-object gtk-window))
   (width :int)
   (height :int))
 
-(export 'resize-window)
+(export 'window-resize)
 
-(defcfun (default-window-icon-list "gtk_window_get_default_icon_list") (glist pixbuf))
+(defcfun (default-window-icon-list "gtk_window_get_default_icon_list") (glist (g-object pixbuf)))
 
 (defcfun (set-default-window-icon-list "gtk_window_set_default_icon_list") :boolean
-  (icon-list (glist pixbuf)))
+  (icon-list (glist (g-object pixbuf))))
 
 (defun (setf default-window-icon-list) (icon-list)
   (set-default-window-icon-list icon-list)
@@ -281,12 +281,13 @@
 (defcfun (set-default-window-icon-name "gtk_window_set_default_icon_name") :void
   (icon-name :string))
 
-(defun (setf default-window-icon) (icon)
-  (etypecase icon
-    (pixbuf (set-default-window-icon icon))
-    (string (set-default-window-icon-name icon))))
+(defun (setf window-default-icon) (icon)
+  (set-default-window-icon icon))
 
-(export 'default-window-icon)
+(defun (setf window-default-icon-name) (name)
+  (set-default-window-icon-name name))
+
+(export 'window-default-icon)
 
 (defcfun (set-window-auto-startup-notification "gtk_window_set_auto_startup_notification") :void
   (setting :boolean))
@@ -309,3 +310,10 @@
   (window-group (g-object window-group)))
 
 (export 'window-group-list-windows)
+
+(defcfun (window-mnemonic-activate "gtk_window_mnemonic_activate") :boolean
+  (window (g-object gtk-window))
+  (keyval :uint)
+  (modifier modifier-type))
+
+(export 'window-mnemonic-activate)
