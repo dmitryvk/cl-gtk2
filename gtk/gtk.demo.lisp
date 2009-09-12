@@ -24,7 +24,8 @@
            #:demo-text-editor
            #:demo-class-browser
            #:demo-treeview-tree
-           #:test-custom-window))
+           #:test-custom-window
+           #:test-assistant))
 
 (in-package :gtk-demo)
 
@@ -796,3 +797,46 @@
   (within-main-loop
     (let ((w (make-instance 'custom-window)))
       (widget-show w))))
+
+(defun test-assistant ()
+  (let ((output *standard-output*))
+    (within-main-loop
+      (let ((d (make-instance 'assistant :title "Username wizard"))
+            (p-1 (make-instance 'h-box))
+            (entry (make-instance 'entry))
+            (p-2 (make-instance 'label :label "Click Apply to close this wizard")))
+        (box-pack-start p-1 (make-instance 'label :label "Enter your name:") :expand nil)
+        (box-pack-start p-1 entry)
+        (assistant-append-page d p-1)
+        (assistant-append-page d p-2)
+        (setf (assistant-child-title d p-1) "Username wizard"
+              (assistant-child-title d p-2) "Username wizard"
+              (assistant-child-complete d p-1) nil
+              (assistant-child-complete d p-2) t
+              (assistant-child-page-type d p-1) :intro
+              (assistant-child-page-type d p-2) :confirm
+              (assistant-forward-page-function d) (lambda (i)
+                                                    (format output "(assistant-forward-page-function ~A)~%" i)
+                                                    (ecase i
+                                                      (0 1)
+                                                      (1 -1))))
+        (connect-signal entry "notify::text" (lambda (object pspec)
+                                               (declare (ignore object pspec))
+                                               (setf (assistant-child-complete d p-1)
+                                                     (plusp (length (entry-text entry))))))
+        (let ((w (make-instance 'label :label "A label in action area")))
+          (widget-show w)
+          (assistant-add-action-widget d w))
+        (connect-signal d "cancel" (lambda (assistant)
+                                     (declare (ignore assistant))
+                                     (object-destroy d)
+                                     (format output "Canceled~%")))
+        (connect-signal d "close" (lambda (assistant)
+                                    (declare (ignore assistant))
+                                    (object-destroy d)
+                                    (format output "Thank you, ~A~%" (entry-text entry))))
+        (connect-signal d "prepare" (lambda (assistant page-widget)
+                                      (declare (ignore assistant page-widget))
+                                      (format output "Assistant ~A has ~A pages and is on ~Ath page~%"
+                                              d (assistant-n-pages d) (assistant-current-page d))))
+        (widget-show d)))))

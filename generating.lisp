@@ -188,7 +188,11 @@
        ("GtkDialog"
         (:cffi gtk::content-area gtk::dialog-content-area (g-object gtk::v-box) "gtk_dialog_get_content_area" nil)
         (:cffi gtk::action-area gtk::dialog-action-area (g-object gtk::widget) "gtk_dialog_get_action_area" nil)
-        (:cffi gtk::default-response gtk::dialog-default-response gtk::response-type nil "gtk_dialog_set_default_response"))))))
+        (:cffi gtk::default-response gtk::dialog-default-response gtk::response-type nil "gtk_dialog_set_default_response"))
+       ("GtkAssistant"
+        (:cffi gtk::current-page gtk::assistant-current-page :int "gtk_assistant_get_current_page" "gtk_assistant_set_current_page")
+        (:cffi gtk::n-pages gtk::assistant-n-pages :int "gtk_assistant_get_n_pages" nil)
+        (:cffi gtk::forward-page-function gtk::assistant-forward-page-function nil nil gtk::set-assistant-forward-page-function))))))
 
 (defun gtk-generate-child-properties (filename)
   (with-open-file (stream filename :direction :output :if-exists :supersede)

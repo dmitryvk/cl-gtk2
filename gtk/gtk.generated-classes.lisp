@@ -1503,7 +1503,14 @@
                        (:superclass gtk-window :export t :interfaces
                         ("AtkImplementorIface" "GtkBuildable")
                         :type-initializer "gtk_assistant_get_type")
-                       nil)
+                       ((:cffi current-page assistant-current-page :int
+                         "gtk_assistant_get_current_page"
+                         "gtk_assistant_set_current_page")
+                        (:cffi n-pages assistant-n-pages :int
+                         "gtk_assistant_get_n_pages" nil)
+                        (:cffi forward-page-function
+                         assistant-forward-page-function nil nil
+                         set-assistant-forward-page-function)))
 
 (define-g-object-class "GtkDialog" dialog
                        (:superclass gtk-window :export t :interfaces

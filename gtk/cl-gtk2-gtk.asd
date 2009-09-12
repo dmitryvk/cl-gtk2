@@ -46,7 +46,8 @@
                (:file "gtk.child-properties")
                (:file "gtk.widget")
                (:file "gtk.builder")
-
+               (:file "gtk.assistant")
+               
                (:file "gtk.main-loop-events")
                
 
