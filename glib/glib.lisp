@@ -401,12 +401,11 @@ Adds a function to be called whenever there are no higher priority events pendin
 (defcfun (g-thread-init "g_thread_init") :void
   (vtable :pointer))
 
-(defvar *threads-initialized-p* nil)
+(defcfun g-thread-get-initialized :boolean)
 
 (at-init ()
-  (unless *threads-initialized-p*
-    (g-thread-init (null-pointer))
-    (setf *threads-initialized-p* t)))
+  (unless (g-thread-get-initialized)
+    (g-thread-init (null-pointer))))
 
 (defcenum g-thread-priority
   :g-thread-priority-low
