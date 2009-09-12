@@ -10,9 +10,11 @@
 (eval-when (:compile-toplevel :load-toplevel :execute)
   (define-foreign-library gtkglext
     (:unix (:or "libgtkglext-x11-1.0.so.0" "libgtkglext-x11-1.0.so"))
+    (:win32 "libgtkglext-win32-1.0-0.dll")
     (t (:default "libgtkglext-1.0")))
   (define-foreign-library gdkglext
     (:unix (:or "libgdkglext-x11-1.0.so.0" "libgdkglext-x11-1.0.so"))
+    (:win32 "libgtkglext-win32-1.0-0.dll")
     (t (:default "libgdkglext-1.0"))))
 
 (use-foreign-library gtkglext)

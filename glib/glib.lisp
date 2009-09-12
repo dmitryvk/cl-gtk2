@@ -67,13 +67,15 @@ In this example, for every @code{class}, @code{(initialize-gobject-class-g-type 
 (eval-when (:compile-toplevel :load-toplevel :execute)
   (define-foreign-library glib
     (:unix (:or "libglib-2.0.so.0" "libglib-2.0.so"))
-    (t "libglib-2.0")))
+    (:win32 "libglib-2.0-0.dll")
+    (t (:default "libglib-2.0"))))
 
 (use-foreign-library glib)
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
   (define-foreign-library gthread
     (:unix (:or "libgthread-2.0.so.0"  "libgthread-2.0.so"))
+    (:win32 "libgthread-2.0-0.dll")
     (t "libgthread-2.0")))
 
 (use-foreign-library gthread)
