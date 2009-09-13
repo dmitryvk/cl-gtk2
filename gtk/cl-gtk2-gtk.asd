@@ -47,6 +47,7 @@
                (:file "gtk.widget")
                (:file "gtk.builder")
                (:file "gtk.assistant")
+               (:file "gtk.link-button")
                
                (:file "gtk.main-loop-events")
                
