@@ -2180,34 +2180,184 @@ Superclass: @ref{misc} @ref{atk-implementor-iface} @ref{buildable}
 
 Subclasses: @ref{accel-label}
 
+The @ref{label} widget displays a small amount of text. As the name implies, most labels are used to label another widget such as a @ref{button}, or a @ref{menu-item}.
+
+@chapheading Mnemonics
+
+Labels may contain mnemonics. Mnemonics are underlined characters in the label, used for keyboard navigation. Mnemonics are created by providing a string with an underscore before the mnemonic character, such as "_File", to @SlotRef{label,label} and setting @SlotRef{label,use-underline} to True.
+
+Mnemonics automatically activate any activatable widget the label is inside, such as a @ref{button}; if the label is not inside the mnemonic's target widget, you have to tell the label about the target by settings @SlotRef{label,mnemonic-widget}. Here's a simple example where the label is inside a button:
+
+@chapheading Markup (styled text)
+
+To make it easy to format text in a label (changing colors, fonts, etc.), label text can be provided in a simple markup format. Set @SlotRef{label,use-markup} to True if @SlotRef{label,label} contains markup. Here's how to create a label with a small font:
+@lisp
+(make-instance 'label :label "<small>Small text</small>" :use-markup t)
+@end lisp
+(See @uref{http://library.gnome.org/devel/pango/stable/PangoMarkupFormat.html,,complete documentation} of available tags in the Pango manual.)
+
+The markup passed to @SlotRef{label,label} must be valid; for example, literal @code{</>/&} characters must be escaped as @code{&lt;}, @code{&gt;}, and @code{&amp;}. If you pass text obtained from the user, file, or a network, you'll want to escape it with g_markup_escape_text() or g_markup_printf_escaped(). (TODO: these functions are not supported yet in cl-gtk2)
+
+Markup strings are just a convenient way to set the PangoAttrList on a label; @SlotRef{label,attributes} may be a simpler way to set attributes in some cases. Be careful though; PangoAttrList tends to cause internationalization problems, unless you're applying attributes to the entire string (i.e. unless you set the range of each attribute to [0, G_MAXINT)). The reason is that specifying the start_index and end_index for a PangoAttribute requires knowledge of the exact string being displayed, so translations will cause problems.
+
+@chapheading Selectable labels
+
+Labels can be made selectable with @SlotRef{label,selectable}. Selectable labels allow the user to copy the label contents to the clipboard. Only labels that contain useful-to-copy information - such as error messages - should be made selectable.
+
+@chapheading Text layout
+
+A label can contain any number of paragraphs, but will have performance problems if it contains more than a small number. Paragraphs are separated by newlines or other paragraph separators understood by Pango.
+
+Labels can automatically wrap text if you call @SlotRef{label,line-wrap}.
+
+@SlotRef{label,justify} sets how the lines in a label align with one another. If you want to set how the label as a whole aligns in its available space, see @SlotRef{misc,xalign} and @SlotRef{misc,yalign}.
+
 Slots:
 @itemize
 @item @anchor{slot.label.angle}angle. Type: @code{double-float}. Accessor: @anchor{fn.label-angle}@code{label-angle}.
+
+The angle that the baseline of the label makes with the horizontal, in degrees, measured counterclockwise. An angle of 90 reads from from bottom to top, an angle of 270, from top to bottom. Ignored if the label is selectable, wrapped, or ellipsized.
+
+Allowed values: [0,360]
+
+Default value: 0
 @item @anchor{slot.label.attributes}attributes. Type: @code{PangoAttrList}. Accessor: @anchor{fn.label-attributes}@code{label-attributes}.
+
+A list of style attributes to apply to the text of the label
 @item @anchor{slot.label.cursor-position}cursor-position. Type: @code{integer}. Accessor: @anchor{fn.label-cursor-position}@code{label-cursor-position}. Read-only.
-@item @anchor{slot.label.ellipsize}ellipsize. Type: @code{PangoEllipsizeMode}. Accessor: @anchor{fn.label-ellipsize}@code{label-ellipsize}.
+
+The current position of the insertion cursor in chars.
+
+Allowed values: >= 0
+
+Default value: 0
+@item @anchor{slot.label.ellipsize}ellipsize. Type: @ref{pango-ellipsize-mode}. Accessor: @anchor{fn.label-ellipsize}@code{label-ellipsize}.
+
+The preferred place to ellipsize the string, if the label does not have enough room to display the entire string.
+
+Note that setting this property to a value other than @EnumVRef{pango-ellipsize-mode,none} has the side-effect that the label requests only enough space to display the ellipsis "...". In particular, this means that ellipsizing labels do not work well in notebook tabs, unless the tab's "tab-expand" property is set to True. Other ways to set a label's width are @SlotRef{widget,width-request} and @SlotRef{label,width-chars}.
+
+Default value: @EnumVRef{pango-ellipsize-mode,none}
 @item @anchor{slot.label.justify}justify. Type: @ref{justification}. Accessor: @anchor{fn.label-justify}@code{label-justify}.
+
+The alignment of the lines in the text of the label relative to each other. This does NOT affect the alignment of the label within its allocation. See @SlotRef{misc,xalign} for that.
+
+Default value: @EnumVRef{justification,left}
 @item @anchor{slot.label.label}label. Type: @code{string}. Accessor: @anchor{fn.label-label}@code{label-label}.
+
+The text of the label.
+
+Default value: ""
+@item @anchor{slot.label.layout}layout. Type: @ref{g-object}. Accessor: @anchor{fn.label-layout}@code{label-layout}. Read-only.
+
+Gets the PangoLayout used to display the label. The layout is useful to e.g. convert text positions to pixel positions, in combination with @SlotRef{label,layout-offsets}.
+@item @anchor{slot.label.layout-offsets}layout-offsets. Type: list of @code{integer}. Accessor: @anchor{fn.label-layout-offsets}@code{label-layout-offsets}. Read-only.
+
+The coordinates where the label will draw the @code{PangoLayout} representing the text in the label; useful to convert mouse events into coordinates inside the @code{PangoLayout}, e.g. to take some action if some part of the label is clicked. Of course you will need to create a @ref{event-box} to receive the events, and pack the label inside it, since labels are a no-window widgets. Remember when using the @code{PangoLayout} functions you need to convert to and from pixels using PANGO_PIXELS or PANGO_SCALE.
+@item @anchor{slot.label.line-wrap}line-wrap. Type: @code{boolean}. Accessor: @anchor{fn.label-line-wrap}@code{label-line-wrap}.
+
+Whether lines in the label are automatically wrapped. True makes label break lines if text exceeds the widget's size. False lets the text get cut off by the edge of the widget if it exceeds the widget size.
+
+Note that setting line wrapping to True does not make the label wrap at its parent container's width, because GTK+ widgets conceptually can't make their requisition depend on the parent container's size. For a label that wraps at a specific position, set the label's width using @SlotRef{widget,width-request}.
+@item @anchor{slot.label.line-wrap-mode}line-wrap-mode. Type: @ref{pango-wrap-mode}. Accessor: @anchor{fn.label-line-wrap-mode}@code{label-line-wrap-mode}.
+
+If line wrapping is on (see @SlotRef{label,line-wrap}) this controls how the line wrapping is done. The default is @EnumVRef{pango-wrap-mode,word} which means wrap on word boundaries.
 @item @anchor{slot.label.max-width-chars}max-width-chars. Type: @code{integer}. Accessor: @anchor{fn.label-max-width-chars}@code{label-max-width-chars}.
+
+The desired maximum width of the label, in characters. If this property is set to -1, the width will be calculated automatically, otherwise the label will request space for no more than the requested number of characters. If the @SlotRef{label,width-chars} property is set to a positive value, then the @SlotRef{label,max-width-chars} property is ignored.
+
+Default value: -1
 @item @anchor{slot.label.mnemonic-keyval}mnemonic-keyval. Type: @code{integer}. Accessor: @anchor{fn.label-mnemonic-keyval}@code{label-mnemonic-keyval}. Read-only.
+
+The mnemonic accelerator key for this label.
+
+Default value: 16777215
 @item @anchor{slot.label.mnemonic-widget}mnemonic-widget. Type: @ref{widget}. Accessor: @anchor{fn.label-mnemonic-widget}@code{label-mnemonic-widget}.
+
+The widget to be activated when the label's mnemonic key is pressed.
 @item @anchor{slot.label.pattern}pattern. Type: @code{string}. Accessor: @anchor{fn.label-pattern}@code{label-pattern}. Write-only.
+
+A string with _ characters in positions correspond to characters in the text to underline.
+
+Default value: NIL
 @item @anchor{slot.label.selectable}selectable. Type: @code{boolean}. Accessor: @anchor{fn.label-selectable}@code{label-selectable}.
+
+Whether the label text can be selected with the mouse.
+
+Default value: False
 @item @anchor{slot.label.selection-bound}selection-bound. Type: @code{integer}. Accessor: @anchor{fn.label-selection-bound}@code{label-selection-bound}. Read-only.
+
+The position of the opposite end of the selection from the cursor in chars.
+
+Allowed values: >= 0
+
+Default value: 0
+@item @anchor{slot.label.selection-bounds}selection-bounds. Type: @code{(list integer integer)}. Accessor: @anchor{fn.label-selection-bounds}@code{label-selection-bounds}. Read-only.
+
+Gets the selected range of characters in the label. Returns either NIL if there is no selection or list of two integers specifying character offsets of start and end of a selection
 @item @anchor{slot.label.single-line-mode}single-line-mode. Type: @code{boolean}. Accessor: @anchor{fn.label-single-line-mode}@code{label-single-line-mode}.
+
+Whether the label is in single line mode. In single line mode, the height of the label does not depend on the actual text, it is always set to ascent + descent of the font. This can be an advantage in situations where resizing the label because of text changes would be distracting, e.g. in a statusbar.
+
+Default value: False
 @item @anchor{slot.label.use-markup}use-markup. Type: @code{boolean}. Accessor: @anchor{fn.label-use-markup}@code{label-use-markup}.
+
+The text of the label includes XML markup.
+
+Default value: False
 @item @anchor{slot.label.use-underline}use-underline. Type: @code{boolean}. Accessor: @anchor{fn.label-use-underline}@code{label-use-underline}.
+
+If set, an underline in the text indicates the next character should be used for the mnemonic accelerator key.
+
+Default value: False
 @item @anchor{slot.label.width-chars}width-chars. Type: @code{integer}. Accessor: @anchor{fn.label-width-chars}@code{label-width-chars}.
+
+he desired width of the label, in characters. If this property is set to -1, the width will be calculated automatically, otherwise the label will request either 3 characters or the property value, whichever is greater. If the @SlotRef{label,width-chars} property is set to a positive value, then the @SlotRef{label,max-width-chars} property is ignored.
+
+Default value: -1
 @item @anchor{slot.label.wrap}wrap. Type: @code{boolean}. Accessor: @anchor{fn.label-wrap}@code{label-wrap}.
-@item @anchor{slot.label.wrap-mode}wrap-mode. Type: @code{PangoWrapMode}. Accessor: @anchor{fn.label-wrap-mode}@code{label-wrap-mode}.
+
+If set, wrap lines if the text becomes too wide.
+
+Default value: False
+@item @anchor{slot.label.wrap-mode}wrap-mode. Type: @ref{pango-wrap-mode}. Accessor: @anchor{fn.label-wrap-mode}@code{label-wrap-mode}.
+
+If line wrapping is on (see the @SlotRef{label,wrap} property) this controls how the line wrapping is done. The default is @EnumVRef{pango-wrap-mode,word}, which means wrap on word boundaries.
 @end itemize
 
 
 Signals:
 @itemize
 @item @anchor{signal.label.copy-clipboard}"copy-clipboard". Signature: (instance @ref{label}) @result{} void. Options: run-last, action.
-@item @anchor{signal.label.move-cursor}"move-cursor". Signature: (instance @ref{label}), (arg-1 @ref{movement-step}), (arg-2 @code{integer}), (arg-3 @code{boolean}) @result{} void. Options: run-last, action.
-@item @anchor{signal.label.populate-popup}"populate-popup". Signature: (instance @ref{label}), (arg-1 @ref{menu}) @result{} void. Options: run-last.
+
+This signal is a keybinding signal which gets emitted to copy the selection to the clipboard.
+
+The default binding for this signal is Ctrl-c.
+@item @anchor{signal.label.move-cursor}"move-cursor". Signature: (instance @ref{label}), (step @ref{movement-step}), (count @code{integer}), (extend-selection @code{boolean}) @result{} void. Options: run-last, action.
+
+This signal is a keybinding signal which gets emitted when the user initiates a cursor movement. If the cursor is not visible in entry, this signal causes the viewport to be moved instead.
+
+Applications should not connect to it, but may emit it with @ref{emit-signal} if they need to control the cursor programmatically.
+
+The default bindings for this signal come in two variants, the variant with the Shift modifier extends the selection, the variant without the Shift modifer does not. There are too many key combinations to list them all here.
+
+@itemize
+@item Arrow keys move by individual characters/lines
+@item Ctrl-arrow key combinations move by words/paragraphs
+@item Home/End keys move to the ends of the buffer
+@end itemize
+
+
+@var{step}: the granularity of the move, as a GtkMovementStep
+
+@var{count}: the number of step units to move
+
+@var{extend-selection}: True if the move should extend the selection
+@item @anchor{signal.label.populate-popup}"populate-popup". Signature: (instance @ref{label}), (menu @ref{menu}) @result{} void. Options: run-last.
+
+This signal gets emitted before showing the context menu of the label. Note that only selectable labels have context menus.
+
+If you need to add items to the context menu, connect to this signal and append your menuitems to the menu.
 @end itemize
 
 

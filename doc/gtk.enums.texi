@@ -92,6 +92,8 @@
 * window-position::
 * window-type::
 * wrap-mode::
+* pango-wrap-mode::
+* pango-ellipsize-mode::
 @end menu
 
 @node anchor-type
@@ -1294,3 +1296,23 @@ Values:
 @end itemize
 
 
+@node pango-wrap-mode
+@section pango-wrap-mode
+@Enum pango-wrap-mode
+Values: 
+@itemize
+@item @anchor{enum.pango-wrap-mode.char}:char
+@item @anchor{enum.pango-wrap-mode.word}:word
+@item @anchor{enum.pango-wrap-mode.word-char}:word-char
+@end itemize
+
+@node pango-ellipsize-mode
+@section pango-ellipsize-mode
+@Enum pango-ellipsize-mode
+Values: 
+@itemize
+@item @anchor{enum.pango-ellipsize-mode.end}:end
+@item @anchor{enum.pango-ellipsize-mode.middle}:middle
+@item @anchor{enum.pango-ellipsize-mode.none}:none
+@item @anchor{enum.pango-ellipsize-mode.start}:start
+@end itemize
