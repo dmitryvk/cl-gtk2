@@ -2003,21 +2003,80 @@ Signals:
 @Class image
 Superclass: @ref{misc} @ref{atk-implementor-iface} @ref{buildable}
 
+The @ref{image} widget displays an image. Various kinds of object can be displayed as an image; most typically, you would load a @ref{pixbuf} ("pixel buffer") from a file, and then display that. There's an @SlotRef{image,file} slot (with @code{:file} initarg) that is used to load @ref{pixbuf} from file:
+@lisp
+(make-instance 'image :file "myfile.png")
+@end lisp
+
+If the file isn't loaded successfully, the image will contain a "broken image" icon similar to that used in many web browsers. If you want to handle errors in loading the file yourself, for example by displaying an error message, then load the image and set the @SlotRef{image,pixbuf}.
+
+The image file may contain an animation, if so the @ref{image} will display an animation (@ref{pixbuf-animation}) instead of a static image.
+
+@ref{image} is a subclass of @ref{misc}, which implies that you can align it (center, left, right) and add padding to it, using @ref{misc} slot.
+
+@ref{image} is a "no window" widget (has no @ref{gdk-window} of its own), so by default does not receive events. If you want to receive events on the image, such as button clicks, place the image inside a @ref{event-box}, then connect to the event signals on the event box.
+
+When handling events on the event box, keep in mind that coordinates in the image may be different from event box coordinates due to the alignment and padding settings on the image (see @ref{misc}). The simplest way to solve this is to set the alignment to 0.0 (left/top), and set the padding to zero. Then the origin of the image will be the same as the origin of the event box.
+
+@c Sometimes an application will want to avoid depending on external data files, such as image files. GTK+ comes with a program to avoid this, called gdk-pixbuf-csource. This program allows you to convert an image into a C variable declaration, which can then be loaded into a GdkPixbuf using gdk_pixbuf_new_from_inline().
+
 Slots:
 @itemize
 @item @anchor{slot.image.file}file. Type: @code{string}. Accessor: @anchor{fn.image-file}@code{image-file}.
+
+Filename to load and display.
+
+Default value: NIL
 @item @anchor{slot.image.gicon}gicon. Type: @code{GIcon}. Accessor: @anchor{fn.image-gicon}@code{image-gicon}.
+
+The GIcon displayed in the GtkImage. For themed icons, If the icon theme is changed, the image will be updated automatically.
+
+TODO: GIcon is part of GIO library that is not yet supported by cl-gtk2
 @item @anchor{slot.image.icon-name}icon-name. Type: @code{string}. Accessor: @anchor{fn.image-icon-name}@code{image-icon-name}.
+
+The name of the icon in the icon theme. If the icon theme is changed, the image will be updated automatically.
+
+Default value: NIL
 @item @anchor{slot.image.icon-set}icon-set. Type: @code{GtkIconSet}. Accessor: @anchor{fn.image-icon-set}@code{image-icon-set}.
+
+Icon set to display.
 @item @anchor{slot.image.icon-size}icon-size. Type: @code{integer}. Accessor: @anchor{fn.image-icon-size}@code{image-icon-size}.
-@item @anchor{slot.image.image}image. Type: @code{GdkImage}. Accessor: @anchor{fn.image-image}@code{image-image}.
+
+Symbolic size to use for stock icon, icon set or named icon.
+
+Allowed values: >= 0
+
+Default value: 4
+@item @anchor{slot.image.image}image. Type: @ref{gdk-image}. Accessor: @anchor{fn.image-image}@code{image-image}.
+
+A GdkImage to display.
 @item @anchor{slot.image.mask}mask. Type: @ref{pixmap}. Accessor: @anchor{fn.image-mask}@code{image-mask}.
+
+Mask bitmap to use with @ref{gdk-image} or @ref{pixmap}.
 @item @anchor{slot.image.pixbuf}pixbuf. Type: @ref{pixbuf}. Accessor: @anchor{fn.image-pixbuf}@code{image-pixbuf}.
+
+A @ref{pixbuf} to display.
 @item @anchor{slot.image.pixbuf-animation}pixbuf-animation. Type: @ref{pixbuf-animation}. Accessor: @anchor{fn.image-pixbuf-animation}@code{image-pixbuf-animation}.
+
+@ref{pixbuf-animation} to display.
 @item @anchor{slot.image.pixel-size}pixel-size. Type: @code{integer}. Accessor: @anchor{fn.image-pixel-size}@code{image-pixel-size}.
+
+This property can be used to specify a fixed size overriding the @SlotRef{image,icon-size} property for images of type @EnumVRef{image-type,icon-name}.
+
+Default value: -1
 @item @anchor{slot.image.pixmap}pixmap. Type: @ref{pixmap}. Accessor: @anchor{fn.image-pixmap}@code{image-pixmap}.
+
+A @ref{pixmap} to display.
 @item @anchor{slot.image.stock}stock. Type: @code{string}. Accessor: @anchor{fn.image-stock}@code{image-stock}.
+
+Stock ID for a stock image to display.
+
+Default value: NIL
 @item @anchor{slot.image.storage-type}storage-type. Type: @ref{image-type}. Accessor: @anchor{fn.image-storage-type}@code{image-storage-type}. Read-only.
+
+The representation being used for image data.
+
+Default value: @EnumVRef{image-type,empty}
 @end itemize
 
 
