@@ -1312,6 +1312,27 @@ A base class for all GObject classes.
 
 An accessor that accesses the foreign pointer to object.
 
+@Function release
+@lisp
+(release object)
+@end lisp
+
+Releases the @var{object} by dropping the reference from it in advance before GC reclaims it. Use this function as an optimization measure when you know that some object will not be needed. All access to the object's properties will be invalid after this function is called.
+
+@Macro using
+@lisp
+(using (object expr) &body body)
+@end lisp
+
+Evaluates and returns the result of evaluation of the @var{body} with @var{object} being bound to the result of evaluating @var{expr}. Ensures that @code{release} is called on @var{object} after the @var{body} is evaluated.
+
+@Macro using
+@lisp
+(using ((var1 expr1) (var2 expr2) ... (varn exprn)) &body body)
+@end lisp
+
+Evaluates and returns the result of evaluation of the @var{body} with @var{var}s being bound to the results of evaluating @var{expr}s. Ensures that @code{release} is called on every @var{var} after the @var{body} is evaluated.
+
 @node g-initially-unowned
 @section g-initially-unowned
 
