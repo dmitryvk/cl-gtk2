@@ -25,39 +25,20 @@
 
 (export 'assistant-insert-page)
 
-(defcstruct assistant-page-func-ref
-  (object :pointer)
-  (fn-id :int))
-
-(defcallback assistant-page-func-cb :int
-    ((current-page :int) (data :pointer))
-  (let* ((object (convert-from-foreign (foreign-slot-value data 'assistant-page-func-ref 'object) '(g-object assistant)))
-         (fn-id (foreign-slot-value data 'assistant-page-func-ref 'fn-id))
-         (fn (retrieve-handler-from-object object fn-id)))
-    (funcall fn current-page)))
-
-(defcallback assistant-page-func-destroy-notify-cb :void
-    ((data :pointer))
-  (let* ((object (convert-from-foreign (foreign-slot-value data 'assistant-page-func-ref 'object) '(g-object assistant)))
-         (fn-id (foreign-slot-value data 'assistant-page-func-ref 'fn-id)))
-    (delete-handler-from-object object fn-id)))
-
 (defcfun gtk-assistant-set-forward-page-func :void
   (assistant (g-object assistant))
   (page-func :pointer)
   (data :pointer)
   (destroy-notify :pointer))
 
+(define-cb-methods assistant-page-func :int ((current-page :int)))
+
 (defun set-assistant-forward-page-function (assistant function)
   (if function
-      (let ((ref (foreign-alloc 'assistant-page-func-ref))
-            (fn-id (save-handler-to-object assistant function)))
-        (setf (foreign-slot-value ref 'assistant-page-func-ref 'object)
-              (pointer assistant)
-              (foreign-slot-value ref 'assistant-page-func-ref 'fn-id)
-              fn-id)
-        (gtk-assistant-set-forward-page-func assistant (callback assistant-page-func-cb)
-                                             ref (callback assistant-page-func-destroy-notify-cb)))
+      (gtk-assistant-set-forward-page-func assistant
+                                           (callback assistant-page-func-cb)
+                                           (create-fn-ref assistant function)
+                                           (callback assistant-page-func-destroy-notify))
       (gtk-assistant-set-forward-page-func assistant (null-pointer) (null-pointer) (null-pointer))))
 
 (defcfun (assistant-add-action-widget "gtk_assistant_add_action_widget") :void
