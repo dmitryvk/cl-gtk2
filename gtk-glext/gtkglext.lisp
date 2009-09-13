@@ -11,6 +11,7 @@
   (glut:init))
 
 (at-init () (gl-init))
+(at-finalize () (setf cl-glut::*glut-initialized-p* nil))
 
 ;; Query
 
