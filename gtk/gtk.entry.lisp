@@ -134,3 +134,62 @@
   (gtk-editable-set-editable editable is-editable))
 
 (export 'editable-editable)
+
+;; GtkEntryCompletion
+
+(define-cb-methods entry-completion-match-func :boolean
+  ((completion (g-object entry-completion))
+   (key :string)
+   (iter (g-boxed-foreign tree-iter))))
+
+(defcfun (%gtk-entry-completion-set-match-func "gtk_entry_completion_set_match_func") :void
+  (completion (g-object entry-completion))
+  (func :pointer)
+  (data :pointer)
+  (destroy-notify :pointer))
+
+(defun gtk-entry-completion-set-match-func (completion function)
+  (if function
+      (%gtk-entry-completion-set-match-func completion
+                                            (callback entry-completion-match-func-cb)
+                                            (create-fn-ref completion function)
+                                            (callback entry-completion-match-func-destroy-notify))
+      (%gtk-entry-completion-set-match-func completion
+                                            (null-pointer)
+                                            (null-pointer)
+                                            (null-pointer))))
+
+(defcfun (entry-completion-complete "gtk_entry_completion_complete") :void
+  (completion (g-object entry-completion)))
+
+(export 'entry-completion-complete)
+
+(defcfun (entry-completion-completion-prefix "gtk_entry_completion_get_completion_prefix") (:string :free-from-foreign t)
+  (completion (g-object entry-completion)))
+
+(export 'entry-completion-completion-prefix)
+
+(defcfun (entry-completion-insert-prefix "gtk_entry_completion_insert_prefix") :void
+  (completion (g-object entry-completion)))
+
+(export 'entry-completion-completion-prefix)
+
+(defcfun (entry-completion-insert-action-text "gtk_entry_completion_insert_action_text") :void
+  (completion (g-object entry-completion))
+  (index :int)
+  (text :string))
+
+(export 'entry-completion-insert-action-text)
+
+(defcfun (entry-copmletion-insert-action-markup "gtk_entry_completion_insert_action_markup") :void
+  (completion (g-object entry-completion))
+  (index :int)
+  (markup :string))
+
+(export 'entry-completion-insert-action-markup)
+
+(defcfun (entry-completion-delete-action "gtk_entry_completion_delete_action") :void
+  (completion (g-object entry-completion))
+  (index :int))
+
+(export 'entry-completion-delete-action)

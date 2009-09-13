@@ -2678,7 +2678,11 @@
                         (popup-single-match entry-completion-popup-single-match
                          "popup-single-match" "gboolean" t t)
                         (text-column entry-completion-text-column "text-column"
-                         "gint" t t)))
+                         "gint" t t)
+                        (:cffi entry entry-completion-entry (g-object entry)
+                         "gtk_entry_completion_get_entry" nil)
+                        (:cffi match-function entry-completion-match-function
+                         nil nil gtk-entry-completion-set-match-function)))
 
 (define-g-object-class "GtkIconFactory" icon-factory
                        (:superclass g-object :export t :interfaces

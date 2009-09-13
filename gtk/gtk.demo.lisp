@@ -25,7 +25,8 @@
            #:demo-class-browser
            #:demo-treeview-tree
            #:test-custom-window
-           #:test-assistant))
+           #:test-assistant
+           #:test-entry-completion))
 
 (in-package :gtk-demo)
 
@@ -840,3 +841,21 @@
                                       (format output "Assistant ~A has ~A pages and is on ~Ath page~%"
                                               d (assistant-n-pages d) (assistant-current-page d))))
         (widget-show d)))))
+
+(defun test-entry-completion ()
+  (within-main-loop
+    (let* ((w (make-instance 'gtk-window))
+           (model (make-instance 'tree-lisp-store)))
+      (tree-lisp-store-add-column model "gchararray" #'identity)
+      (tree-node-insert-at (tree-lisp-store-root model) (make-tree-node :item "Monday") 0)
+      (tree-node-insert-at (tree-lisp-store-root model) (make-tree-node :item "Tuesday") 0)
+      (tree-node-insert-at (tree-lisp-store-root model) (make-tree-node :item "Wednesday") 0)
+      (tree-node-insert-at (tree-lisp-store-root model) (make-tree-node :item "Thursday") 0)
+      (tree-node-insert-at (tree-lisp-store-root model) (make-tree-node :item "Friday") 0)
+      (tree-node-insert-at (tree-lisp-store-root model) (make-tree-node :item "Saturday") 0)
+      (tree-node-insert-at (tree-lisp-store-root model) (make-tree-node :item "Sunday") 0)
+      (let* ((completion (make-instance 'entry-completion :model model :text-column 0))
+             (e (make-instance 'entry :completion completion)))
+        (setf (entry-completion-text-column completion) 0)
+        (container-add w e))
+      (widget-show w))))

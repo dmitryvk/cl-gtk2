@@ -274,7 +274,12 @@
         (:cffi gtk::cursor-hadjustment gtk::entry-cursor-hadjustment (g-object gtk::adjustment)
          "gtk_entry_get_cursor_hadjustment" "gtk_entry_set_cursor_hadjustment")
         (:cffi gtk::layout-offset gtk::entry-layout-offset nil
-         gtk::gtk-entry-layout-offset nil))))))
+         gtk::gtk-entry-layout-offset nil))
+       ("GtkEntryCompletion"
+        (:cffi gtk::entry gtk::entry-completion-entry (g-object gtk::entry)
+         "gtk_entry_completion_get_entry" nil)
+        (:cffi gtk::match-function gtk::entry-completion-match-function nil
+         nil gtk::gtk-entry-completion-set-match-function))))))
 
 (defun gtk-generate-child-properties (filename)
   (with-open-file (stream filename :direction :output :if-exists :supersede)
