@@ -18,6 +18,7 @@
 * delete-type::
 * direction-type::
 * drag-result::
+* entry-icon-position::
 * expander-style::
 * file-chooser-action::
 * file-chooser-confirmation::
@@ -353,6 +354,14 @@ Values:
 @item @anchor{enum.drag-result.user-cancelled}:user-cancelled
 @end itemize
 
+@node entry-icon-position
+@section entry-icon-position
+@Enum entry-icon-position
+Values: 
+@itemize
+@item @anchor{enum.entry-icon-position.primary}:primary
+@item @anchor{enum.entry-icon-position.secondary}:secondary
+@end itemize
 
 @node expander-style
 @section expander-style

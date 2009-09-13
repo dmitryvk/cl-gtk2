@@ -986,69 +986,372 @@ Superclass: @ref{widget} @ref{atk-implementor-iface} @ref{buildable} @ref{cell-e
 
 Subclasses: @ref{spin-button}
 
+The @ref{entry} widget is a single line text entry widget. A fairly large set of key bindings are supported by default. If the entered text is longer than the allocation of the widget, the widget will scroll so that the cursor position is visible.
+
+When using an entry for passwords and other sensitive information, it can be put into "password mode" using @SlotRef{entry,visibility}. In this mode, entered text is displayed using a 'invisible' character. By default, GTK+ picks the best invisible character that is available in the current font, but it can be changed with @SlotRef{entry,invisible-char}. Since 2.16, GTK+ displays a warning when Caps Lock or input methods might interfere with entering text in a password entry. The warning can be turned off with the @SlotRef{entry,caps-lock-warning} property.
+
+Since 2.16, @ref{entry} has the ability to display progress or activity information behind the text. To make an entry display such information, use @SlotRef{entry,progress-fraction} or @SlotRef{entry,progress-pulse-step},
+
+Additionally, @ref{entry} can show icons at either side of the entry. These icons can be activatable by clicking, can be set up as drag source and can have tooltips. To add an icon, use @SlotRef{entry,primary-icon-gicon} or one of the various other properties that set an icon from a stock id, an icon name or a pixbuf. To trigger an action when the user clicks an icon, connect to the @SignalRef{entry,icon-press} signal. To allow DND operations from an icon, use gtk_entry_set_icon_drag_source(). To set a tooltip on an icon, use @SlotRef{entry,primary-icon-tooltip-text} or @SlotRef{entry,primary-icon-tooltip-markup}. Secondary icon works the same way.
+
+Note that functionality or information that is only available by clicking on an icon in an entry may not be accessible at all to users which are not able to use a mouse or other pointing device. It is therefore recommended that any such functionality should also be available by other means, e.g. via the context menu of the entry.
+
+
 Slots:
 @itemize
 @item @anchor{slot.entry.activates-default}activates-default. Type: @code{boolean}. Accessor: @anchor{fn.entry-activates-default}@code{entry-activates-default}.
-@item @anchor{slot.entry.caps-lock-warning}caps-lock-warning. Type: @code{boolean}. Accessor: @anchor{fn.entry-caps-lock-warning}@code{entry-caps-lock-warning}.
-@item @anchor{slot.entry.cursor-position}cursor-position. Type: @code{integer}. Accessor: @anchor{fn.entry-cursor-position}@code{entry-cursor-position}. Read-only.
-@item @anchor{slot.entry.editable}editable. Type: @code{boolean}. Accessor: @anchor{fn.entry-editable}@code{entry-editable}.
-@item @anchor{slot.entry.has-frame}has-frame. Type: @code{boolean}. Accessor: @anchor{fn.entry-has-frame}@code{entry-has-frame}.
-@item @anchor{slot.entry.im-module}im-module. Type: @code{string}. Accessor: @anchor{fn.entry-im-module}@code{entry-im-module}.
-@item @anchor{slot.entry.inner-border}inner-border. Type: @ref{border}. Accessor: @anchor{fn.entry-inner-border}@code{entry-inner-border}.
-@item @anchor{slot.entry.invisible-char}invisible-char. Type: @code{integer}. Accessor: @anchor{fn.entry-invisible-char}@code{entry-invisible-char}.
-@item @anchor{slot.entry.invisible-char-set}invisible-char-set. Type: @code{boolean}. Accessor: @anchor{fn.entry-invisible-char-set}@code{entry-invisible-char-set}.
-@item @anchor{slot.entry.max-length}max-length. Type: @code{integer}. Accessor: @anchor{fn.entry-max-length}@code{entry-max-length}.
-@item @anchor{slot.entry.overwrite-mode}overwrite-mode. Type: @code{boolean}. Accessor: @anchor{fn.entry-overwrite-mode}@code{entry-overwrite-mode}.
-@item @anchor{slot.entry.primary-icon-activatable}primary-icon-activatable. Type: @code{boolean}. Accessor: @anchor{fn.entry-primary-icon-activatable}@code{entry-primary-icon-activatable}.
-@item @anchor{slot.entry.primary-icon-gicon}primary-icon-gicon. Type: @code{GIcon}. Accessor: @anchor{fn.entry-primary-icon-gicon}@code{entry-primary-icon-gicon}.
-@item @anchor{slot.entry.primary-icon-name}primary-icon-name. Type: @code{string}. Accessor: @anchor{fn.entry-primary-icon-name}@code{entry-primary-icon-name}.
-@item @anchor{slot.entry.primary-icon-pixbuf}primary-icon-pixbuf. Type: @ref{pixbuf}. Accessor: @anchor{fn.entry-primary-icon-pixbuf}@code{entry-primary-icon-pixbuf}.
-@item @anchor{slot.entry.primary-icon-sensitive}primary-icon-sensitive. Type: @code{boolean}. Accessor: @anchor{fn.entry-primary-icon-sensitive}@code{entry-primary-icon-sensitive}.
-@item @anchor{slot.entry.primary-icon-stock}primary-icon-stock. Type: @code{string}. Accessor: @anchor{fn.entry-primary-icon-stock}@code{entry-primary-icon-stock}.
-@item @anchor{slot.entry.primary-icon-storage-type}primary-icon-storage-type. Type: @ref{image-type}. Accessor: @anchor{fn.entry-primary-icon-storage-type}@code{entry-primary-icon-storage-type}. Read-only.
-@item @anchor{slot.entry.primary-icon-tooltip-markup}primary-icon-tooltip-markup. Type: @code{string}. Accessor: @anchor{fn.entry-primary-icon-tooltip-markup}@code{entry-primary-icon-tooltip-markup}.
-@item @anchor{slot.entry.primary-icon-tooltip-text}primary-icon-tooltip-text. Type: @code{string}. Accessor: @anchor{fn.entry-primary-icon-tooltip-text}@code{entry-primary-icon-tooltip-text}.
-@item @anchor{slot.entry.progress-fraction}progress-fraction. Type: @code{double-float}. Accessor: @anchor{fn.entry-progress-fraction}@code{entry-progress-fraction}.
-@item @anchor{slot.entry.progress-pulse-step}progress-pulse-step. Type: @code{double-float}. Accessor: @anchor{fn.entry-progress-pulse-step}@code{entry-progress-pulse-step}.
-@item @anchor{slot.entry.scroll-offset}scroll-offset. Type: @code{integer}. Accessor: @anchor{fn.entry-scroll-offset}@code{entry-scroll-offset}. Read-only.
-@item @anchor{slot.entry.secondary-icon-activatable}secondary-icon-activatable. Type: @code{boolean}. Accessor: @anchor{fn.entry-secondary-icon-activatable}@code{entry-secondary-icon-activatable}.
-@item @anchor{slot.entry.secondary-icon-gicon}secondary-icon-gicon. Type: @code{GIcon}. Accessor: @anchor{fn.entry-secondary-icon-gicon}@code{entry-secondary-icon-gicon}.
-@item @anchor{slot.entry.secondary-icon-name}secondary-icon-name. Type: @code{string}. Accessor: @anchor{fn.entry-secondary-icon-name}@code{entry-secondary-icon-name}.
-@item @anchor{slot.entry.secondary-icon-pixbuf}secondary-icon-pixbuf. Type: @ref{pixbuf}. Accessor: @anchor{fn.entry-secondary-icon-pixbuf}@code{entry-secondary-icon-pixbuf}.
-@item @anchor{slot.entry.secondary-icon-sensitive}secondary-icon-sensitive. Type: @code{boolean}. Accessor: @anchor{fn.entry-secondary-icon-sensitive}@code{entry-secondary-icon-sensitive}.
-@item @anchor{slot.entry.secondary-icon-stock}secondary-icon-stock. Type: @code{string}. Accessor: @anchor{fn.entry-secondary-icon-stock}@code{entry-secondary-icon-stock}.
-@item @anchor{slot.entry.secondary-icon-storage-type}secondary-icon-storage-type. Type: @ref{image-type}. Accessor: @anchor{fn.entry-secondary-icon-storage-type}@code{entry-secondary-icon-storage-type}. Read-only.
-@item @anchor{slot.entry.secondary-icon-tooltip-markup}secondary-icon-tooltip-markup. Type: @code{string}. Accessor: @anchor{fn.entry-secondary-icon-tooltip-markup}@code{entry-secondary-icon-tooltip-markup}.
-@item @anchor{slot.entry.secondary-icon-tooltip-text}secondary-icon-tooltip-text. Type: @code{string}. Accessor: @anchor{fn.entry-secondary-icon-tooltip-text}@code{entry-secondary-icon-tooltip-text}.
-@item @anchor{slot.entry.selection-bound}selection-bound. Type: @code{integer}. Accessor: @anchor{fn.entry-selection-bound}@code{entry-selection-bound}. Read-only.
-@item @anchor{slot.entry.shadow-type}shadow-type. Type: @ref{shadow-type}. Accessor: @anchor{fn.entry-shadow-type}@code{entry-shadow-type}.
-@item @anchor{slot.entry.text}text. Type: @code{string}. Accessor: @anchor{fn.entry-text}@code{entry-text}.
-@item @anchor{slot.entry.text-length}text-length. Type: @code{integer}. Accessor: @anchor{fn.entry-text-length}@code{entry-text-length}. Read-only.
-@item @anchor{slot.entry.truncate-multiline}truncate-multiline. Type: @code{boolean}. Accessor: @anchor{fn.entry-truncate-multiline}@code{entry-truncate-multiline}.
-@item @anchor{slot.entry.visibility}visibility. Type: @code{boolean}. Accessor: @anchor{fn.entry-visibility}@code{entry-visibility}.
-@item @anchor{slot.entry.width-chars}width-chars. Type: @code{integer}. Accessor: @anchor{fn.entry-width-chars}@code{entry-width-chars}.
-@item @anchor{slot.entry.xalign}xalign. Type: @code{single-float}. Accessor: @anchor{fn.entry-xalign}@code{entry-xalign}.
-@end itemize
 
+Whether to activate the default widget (such as the default button in a dialog) when Enter is pressed.
+
+Default value: False
+@item @anchor{slot.entry.caps-lock-warning}caps-lock-warning. Type: @code{boolean}. Accessor: @anchor{fn.entry-caps-lock-warning}@code{entry-caps-lock-warning}.
+
+Whether password entries will show a warning when Caps Lock is on.
+
+Note that the warning is shown using a secondary icon, and thus does not work if you are using the secondary icon position for some other purpose.
+
+Default value: True
+@item @anchor{slot.entry.completion}completion. Type: @ref{entry-completion}. Accessor: @anchor{fn.entry-completion}@code{entry-completion}.
+
+The current position of the insertion cursor in chars.
+
+Allowed values: [0,65535]
+
+Default value: 0
+@item @anchor{slot.entry.cursor-hadjustment}cursor-hadjustment. Type: @ref{adjustment}. Accessor: @anchor{fn.entry-cursor-hadjustment}@code{entry-cursor-hadjustment}.
+
+The adjustment that is bound to the cursor position.
+
+The adjustment has to be in pixel units and in the same coordinate system as the entry.
+@item @anchor{slot.entry.cursor-position}cursor-position. Type: @code{integer}. Accessor: @anchor{fn.entry-cursor-position}@code{entry-cursor-position}. Read-only.
+
+Whether the entry contents can be edited.
+
+Default value: True
+@item @anchor{slot.entry.editable}editable. Type: @code{boolean}. Accessor: @anchor{fn.entry-editable}@code{entry-editable}.
+
+False removes outside bevel from entry.
+
+Default value: True
+@item @anchor{slot.entry.has-frame}has-frame. Type: @code{boolean}. Accessor: @anchor{fn.entry-has-frame}@code{entry-has-frame}.
+
+False removes outside bevel from entry.
+
+Default value: True
+@item @anchor{slot.entry.im-module}im-module. Type: @code{string}. Accessor: @anchor{fn.entry-im-module}@code{entry-im-module}.
+
+Which IM (input method) module should be used for this entry. See @ref{i-m-context}.
+
+Setting this to a non-NIL value overrides the system-wide IM module setting. See the @SlotRef{settings,gtk-im-module} property.
+
+Default value: NIL
+@item @anchor{slot.entry.inner-border}inner-border. Type: @ref{border}. Accessor: @anchor{fn.entry-inner-border}@code{entry-inner-border}.
+
+Sets the text area's border between the text and the frame.
+
+Since 2.10
+@item @anchor{slot.entry.invisible-char}invisible-char. Type: @code{integer}. Accessor: @anchor{fn.entry-invisible-char}@code{entry-invisible-char}.
+
+The character to use when masking entry contents (in "password mode").
+
+Default value: '*'
+@item @anchor{slot.entry.invisible-char-set}invisible-char-set. Type: @code{boolean}. Accessor: @anchor{fn.entry-invisible-char-set}@code{entry-invisible-char-set}.
+
+Whether the invisible char has been set for the GtkEntry.
+
+Default value: False
+@item @anchor{slot.entry.layout}layout. Type: @code{PangoLayout}. Accessor: @anchor{fn.entry-layout}@code{entry-layout}. Read-only.
+
+The PangoLayout used to display the entry. The layout is useful to e.g. convert text positions to pixel positions, in combination with @SlotRef{entry,layout-offset}.
+
+Keep in mind that the layout text may contain a preedit string, so @ref{entry-layout-index-to-text-index} and @ref{entry-text-index-to-layout-index} are needed to convert byte indices in the layout to byte indices in the entry contents.
+@item @anchor{slot.entry.layout-offset}layout-offset. Type: list of @code{integer}. Accessor: @anchor{fn.entry-layout-offset}@code{entry-layout-offset}. Read-only.
+
+Obtains the position of the PangoLayout used to render text in the entry, in widget coordinates as the list of two integers - the x and y offsets. Useful if you want to line up the text in an entry with some other text, e.g. when using the entry to implement editable cells in a sheet widget.
+
+Also useful to convert mouse events into coordinates inside the PangoLayout, e.g. to take some action if some part of the entry text is clicked.
+
+Note that as the user scrolls around in the entry the offsets will change; you'll need to connect to the "notify::scroll-offset" signal to track this. Remember when using the PangoLayout functions you need to convert to and from pixels using PANGO_PIXELS() or PANGO_SCALE.
+
+Keep in mind that the layout text may contain a preedit string, so @ref{entry-layout-index-to-text-index} and @ref{entry-text-index-to-layout-index} are needed to convert byte indices in the layout to byte indices in the entry contents.
+@item @anchor{slot.entry.max-length}max-length. Type: @code{integer}. Accessor: @anchor{fn.entry-max-length}@code{entry-max-length}.
+
+Maximum number of characters for this entry. Zero if no maximum.
+
+Allowed values: [0,65535]
+
+Default value: 0
+@item @anchor{slot.entry.overwrite-mode}overwrite-mode. Type: @code{boolean}. Accessor: @anchor{fn.entry-overwrite-mode}@code{entry-overwrite-mode}.
+
+If text is overwritten when typing in the GtkEntry.
+
+Default value: False
+@item @anchor{slot.entry.primary-icon-activatable}primary-icon-activatable. Type: @code{boolean}. Accessor: @anchor{fn.entry-primary-icon-activatable}@code{entry-primary-icon-activatable}.
+
+Whether the primary icon is activatable.
+
+GTK+ emits the @SignalRef{entry,icon-press} and @SignalRef{entry,icon-release} signals only on sensitive, activatable icons.
+
+Sensitive, but non-activatable icons can be used for purely informational purposes.
+
+Default value: False
+@item @anchor{slot.entry.primary-icon-gicon}primary-icon-gicon. Type: @code{GIcon}. Accessor: @anchor{fn.entry-primary-icon-gicon}@code{entry-primary-icon-gicon}.
+
+The GIcon to use for the primary icon for the entry. TODO: GIcon is not yet supported
+@item @anchor{slot.entry.primary-icon-name}primary-icon-name. Type: @code{string}. Accessor: @anchor{fn.entry-primary-icon-name}@code{entry-primary-icon-name}.
+
+The icon name to use for the primary icon for the entry.
+
+Default value: NIL
+@item @anchor{slot.entry.primary-icon-pixbuf}primary-icon-pixbuf. Type: @ref{pixbuf}. Accessor: @anchor{fn.entry-primary-icon-pixbuf}@code{entry-primary-icon-pixbuf}.
+
+A pixbuf to use as the primary icon for the entry.
+@item @anchor{slot.entry.primary-icon-sensitive}primary-icon-sensitive. Type: @code{boolean}. Accessor: @anchor{fn.entry-primary-icon-sensitive}@code{entry-primary-icon-sensitive}.
+
+Whether the primary icon is sensitive.
+
+An insensitive icon appears grayed out. GTK+ does not emit the @SignalRef{entry,icon-press} and @SignalRef{entry,icon-release} signals and does not allow DND from insensitive icons.
+
+An icon should be set insensitive if the action that would trigger when clicked is currently not available.
+
+Default value: True
+@item @anchor{slot.entry.primary-icon-stock}primary-icon-stock. Type: @code{string}. Accessor: @anchor{fn.entry-primary-icon-stock}@code{entry-primary-icon-stock}.
+
+The stock id to use for the primary icon for the entry.
+
+Default value: NIL
+@item @anchor{slot.entry.primary-icon-storage-type}primary-icon-storage-type. Type: @ref{image-type}. Accessor: @anchor{fn.entry-primary-icon-storage-type}@code{entry-primary-icon-storage-type}. Read-only.
+
+The representation which is used for the primary icon of the entry.
+
+Default value: @EnumVRef{image-type,empty}
+@item @anchor{slot.entry.primary-icon-tooltip-markup}primary-icon-tooltip-markup. Type: @code{string}. Accessor: @anchor{fn.entry-primary-icon-tooltip-markup}@code{entry-primary-icon-tooltip-markup}.
+
+The contents of the tooltip on the primary icon, which is marked up with the Pango text markup language.
+
+Default value: NIL
+@item @anchor{slot.entry.primary-icon-tooltip-text}primary-icon-tooltip-text. Type: @code{string}. Accessor: @anchor{fn.entry-primary-icon-tooltip-text}@code{entry-primary-icon-tooltip-text}.
+
+The contents of the tooltip on the primary icon.
+
+Default value: NIL
+@item @anchor{slot.entry.progress-fraction}progress-fraction. Type: @code{double-float}. Accessor: @anchor{fn.entry-progress-fraction}@code{entry-progress-fraction}.
+
+The current fraction of the task that's been completed.
+
+Allowed values: [0,1]
+
+Default value: 0
+@item @anchor{slot.entry.progress-pulse-step}progress-pulse-step. Type: @code{double-float}. Accessor: @anchor{fn.entry-progress-pulse-step}@code{entry-progress-pulse-step}.
+
+The fraction of total entry width to move the progress bouncing block for each call to gtk_entry_progress_pulse().
+
+Allowed values: [0,1]
+
+Default value: 0.1
+@item @anchor{slot.entry.scroll-offset}scroll-offset. Type: @code{integer}. Accessor: @anchor{fn.entry-scroll-offset}@code{entry-scroll-offset}. Read-only.
+
+Number of pixels of the entry scrolled off the screen to the left.
+
+Allowed values: >= 0
+
+Default value: 0
+@item @anchor{slot.entry.secondary-icon-activatable}secondary-icon-activatable. Type: @code{boolean}. Accessor: @anchor{fn.entry-secondary-icon-activatable}@code{entry-secondary-icon-activatable}.
+
+Whether the secondary icon is activatable.
+
+GTK+ emits the @SignalRef{entry,icon-press} and @SignalRef{entry,icon-release} signals only on sensitive, activatable icons.
+
+Sensitive, but non-activatable icons can be used for purely informational purposes.
+
+Default value: False
+@item @anchor{slot.entry.secondary-icon-gicon}secondary-icon-gicon. Type: @code{GIcon}. Accessor: @anchor{fn.entry-secondary-icon-gicon}@code{entry-secondary-icon-gicon}.
+
+The GIcon to use for the secondary icon for the entry. TODO: GIcon is not yet supported
+@item @anchor{slot.entry.secondary-icon-name}secondary-icon-name. Type: @code{string}. Accessor: @anchor{fn.entry-secondary-icon-name}@code{entry-secondary-icon-name}.
+
+The icon name to use for the secondary icon for the entry.
+
+Default value: NIL
+@item @anchor{slot.entry.secondary-icon-pixbuf}secondary-icon-pixbuf. Type: @ref{pixbuf}. Accessor: @anchor{fn.entry-secondary-icon-pixbuf}@code{entry-secondary-icon-pixbuf}.
+
+An pixbuf to use as the secondary icon for the entry.
+@item @anchor{slot.entry.secondary-icon-sensitive}secondary-icon-sensitive. Type: @code{boolean}. Accessor: @anchor{fn.entry-secondary-icon-sensitive}@code{entry-secondary-icon-sensitive}.
+
+Whether the secondary icon is sensitive.
+
+An insensitive icon appears grayed out. GTK+ does not emit the @SignalRef{entry,icon-press} and @SignalRef{entry,icon-release} signals and does not allow DND from insensitive icons.
+
+An icon should be set insensitive if the action that would trigger when clicked is currently not available.
+
+Default value: True
+@item @anchor{slot.entry.secondary-icon-stock}secondary-icon-stock. Type: @code{string}. Accessor: @anchor{fn.entry-secondary-icon-stock}@code{entry-secondary-icon-stock}.
+
+The stock id to use for the secondary icon for the entry.
+
+Default value: NIL
+@item @anchor{slot.entry.secondary-icon-storage-type}secondary-icon-storage-type. Type: @ref{image-type}. Accessor: @anchor{fn.entry-secondary-icon-storage-type}@code{entry-secondary-icon-storage-type}. Read-only.
+
+The representation which is used for the secondary icon of the entry.
+
+Default value: @EnumVRef{image-type,empty}
+@item @anchor{slot.entry.secondary-icon-tooltip-markup}secondary-icon-tooltip-markup. Type: @code{string}. Accessor: @anchor{fn.entry-secondary-icon-tooltip-markup}@code{entry-secondary-icon-tooltip-markup}.
+
+The contents of the tooltip on the secondary icon, which is marked up with the Pango text markup language.
+
+Default value: NIL
+@item @anchor{slot.entry.secondary-icon-tooltip-text}secondary-icon-tooltip-text. Type: @code{string}. Accessor: @anchor{fn.entry-secondary-icon-tooltip-text}@code{entry-secondary-icon-tooltip-text}.
+
+The contents of the tooltip on the secondary icon.
+
+Default value: NIL
+@item @anchor{slot.entry.selection-bound}selection-bound. Type: @code{integer}. Accessor: @anchor{fn.entry-selection-bound}@code{entry-selection-bound}. Read-only.
+
+The position of the opposite end of the selection from the cursor in chars.
+
+Allowed values: [0,65535]
+
+Default value: 0
+@item @anchor{slot.entry.shadow-type}shadow-type. Type: @ref{shadow-type}. Accessor: @anchor{fn.entry-shadow-type}@code{entry-shadow-type}.
+
+Which kind of shadow to draw around the entry when "has-frame" is set to True.
+
+Default value: @EnumVRef{shadow-type,in}
+@item @anchor{slot.entry.text}text. Type: @code{string}. Accessor: @anchor{fn.entry-text}@code{entry-text}.
+
+The contents of the entry.
+
+Default value: ""
+@item @anchor{slot.entry.text-length}text-length. Type: @code{integer}. Accessor: @anchor{fn.entry-text-length}@code{entry-text-length}. Read-only.
+
+The length of the text in the GtkEntry.
+
+Allowed values: <= 65535
+
+Default value: 0
+@item @anchor{slot.entry.truncate-multiline}truncate-multiline. Type: @code{boolean}. Accessor: @anchor{fn.entry-truncate-multiline}@code{entry-truncate-multiline}.
+
+When True, pasted multi-line text is truncated to the first line.
+
+Default value: False
+@item @anchor{slot.entry.visibility}visibility. Type: @code{boolean}. Accessor: @anchor{fn.entry-visibility}@code{entry-visibility}.
+
+False displays the "invisible char" instead of the actual text (password mode).
+
+Default value: True
+@item @anchor{slot.entry.width-chars}width-chars. Type: @code{integer}. Accessor: @anchor{fn.entry-width-chars}@code{entry-width-chars}.
+
+Number of characters to leave space for in the entry.
+
+Default value: -1
+@item @anchor{slot.entry.xalign}xalign. Type: @code{single-float}. Accessor: @anchor{fn.entry-xalign}@code{entry-xalign}.
+
+The horizontal alignment, from 0 (left) to 1 (right). Reversed for RTL layouts.
+
+Allowed values: [0,1]
+
+Default value: 0
+@end itemize
 
 Signals:
 @itemize
 @item @anchor{signal.entry.activate}"activate". Signature: (instance @ref{entry}) @result{} void. Options: run-last, action.
+
+A keybinding signal which gets emitted when the user activates the entry.
+
+Applications should not connect to it, but may emit it with @ref{emit-signal} if they need to control activation programmatically.
+
+The default bindings for this signal are all forms of the Enter key.
 @item @anchor{signal.entry.backspace}"backspace". Signature: (instance @ref{entry}) @result{} void. Options: run-last, action.
+
+This signal is a keybinding signal which gets emitted when the user asks for it.
+
+The default bindings for this signal are Backspace and Shift-Backspace.
 @item @anchor{signal.entry.copy-clipboard}"copy-clipboard". Signature: (instance @ref{entry}) @result{} void. Options: run-last, action.
+
+This signal is a keybinding signal which gets emitted to copy the selection to the clipboard.
+
+The default bindings for this signal are Ctrl-c and Ctrl-Insert.
 @item @anchor{signal.entry.cut-clipboard}"cut-clipboard". Signature: (instance @ref{entry}) @result{} void. Options: run-last, action.
-@item @anchor{signal.entry.delete-from-cursor}"delete-from-cursor". Signature: (instance @ref{entry}), (arg-1 @ref{delete-type}), (arg-2 @code{integer}) @result{} void. Options: run-last, action.
-@item @anchor{signal.entry.icon-press}"icon-press". Signature: (instance @ref{entry}), (arg-1 @code{GtkEntryIconPosition}), (arg-2 @ref{event}) @result{} void. Options: run-last.
-@item @anchor{signal.entry.icon-release}"icon-release". Signature: (instance @ref{entry}), (arg-1 @code{GtkEntryIconPosition}), (arg-2 @ref{event}) @result{} void. Options: run-last.
-@item @anchor{signal.entry.insert-at-cursor}"insert-at-cursor". Signature: (instance @ref{entry}), (arg-1 @code{string}) @result{} void. Options: run-last, action.
-@item @anchor{signal.entry.move-cursor}"move-cursor". Signature: (instance @ref{entry}), (arg-1 @ref{movement-step}), (arg-2 @code{integer}), (arg-3 @code{boolean}) @result{} void. Options: run-last, action.
-@item @anchor{signal.entry.paste-clipboard}"paste-clipboard". Signature: (instance @ref{entry}) @result{} void. Options: run-last, action.
-@item @anchor{signal.entry.populate-popup}"populate-popup". Signature: (instance @ref{entry}), (arg-1 @ref{menu}) @result{} void. Options: run-last.
-@item @anchor{signal.entry.toggle-overwrite}"toggle-overwrite". Signature: (instance @ref{entry}) @result{} void. Options: run-last, action.
+
+This signal is a keybinding signal which gets emitted to cut the selection to the clipboard.
+
+The default bindings for this signal are Ctrl-x and Shift-Delete.
+@item @anchor{signal.entry.delete-from-cursor}"delete-from-cursor". Signature: (instance @ref{entry}), (type @ref{delete-type}), (count @code{integer}) @result{} void. Options: run-last, action.
+
+This signal is a keybinding signal which gets emitted when the user initiates a text deletion.
+
+If the @var{type} is @EnumVRef{delete-type,chars}, GTK+ deletes the selection if there is one, otherwise it deletes the requested number of characters.
+
+The default bindings for this signal are Delete for deleting a character and Ctrl-Delete for deleting a word.
+
+@var{count} is the number of type units to delete
+@item @anchor{signal.entry.icon-press}"icon-press". Signature: (instance @ref{entry}), (icon @ref{entry-icon-position}), (event @ref{event}) @result{} void. Options: run-last.
+
+This signal is emitted when an activatable icon is clicked.
+@item @anchor{signal.entry.icon-release}"icon-release". Signature: (instance @ref{entry}), (icon @code{entry-icon-position}), (event @ref{event}) @result{} void. Options: run-last.
+
+This signal is emitted on the button release from a mouse click over an activatable icon.
+@item @anchor{signal.entry.insert-at-cursor}"insert-at-cursor". Signature: (instance @ref{entry}), (string @code{string}) @result{} void. Options: run-last, action.
+
+This signal is a keybinding signal which gets emitted when the user initiates the insertion of a fixed string at the cursor.
+
+This signal has no default bindings.
+@item @anchor{signal.entry.move-cursor}"move-cursor". Signature: (instance @ref{entry}), (step @ref{movement-step}), (count @code{integer}), (extend-selection @code{boolean}) @result{} void. Options: run-last, action.
+
+This signal is a keybinding signal which gets emitted when the user initiates a cursor movement. If the cursor is not visible in entry, this signal causes the viewport to be moved instead.
+
+Applications should not connect to it, but may emit it with @ref{emit-signal} if they need to control the cursor programmatically.
+
+The default bindings for this signal come in two variants, the variant with the Shift modifier extends the selection, the variant without the Shift modifer does not. There are too many key combinations to list them all here.
+
+@itemize
+@item Arrow keys move by individual characters/lines
+@item Ctrl-arrow key combinations move by words/paragraphs
+@item Home/End keys move to the ends of the buffer
 @end itemize
 
+@var{count} is the number of @var{step} units to move
 
+@var{extend-selection} is True if the move should extend the selection
+@item @anchor{signal.entry.paste-clipboard}"paste-clipboard". Signature: (instance @ref{entry}) @result{} void. Options: run-last, action.
 
+This signal is a keybinding signal which gets emitted to paste the contents of the clipboard into the text view.
+
+The default bindings for this signal are Ctrl-v and Shift-Insert.
+@item @anchor{signal.entry.populate-popup}"populate-popup". Signature: (instance @ref{entry}), (menu @ref{menu}) @result{} void. Options: run-last.
+
+This signal gets emitted before showing the context menu of the entry.
+
+If you need to add items to the context menu, connect to this signal and append your menuitems to the menu.
+@item @anchor{signal.entry.toggle-overwrite}"toggle-overwrite". Signature: (instance @ref{entry}) @result{} void. Options: run-last, action.
+
+This signal is a keybinding signal which gets emitted to toggle the overwrite mode of the entry.
+
+The default bindings for this signal is Insert.
+@end itemize
+
+@RMethod entry-layout-index-to-text-index
+@lisp
+(entry-layout-index-to-text-index entry layout-index) @result{} text-index
+@end lisp
+
+Converts from a position in the entry contents to a position in the entry's PangoLayout.
+
+@var{layout-index} - byte index into the entry layout text
+
+@var{text-index} - byte index into the entry contents
+
+@RMethod entry-text-index-to-layout-index
+@lisp
+(entry-text-index-to-layout-index entry text-index) @result{} layout-index
+@end lisp
+
+Converts from a position in the entry's PangoLayout contents to a position in the entry.
+
+@var{layout-index} - byte index into the entry layout text
+
+@var{text-index} - byte index into the entry contents
 
 @node event-box
 @section event-box
