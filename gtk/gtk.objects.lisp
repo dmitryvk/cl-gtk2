@@ -75,3 +75,13 @@
 
 (export 'tree-path)
 (export 'tree-path-indices)
+
+(define-g-enum "PangoWrapMode" pango-wrap-mode
+    (:export t :type-initializer
+             "pango_wrap_mode_get_type")
+  (:word 0) (:char 1) (:word-char 2))
+
+(define-g-enum "PangoEllipsizeMode" pango-ellipsize-mode
+    (:export t :type-initializer
+             "pango_ellipsize_mode_get_type")
+  (:none 0) (:start 1) (:middle 2) (:end 3))

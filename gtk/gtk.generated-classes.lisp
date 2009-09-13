@@ -2222,7 +2222,18 @@
                          t)
                         (wrap label-wrap "wrap" "gboolean" t t)
                         (wrap-mode label-wrap-mode "wrap-mode" "PangoWrapMode"
-                         t t)))
+                         t t)
+                        (:cffi line-wrap label-line-wrap :boolean
+                         "gtk_label_get_line_wrap" "gtk_label_set_line_wrap")
+                        (:cffi line-wrap-mode label-line-wrap-mode
+                         pango-wrap-mode "gtk_label_line_wrap_mode"
+                         "gtk_label_set_line_wrap_mode")
+                        (:cffi layout label-layout g-object
+                         "gtk_label_get_layout" nil)
+                        (:cffi selection-bounds label-selection-bounds nil
+                         gtk-label-get-selection-bounds nil)
+                        (:cffi layout-offsets label-layout-offsets nil
+                         gtk-label-get-layout-offsets nil)))
 
 (define-g-object-class "GtkAccelLabel" accel-label
                        (:superclass label :export t :interfaces
