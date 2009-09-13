@@ -3472,17 +3472,35 @@ Superclass: @ref{button} @ref{atk-implementor-iface} @ref{activatable} @ref{buil
 
 Subclasses: @ref{check-button}
 
+A @ref{toggle-button} is a @ref{button} which will remain 'pressed-in' when clicked. Clicking again will cause the toggle button to return to its normal state.
+
+The state of a @ref{toggle-button} is stored in @SlotRef{toggle-button,active} and @SlotRef{toggle-button,inconsistent}.
+
 Slots:
 @itemize
 @item @anchor{slot.toggle-button.active}active. Type: @code{boolean}. Accessor: @anchor{fn.toggle-button-active}@code{toggle-button-active}.
+
+If the toggle button should be pressed in or not.
+
+Default value: False
 @item @anchor{slot.toggle-button.draw-indicator}draw-indicator. Type: @code{boolean}. Accessor: @anchor{fn.toggle-button-draw-indicator}@code{toggle-button-draw-indicator}.
+
+If the toggle part of the button is displayed.
+
+Default value: False
 @item @anchor{slot.toggle-button.inconsistent}inconsistent. Type: @code{boolean}. Accessor: @anchor{fn.toggle-button-inconsistent}@code{toggle-button-inconsistent}.
+
+If the toggle button is in an "in between" state.
+
+Default value: False
 @end itemize
 
 
 Signals:
 @itemize
 @item @anchor{signal.toggle-button.toggled}"toggled". Signature: (instance @ref{toggle-button}) @result{} void. Options: run-first.
+
+Should be connected if you wish to perform an action whenever the @ref{toggle-button}'s state is changed.
 @end itemize
 
 
