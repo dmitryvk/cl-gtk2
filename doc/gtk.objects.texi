@@ -1761,38 +1761,143 @@ Signals:
 @Class status-icon
 Superclass: @ref{g-object}
 
+The "system tray" or notification area is normally used for transient icons that indicate some special state. For example, a system tray icon might appear to tell the user that they have new mail, or have an incoming instant message, or something along those lines. The basic idea is that creating an icon in the notification area is less annoying than popping up a dialog.
+
+A @ref{status-icon} object can be used to display an icon in a "system tray". The icon can have a tooltip, and the user can interact with it by activating it or popping up a context menu. Critical information should not solely be displayed in a @ref{status-icon}, since it may not be visible (e.g. when the user doesn't have a notification area on his panel). This can be checked with @SlotRef{status-icon,embedded}.
+
+On X11, the implementation follows the freedesktop.org "System Tray" specification. Implementations of the "tray" side of this specification can be found e.g. in the GNOME and KDE panel applications.
+
+Note that a @ref{status-icon} is not a @ref{widget}, but just a @ref{g-object}. Making it a widget would be impractical, since the system tray on Win32 doesn't allow to embed arbitrary widgets.
+
 Slots:
 @itemize
 @item @anchor{slot.status-icon.blinking}blinking. Type: @code{boolean}. Accessor: @anchor{fn.status-icon-blinking}@code{status-icon-blinking}.
+
+Whether or not the status icon is blinking.
+
+Default value: FALSE
 @item @anchor{slot.status-icon.embedded}embedded. Type: @code{boolean}. Accessor: @anchor{fn.status-icon-embedded}@code{status-icon-embedded}. Read-only.
+
+TRUE if the statusicon is embedded in a notification area.
+
+Default value: FALSE
 @item @anchor{slot.status-icon.file}file. Type: @code{string}. Accessor: @anchor{fn.status-icon-file}@code{status-icon-file}. Write-only.
+
+Filename to load and display.
 @item @anchor{slot.status-icon.gicon}gicon. Type: @code{GIcon}. Accessor: @anchor{fn.status-icon-gicon}@code{status-icon-gicon}.
+
+The GIcon displayed in the GtkStatusIcon. For themed icons, the image will be updated automatically if the theme changes.
 @item @anchor{slot.status-icon.has-tooltip}has-tooltip. Type: @code{boolean}. Accessor: @anchor{fn.status-icon-has-tooltip}@code{status-icon-has-tooltip}.
+
+Enables or disables the emission of @SignalRef{status-icon,query-tooltip}. A value of TRUE indicates that status icon can have a tooltip, in this case the status icon will be queried using @SignalRef{status-icon,query-tooltip} to determine whether it will provide a tooltip or not.
+
+Note that setting this property to TRUE for the first time will change the event masks of the windows of this status icon to include leave-notify and motion-notify events. This will not be undone when the property is set to FALSE again.
+
+Whether this property is respected is platform dependent. For plain text tooltips, use @SlotRef{status-icon,tooltip-text} in preference.
+
+Default value: FALSE
 @item @anchor{slot.status-icon.icon-name}icon-name. Type: @code{string}. Accessor: @anchor{fn.status-icon-icon-name}@code{status-icon-icon-name}.
+
+The name of the icon from the icon theme.
 @item @anchor{slot.status-icon.orientation}orientation. Type: @ref{orientation}. Accessor: @anchor{fn.status-icon-orientation}@code{status-icon-orientation}. Read-only.
+
+The orientation of the tray in which the statusicon is embedded.
 @item @anchor{slot.status-icon.pixbuf}pixbuf. Type: @ref{pixbuf}. Accessor: @anchor{fn.status-icon-pixbuf}@code{status-icon-pixbuf}.
+
+
+A @ref{pixbuf} to display.
 @item @anchor{slot.status-icon.screen}screen. Type: @ref{screen}. Accessor: @anchor{fn.status-icon-screen}@code{status-icon-screen}.
+
+The screen where this status icon will be displayed.
 @item @anchor{slot.status-icon.size}size. Type: @code{integer}. Accessor: @anchor{fn.status-icon-size}@code{status-icon-size}. Read-only.
+
+The size of the icon.
+
+Allowed values: >= 0
+
+Default value: 0
 @item @anchor{slot.status-icon.stock}stock. Type: @code{string}. Accessor: @anchor{fn.status-icon-stock}@code{status-icon-stock}.
+
+Stock ID for a stock image to display.
+
+Default value: NULL
 @item @anchor{slot.status-icon.storage-type}storage-type. Type: @ref{image-type}. Accessor: @anchor{fn.status-icon-storage-type}@code{status-icon-storage-type}. Read-only.
+
+The representation being used for image data.
 @item @anchor{slot.status-icon.tooltip-markup}tooltip-markup. Type: @code{string}. Accessor: @anchor{fn.status-icon-tooltip-markup}@code{status-icon-tooltip-markup}.
+
+Sets the text of tooltip to be the given string, which is marked up with the Pango text markup language.
+
+This is a convenience property which will take care of getting the tooltip shown if the given string is not NULL. @SlotRef{status-icon,has-tooltip} will automatically be set to TRUE and the default handler for the @SignalRef{status-icon,query-tooltip} signal will take care of displaying the tooltip.
+
+On some platforms, embedded markup will be ignored.
+
+Default value: NULL
 @item @anchor{slot.status-icon.tooltip-text}tooltip-text. Type: @code{string}. Accessor: @anchor{fn.status-icon-tooltip-text}@code{status-icon-tooltip-text}.
+
+Sets the text of tooltip to be the given string.
+
+This is a convenience property which will take care of getting the tooltip shown if the given string is not NULL. @SlotRef{status-icon,has-tooltip} will automatically be set to TRUE and the default handler for the @SignalRef{status-icon,query-tooltip} signal will take care of displaying the tooltip.
+
+Default value: NULL
 @item @anchor{slot.status-icon.visible}visible. Type: @code{boolean}. Accessor: @anchor{fn.status-icon-visible}@code{status-icon-visible}.
+
+Whether or not the status icon is visible.
+
+Default value: TRUE
 @end itemize
 
 
 Signals:
 @itemize
 @item @anchor{signal.status-icon.activate}"activate". Signature: (instance @ref{status-icon}) @result{} void. Options: run-first, action.
-@item @anchor{signal.status-icon.button-press-event}"button-press-event". Signature: (instance @ref{status-icon}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
-@item @anchor{signal.status-icon.button-release-event}"button-release-event". Signature: (instance @ref{status-icon}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
-@item @anchor{signal.status-icon.popup-menu}"popup-menu". Signature: (instance @ref{status-icon}), (arg-1 @code{integer}), (arg-2 @code{integer}) @result{} void. Options: run-first, action.
-@item @anchor{signal.status-icon.query-tooltip}"query-tooltip". Signature: (instance @ref{status-icon}), (arg-1 @code{integer}), (arg-2 @code{integer}), (arg-3 @code{boolean}), (arg-4 @ref{tooltip}) @result{} @code{boolean}. Options: run-last.
-@item @anchor{signal.status-icon.scroll-event}"scroll-event". Signature: (instance @ref{status-icon}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
-@item @anchor{signal.status-icon.size-changed}"size-changed". Signature: (instance @ref{status-icon}), (arg-1 @code{integer}) @result{} @code{boolean}. Options: run-last.
+
+Gets emitted when the user activates the status icon. If and how status icons can activated is platform-dependent.
+
+Unlike most G_SIGNAL_ACTION signals, this signal is meant to be used by applications and should be wrapped by language bindings.
+@item @anchor{signal.status-icon.button-press-event}"button-press-event". Signature: (instance @ref{status-icon}), (event @ref{event-button}) @result{} @code{boolean}. Options: run-last.
+
+This signal will be emitted when a button (typically from a mouse) is pressed.
+
+Whether this event is emitted is platform-dependent. Use the @SignalRef{status-icon,activate} and @SignalRef{status-icon,popup-menu} signals in preference.
+@item @anchor{signal.status-icon.button-release-event}"button-release-event". Signature: (instance @ref{status-icon}), (event @ref{event-button}) @result{} @code{boolean}. Options: run-last.
+
+This signal will be emitted when a button (typically from a mouse) is released.
+
+Whether this event is emitted is platform-dependent. Use the @SignalRef{status-icon,activate} and @SignalRef{status-icon,popup-menu} signals in preference.
+@item @anchor{signal.status-icon.popup-menu}"popup-menu". Signature: (instance @ref{status-icon}), (button @code{integer}), (activate-time @code{integer}) @result{} void. Options: run-first, action.
+
+Gets emitted when the user brings up the context menu of the status icon. Whether status icons can have context menus and how these are activated is platform-dependent.
+
+The button and activate-time parameters should be passed as the last to arguments to gtk_menu_popup().
+
+Unlike most G_SIGNAL_ACTION signals, this signal is meant to be used by applications and should be wrapped by language bindings.
+@item @anchor{signal.status-icon.query-tooltip}"query-tooltip". Signature: (instance @ref{status-icon}), (x @code{integer}), (y @code{integer}), (keyboard-mode @code{boolean}), (tooltip @ref{tooltip}) @result{} @code{boolean}. Options: run-last.
+
+Emitted when the "gtk-tooltip-timeout" has expired with the cursor hovering above status_icon; or emitted when status_icon got focus in keyboard mode.
+
+Using the given coordinates, the signal handler should determine whether a tooltip should be shown for status-icon. If this is the case TRUE should be returned, FALSE otherwise. Note that if keyboard-mode is TRUE, the values of x and y are undefined and should not be used.
+
+The signal handler is free to manipulate @var{tooltip} with the therefore destined function calls.
+
+Whether this signal is emitted is platform-dependent. For plain text tooltips, use @SlotRef{status-icon,tooltip-text} in preference.
+
+@var{x}, @var{y}: the x and y coordinates of the cursor position where the request has been emitted, relative to status-icon
+
+@var{keyboard-mode}: TRUE if the tooltip was trigged using the keyboard
+@item @anchor{signal.status-icon.scroll-event}"scroll-event". Signature: (instance @ref{status-icon}), (event @ref{event-scroll}) @result{} @code{boolean}. Options: run-last.
+
+This signal is emitted when a button in the 4 to 7 range is pressed. Wheel mice are usually configured to generate button press events for buttons 4 and 5 when the wheel is turned.
+
+Whether this event is emitted is platform-dependent.
+@item @anchor{signal.status-icon.size-changed}"size-changed". Signature: (instance @ref{status-icon}), (size @code{integer}) @result{} @code{boolean}. Options: run-last.
+
+Gets emitted when the size available for the image changes, e.g. because the notification area got resized.
+
+Returns TRUE if the icon was updated for the new size. Otherwise, GTK+ will scale the icon as necessary.
 @end itemize
 
-
+TODO: gtk_status_icon_position_menu, gtk_status_icon_get_x11_window_id 
 
 
 @node style
