@@ -1074,11 +1074,18 @@ Example:
 
 @node Closures
 @chapter Closures
+@menu
+* create-signal-handler-closure::
+* Object-bound foreign functions::
+@end menu
 
 Closure are anonymous functions that capture their lexical environment.
 
 GObject supports using closures (as instances of type GClosure) as signal handlers and in some other places where a function is expected. Function @code{create-signal-handler-closure} create closure from lisp function that can be used a signal handler. The GClosure is finalized automatically when GObject no longer needs it (e.g., when GClosure is disconnected from signal).
 
+(TODO: GObject defines finer closure API: g_closure_ref, g_closure_unref, g_closure_invoke. It should be bound.)
+
+@node create-signal-handler-closure
 @section create-signal-handler-closure
 @Function create-signal-handler-closure
 @lisp
@@ -1112,7 +1119,45 @@ Example of usage from GObject binding code:
                             after))
 @end lisp
 
-(TODO: GObject defines finer closure API: g_closure_ref, g_closure_unref, g_closure_invoke. It should be bound.)
+@node Object-bound foreign functions
+@section Object-bound foreign functions
+
+A common idiom for Gtk+ for passing user-defined function is as follows. Callback function has (besides its 'useful' arguments) an additional argument at the end - the 'data' pointer. This 'data' pointer, along with the pointer to 'destroy-notify' function is specified when passing the function. Destroy-notify function allows to free the function object (the Lisp closure) when it is not used by an object.
+
+@RMacro define-cb-methods
+@lisp
+(define-cb-methods name return-type ((arg-1 type-1) ... (arg-n type-n)))
+@end lisp
+
+Defines two CFFI callbacks assosiated with the callback function type @var{name}. Creates @var{name}-cb - a callback to be passed as an function and create @var{name}-destroy-notify - a callback to be passed as 'destroy-notify' function. These callbacks are intended to work together with @ref{create-fn-ref}.
+
+Arguments and return-type are the same as CFFI arguments and return-type for callbacks. Arguments do not include the last 'data' pointer.
+
+@RFunction create-fn-ref
+@lisp
+(create-fn-ref object function) @result{} foreign-pointer
+@end lisp
+
+This function creates a foreign structure containing the data neccesary for callbacks defined by @ref{define-cb-methods} to call and dispose of the @var{function}. The @var{function} is bound to the @var{object}. This is neccesary for correct work of garbage collector. The created structure is freed by 'destroy-notify' function.
+
+Example:
+@lisp
+(defcfun gtk-assistant-set-forward-page-func :void
+  (assistant (g-object assistant))
+  (page-func :pointer)
+  (data :pointer)
+  (destroy-notify :pointer))
+
+(define-cb-methods assistant-page-func :int ((current-page :int)))
+
+(defun set-assistant-forward-page-function (assistant function)
+  (if function
+      (gtk-assistant-set-forward-page-func assistant
+                                           (callback assistant-page-func-cb)
+                                           (create-fn-ref assistant function)
+                                           (callback assistant-page-func-destroy-notify))
+      (gtk-assistant-set-forward-page-func assistant (null-pointer) (null-pointer) (null-pointer))))
+@end lisp
 
 @node GObject low-level
 @chapter GObject low-level

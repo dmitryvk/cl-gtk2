@@ -21,6 +21,11 @@
 @end defmac
 @end macro
 
+@macro RMacro {args}
+@anchor{\args\}@defmac \args\
+@end defmac
+@end macro
+
 @macro Struct {args}
 @deftp {Structure} \args\
 @end deftp
