@@ -103,7 +103,7 @@
               "GtkScrollStep" "GtkScrollType" "GtkSideType" "GtkSpinType"
               "GtkSubmenuDirection" "GtkSubmenuPlacement" "GtkTextWindowType"
               "GtkToolbarChildType" "GtkToolbarSpaceStyle" "GtkTreeViewDropPosition"
-              "GtkTreeViewMode" "GtkVisibility")
+              "GtkTreeViewMode" "GtkVisibility" "GtkEntryIconPosition")
      :exclusions '("PangoStretch" "PangoVariant" "PangoStyle" "PangoUnderline" "GtkGLDrawingArea")
      :additional-properties
      '(("GtkTreeViewColumn"
@@ -195,7 +195,7 @@
         (:cffi gtk::forward-page-function gtk::assistant-forward-page-function nil nil gtk::set-assistant-forward-page-function))
        ("GtkLabel"
         (:cffi gtk::line-wrap gtk::label-line-wrap :boolean "gtk_label_get_line_wrap" "gtk_label_set_line_wrap")
-        (:cffi gtk::line-wrap-mode gtk::label-line-wrap-mode gtk::pango-wrap-mode "gtk_label_line_wrap_mode" "gtk_label_set_line_wrap_mode")
+        (:cffi gtk::line-wrap-mode gtk::label-line-wrap-mode gtk::pango-wrap-mode "gtk_label_get_line_wrap_mode" "gtk_label_set_line_wrap_mode")
         (:cffi gtk::layout gtk::label-layout g-object "gtk_label_get_layout" nil)
         (:cffi gtk::selection-bounds gtk::label-selection-bounds nil gtk::gtk-label-get-selection-bounds nil)
         (:cffi gtk::layout-offsets gtk::label-layout-offsets nil gtk::gtk-label-get-layout-offsets nil))

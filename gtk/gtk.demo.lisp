@@ -533,9 +533,9 @@
                                                                                      #+nil(print (current-event))
                                                                                      (setf (text-buffer-text (text-view-buffer text-view))
                                                                                            (format nil "Clicked ~A times~%" (incf c)))
-                                                                                     (status-bar-pop (builder-get-object builder "statusbar1")
+                                                                                     (statusbar-pop (builder-get-object builder "statusbar1")
                                                                                                      "times")
-                                                                                     (status-bar-push (builder-get-object builder "statusbar1")
+                                                                                     (statusbar-push (builder-get-object builder "statusbar1")
                                                                                                       "times"
                                                                                                       (format nil "~A times" c))))
                                                   ("quit_cb" ,(lambda (&rest args)
@@ -551,7 +551,7 @@
                                                                          (dialog-run d)
                                                                          (object-destroy d)))))))
       (g-signal-connect (builder-get-object builder "window1") "destroy" (lambda (w) (declare (ignore w)) (leave-gtk-main)))
-      (status-bar-push (builder-get-object builder "statusbar1") "times" "0 times")
+      (statusbar-push (builder-get-object builder "statusbar1") "times" "0 times")
       (widget-show (builder-get-object builder "window1")))))
 
 (defun read-text-file (file-name)
@@ -570,13 +570,13 @@
                       builder))
            (window (builder-get-object builder "window1"))
            (text-view (builder-get-object builder "textview1"))
-           (status-bar (builder-get-object builder "statusbar1"))
+           (statusbar (builder-get-object builder "statusbar1"))
            (file-name nil)
            (modified-p t))
-      (status-bar-push status-bar "filename" "Untitled *")
+      (statusbar-push statusbar "filename" "Untitled *")
       (labels ((set-properties ()
-                 (status-bar-pop status-bar "filename")
-                 (status-bar-push status-bar "filename" (format nil "~A~:[~; *~]" (or file-name "Untitled") modified-p)))
+                 (statusbar-pop statusbar "filename")
+                 (statusbar-push statusbar "filename" (format nil "~A~:[~; *~]" (or file-name "Untitled") modified-p)))
                (new (&rest args) (declare (ignore args))
                     (setf file-name nil
                           modified-p t

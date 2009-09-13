@@ -430,6 +430,10 @@
                (:export t :type-initializer "gtk_visibility_get_type")
                (:none 0) (:partial 1) (:full 2))
 
+(define-g-enum "GtkEntryIconPosition" entry-icon-position
+               (:export t :type-initializer "gtk_entry_icon_position_get_type")
+               (:primary 0) (:secondary 1))
+
 (define-g-flags "GtkTextSearchFlags" text-search-flags
                 (:export t :type-initializer "gtk_text_search_flags_get_type")
                 (:visible-only 1) (:text-only 2))
@@ -2235,7 +2239,7 @@
                         (:cffi line-wrap label-line-wrap :boolean
                          "gtk_label_get_line_wrap" "gtk_label_set_line_wrap")
                         (:cffi line-wrap-mode label-line-wrap-mode
-                         pango-wrap-mode "gtk_label_line_wrap_mode"
+                         pango-wrap-mode "gtk_label_get_line_wrap_mode"
                          "gtk_label_set_line_wrap_mode")
                         (:cffi layout label-layout g-object
                          "gtk_label_get_layout" nil)
