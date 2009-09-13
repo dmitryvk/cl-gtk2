@@ -3903,6 +3903,8 @@ Signals:
 @Class volume-button
 Superclass: @ref{scale-button} @ref{atk-implementor-iface} @ref{activatable} @ref{buildable} @ref{orientable}
 
+@ref{volume-button} is a subclass of @ref{scale-button} that has been tailored for use as a volume control widget with suitable icons, tooltips and accessible labels.
+
 Slots:
 @itemize
 @end itemize
