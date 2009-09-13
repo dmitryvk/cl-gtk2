@@ -439,28 +439,82 @@ Superclass: @ref{bin} @ref{atk-implementor-iface} @ref{activatable} @ref{buildab
 
 Subclasses: @ref{scale-button} @ref{link-button} @ref{font-button} @ref{color-button} @ref{toggle-button}
 
+The @ref{button} widget is generally used to attach a function to that is called when the button is pressed. The various signals and how to use them are outlined below.
+
+The @ref{button} widget can hold any valid child widget. That is it can hold most any other standard @ref{widget}. The most commonly used child is the @ref{label}.
+
 Slots:
 @itemize
 @item @anchor{slot.button.focus-on-click}focus-on-click. Type: @code{boolean}. Accessor: @anchor{fn.button-focus-on-click}@code{button-focus-on-click}.
+
+Whether the button grabs focus when it is clicked with the mouse.
+
+Default value: True
 @item @anchor{slot.button.image}image. Type: @ref{widget}. Accessor: @anchor{fn.button-image}@code{button-image}.
+
+Child widget to appear next to the button text.
 @item @anchor{slot.button.image-position}image-position. Type: @ref{position-type}. Accessor: @anchor{fn.button-image-position}@code{button-image-position}.
+
+The position of the image relative to the text inside the button.
+
+Default value: @EnumVRef{position-type,left}
 @item @anchor{slot.button.label}label. Type: @code{string}. Accessor: @anchor{fn.button-label}@code{button-label}.
+
+Text of the label widget inside the button, if the button contains a label widget.
+
+Default value: NIL
 @item @anchor{slot.button.relief}relief. Type: @ref{relief-style}. Accessor: @anchor{fn.button-relief}@code{button-relief}.
+
+The border relief style.
+
+Default value: @EnumVRef{relief-style,normal}
 @item @anchor{slot.button.use-stock}use-stock. Type: @code{boolean}. Accessor: @anchor{fn.button-use-stock}@code{button-use-stock}.
+
+If set, the label is used to pick a stock item instead of being displayed.
+
+Default value: False
 @item @anchor{slot.button.use-underline}use-underline. Type: @code{boolean}. Accessor: @anchor{fn.button-use-underline}@code{button-use-underline}.
+
+If set, an underline in the text indicates the next character should be used for the mnemonic accelerator key.
+
+Default value: False
 @item @anchor{slot.button.xalign}xalign. Type: @code{single-float}. Accessor: @anchor{fn.button-xalign}@code{button-xalign}.
+
+If the child of the button is a @ref{misc} or @ref{alignment}, this property can be used to control it's horizontal alignment. 0.0 is left aligned, 1.0 is right aligned.
+
+Allowed values: [0,1]
+
+Default value: 0.5
 @item @anchor{slot.button.yalign}yalign. Type: @code{single-float}. Accessor: @anchor{fn.button-yalign}@code{button-yalign}.
+
+If the child of the button is a @ref{misc} or @ref{alignment}, this property can be used to control it's vertical alignment. 0.0 is left aligned, 1.0 is right aligned.
+
+Allowed values: [0,1]
+
+Default value: 0.5
 @end itemize
 
 
 Signals:
 @itemize
 @item @anchor{signal.button.activate}"activate". Signature: (instance @ref{button}) @result{} void. Options: run-first, action.
+
+This signal is an action signal and emitting it causes the button to animate press then release. Applications should never connect to this signal, but use the @SignalRef{button,clicked} signal.
 @item @anchor{signal.button.clicked}"clicked". Signature: (instance @ref{button}) @result{} void. Options: run-first, action.
+
+Emitted when the button has been activated (pressed and released).
 @item @anchor{signal.button.enter}"enter". Signature: (instance @ref{button}) @result{} void. Options: run-first.
+
+Emitted when the pointer enters the button.
 @item @anchor{signal.button.leave}"leave". Signature: (instance @ref{button}) @result{} void. Options: run-first.
+
+Emitted when the pointer leaves the button.
 @item @anchor{signal.button.pressed}"pressed". Signature: (instance @ref{button}) @result{} void. Options: run-first.
+
+Emitted when the button is pressed.
 @item @anchor{signal.button.released}"released". Signature: (instance @ref{button}) @result{} void. Options: run-first.
+
+Emitted when the button is released.
 @end itemize
 
 
