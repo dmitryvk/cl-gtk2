@@ -2761,18 +2761,74 @@ Signals:
 @Class progress-bar
 Superclass: @ref{progress} @ref{atk-implementor-iface} @ref{buildable}
 
+The @ref{progress-bar} is typically used to display the progress of a long running operation. It provides a visual clue that processing is underway. The @ref{progress-bar} can be used in two different modes: percentage mode and activity  mode.
+
+When an application can determine how much work needs to take place (e.g. read a fixed number of bytes from a file) and can monitor its progress, it can use the @ref{progress-bar} in percentage mode and the user sees a growing bar indicating the percentage of the work that has been completed. In this mode, the application is required to set @SlotRef{progress-bar,fraction} periodically to update the progress bar.
+
+When an application has no accurate way of knowing the amount of work to do, it can use the @ref{progress-bar} in activity mode, which shows activity by a block moving back and forth within the progress area. In this mode, the application is required to call @ref{progress-bar-pulse} perodically to update the progress bar.
+
+There is quite a bit of flexibility provided to control the appearance of the @ref{progress-bar}. Functions are provided to control the orientation of the bar, optional text can be displayed along with the bar, and the step size used in activity mode can be set.
+
 Slots:
 @itemize
 @item @anchor{slot.progress-bar.activity-blocks}activity-blocks. Type: @code{integer}. Accessor: @anchor{fn.progress-bar-activity-blocks}@code{progress-bar-activity-blocks}.
+
+The number of blocks which can fit in the progress bar area in activity mode (Deprecated).
+
+Allowed values: >= 2
+
+Default value: 5
 @item @anchor{slot.progress-bar.activity-step}activity-step. Type: @code{integer}. Accessor: @anchor{fn.progress-bar-activity-step}@code{progress-bar-activity-step}.
+
+The increment used for each iteration in activity mode (Deprecated).
+
+Default value: 3
 @item @anchor{slot.progress-bar.adjustment}adjustment. Type: @ref{adjustment}. Accessor: @anchor{fn.progress-bar-adjustment}@code{progress-bar-adjustment}.
+
+The @ref{adjustment} connected to the progress bar (Deprecated
 @item @anchor{slot.progress-bar.bar-style}bar-style. Type: @ref{progress-bar-style}. Accessor: @anchor{fn.progress-bar-bar-style}@code{progress-bar-bar-style}.
+
+Specifies the visual style of the bar in percentage mode (Deprecated).
+
+Default value: @EnumVRef{progress-bar-style,continuous}
 @item @anchor{slot.progress-bar.discrete-blocks}discrete-blocks. Type: @code{integer}. Accessor: @anchor{fn.progress-bar-discrete-blocks}@code{progress-bar-discrete-blocks}.
-@item @anchor{slot.progress-bar.ellipsize}ellipsize. Type: @code{PangoEllipsizeMode}. Accessor: @anchor{fn.progress-bar-ellipsize}@code{progress-bar-ellipsize}.
+
+The number of discrete blocks in a progress bar (when shown in the discrete style).
+
+Allowed values: >= 2
+
+Default value: 10
+@item @anchor{slot.progress-bar.ellipsize}ellipsize. Type: @ref{pango-ellipsize-mode}. Accessor: @anchor{fn.progress-bar-ellipsize}@code{progress-bar-ellipsize}.
+
+The preferred place to ellipsize the string, if the progressbar does not have enough room to display the entire string.
+
+Note that setting this property to a value other than @EnumVRef{pango-ellipsize-mode,none} has the side-effect that the progressbar requests only enough space to display the ellipsis "...". Another means to set a progressbar's width is @SlotRef{widget,width-request}.
+
+Default value: @EnumVRef{pango-ellipsize-mode,none}
 @item @anchor{slot.progress-bar.fraction}fraction. Type: @code{double-float}. Accessor: @anchor{fn.progress-bar-fraction}@code{progress-bar-fraction}.
+
+The fraction of total work that has been completed.
+
+Allowed values: [0,1]
+
+Default value: 0
 @item @anchor{slot.progress-bar.orientation}orientation. Type: @ref{progress-bar-orientation}. Accessor: @anchor{fn.progress-bar-orientation}@code{progress-bar-orientation}.
+
+Orientation and growth direction of the progress bar.
+
+Default value: @EnumVRef{progress-bar-orientation,left-to-right}
 @item @anchor{slot.progress-bar.pulse-step}pulse-step. Type: @code{double-float}. Accessor: @anchor{fn.progress-bar-pulse-step}@code{progress-bar-pulse-step}.
+
+The fraction of total progress to move the bouncing block when pulsed.
+
+Allowed values: [0,1]
+
+Default value: 0.1
 @item @anchor{slot.progress-bar.text}text. Type: @code{string}. Accessor: @anchor{fn.progress-bar-text}@code{progress-bar-text}.
+
+Text to be displayed in the progress bar.
+
+Default value: NIL
 @end itemize
 
 
@@ -2780,8 +2836,12 @@ Signals:
 @itemize
 @end itemize
 
+@RMethod progress-bar-pulse
+@lisp
+(progress-bar-pulse progress-bar)
+@end lisp
 
-
+Indicates that some progress is made, but you don't know how much. Causes the progress bar to enter "activity mode," where a block bounces back and forth. Each call to @ref{progress-bar-pulse} causes the block to move by a little bit (the amount of movement per pulse is determined by @SlotRef{progress-bar,pulse-step}).
 
 @node radio-button
 @section radio-button
