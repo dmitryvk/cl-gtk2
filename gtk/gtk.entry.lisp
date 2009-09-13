@@ -12,47 +12,29 @@
   (x (:pointer :int))
   (y (:pointer :int)))
 
-(defun entry-layout-offset (entry)
+(defun gtk-entry-layout-offset (entry)
   (with-foreign-objects ((x :int) (y :int))
     (gtk-entry-get-layout-offsets entry x y)
-    (values (mem-ref x :int) (mem-ref y :int))))
-
-(export 'entry-layout-offset)
+    (list (mem-ref x :int) (mem-ref y :int))))
 
 (defcfun (entry-layout-index-to-text-index "gtk_entry_layout_index_to_text_index") :int
   (entry (g-object entry))
   (layout-index :int))
 
+(export 'entry-layout-index-to-text-index)
+
 (defcfun (entry-text-index-to-layout-index "gtk_entry_text_index_to_layout_index") :int
   (entry (g-object entry))
   (text-index :int))
 
-(defcfun gtk-entry-set-completion :void
+(export 'entry-text-index-to-layout-info)
+
+(defcfun (entry-icon-at-pos "gtk_entry_get_icon_at_pos") :int
   (entry (g-object entry))
-  (completion (g-object entry-completion)))
+  (x :int)
+  (y :int))
 
-(defcfun gtk-entry-get-completion (g-object entry-completion)
-  (entry (g-object entry)))
-
-(defun entry-completion (entry)
-  (gtk-entry-get-completion entry))
-
-(defun (setf entry-completion) (completion entry)
-  (gtk-entry-set-completion entry completion))
-
-(export 'entry-completion)
-
-(defcfun gtk-entry-set-cursor-hadjustment :void
-  (entry (g-object entry))
-  (adjustment (g-object adjustment)))
-
-(defcfun (entry-cursor-hadjustment "gtk_entry_get_cursor_hadjustment") (g-object adjustment)
-  (entry (g-object entry)))
-
-(defun (setf entry-cursor-hadjustment) (adjustment entry)
-  (gtk-entry-set-cursor-hadjustment entry adjustment))
-
-(export 'entry-cursor-hadjustment)
+(export 'entry-icon-at-pos)
 
 ;; GtkEditable
 

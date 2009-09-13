@@ -2116,7 +2116,16 @@
                          t)
                         (width-chars entry-width-chars "width-chars" "gint" t
                          t)
-                        (xalign entry-xalign "xalign" "gfloat" t t)))
+                        (xalign entry-xalign "xalign" "gfloat" t t)
+                        (:cffi completion entry-completion
+                         (g-object entry-completion) "gtk_entry_get_completion"
+                         "gtk_entry_set_completion")
+                        (:cffi cursor-hadjustment entry-cursor-hadjustment
+                         (g-object adjustment)
+                         "gtk_entry_get_cursor_hadjustment"
+                         "gtk_entry_set_cursor_hadjustment")
+                        (:cffi layout-offset entry-layout-offset nil
+                         gtk-entry-layout-offset nil)))
 
 (define-g-object-class "GtkSpinButton" spin-button
                        (:superclass entry :export t :interfaces
