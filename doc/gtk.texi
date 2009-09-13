@@ -36,7 +36,7 @@ Superclass: @ref{\name\}
 @end macro
 
 @macro EnumVRef {name,value}
-@ref{enum.\name\.\value\,\value\}
+@ref{enum.\name\.\value\,@code{:\value\}}
 @end macro
 
 @macro Flags {name}
@@ -45,7 +45,7 @@ Superclass: @ref{\name\}
 @end macro
 
 @macro FlagsVRef {name,value}
-@ref{flags.\name\.\value\,\value\}
+@ref{flags.\name\.\value\,@code{:\value\}}
 @end macro
 
 @macro Accessor {name}
