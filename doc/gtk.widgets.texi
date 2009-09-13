@@ -204,10 +204,26 @@ Signals:
 @Class accel-label
 Superclass: @ref{label} @ref{atk-implementor-iface} @ref{buildable}
 
+The @ref{accel-label} widget is a subclass of @ref{label} that also displays an accelerator key on the right of the label text, e.g. 'Ctl+S'. It is commonly used in menus to show the keyboard short-cuts for commands.
+
+The accelerator key to display is not set explicitly. Instead, the @ref{accel-label} displays the accelerators which have been added to a particular widget. This widget is set by @SlotRef{accel-label,accel-widget}.
+
+For example, a @ref{menu-item} widget may have an accelerator added to emit the @SignalRef{menu-item,activate} signal when the 'Ctl+S' key combination is pressed. A @ref{accel-label} is created and added to the @ref{accel-label}, and @SlotRef{accel-label,accel-widget} is set to the @ref{menu-item} as the second argument. The @ref{accel-label} will now display 'Ctl+S' after its label.
+
+@c Note that creating a @ref{menu-item} with gtk_menu_item_new_with_label() (or one of the similar functions for GtkCheckMenuItem and GtkRadioMenuItem) automatically adds a GtkAccelLabel to the GtkMenuItem and calls gtk_accel_label_set_accel_widget() to set it up for you.
+
+A @ref{accel-label} will only display accelerators which have @FlagsVRef{accel-flags,visible} set. A@ref{accel-label} can display multiple accelerators and even signal names, though it is almost always used to display just one accelerator key.
+
 Slots:
 @itemize
 @item @anchor{slot.accel-label.accel-closure}accel-closure. Type: @code{GClosure}. Accessor: @anchor{fn.accel-label-accel-closure}@code{accel-label-accel-closure}.
+
+The closure to be monitored for accelerator changes.
+
+TODO: GClosure type mapping is not supported
 @item @anchor{slot.accel-label.accel-widget}accel-widget. Type: @ref{widget}. Accessor: @anchor{fn.accel-label-accel-widget}@code{accel-label-accel-widget}.
+
+The widget to be monitored for accelerator changes.
 @end itemize
 
 
