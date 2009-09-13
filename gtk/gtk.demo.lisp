@@ -6,7 +6,7 @@
            #:test-pixbuf
            #:test-image
            #:test-progress-bar
-           #:test-status-bar
+           #:test-statusbar
            #:test-scale-button
            #:test-text-view
            #:demo-code-editor
@@ -160,13 +160,13 @@
                                                      (coerce (read-from-string (entry-text entry)) 'real))))
       (widget-show window))))
 
-(defun test-status-bar ()
+(defun test-statusbar ()
   (within-main-loop
     (let* ((window (make-instance 'gtk-window :title "Text status bar"))
            (v-box (make-instance 'v-box))
            (h-box (make-instance 'h-box))
            (label (make-instance 'label :label "Test of status bar" :xalign 0.5 :yalign 0.5))
-           (status-bar (make-instance 'statusbar :has-resize-grip t))
+           (statusbar (make-instance 'statusbar :has-resize-grip t))
            (button-push (make-instance 'button :label "Push"))
            (button-pop (make-instance 'button :label "Pop"))
            (entry (make-instance 'entry))
@@ -178,10 +178,10 @@
                                            (leave-gtk-main)))
       (g-signal-connect button-push "clicked" (lambda (b)
                                                 (declare (ignore b))
-                                                (status-bar-push status-bar "lisp-prog" (entry-text entry))))
+                                                (statusbar-push statusbar "lisp-prog" (entry-text entry))))
       (g-signal-connect button-pop "clicked" (lambda (b)
                                                (declare (ignore b))
-                                               (status-bar-pop status-bar "lisp-prog")))
+                                               (statusbar-pop statusbar "lisp-prog")))
       (g-signal-connect icon "activate" (lambda (i)
                                           (declare (ignore i))
                                           (let ((message-dialog (make-instance 'message-dialog
@@ -195,7 +195,7 @@
       (box-pack-start h-box button-push :expand nil)
       (box-pack-start h-box button-pop :expand nil)
       (box-pack-start v-box label)
-      (box-pack-start v-box status-bar :expand nil)
+      (box-pack-start v-box statusbar :expand nil)
       (widget-show window)
       (setf (status-icon-screen icon) (gtk-window-screen window)))))
 

@@ -1,32 +1,38 @@
 (in-package :gtk)
 
-(defcfun gtk-statusbar-get-context-id :uint
-  (status-bar (g-object statusbar))
+(defcfun (statusbar-get-context-id "gtk_statusbar_get_context_id") :uint
+  (statusbar (g-object statusbar))
   (context-description :string))
 
 (defcfun gtk-statusbar-push :uint
-  (status-bar (g-object statusbar))
+  (statusbar (g-object statusbar))
   (context-id :uint)
   (text :string))
 
 (defcfun gtk-statusbar-pop :void
-  (status-bar (g-object statusbar))
+  (statusbar (g-object statusbar))
   (context-id :uint))
 
 (defcfun gtk-statusbar-remove :void
-  (status-bar (g-object statusbar))
+  (statusbar (g-object statusbar))
   (context-id :uint)
   (message-id :uint))
 
-(defun status-bar-push (status-bar context text)
-  (gtk-statusbar-push status-bar (gtk-statusbar-get-context-id status-bar context) text))
+(defun statusbar-context-id (statusbar context)
+  (etypecase context
+    (integer context)
+    (string (statusbar-get-context-id statusbar context))))
 
-(defun status-bar-pop (status-bar context)
-  (gtk-statusbar-pop status-bar (gtk-statusbar-get-context-id status-bar context)))
+(defun statusbar-push (statusbar context text)
+  (gtk-statusbar-push statusbar (statusbar-context-id statusbar context) text))
 
-(defun status-bar-remove (status-bar context message-id)
-  (gtk-statusbar-remove status-bar (gtk-statusbar-get-context-id status-bar context) message-id))
+(defun statusbar-pop (statusbar context)
+  (gtk-statusbar-pop statusbar (statusbar-context-id statusbar context)))
 
-(export 'status-bar-push)
-(export 'status-bar-pop)
-(export 'status-bar-remove)
+(defun statusbar-remove (statusbar context message-id)
+  (gtk-statusbar-remove statusbar (statusbar-context-id statusbar context) message-id))
+
+(export 'statusbar-push)
+(export 'statusbar-pop)
+(export 'statusbar-remove)
+(export 'statusbar-context-id)
