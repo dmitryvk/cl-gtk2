@@ -465,3 +465,9 @@
 
 (define-g-object-class "GdkPixbufAnimation" pixbuf-animation ()
     nil) 
+
+(define-g-object-class "GdkImage" gdk-image
+  (:superclass g-object :export t :interfaces
+               nil :type-initializer
+               "gdk_image_get_type")
+  nil)

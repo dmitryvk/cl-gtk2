@@ -3,6 +3,7 @@
 * drag-context::
 * drawable::
 * gdk-colormap::
+* gdk-image::
 * gdk-window::
 * graphics-context::
 * keymap::
@@ -83,6 +84,19 @@ Signals:
 @end itemize
 
 
+@node gdk-image
+@section gdk-image
+@Class gdk-image
+Superclass: @ref{g-object}
+
+Slots:
+@itemize
+@end itemize
+
+
+Signals:
+@itemize
+@end itemize
 
 
 @node gdk-window
