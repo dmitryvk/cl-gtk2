@@ -1518,7 +1518,7 @@ Example:
 
 Function @code{emit-signal} is used to emit signals on objects.
 
-@Function emit-signal
+@RFunction emit-signal
 @code{(emit-signal object signal-name &rest args) @result{} return-value}
 
 @table @var
