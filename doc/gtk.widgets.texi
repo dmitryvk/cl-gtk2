@@ -604,6 +604,11 @@ Superclass: @ref{toggle-button} @ref{atk-implementor-iface} @ref{activatable} @r
 
 Subclasses: @ref{radio-button}
 
+
+A @ref{check-button} places a discrete @ref{toggle-button} next to a widget, (usually a @ref{label}). See the @ref{toggle-button} for more information about toggle/check buttons.
+
+The important signal @SignalRef{toggle-button,toggled} is also inherited from @ref{toggle-button}.
+
 Slots:
 @itemize
 @end itemize
@@ -2902,15 +2907,25 @@ Indicates that some progress is made, but you don't know how much. Causes the pr
 @Class radio-button
 Superclass: @ref{check-button} @ref{atk-implementor-iface} @ref{activatable} @ref{buildable}
 
+A single radio button performs the same basic function as a @ref{check-button}, as its position in the object hierarchy reflects. It is only when multiple radio buttons are grouped together that they become a different user interface component in their own right.
+
+Every radio button is a member of some group of radio buttons. When one is selected, all other radio buttons in the same group are deselected. A @ref{radio-button} is one way of giving the user a choice from many options.
+
+To group radio buttons into one group, set @SlotRef{radio-button,group} to one of the radio buttons of the group.
+
 Slots:
 @itemize
 @item @anchor{slot.radio-button.group}group. Type: @ref{radio-button}. Accessor: @anchor{fn.radio-button-group}@code{radio-button-group}. Write-only.
+
+A button of the radio button group that this radio button belongs to
 @end itemize
 
 
 Signals:
 @itemize
 @item @anchor{signal.radio-button.group-changed}"group-changed". Signature: (instance @ref{radio-button}) @result{} void. Options: run-first.
+
+Emitted when the group of radio buttons that a radio button belongs to changes. This is emitted when a radio button switches from being alone to being part of a group of 2 or more buttons, or vice-versa, and when a button is moved from one group of 2 or more buttons to a different one, but not when the composition of the group that a button belongs to changes.
 @end itemize
 
 
