@@ -2121,6 +2121,8 @@
                         (width-chars entry-width-chars "width-chars" "gint" t
                          t)
                         (xalign entry-xalign "xalign" "gfloat" t t)
+                        (:cffi layout entry-layout g-object
+                         "gtk_entry_get_layout" nil)
                         (:cffi completion entry-completion
                          (g-object entry-completion) "gtk_entry_get_completion"
                          "gtk_entry_set_completion")

@@ -2,11 +2,6 @@
 
 ;; GtkEntry
 
-(defcfun (entry-layout "gtk_entry_get_layout") g-object ;;PangoLayout
-  (entry (g-object entry)))
-
-(export 'entry-layout)
-
 (defcfun gtk-entry-get-layout-offsets :void
   (entry (g-object entry))
   (x (:pointer :int))
@@ -35,6 +30,11 @@
   (y :int))
 
 (export 'entry-icon-at-pos)
+
+(defcfun (entry-progress-pulse "gtk_entry_progress_pulse") :void
+  (entry (g-object entry)))
+
+(export 'entry-progress-pulse)
 
 ;; GtkEditable
 

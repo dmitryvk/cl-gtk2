@@ -200,6 +200,7 @@
         (:cffi gtk::selection-bounds gtk::label-selection-bounds nil gtk::gtk-label-get-selection-bounds nil)
         (:cffi gtk::layout-offsets gtk::label-layout-offsets nil gtk::gtk-label-get-layout-offsets nil))
        ("GtkEntry"
+        (:cffi gtk::layout gtk::entry-layout g-object "gtk_entry_get_layout" nil)
         (:cffi gtk::completion gtk::entry-completion (g-object gtk::entry-completion) "gtk_entry_get_completion" "gtk_entry_set_completion")
         (:cffi gtk::cursor-hadjustment gtk::entry-cursor-hadjustment (g-object gtk::adjustment) "gtk_entry_get_cursor_hadjustment" "gtk_entry_set_cursor_hadjustment")
         (:cffi gtk::layout-offset gtk::entry-layout-offset nil gtk::gtk-entry-layout-offset nil))))))
