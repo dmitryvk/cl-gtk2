@@ -33,6 +33,12 @@
 (defun ref-count (pointer)
   (foreign-slot-value (if (pointerp pointer) pointer (pointer pointer)) 'g-object-struct :ref-count))
 
+(defmethod release ((obj g-object))
+  (cancel-finalization obj)
+  (let ((p (pointer obj)))
+    (setf (pointer obj) nil)
+    (g-object-dispose-carefully p)))
+
 (defmethod initialize-instance :around ((obj g-object) &key)
   (when *currently-making-object-p*
     (setf *currently-making-object-p* t))
