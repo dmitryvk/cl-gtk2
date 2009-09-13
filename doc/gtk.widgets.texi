@@ -2450,10 +2450,22 @@ Signals:
 @Class link-button
 Superclass: @ref{button} @ref{atk-implementor-iface} @ref{activatable} @ref{buildable}
 
+A @ref{link-button} is a @ref{button} with a hyperlink, similar to the one used by web browsers, which triggers an action when clicked. It is useful to show quick links to resources.
+
+@ref{link-button} offers a global hook, which is called when the used clicks on it: see @ref{link-button-global-uri-hook}.
+
 Slots:
 @itemize
 @item @anchor{slot.link-button.uri}uri. Type: @code{string}. Accessor: @anchor{fn.link-button-uri}@code{link-button-uri}.
+
+The URI bound to this button.
+
+Default value: NIL
 @item @anchor{slot.link-button.visited}visited. Type: @code{boolean}. Accessor: @anchor{fn.link-button-visited}@code{link-button-visited}.
+
+The 'visited' state of this button. A visited link is drawn in a different color.
+
+Default value: False
 @end itemize
 
 
@@ -2461,8 +2473,16 @@ Signals:
 @itemize
 @end itemize
 
+@RFunction link-button-global-uri-hook
+@lisp
+(setf (link-button-gloval-uri-hook) function)
+@end lisp
 
+Sets function as the function that should be invoked every time a user clicks a @ref{link-button}. This function is called before every callback registered for the @SignalRef{button,clicked} signal.
 
+If @var{function} is NIL, GTK+ defaults to calling gtk_show_uri() (default function that opens the default application for a URI).
+
+@var{function} is a function of two arguments: a @ref{link-button} and a @code{string}. First argument is the button that was clicked and the second is the URI of the button.
 
 @node menu
 @section menu
