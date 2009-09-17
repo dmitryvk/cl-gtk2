@@ -6,6 +6,7 @@
 (eval-when (:compile-toplevel :load-toplevel :execute)
   (cffi:define-foreign-library gobject
     (:unix (:or "libgobject-2.0.so.0" "libgobject-2.0.so"))
+    (:win32 "libgobject-2.0-0.dll")
     (t "libgobject-2.0")))
 
 (cffi:use-foreign-library gobject)

@@ -46,7 +46,9 @@
                (:file "gtk.child-properties")
                (:file "gtk.widget")
                (:file "gtk.builder")
-
+               (:file "gtk.assistant")
+               (:file "gtk.link-button")
+               
                (:file "gtk.main-loop-events")
                
 
@@ -57,7 +59,6 @@
                (:file "gtk.dialog.example")
                
                (:file "gtk.demo")
-               #+sbcl (:file "sbcl")
                (:module "demo-files"
                         :pathname "demo"
                         :components ((:static-file "demo1.glade")

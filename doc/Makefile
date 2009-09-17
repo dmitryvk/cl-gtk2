@@ -4,8 +4,8 @@ all: doc.html tutorial.html gobject/index.html gtk/index.html gobject/style.css 
 
 archive: manual.tar.bz2
 
-manual.tar.bz2: gtk/index.html gtk/style.css
-	tar cjf $@ gtk
+manual.tar.bz2: gtk/index.html gtk/style.css gobject/index.html gobject/style.css
+	tar cjf $@ gtk gobject
 
 doc.html: doc.xml
 	xsltproc -o $@ /usr/share/sgml/docbook/xsl-stylesheets/html/docbook.xsl $<

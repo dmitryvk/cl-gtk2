@@ -1,5 +1,7 @@
 (in-package :gobject)
 
+;;; Signal handler closures
+
 (defcstruct lisp-signal-handler-closure
   (:parent-instance g-closure)
   (:object :pointer)
@@ -68,8 +70,8 @@
   (let ((id (find-free-signal-handler-id object))
         (handlers (g-object-signal-handlers object)))
     (if id
-        (setf (aref handlers id) handler)
-        (vector-push-extend handler handlers))))
+        (progn (setf (aref handlers id) handler) id)
+        (progn (vector-push-extend handler handlers) (1- (length handlers))))))
 
 (defun retrieve-handler-from-object (object handler-id)
   (aref (g-object-signal-handlers object) handler-id))
@@ -126,3 +128,7 @@ If @code{after} is true, then the function will be called after the default hand
                     (g-value-unset return-value))))
           (iter (for i from 0 below (1+ params-count))
                 (g-value-unset (mem-aref params 'g-value i))))))))
+
+(defcfun (disconnect-signal "g_signal_handler_disconnect") :void
+  (object g-object)
+  (handler-id :ulong))

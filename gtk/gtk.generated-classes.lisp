@@ -430,6 +430,10 @@
                (:export t :type-initializer "gtk_visibility_get_type")
                (:none 0) (:partial 1) (:full 2))
 
+(define-g-enum "GtkEntryIconPosition" entry-icon-position
+               (:export t :type-initializer "gtk_entry_icon_position_get_type")
+               (:primary 0) (:secondary 1))
+
 (define-g-flags "GtkTextSearchFlags" text-search-flags
                 (:export t :type-initializer "gtk_text_search_flags_get_type")
                 (:visible-only 1) (:text-only 2))
@@ -1503,7 +1507,14 @@
                        (:superclass gtk-window :export t :interfaces
                         ("AtkImplementorIface" "GtkBuildable")
                         :type-initializer "gtk_assistant_get_type")
-                       nil)
+                       ((:cffi current-page assistant-current-page :int
+                         "gtk_assistant_get_current_page"
+                         "gtk_assistant_set_current_page")
+                        (:cffi n-pages assistant-n-pages :int
+                         "gtk_assistant_get_n_pages" nil)
+                        (:cffi forward-page-function
+                         assistant-forward-page-function nil nil
+                         set-assistant-forward-page-function)))
 
 (define-g-object-class "GtkDialog" dialog
                        (:superclass gtk-window :export t :interfaces
@@ -2109,7 +2120,18 @@
                          t)
                         (width-chars entry-width-chars "width-chars" "gint" t
                          t)
-                        (xalign entry-xalign "xalign" "gfloat" t t)))
+                        (xalign entry-xalign "xalign" "gfloat" t t)
+                        (:cffi layout entry-layout g-object
+                         "gtk_entry_get_layout" nil)
+                        (:cffi completion entry-completion
+                         (g-object entry-completion) "gtk_entry_get_completion"
+                         "gtk_entry_set_completion")
+                        (:cffi cursor-hadjustment entry-cursor-hadjustment
+                         (g-object adjustment)
+                         "gtk_entry_get_cursor_hadjustment"
+                         "gtk_entry_set_cursor_hadjustment")
+                        (:cffi layout-offset entry-layout-offset nil
+                         gtk-entry-layout-offset nil)))
 
 (define-g-object-class "GtkSpinButton" spin-button
                        (:superclass entry :export t :interfaces
@@ -2215,7 +2237,18 @@
                          t)
                         (wrap label-wrap "wrap" "gboolean" t t)
                         (wrap-mode label-wrap-mode "wrap-mode" "PangoWrapMode"
-                         t t)))
+                         t t)
+                        (:cffi line-wrap label-line-wrap :boolean
+                         "gtk_label_get_line_wrap" "gtk_label_set_line_wrap")
+                        (:cffi line-wrap-mode label-line-wrap-mode
+                         pango-wrap-mode "gtk_label_get_line_wrap_mode"
+                         "gtk_label_set_line_wrap_mode")
+                        (:cffi layout label-layout g-object
+                         "gtk_label_get_layout" nil)
+                        (:cffi selection-bounds label-selection-bounds nil
+                         gtk-label-get-selection-bounds nil)
+                        (:cffi layout-offsets label-layout-offsets nil
+                         gtk-label-get-layout-offsets nil)))
 
 (define-g-object-class "GtkAccelLabel" accel-label
                        (:superclass label :export t :interfaces
@@ -2645,7 +2678,11 @@
                         (popup-single-match entry-completion-popup-single-match
                          "popup-single-match" "gboolean" t t)
                         (text-column entry-completion-text-column "text-column"
-                         "gint" t t)))
+                         "gint" t t)
+                        (:cffi entry entry-completion-entry (g-object entry)
+                         "gtk_entry_completion_get_entry" nil)
+                        (:cffi match-function entry-completion-match-function
+                         nil nil gtk-entry-completion-set-match-function)))
 
 (define-g-object-class "GtkIconFactory" icon-factory
                        (:superclass g-object :export t :interfaces

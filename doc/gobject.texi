@@ -11,8 +11,18 @@
 @end defun
 @end macro
 
+@macro RFunction {name}
+@anchor{\name\}@defun \name\
+@end defun
+@end macro
+
 @macro Macro {args}
 @defmac \args\
+@end defmac
+@end macro
+
+@macro RMacro {args}
+@anchor{\args\}@defmac \args\
 @end defmac
 @end macro
 

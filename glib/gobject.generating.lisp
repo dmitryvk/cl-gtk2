@@ -146,11 +146,15 @@
      :allocation ,(if (gobject-property-p property) :gobject-property :gobject-fn)
      :g-property-type ,(if (gobject-property-p property) (gobject-property-type property) (cffi-property-type property))
      :accessor ,(intern (format nil "~A-~A" (symbol-name class-name) (property-name property)) (symbol-package class-name))
-     :initarg ,(intern (string-upcase (property-name property)) (find-package :keyword))
+     ,@(when (if (gobject-property-p property)
+                 t
+                 (not (null (cffi-property-writer property))))
+             `(:initarg
+               ,(intern (string-upcase (property-name property)) (find-package :keyword))))
      ,@(if (gobject-property-p property)
            `(:g-property-name ,(gobject-property-gname property))
            `(:g-getter ,(cffi-property-reader property)
-                                :g-setter ,(cffi-property-writer property)))))
+                       :g-setter ,(cffi-property-writer property)))))
 
 (defmacro define-g-object-class (g-type-name name
                                  (&key (superclass 'g-object)

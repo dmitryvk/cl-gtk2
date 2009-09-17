@@ -33,8 +33,7 @@
                (:file "gobject.object-defs")
                (:file "gobject.cffi-callbacks")
                (:file "gobject.foreign-gobject-subclassing")
-
-               (:file "gobject.boxed")
                
-               #+sbcl (:file "sbcl"))
+               (:file "gobject.boxed")
+               (:file "gobject.object-function"))
   :depends-on (:cffi :trivial-garbage :iterate :bordeaux-threads :iterate :closer-mop))

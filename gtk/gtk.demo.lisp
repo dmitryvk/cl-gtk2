@@ -6,7 +6,7 @@
            #:test-pixbuf
            #:test-image
            #:test-progress-bar
-           #:test-status-bar
+           #:test-statusbar
            #:test-scale-button
            #:test-text-view
            #:demo-code-editor
@@ -24,7 +24,9 @@
            #:demo-text-editor
            #:demo-class-browser
            #:demo-treeview-tree
-           #:test-custom-window))
+           #:test-custom-window
+           #:test-assistant
+           #:test-entry-completion))
 
 (in-package :gtk-demo)
 
@@ -159,13 +161,13 @@
                                                      (coerce (read-from-string (entry-text entry)) 'real))))
       (widget-show window))))
 
-(defun test-status-bar ()
+(defun test-statusbar ()
   (within-main-loop
     (let* ((window (make-instance 'gtk-window :title "Text status bar"))
            (v-box (make-instance 'v-box))
            (h-box (make-instance 'h-box))
            (label (make-instance 'label :label "Test of status bar" :xalign 0.5 :yalign 0.5))
-           (status-bar (make-instance 'statusbar :has-resize-grip t))
+           (statusbar (make-instance 'statusbar :has-resize-grip t))
            (button-push (make-instance 'button :label "Push"))
            (button-pop (make-instance 'button :label "Pop"))
            (entry (make-instance 'entry))
@@ -177,10 +179,10 @@
                                            (leave-gtk-main)))
       (g-signal-connect button-push "clicked" (lambda (b)
                                                 (declare (ignore b))
-                                                (status-bar-push status-bar "lisp-prog" (entry-text entry))))
+                                                (statusbar-push statusbar "lisp-prog" (entry-text entry))))
       (g-signal-connect button-pop "clicked" (lambda (b)
                                                (declare (ignore b))
-                                               (status-bar-pop status-bar "lisp-prog")))
+                                               (statusbar-pop statusbar "lisp-prog")))
       (g-signal-connect icon "activate" (lambda (i)
                                           (declare (ignore i))
                                           (let ((message-dialog (make-instance 'message-dialog
@@ -194,7 +196,7 @@
       (box-pack-start h-box button-push :expand nil)
       (box-pack-start h-box button-pop :expand nil)
       (box-pack-start v-box label)
-      (box-pack-start v-box status-bar :expand nil)
+      (box-pack-start v-box statusbar :expand nil)
       (widget-show window)
       (setf (status-icon-screen icon) (gtk-window-screen window)))))
 
@@ -532,9 +534,9 @@
                                                                                      #+nil(print (current-event))
                                                                                      (setf (text-buffer-text (text-view-buffer text-view))
                                                                                            (format nil "Clicked ~A times~%" (incf c)))
-                                                                                     (status-bar-pop (builder-get-object builder "statusbar1")
+                                                                                     (statusbar-pop (builder-get-object builder "statusbar1")
                                                                                                      "times")
-                                                                                     (status-bar-push (builder-get-object builder "statusbar1")
+                                                                                     (statusbar-push (builder-get-object builder "statusbar1")
                                                                                                       "times"
                                                                                                       (format nil "~A times" c))))
                                                   ("quit_cb" ,(lambda (&rest args)
@@ -550,7 +552,7 @@
                                                                          (dialog-run d)
                                                                          (object-destroy d)))))))
       (g-signal-connect (builder-get-object builder "window1") "destroy" (lambda (w) (declare (ignore w)) (leave-gtk-main)))
-      (status-bar-push (builder-get-object builder "statusbar1") "times" "0 times")
+      (statusbar-push (builder-get-object builder "statusbar1") "times" "0 times")
       (widget-show (builder-get-object builder "window1")))))
 
 (defun read-text-file (file-name)
@@ -569,13 +571,13 @@
                       builder))
            (window (builder-get-object builder "window1"))
            (text-view (builder-get-object builder "textview1"))
-           (status-bar (builder-get-object builder "statusbar1"))
+           (statusbar (builder-get-object builder "statusbar1"))
            (file-name nil)
            (modified-p t))
-      (status-bar-push status-bar "filename" "Untitled *")
+      (statusbar-push statusbar "filename" "Untitled *")
       (labels ((set-properties ()
-                 (status-bar-pop status-bar "filename")
-                 (status-bar-push status-bar "filename" (format nil "~A~:[~; *~]" (or file-name "Untitled") modified-p)))
+                 (statusbar-pop statusbar "filename")
+                 (statusbar-push statusbar "filename" (format nil "~A~:[~; *~]" (or file-name "Untitled") modified-p)))
                (new (&rest args) (declare (ignore args))
                     (setf file-name nil
                           modified-p t
@@ -795,4 +797,65 @@
 (defun test-custom-window ()
   (within-main-loop
     (let ((w (make-instance 'custom-window)))
+      (widget-show w))))
+
+(defun test-assistant ()
+  (let ((output *standard-output*))
+    (within-main-loop
+      (let ((d (make-instance 'assistant :title "Username wizard"))
+            (p-1 (make-instance 'h-box))
+            (entry (make-instance 'entry))
+            (p-2 (make-instance 'label :label "Click Apply to close this wizard")))
+        (box-pack-start p-1 (make-instance 'label :label "Enter your name:") :expand nil)
+        (box-pack-start p-1 entry)
+        (assistant-append-page d p-1)
+        (assistant-append-page d p-2)
+        (setf (assistant-child-title d p-1) "Username wizard"
+              (assistant-child-title d p-2) "Username wizard"
+              (assistant-child-complete d p-1) nil
+              (assistant-child-complete d p-2) t
+              (assistant-child-page-type d p-1) :intro
+              (assistant-child-page-type d p-2) :confirm
+              (assistant-forward-page-function d) (lambda (i)
+                                                    (format output "(assistant-forward-page-function ~A)~%" i)
+                                                    (ecase i
+                                                      (0 1)
+                                                      (1 -1))))
+        (connect-signal entry "notify::text" (lambda (object pspec)
+                                               (declare (ignore object pspec))
+                                               (setf (assistant-child-complete d p-1)
+                                                     (plusp (length (entry-text entry))))))
+        (let ((w (make-instance 'label :label "A label in action area")))
+          (widget-show w)
+          (assistant-add-action-widget d w))
+        (connect-signal d "cancel" (lambda (assistant)
+                                     (declare (ignore assistant))
+                                     (object-destroy d)
+                                     (format output "Canceled~%")))
+        (connect-signal d "close" (lambda (assistant)
+                                    (declare (ignore assistant))
+                                    (object-destroy d)
+                                    (format output "Thank you, ~A~%" (entry-text entry))))
+        (connect-signal d "prepare" (lambda (assistant page-widget)
+                                      (declare (ignore assistant page-widget))
+                                      (format output "Assistant ~A has ~A pages and is on ~Ath page~%"
+                                              d (assistant-n-pages d) (assistant-current-page d))))
+        (widget-show d)))))
+
+(defun test-entry-completion ()
+  (within-main-loop
+    (let* ((w (make-instance 'gtk-window))
+           (model (make-instance 'tree-lisp-store)))
+      (tree-lisp-store-add-column model "gchararray" #'identity)
+      (tree-node-insert-at (tree-lisp-store-root model) (make-tree-node :item "Monday") 0)
+      (tree-node-insert-at (tree-lisp-store-root model) (make-tree-node :item "Tuesday") 0)
+      (tree-node-insert-at (tree-lisp-store-root model) (make-tree-node :item "Wednesday") 0)
+      (tree-node-insert-at (tree-lisp-store-root model) (make-tree-node :item "Thursday") 0)
+      (tree-node-insert-at (tree-lisp-store-root model) (make-tree-node :item "Friday") 0)
+      (tree-node-insert-at (tree-lisp-store-root model) (make-tree-node :item "Saturday") 0)
+      (tree-node-insert-at (tree-lisp-store-root model) (make-tree-node :item "Sunday") 0)
+      (let* ((completion (make-instance 'entry-completion :model model :text-column 0))
+             (e (make-instance 'entry :completion completion)))
+        (setf (entry-completion-text-column completion) 0)
+        (container-add w e))
       (widget-show w))))

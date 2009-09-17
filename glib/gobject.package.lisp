@@ -162,7 +162,6 @@
            #:get-flags-items
            #:stable-pointer-value
            #:g-value-type
-           #:create-g-closure
            #:g-object-call-constructor
            #:g-object-call-get-property
            #:g-object-call-set-property
@@ -187,7 +186,14 @@
            #:g-boxed-foreign
            #:boxed-related-symbols
            #:define-boxed-opaque-accessor
-           #:glib-defcallback)
+           #:glib-defcallback
+           #:create-signal-handler-closure
+           #:save-handler-to-object
+           #:retrieve-handler-from-object
+           #:delete-handler-from-object
+           #:disconnect-signal
+           #:define-cb-methods
+           #:create-fn-ref)
   (:documentation
    "CL-GTK2-GOBJECT is a binding to GObject type system.
 For information on GObject, see its @a[http://library.gnome.org/devel/gobject/stable/]{documentation}.

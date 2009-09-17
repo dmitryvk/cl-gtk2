@@ -25,7 +25,8 @@
            #:g-idle-add-full
            #:g-idle-add
            #:g-timeout-add-full
-           #:g-source-remove)
+           #:g-source-remove
+           #:at-finalize)
   (:documentation
    "Cl-gtk2-glib is wrapper for @a[http://library.gnome.org/devel/glib/]{GLib}."))
 
@@ -37,11 +38,27 @@
   (defun register-initializer (key fn)
     (unless (gethash key *initializers-table*)
       (setf (gethash key *initializers-table*) t
-            *initializers* (nconc *initializers* (list fn))))))
+            *initializers* (nconc *initializers* (list fn)))))
+  (defvar *finalizers-table* (make-hash-table :test 'equalp))
+  (defvar *finalizers* nil)
+  (defun register-finalizer (key fn)
+    (unless (gethash key *finalizers-table*)
+      (setf (gethash key *finalizers-table*) t
+            *finalizers* (nconc *finalizers* (list fn))))))
 
 (defun run-initializers ()
   (iter (for fn in *initializers*)
         (funcall fn)))
+
+(defun run-finalizers ()
+  (iter (for fn in *finalizers*)
+        (funcall fn)))
+
+#+sbcl
+(pushnew 'run-initializers sb-ext:*init-hooks*)
+
+#+sbcl
+(pushnew 'run-finalizers sb-ext:*save-hooks*)
 
 (defmacro at-init ((&rest keys) &body body)
   "
@@ -64,16 +81,21 @@ In this example, for every @code{class}, @code{(initialize-gobject-class-g-type 
   `(progn (register-initializer (list ,@keys ',body) (lambda () ,@body))
           ,@body))
 
+(defmacro at-finalize ((&rest keys) &body body)
+  `(register-finalizer (list ,@keys ',body) (lambda () ,@body)))
+
 (eval-when (:compile-toplevel :load-toplevel :execute)
   (define-foreign-library glib
     (:unix (:or "libglib-2.0.so.0" "libglib-2.0.so"))
-    (t "libglib-2.0")))
+    (:win32 "libglib-2.0-0.dll")
+    (t (:default "libglib-2.0"))))
 
 (use-foreign-library glib)
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
   (define-foreign-library gthread
     (:unix (:or "libgthread-2.0.so.0"  "libgthread-2.0.so"))
+    (:win32 "libgthread-2.0-0.dll")
     (t "libgthread-2.0")))
 
 (use-foreign-library gthread)
@@ -399,12 +421,11 @@ Adds a function to be called whenever there are no higher priority events pendin
 (defcfun (g-thread-init "g_thread_init") :void
   (vtable :pointer))
 
-(defvar *threads-initialized-p* nil)
+(defcfun g-thread-get-initialized :boolean)
 
 (at-init ()
-  (unless *threads-initialized-p*
-    (g-thread-init (null-pointer))
-    (setf *threads-initialized-p* t)))
+  (unless (g-thread-get-initialized)
+    (g-thread-init (null-pointer))))
 
 (defcenum g-thread-priority
   :g-thread-priority-low

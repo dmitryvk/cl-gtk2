@@ -1074,18 +1074,27 @@ Example:
 
 @node Closures
 @chapter Closures
+@menu
+* create-signal-handler-closure::
+* Object-bound foreign functions::
+@end menu
 
 Closure are anonymous functions that capture their lexical environment.
 
-GObject supports using closures (as instances of type GClosure) as signal handlers and in some other places where a function is expected. Function @code{create-g-closure} create closure from lisp function. The GClosure is finalized automatically when GObject no longer needs it (e.g., when GClosure is disconnected from signal).
+GObject supports using closures (as instances of type GClosure) as signal handlers and in some other places where a function is expected. Function @code{create-signal-handler-closure} create closure from lisp function that can be used a signal handler. The GClosure is finalized automatically when GObject no longer needs it (e.g., when GClosure is disconnected from signal).
 
-@section create-g-closure
-@Function create-g-closure
+(TODO: GObject defines finer closure API: g_closure_ref, g_closure_unref, g_closure_invoke. It should be bound.)
+
+@node create-signal-handler-closure
+@section create-signal-handler-closure
+@Function create-signal-handler-closure
 @lisp
-(create-g-closure fn) @result{} closure
+(create-signal-handler-closure object fn) @result{} closure
 @end lisp
 
 @table @var
+@item @var{object}
+An object for which the closure is created
 @item @var{fn}
 A function that will be called by closure invokation
 @item @var{closure}
@@ -1096,7 +1105,7 @@ Allocates the closure. The closure is destroyed automatically by GObject.
 
 Example:
 @lisp
-(create-g-closure (lambda (x) (+ x 10)))
+(create-signal-handler-closure obj (lambda (x) (+ x 10)))
 @result{}
 #.(SB-SYS:INT-SAP #X006D7B20)
 @end lisp
@@ -1106,11 +1115,49 @@ Example of usage from GObject binding code:
 (defun connect-signal (object signal handler &key after)
   (g-signal-connect-closure (ensure-object-pointer object)
                             signal
-                            (create-g-closure handler)
+                            (create-signal-handler-closure object handler)
                             after))
 @end lisp
 
-(TODO: GObject defines finer closure API: g_closure_ref, g_closure_unref, g_closure_invoke. It should be bound.)
+@node Object-bound foreign functions
+@section Object-bound foreign functions
+
+A common idiom for Gtk+ for passing user-defined function is as follows. Callback function has (besides its 'useful' arguments) an additional argument at the end - the 'data' pointer. This 'data' pointer, along with the pointer to 'destroy-notify' function is specified when passing the function. Destroy-notify function allows to free the function object (the Lisp closure) when it is not used by an object.
+
+@RMacro define-cb-methods
+@lisp
+(define-cb-methods name return-type ((arg-1 type-1) ... (arg-n type-n)))
+@end lisp
+
+Defines two CFFI callbacks assosiated with the callback function type @var{name}. Creates @var{name}-cb - a callback to be passed as an function and create @var{name}-destroy-notify - a callback to be passed as 'destroy-notify' function. These callbacks are intended to work together with @ref{create-fn-ref}.
+
+Arguments and return-type are the same as CFFI arguments and return-type for callbacks. Arguments do not include the last 'data' pointer.
+
+@RFunction create-fn-ref
+@lisp
+(create-fn-ref object function) @result{} foreign-pointer
+@end lisp
+
+This function creates a foreign structure containing the data neccesary for callbacks defined by @ref{define-cb-methods} to call and dispose of the @var{function}. The @var{function} is bound to the @var{object}. This is neccesary for correct work of garbage collector. The created structure is freed by 'destroy-notify' function.
+
+Example:
+@lisp
+(defcfun gtk-assistant-set-forward-page-func :void
+  (assistant (g-object assistant))
+  (page-func :pointer)
+  (data :pointer)
+  (destroy-notify :pointer))
+
+(define-cb-methods assistant-page-func :int ((current-page :int)))
+
+(defun set-assistant-forward-page-function (assistant function)
+  (if function
+      (gtk-assistant-set-forward-page-func assistant
+                                           (callback assistant-page-func-cb)
+                                           (create-fn-ref assistant function)
+                                           (callback assistant-page-func-destroy-notify))
+      (gtk-assistant-set-forward-page-func assistant (null-pointer) (null-pointer) (null-pointer))))
+@end lisp
 
 @node GObject low-level
 @chapter GObject low-level
@@ -1310,6 +1357,27 @@ A base class for all GObject classes.
 
 An accessor that accesses the foreign pointer to object.
 
+@Function release
+@lisp
+(release object)
+@end lisp
+
+Releases the @var{object} by dropping the reference from it in advance before GC reclaims it. Use this function as an optimization measure when you know that some object will not be needed. All access to the object's properties will be invalid after this function is called.
+
+@Macro using
+@lisp
+(using (object expr) &body body)
+@end lisp
+
+Evaluates and returns the result of evaluation of the @var{body} with @var{object} being bound to the result of evaluating @var{expr}. Ensures that @code{release} is called on @var{object} after the @var{body} is evaluated.
+
+@Macro using
+@lisp
+(using ((var1 expr1) (var2 expr2) ... (varn exprn)) &body body)
+@end lisp
+
+Evaluates and returns the result of evaluation of the @var{body} with @var{var}s being bound to the results of evaluating @var{expr}s. Ensures that @code{release} is called on every @var{var} after the @var{body} is evaluated.
+
 @node g-initially-unowned
 @section g-initially-unowned
 
@@ -1441,11 +1509,11 @@ NIL
 @node Signals
 @section Signals
 
-To connect handler to a signal, @code{connect-signal} function is used.
+To connect handler to a signal, @code{connect-signal} function is used. Function @code{disconnect-signal} removes the connected signal.
 
-@Function connect-signals
+@Function connect-signal
 @lisp
-(connect-signal object signal handler &key after)
+(connect-signal object signal handler &key after) @result{} handler-id
 @end lisp
 
 @table @var
@@ -1457,9 +1525,18 @@ A signal name
 A function
 @item @var{after}
 A boolean specifying whether the handler should be called after the default handler
+@item @var{handler-id}
+An integer - identifier of signal handler; can be used to disconnect the signal handler with @code{disconnect-signal}
 @end table
 
 Connects the @code{handler} to signal @code{signal} on object @code{object}. Signature of @code{handler} should comply with signature of a signal. @code{handler} will be called with arguments of type specified by signal with the object (on which the signal was emitted) prepended to them and it should return the value of the signal's return type.
+
+@Function disconnect-signal
+@lisp
+(disconnect-signal object handler-id)
+@end lisp
+
+Disconnects the signal handler identified by @var{handler-id} from the corresponding signal for @var{object}. @var{handler-id} is the integer identifying the signal handler; @code{connect-signal} returns handler identifiers.
 
 Example:
 @lisp
@@ -1486,6 +1563,7 @@ Example:
 
 Function @code{emit-signal} is used to emit signals on objects.
 
+@RFunction emit-signal
 @code{(emit-signal object signal-name &rest args) @result{} return-value}
 
 @table @var
