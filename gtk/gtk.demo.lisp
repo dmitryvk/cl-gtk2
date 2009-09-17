@@ -1,6 +1,7 @@
 (defpackage :gtk-demo
   (:use :cl :gtk :gdk :gobject :iter)
-  (:export #:test
+  (:export #:demo-all
+           #:test
            #:test-entry
            #:table-packing
            #:test-pixbuf
@@ -33,6 +34,7 @@
 (defparameter *src-location* (asdf:component-pathname (asdf:find-system :cl-gtk2-gtk)))
 
 (defun test ()
+  "A simple test of 'on-expose' event"
   (within-main-loop
     (let ((window (make-instance 'gtk-window :type :toplevel :app-paintable t))
           x y)
@@ -62,6 +64,7 @@
       (push :pointer-motion-mask (gdk-window-events (widget-window window))))))
   
 (defun test-entry ()
+  "Testing GtkTextEntry"
   (within-main-loop
     (let* ((window (make-instance 'gtk-window :type :toplevel :title "Testing entry" :border-width 10))
            (box (make-instance 'v-box))
@@ -103,6 +106,7 @@
       (widget-show window))))
 
 (defun table-packing ()
+  "Simple test of packing widgets into GtkTable"
   (within-main-loop
     (let* ((window (make-instance 'gtk-window :type :toplevel :title "Table packing" :border-width 20))
            (table (make-instance 'table :n-rows 2 :n-columns 2 :homogeneous t))
@@ -118,6 +122,7 @@
       (widget-show window))))
 
 (defun test-pixbuf ()
+  "(not completed)"
   (within-main-loop
     (let* ((window (make-instance 'gtk-window :title "Test pixbuf" :request-width 600 :request-height 240))
           (vbox (make-instance 'v-box))
@@ -133,6 +138,7 @@
      (widget-show window))))
 
 (defun test-image ()
+  "Using GtkImage with stock icon"
   (within-main-loop
     (let* ((window (make-instance 'gtk-window :title "Test images"))
            (image (make-instance 'image :icon-name "applications-development" :icon-size 6)))
@@ -141,6 +147,7 @@
       (widget-show window))))
 
 (defun test-progress-bar ()
+  "Testing progress-bar"
   (within-main-loop
     (let* ((window (make-instance 'gtk-window :title "Test progress bar"))
            (v-box (make-instance 'v-box))
@@ -162,6 +169,7 @@
       (widget-show window))))
 
 (defun test-statusbar ()
+  "Test of GtkStatusbar"
   (within-main-loop
     (let* ((window (make-instance 'gtk-window :title "Text status bar"))
            (v-box (make-instance 'v-box))
@@ -201,6 +209,7 @@
       (setf (status-icon-screen icon) (gtk-window-screen window)))))
 
 (defun test-scale-button ()
+  "Test of scale button with icons"
   (within-main-loop
     (let* ((window (make-instance 'gtk-window :type :toplevel :title "Testing scale button"))
            (button (make-instance 'scale-button :icons (list "media-seek-backward" "media-seek-forward" "media-playback-stop" "media-playback-start") :adjustment (make-instance 'adjustment :lower -40 :upper 50 :value 20))))
@@ -209,6 +218,7 @@
       (widget-show window))))
 
 (defun test-text-view ()
+  "Test of GtkTextView"
   (within-main-loop
     (let* ((window (make-instance 'gtk-window :type :toplevel :title "Testing text view" :width-request 400 :height-request 300))
            (button (make-instance 'button :label "Do"))
@@ -266,6 +276,7 @@
       (widget-show window))))
 
 (defun demo-code-editor ()
+  "(unfinished)"
   (within-main-loop
     (let* ((window (make-instance 'gtk-window :type :toplevel :title "Code editor" :width-request 400 :height-request 400 :window-position :center))
            (scrolled (make-instance 'scrolled-window :hscrollbar-policy :automatic :vscrollbar-policy :automatic))
@@ -283,6 +294,7 @@
 (defstruct tvi title value)
 
 (defun test-treeview-list ()
+  "Test of treeview with CL-GTK2-GTK:ARRAY-LIST-STORE"
   (within-main-loop
     (let* ((window (make-instance 'gtk-window :type :toplevel :title "Treeview (list)"))
            (model (make-instance 'array-list-store))
@@ -337,6 +349,7 @@
       (widget-show window))))
 
 (defun test-combo-box ()
+  "Testing GtkComboBox"
   (within-main-loop
     (let* ((window (make-instance 'gtk-window :type :toplevel :title "Treeview (list)"))
            (model (make-instance 'array-list-store))
@@ -380,6 +393,7 @@
       (widget-show window))))
 
 (defun test-ui-manager ()
+  "Testing GtkUIManager"
   (within-main-loop
     (let* ((window (make-instance 'gtk-window :type :toplevel :title "UI Manager" :default-width 200 :default-height 100 :window-position :center))
            (ui-manager (make-instance 'ui-manager))
@@ -417,6 +431,7 @@
       (widget-show window))))
 
 (defun test-color-button ()
+  "Test of GtkColorButton"
   (within-main-loop
     (let ((window (make-instance 'gtk-window :title "Color button" :type :toplevel :window-position :center :width-request 100 :height-request 100))
           (button (make-instance 'color-button :title "Color button")))
@@ -428,6 +443,7 @@
       (widget-show window))))
 
 (defun test-color-selection ()
+  "Test of GtkColorSelection"
   (within-main-loop
     (let ((window (make-instance 'gtk-window :title "Color selection" :type :toplevel :window-position :center))
           (selection (make-instance 'color-selection :has-opacity-control t)))
@@ -437,6 +453,7 @@
       (widget-show window))))
 
 (defun test-file-chooser ()
+  "Test of GtkFileChooser"
   (within-main-loop
     (let ((window (make-instance 'gtk-window :title "file chooser" :type :toplevel :window-position :center :default-width 100 :default-height 100))
           (v-box (make-instance 'v-box))
@@ -458,6 +475,7 @@
       (widget-show window))))
 
 (defun test-font-chooser ()
+  "GtkFontChooser"
   (within-main-loop
     (let ((window (make-instance 'gtk-window :title "fonts" :type :toplevel :window-position :center :default-width 100 :default-height 100))
           (v-box (make-instance 'v-box))
@@ -469,6 +487,7 @@
       (widget-show window))))
 
 (defun test-notebook ()
+  "Test GtkNotebook"
   (within-main-loop
     (let ((window (make-instance 'gtk-window :title "Notebook" :type :toplevel :window-position :center :default-width 100 :default-height 100))
           (expander (make-instance 'expander :expanded t :label "notebook"))
@@ -501,6 +520,7 @@
     "!"))
 
 (defun test-calendar ()
+  "Test of GtkCalendar"
   (within-main-loop
     (let ((window (make-instance 'gtk-window :title "Calendar" :type :toplevel :window-position :center :default-width 100 :default-height 100))
           (calendar (make-instance 'calendar :detail-function #'calendar-detail)))
@@ -513,6 +533,7 @@
       (widget-show window))))
 
 (defun test-box-child-property ()
+  "Test of child-property usage"
   (within-main-loop
     (let ((window (make-instance 'gtk-window :title "Text box child property" :type :toplevel :window-position :center :width-request 200 :height-request 200))
           (box (make-instance 'h-box))
@@ -524,6 +545,7 @@
       (widget-show window))))
 
 (defun test-builder ()
+  "Test of GtkBuilder"
   (within-main-loop
     (let ((builder (make-instance 'builder)))
       (builder-add-from-file builder (namestring (merge-pathnames "demo/demo1.ui" *src-location*)))
@@ -565,6 +587,7 @@
          do (write-string line str)))))
 
 (defun demo-text-editor ()
+  "More advanced example: text editor with ability to evaluate lisp expressions"
   (within-main-loop
     (let* ((builder (let ((builder (make-instance 'builder)))
                       (builder-add-from-file builder (namestring (merge-pathnames "demo/text-editor.ui" *src-location*)))
@@ -662,6 +685,7 @@
         (widget-show window)))))
 
 (defun demo-class-browser ()
+  "Show slots of a given class"
   (let ((output *standard-output*))
     (with-main-loop
         (let* ((window (make-instance 'gtk-window
@@ -719,6 +743,7 @@
     node))
 
 (defun demo-treeview-tree ()
+  "Advanced demo: show s-expression tree structure"
   (within-main-loop
     (let* ((window (make-instance 'gtk-window :type :toplevel :title "Treeview (tree)"))
            (model (make-instance 'tree-lisp-store))
@@ -795,11 +820,13 @@
         (format nil "Now is: ~A~%" (get-internal-run-time))))
 
 (defun test-custom-window ()
+  "Simple test of non-GObject subclass of GtkWindow"
   (within-main-loop
     (let ((w (make-instance 'custom-window)))
       (widget-show w))))
 
 (defun test-assistant ()
+  "Simple test of GtkAssistant wizard"
   (let ((output *standard-output*))
     (within-main-loop
       (let ((d (make-instance 'assistant :title "Username wizard"))
@@ -843,6 +870,7 @@
         (widget-show d)))))
 
 (defun test-entry-completion ()
+  "Not working example of GtkEntryCompletion"
   (within-main-loop
     (let* ((w (make-instance 'gtk-window))
            (model (make-instance 'tree-lisp-store)))
@@ -859,3 +887,38 @@
         (setf (entry-completion-text-column completion) 0)
         (container-add w e))
       (widget-show w))))
+
+(defun demo-all ()
+  (within-main-loop
+    (let* ((window (make-instance 'gtk-window
+                                  :title "cl-gtk2-gtk demo"
+                                  :window-position :center
+                                  :default-width 500
+                                  :default-height 500))
+           (scrolled (make-instance 'scrolled-window
+                                    :hscrollbar-policy :automatic
+                                    :vscrollbar-policy :automatic))
+           (viewport (make-instance 'viewport))
+           (v-box-buttons (make-instance 'v-box))
+           (v-box-top (make-instance 'v-box)))
+      (container-add window v-box-top)
+      (box-pack-start v-box-top (make-instance 'label :label "These are the demos of cl-gtk2-gtk:") :expand nil)
+      (box-pack-start v-box-top scrolled)
+      (container-add scrolled viewport)
+      (container-add viewport v-box-buttons)
+      (iter (for s in-package :gtk-demo :external-only t)
+            (for fn = (fdefinition s))
+            (unless fn (continue))
+            (when (eq s 'demo-all) (continue))
+            (for docstring = (documentation fn t))
+            (for description = (format nil "~A~@[~%~A~]" (string-downcase (symbol-name s)) docstring))
+            (for label = (make-instance 'label :label description :justify :center))
+            (for button = (make-instance 'button))
+            (container-add button label)
+            (connect-signal button "clicked"
+                            (let ((fn fn))
+                              (lambda (b)
+                                (declare (ignore b))
+                                (funcall fn))))
+            (box-pack-start v-box-buttons button :expand nil))
+      (widget-show window))))
