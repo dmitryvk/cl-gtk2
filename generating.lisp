@@ -248,7 +248,7 @@
 	(:cffi gtk::pango-context gtk::widget-pango-context g-object
 	 "gtk_widget_get_pango_context" nil)
 	(:cffi gtk::child-visible gtk::widget-child-visible :boolean
-	 "gtk_widget_get_child_visible" "gtk_widget_set_child_visible"))
+	 "gtk_widget_get_child_visible" "gtk_widget_set_child_visible")
         (:cffi gtk::direction gtk::widget-direction gtk::text-direction
          "gtk_widget_get_direction" "gtk_widget_set_direction")
         (:cffi gtk::composite-name gtk::widget-composite-name (glib:g-string :free-from-foreign t :free-to-foreign t)
@@ -258,7 +258,7 @@
         (:cffi gtk::accessible gtk::widget-accessible g-object
          "gtk_widget_get_accessible" nil)
         (:cffi gtk::tooltip-window gtk::widget-tooltip-window g-object
-         "gtk_widget_get_tooltip_window" "gtk_widget_set_tooltip_window"))
+	 "gtk_widget_get_tooltip_window" "gtk_widget_set_tooltip_window"))
        ("GtkWindowGroup"
         (:cffi gtk::windows gtk::window-group-windows (glist (g-object gtk::window))
          "gtk_window_group_list_windows" nil))
