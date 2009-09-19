@@ -69,7 +69,8 @@
                 "GtkTextBuffer" "GtkTextChildAnchor" "GtkTextMark" "GtkTextTag"
                 "GtkTextTagTable" "GtkTreeModelFilter" "GtkTreeModelSort"
                 "GtkTreeSelection" "GtkTreeStore" "GtkUIManager" "GtkWindowGroup"
-                "GtkToggleAction" "GtkRecentAction" "GtkRadioAction" "GtkItemFactory")
+                "GtkToggleAction" "GtkRecentAction" "GtkRadioAction" "GtkItemFactory"
+		"GtkFileSelection" "GtkPageSetupUnixDialog" "GtkPrintUnixDialog")
      :flags '("GtkTextSearchFlags" "GtkAccelFlags" "GtkArgFlags" "GtkAttachOptions"
               "GtkButtonAction" "GtkCalendarDisplayOptions" "GtkCellRendererState"
               "GtkDebugFlag" "GtkDestDefaults" "GtkDialogFlags" "GtkFileFilterFlags"
@@ -106,8 +107,22 @@
               "GtkTreeViewMode" "GtkVisibility" "GtkEntryIconPosition")
      :exclusions '("PangoStretch" "PangoVariant" "PangoStyle" "PangoUnderline" "GtkGLDrawingArea")
      :additional-properties
-     '(("GtkTreeViewColumn"
-        (:cffi gtk::tree-view gtk::tree-view-column-tree-view g-object "gtk_tree_view_column_get_tree_view" nil)
+     '(("GtkWindow"
+	(:cffi gtk::focus gtk::gtk-window-focus (g-object gtk::widget)
+	 "gtk_window_get_focus" "gtk_window_set_focus")
+	(:cffi gtk::default-widget gtk::gtk-window-default-widget (g-object gtk::widget)
+	 "gtk_window_get_default_widget" "gtk_window_set_default")
+	(:cffi gtk::has-frame gtk::gtk-window-has-frame :boolean
+	 "gtk_window_get_has_frame" "gtk_window_set_has_frame")
+	(:cffi gtk::mnemonic-modifier gtk::gtk-window-mnemonic-modifier (g-object gdk::modifier-type)
+	 "gtk_window_get_mnemonic_modifier" "gtk_window_set_mnemonic_modifier")
+	(:cffi gtk::icon-list gtk::gtk-window-icon-list (glist gtk::pixbuf :free-from-foreign t :free-to-foreign t)
+	 "gtk_window_get_icon_list" "gtk_window_set_icon_list")
+	(:cffi gtk::group gtk::gtk-window-group (g-object gtk::window-group)
+	 "gtk_window_get_group" nil))
+       ("GtkTreeViewColumn"
+        (:cffi gtk::tree-view gtk::tree-view-column-tree-view g-object
+	 "gtk_tree_view_column_get_tree_view" nil)
         (:cffi gtk::sort-column-id gtk::tree-view-column-sort-column-id :int
          "gtk_tree_view_column_get_sort_column_id" "gtk_tree_view_column_set_sort_column_id")
         (:cffi gtk::cell-renderers gtk::tree-view-column-cell-renderers (glist g-object  :free-from-foreign t)
@@ -220,6 +235,20 @@
         (:cffi gtk::focus-hadjustment gtk::container-focus-hadjustment g-object
          "gtk_container_get_focus_hadjustment" "gtk_container_set_focus_hadjustment"))
        ("GtkWidget"
+	(:cffi gtk::parent-window gtk::widget-parent-window (g-object gdk::window)
+	 "gtk_widget_get_parent_window" "gtk_widget_set_parent_window")
+	(:cffi gtk::toplevel gtk::widget-toplevel (g-object gtk::widget)
+	 "gtk_widget_get_toplevel" nil)
+	(:cffi gtk::colormap gtk::widget-colormap (g-object gdk::gdk-colormap)
+	 "gtk_widget_get_colormap" "gtk_widget_set_colormap")
+	(:cffi gtk::visual gtk::widget-visual (g-object gdk::visual)
+	 "gtk_widget_get_visual" nil)
+	(:cffi gtk::modifier-style gtk::widget-modifier-style (g-object gtk::rc-style)
+	 "gtk_widget_get_modifier_style" "gtk_widget_modify_style")
+	(:cffi gtk::pango-context gtk::widget-pango-context g-object
+	 "gtk_widget_get_pango_context" nil)
+	(:cffi gtk::child-visible gtk::widget-child-visible :boolean
+	 "gtk_widget_get_child_visible" "gtk_widget_set_child_visible")
         (:cffi gtk::direction gtk::widget-direction gtk::text-direction
          "gtk_widget_get_direction" "gtk_widget_set_direction")
         (:cffi gtk::composite-name gtk::widget-composite-name (glib:g-string :free-from-foreign t :free-to-foreign t)
@@ -229,12 +258,7 @@
         (:cffi gtk::accessible gtk::widget-accessible g-object
          "gtk_widget_get_accessible" nil)
         (:cffi gtk::tooltip-window gtk::widget-tooltip-window g-object
-         "gtk_widget_get_tooltip_window" "gtk_widget_set_tooltip_window"))
-       ("GtkWindow"
-        (:cffi gtk::default-widget gtk::window-default-widget (g-object gtk::widget)
-         "gtk_window_get_default_widget" "gtk_window_set_default")
-        (:cffi gtk::focus gtk::window-focus (g-object gtk::widget)
-         "gtk_window_get_focus" "gtk_window_set_focus"))
+	 "gtk_widget_get_tooltip_window" "gtk_widget_set_tooltip_window"))
        ("GtkWindowGroup"
         (:cffi gtk::windows gtk::window-group-windows (glist (g-object gtk::window))
          "gtk_window_group_list_windows" nil))
@@ -275,6 +299,11 @@
          "gtk_entry_get_cursor_hadjustment" "gtk_entry_set_cursor_hadjustment")
         (:cffi gtk::layout-offset gtk::entry-layout-offset nil
          gtk::gtk-entry-layout-offset nil))
+       ("GtkPageSetupUnixDialog"
+	(:cffi gtk::page-setup gtk::page-setup-unix-dialog-page-setup (g-object gtk::page-setup)
+	 "gtk_page_setup_unix_dialog_get_page_setup" "gtk_page_setup_unix_dialog_set_page_setup")
+	(:cffi gtk::print-settings gtk::page-setup-unix-dialog-print-settings (g-object gtk::print-settings)
+	 "gtk_page_setup_unix_dialog_get_print_settings" "gtk_page_setup_unix_dialog_set_print_settings"))
        ("GtkEntryCompletion"
         (:cffi gtk::entry gtk::entry-completion-entry (g-object gtk::entry)
          "gtk_entry_completion_get_entry" nil)

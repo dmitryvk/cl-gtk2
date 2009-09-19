@@ -1,97 +1,71 @@
 (in-package :gtk)
 
-(defcfun (window-add-accel-group "gtk_window_add_accel_group") :void
+(defcfun (gtk-window-add-accel-group "gtk_window_add_accel_group") :void
   (window (g-object gtk-window))
   (accel-group (g-object accel-group)))
 
-(export 'window-add-accel-group)
+(export 'gtk-window-add-accel-group)
 
-(defcfun (window-remove-accel-group "gtk_window_remove_accel_group") :void
+(defcfun (gtk-window-remove-accel-group "gtk_window_remove_accel_group") :void
   (window (g-object gtk-window))
   (accel-group (g-object accel-group)))
 
-(export 'window-remove-accel-group)
+(export 'gtk-window-remove-accel-group)
 
-(defcfun (window-activate-focus "gtk_window_activate_focus") :boolean
+(defcfun (gtk-window-activate-focus "gtk_window_activate_focus") :boolean
   (window (g-object gtk-window)))
 
-(export 'window-activate-focus)
+(export 'gtk-window-activate-focus)
 
-(defcfun (window-activate-default "gtk_window_activate_default") :boolean
+(defcfun (gtk-window-activate-default "gtk_window_activate_default") :boolean
   (window (g-object gtk-window)))
 
-(export 'window-activate-default)
+(export 'gtk-window-activate-default)
 
-(defcfun (window-set-geometry-hints "gtk_window_set_geometry_hints") :void
+(defcfun (gtk-window-set-geometry-hints "gtk_window_set_geometry_hints") :void
   (window (g-object gtk-window))
   (geometry-widget (g-object widget))
   (geometry (g-boxed-foreign geometry))
   (geometry-mask window-hints))
 
-(export 'window-set-geometry-hints)
+(export 'gtk-window-set-geometry-hints)
 
-(defcfun (window-list-toplevels "gtk_window_list_toplevels") (glist (g-object gtk-window) :free-from-foreign t))
+(defcfun (gtk-window-list-toplevels "gtk_window_list_toplevels") (glist (g-object gtk-window) :free-from-foreign t))
 
-(export 'window-list-toplevels)
+(export 'gtk-window-list-toplevels)
 
-(defcfun (window-add-mnemonic "gtk_window_add_mnemonic") :void
+(defcfun (gtk-window-add-mnemonic "gtk_window_add_mnemonic") :void
   (window (g-object gtk-window))
   (keyval :uint)
   (target (g-object widget)))
 
-(export 'window-add-mnemonic)
+(export 'gtk-window-add-mnemonic)
 
-(defcfun (window-remove-mnemonic "gtk_window_remove_mnemonic") :void
+(defcfun (gtk-window-remove-mnemonic "gtk_window_remove_mnemonic") :void
   (window (g-object gtk-window))
   (keyval :uint)
   (target (g-object widget)))
 
-(export 'window-remove-mnemonic)
+(export 'gtk-window-remove-mnemonic)
 
-(defcfun (window-activate-mnemonic "gtk_window_mnemonic_activate") :boolean
+(defcfun (gtk-window-activate-mnemonic "gtk_window_mnemonic_activate") :boolean
   (window (g-object gtk-window))
   (keyval :uint)
   (modifier modifier-type))
 
-(export 'window-activate-mnemonic)
+(export 'gtk-window-activate-mnemonic)
 
-(defcfun (window-activate-key "gtk_window_activate_key") :boolean
+(defcfun (gtk-window-activate-key "gtk_window_activate_key") :boolean
   (window (g-object gtk-window))
   (event (g-boxed-foreign event)))
 
-(export 'window-activate-key)
+(export 'gtk-window-activate-key)
 
-(defcfun (window-propagate-key-event "gtk_window_propagate_key_event") :boolean
+(defcfun (gtk-window-propagate-key-event "gtk_window_propagate_key_event") :boolean
   (window (g-object gtk-window))
   (event (g-boxed-foreign event)))
 
-(export 'window-propagate-key-event)
-
-(defcfun (window-focus "gtk_window_get_focus") (g-object widget)
-  (window (g-object gtk-window)))
-
-(defcfun (window-set-focus "gtk_window_set_focus") :void
-  (window (g-object gtk-window))
-  (focus (g-object widget)))
-
-(defun (setf window-focus) (focus window)
-  (window-set-focus window focus)
-  focus)
-
-(export 'window-focus)
-
-(defcfun (window-default-widget "gtk_window_get_default_widget") (g-object widget)
-  (window (g-object gtk-window)))
-
-(defcfun (window-set-default-widget "gtk_window_set_default") :void
-  (window (g-object gtk-window))
-  (default-widget (g-object widget)))
-
-(defun (setf window-default-widget) (default-widget window)
-  (window-set-default-widget window default-widget)
-  default-widget)
-
-(export 'window-default-widget)
+(export 'gtk-window-propagate-key-event)
 
 (defcfun (present-window "gtk_window_present") :void
   (window (g-object gtk-window)))
@@ -144,19 +118,19 @@
 
 (export 'window-unfullscreen)
 
-(defcfun (window-set-keep-above "gtk_window_set_keep_above") :void
+(defcfun (gtk-window-set-keep-above "gtk_window_set_keep_above") :void
   (window (g-object gtk-window))
   (setting :boolean))
 
-(export 'window-set-keep-above)
+(export 'gtk-window-set-keep-above)
 
-(defcfun (window-set-keep-below "gtk_window_set_keep_below") :void
+(defcfun (gtk-window-set-keep-below "gtk_window_set_keep_below") :void
   (window (g-object gtk-window))
   (setting :boolean))
 
-(export 'window-set-keep-below)
+(export 'gtk-window-set-keep-below)
 
-(defcfun (window-begin-resize-drag "gtk_window_begin_resize_drag") :void
+(defcfun (gtk-window-begin-resize-drag "gtk_window_begin_resize_drag") :void
   (window (g-object gtk-window))
   (edge window-edge)
   (button :int)
@@ -164,80 +138,63 @@
   (root-y :int)
   (timestamp :uint32))
 
-(export 'window-begin-resize-drag)
+(export 'gtk-window-begin-resize-drag)
 
-(defcfun (window-begin-move-drag "gtk_window_begin_move_drag") :void
+(defcfun (gtk-window-begin-move-drag "gtk_window_begin_move_drag") :void
   (window (g-object gtk-window))
   (button :int)
   (root-x :int)
   (root-y :int)
   (timestamp :uint32))
 
-(export 'window-begin-move-drag)
+(export 'gtk-window-begin-move-drag)
 
-(defcfun (window-set-frame-dimensions "gtk_window_set_frame_dimensions") :void
+(defcfun (gtk-window-set-frame-dimensions "gtk_window_set_frame_dimensions") :void
   (window (g-object gtk-window))
   (left :int)
   (top :int)
   (right :int)
   (bottom :int))
 
-(export 'window-set-frame-dimensions)
+(export 'gtk-window-set-frame-dimensions)
 
-(defcfun (window-set-has-frame "gtk_window_set_has_frame") :void
+(defcfun (gtk-window-set-has-frame "gtk_window_set_has_frame") :void
   (window (g-object gtk-window))
   (setting :boolean))
 
-(export 'window-set-has-frame)
+(export 'gtk-window-set-has-frame)
 
-(defcfun (window-set-mnemonic-modifier "gtk_window_set_mnemonic_modifier") :void
+(defcfun (gtk-window-set-mnemonic-modifier "gtk_window_set_mnemonic_modifier") :void
   (window (g-object gtk-window))
   (modifier modifier-type))
 
-(export 'window-set-mnemonic-modifier)
+(export 'gtk-window-set-mnemonic-modifier)
 
-(defcfun (window-icon-list "gtk_window_get_icon_list") (glist pixbuf :free-from-foreign t)
-  (window (g-object gtk-window)))
-
-(defcfun (window-set-icon-list "gtk_window_set_icon_list") :void
-  (window (g-object gtk-window))
-  (icons (glist pixbuf :free-to-foreign t)))
-
-(defun (setf window-icon-list) (icon-list window)
-  (window-set-icon-list window icon-list))
-
-(export 'window-icon-list)
-
-(defcfun (%window-get-position "gtk_window_get_position") :void
+(defcfun (%gtk-window-get-position "gtk_window_get_position") :void
   (window (g-object gtk-window))
   (root-x (:pointer :int))
   (root-y (:pointer :int)))
 
-(defun window-get-position (window)
+(defun gtk-window-get-position (window)
   (with-foreign-objects ((x :int)
                          (y :int))
-    (%window-get-position window x y)
+    (%gtk-window-get-position window x y)
     (values (mem-ref x :int) (mem-ref y :int))))
 
-(export 'window-get-position)
+(export 'gtk-window-get-position)
 
-(defcfun (%window-get-size "gtk_window_get_size") :void
+(defcfun (%gtk-window-get-size "gtk_window_get_size") :void
   (window (g-object gtk-window))
   (width (:pointer :int))
   (height (:pointer :int)))
 
-(defun window-size (window)
+(defun gtk-window-size (window)
   (with-foreign-objects ((width :int)
                          (height :int))
-    (%window-get-size window width height)
+    (%gtk-window-get-size window width height)
     (values (mem-ref width :int) (mem-ref height :int))))
 
-(export 'window-size)
-
-(defcfun (window-group "gtk_window_get_group") (g-object window-group)
-  (window (g-object gtk-window)))
-
-(export 'window-group)
+(export 'gtk-window-size)
 
 (defcfun (window-move "gtk_window_move") :void
   (window (g-object gtk-window))
@@ -246,11 +203,11 @@
 
 (export 'window-move)
 
-(defcfun (window-parse-geometry "gtk_window_parse_geometry") :boolean
+(defcfun (gtk-window-parse-geometry "gtk_window_parse_geometry") :boolean
   (window (g-object gtk-window))
   (geometry-string :string))
 
-(export 'window-parse-geometry)
+(export 'gtk-window-parse-geometry)
 
 (defcfun (reshow-window-with-initial-size "gtk_window_reshow_with_initial_size") :void
   (window (g-object gtk-window)))
@@ -294,26 +251,26 @@
 
 (export 'set-window-auto-startup-notification)
 
-(defcfun (window-group-add-window "gtk_window_group_add_window") :void
+(defcfun (gtk-window-group-add-window "gtk_window_group_add_window") :void
   (window-group (g-object window-group))
   (window (g-object gtk-window)))
 
-(export 'window-group-add-window)
+(export 'gtk-window-group-add-window)
 
-(defcfun (window-group-remove-window "gtk_window_group_remove_window") :void
+(defcfun (gtk-window-group-remove-window "gtk_window_group_remove_window") :void
   (window-group (g-object window-group))
   (window (g-object gtk-window)))
 
-(export 'window-group-remove-window)
+(export 'gtk-window-group-remove-window)
 
-(defcfun (window-group-list-windows "gtk_window_group_list_windows") (glist gtk-window)
+(defcfun (gtk-window-group-list-windows "gtk_window_group_list_windows") (glist gtk-window)
   (window-group (g-object window-group)))
 
-(export 'window-group-list-windows)
+(export 'gtk-window-group-list-windows)
 
-(defcfun (window-mnemonic-activate "gtk_window_mnemonic_activate") :boolean
+(defcfun (gtk-window-mnemonic-activate "gtk_window_mnemonic_activate") :boolean
   (window (g-object gtk-window))
   (keyval :uint)
   (modifier modifier-type))
 
-(export 'window-mnemonic-activate)
+(export 'gtk-window-mnemonic-activate)
