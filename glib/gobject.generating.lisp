@@ -7,6 +7,7 @@
 (defvar *generation-exclusions* nil)
 (defvar *known-interfaces* (make-hash-table :test 'equal))
 (defvar *additional-properties* nil)
+(defvar *generated-types* nil)
 
 (defun name->supplied-p (name)
   (make-symbol (format nil "~A-SUPPLIED-P" (symbol-name name))))
@@ -242,6 +243,8 @@
     (let ((type-init-name (probable-type-init-name type)))
       (when (foreign-symbol-pointer type-init-name)
         (foreign-funcall-pointer (foreign-symbol-pointer type-init-name) () :int))))
+  (when *generated-types*
+    (setf (gethash (g-type-string type) *generated-types*) t))
   (let* ((*lisp-name-package* (or lisp-name-package *lisp-name-package* *package*))
          (g-type (ensure-g-type type))
          (g-name (g-type-name g-type))
@@ -271,6 +274,8 @@
     (let ((type-init-name (probable-type-init-name interface)))
       (when (foreign-symbol-pointer type-init-name)
         (foreign-funcall-pointer (foreign-symbol-pointer type-init-name) () :int))))
+  (when *generated-types*
+    (setf (gethash (g-type-string interface) *generated-types*) t))
   (let* ((*lisp-name-package* (or lisp-name-package *lisp-name-package* *package*))
          (type (ensure-g-type interface))
          (g-name (g-type-name type))
@@ -289,10 +294,12 @@
 
 (defun get-g-class-definitions-for-root-1 (type)
   (unless (member type *generation-exclusions* :test 'g-type=)
-    (cons (get-g-class-definition type)
-          (reduce #'append
-                  (mapcar #'get-g-class-definitions-for-root-1
-                          (sort (copy-list (g-type-children type)) #'string< :key #'g-type-string))))))
+    (iter (when (first-iteration-p)
+            (unless (and *generated-types*
+                         (gethash (g-type-string type) *generated-types*))
+              (appending (list (get-g-class-definition type)))))
+          (for child-type in (sort (copy-list (g-type-children type)) #'string< :key #'g-type-string))
+          (appending (get-g-class-definitions-for-root-1 child-type)))))
 
 (defun get-g-class-definitions-for-root (type)
   (setf type (ensure-g-type type))
@@ -378,6 +385,8 @@ If non-@code{NIL}, specifies the function that initializes the type: string spec
     (let ((type-init-name (probable-type-init-name type)))
       (when (foreign-symbol-pointer type-init-name)
         (foreign-funcall-pointer (foreign-symbol-pointer type-init-name) () :int))))
+  (when *generated-types*
+    (setf (gethash (g-type-string type) *generated-types*) t))
   (let* ((*lisp-name-package* (or lisp-name-package *lisp-name-package* *package*))
          (g-type (ensure-g-type type))
          (g-name (g-type-name g-type))
@@ -427,6 +436,8 @@ If non-@code{NIL}, specifies the function that initializes the type: string spec
     (let ((type-init-name (probable-type-init-name type)))
       (when (foreign-symbol-pointer type-init-name)
         (foreign-funcall-pointer (foreign-symbol-pointer type-init-name) () :int))))
+  (when *generated-types*
+    (setf (gethash (g-type-string type) *generated-types*) t))
   (let* ((*lisp-name-package* (or lisp-name-package *lisp-name-package* *package*))
          (g-type (ensure-g-type type))
          (g-name (g-type-name g-type))
@@ -462,6 +473,7 @@ If non-@code{NIL}, specifies the function that initializes the type: string spec
              (*lisp-name-exceptions* exceptions)
              (*print-case* :downcase)
              (*additional-properties* additional-properties)
+             (*generated-types* (make-hash-table :test 'equalp))
              (referenced-types (and include-referenced
                                     (filter-types-by-prefix
                                      (get-referenced-types root-type)
@@ -517,7 +529,7 @@ If non-@code{NIL}, specifies the function that initializes the type: string spec
         (loop
            for def in (get-g-class-definitions-for-root root-type)
            do (format file "~S~%~%" def))
-        (loop
-           for object in objects
-           for def = (get-g-class-definition object)
-           do (format file "~S~%~%" def)))))
+        (iter (for object in objects)
+              (unless (gethash (g-type-string object) *generated-types*)
+                (for def = (get-g-class-definition object))
+                (format file "~S~%~%" def))))))
