@@ -21,7 +21,6 @@
 * i-m-context::
 * icon-factory::
 * icon-theme::
-* item-factory::
 * list-store::
 * page-setup::
 * print-context::
@@ -44,7 +43,6 @@
 * text-tag-table::
 * toggle-action::
 * tooltip::
-* tooltips::
 * tree-lisp-store::
 * tree-model-filter::
 * tree-model-sort::
@@ -61,7 +59,7 @@
 @Class accel-group
 Superclass: @ref{g-object}
 
-An @ref{accel-group} represents a group of keyboard accelerators, typically attached to a toplevel @ref{gtk-window} (with gtk_window_add_accel_group()). Usually you won't need to create an @ref{accel-group} directly; instead, when using @ref{item-factory}, GTK+ automatically sets up the accelerators for your menus in the item factory's @ref{accel-group}s.
+An @ref{accel-group} represents a group of keyboard accelerators, typically attached to a toplevel @ref{gtk-window} (with gtk_window_add_accel_group()). Usually you won't need to create an @ref{accel-group} directly.
 
 Note that accelerators are different from mnemonics. Accelerators are shortcuts for activating a menu item; they appear alongside the menu item they're a shortcut for. For example "Ctrl+Q" might appear alongside the "Quit" menu item. Mnemonics are shortcuts for GUI elements such as text entries or buttons; they appear as underlined characters. See @ref{slot.label.mnemonic-widget,label-mnemonic-widget}. Menu items can have both accelerators and mnemonics, of course.
 
@@ -1343,7 +1341,7 @@ Signals:
 @Class gtk-object
 Superclass: @ref{g-initially-unowned}
 
-Subclasses: @ref{item-factory} @ref{tooltips} @ref{recent-filter} @ref{file-filter} @ref{cell-renderer} @ref{tree-view-column} @ref{adjustment} @ref{widget}
+Subclasses: @ref{recent-filter} @ref{file-filter} @ref{cell-renderer} @ref{tree-view-column} @ref{adjustment} @ref{widget}
 
 @ref{gtk-object} is the base class for all widgets, and for a few non-widget objects such as @ref{adjustment}. @ref{gtk-object} predates @ref{g-object}; non-widgets that derive from @ref{gtk-object} rather than @ref{g-object} do so for backward compatibility reasons.
 
@@ -1472,26 +1470,6 @@ Signals:
 
 
 
-@node item-factory
-@section item-factory
-@Class item-factory
-Superclass: @ref{gtk-object}
-
-@ref{item-factory} has been deprecated in favour of @ref{ui-manager}.
-
-
-Slots:
-@itemize
-@end itemize
-
-
-Signals:
-@itemize
-@end itemize
-
-
-
-
 @node list-store
 @section list-store
 @Class list-store
@@ -1530,8 +1508,6 @@ Slots:
 Signals:
 @itemize
 @end itemize
-
-
 
 
 @node print-context
@@ -2183,23 +2159,6 @@ Signals:
 @section tooltip
 @Class tooltip
 Superclass: @ref{g-object}
-
-Slots:
-@itemize
-@end itemize
-
-
-Signals:
-@itemize
-@end itemize
-
-
-
-
-@node tooltips
-@section tooltips
-@Class tooltips
-Superclass: @ref{gtk-object}
 
 Slots:
 @itemize

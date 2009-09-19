@@ -61,9 +61,10 @@
 * message-dialog::
 * misc::
 * notebook::
-* old-editable::
+* page-setup-unix-dialog::
 * paned::
 * plug::
+* print-unix-dialog::
 * progress::
 * progress-bar::
 * radio-button::
@@ -86,15 +87,12 @@
 * statusbar::
 * table::
 * tearoff-menu-item::
-* text::
 * text-view::
 * toggle-button::
 * toggle-tool-button::
 * tool-button::
 * tool-item::
 * toolbar::
-* tree::
-* tree-item::
 * tree-view::
 * v-box::
 * v-button-box::
@@ -768,7 +766,7 @@ Signals:
 @Class container
 Superclass: @ref{widget} @ref{atk-implementor-iface} @ref{buildable}
 
-Subclasses: @ref{tree} @ref{toolbar} @ref{text-view} @ref{table} @ref{socket} @ref{layout} @ref{paned} @ref{fixed} @ref{box} @ref{icon-view} @ref{tree-view} @ref{notebook} @ref{menu-shell} @ref{bin}
+Subclasses: @ref{toolbar} @ref{text-view} @ref{table} @ref{socket} @ref{layout} @ref{paned} @ref{fixed} @ref{box} @ref{icon-view} @ref{tree-view} @ref{notebook} @ref{menu-shell} @ref{bin}
 
 Slots:
 @itemize
@@ -1668,11 +1666,22 @@ Settings this works the following way. If focus is not the current focus widget,
 Windows may set a hint asking the desktop environment not to receive the input focus when the window is mapped.  True if the window should receive the input focus when mapped.
 
 Default value: True
+@item @anchor{slot.gtk-window.group}group. Type: @ref{window-group}. Accessor: @anchor{fn.gtk-window-group}@code{gtk-window-group}. Read-only.
+
+Returns the group for window or the default group, if window does not have an explicit window group.
 @item @anchor{slot.gtk-window.gravity}gravity. Type: @ref{gravity}. Accessor: @anchor{fn.gtk-window-gravity}@code{gtk-window-gravity}.
 
 The window gravity of the window. See @ref{window-move} and @ref{gravity} for more details about window gravity.
 
 Default value: @EnumVRef{anchor-type,north-west}
+
+@item @anchor{slot.gtk-window.has-frame}has-frame. Type: @code{boolean}. Accessor: @anchor{fn.gtk-window-has-frame}@code{gtk-window-has-frame}.
+
+(Note: this is a special-purpose property for the framebuffer port that causes GTK+ to draw its own window border. For most applications you want @SlotRef{gtk-window,decorated} instead, which tells the window manager whether to draw the window border.)
+
+If this property is set to True on a window, then before it is realized or showed, it will have a "frame" window around @SlotRef{widget,window}. Using the signal @SignalRef{gtk-window,frame-event} you can receive all events targeted at the frame.
+
+This function is used by the linux-fb port to implement managed windows, but it could conceivably be used by X-programs that want to do their own window decorations.
 @item @anchor{slot.gtk-window.has-toplevel-focus}has-toplevel-focus. Type: @code{boolean}. Accessor: @anchor{fn.gtk-window-has-toplevel-focus}@code{gtk-window-has-toplevel-focus}. Read-only.
 
 Whether the input focus is within this GtkWindow.
@@ -1685,6 +1694,20 @@ This icon is used when the window is minimized (also known as iconified). Some w
 The icon should be provided in whatever size it was naturally drawn; that is, don't scale the image before passing it to GTK+. Scaling is postponed until the last minute, when the desired final size is known, to allow best quality.
 
 Icon for this window.
+@item @anchor{slot.gtk-window.icon-list}icon-list. Type: list of @ref{pixbuf}. Accessor: @anchor{fn.gtk-window-icon-list}@code{gtk-window-icon-list}.
+
+The icon representing a @ref{gtk-window}. The icon is used when the window is minimized (also known as iconified). Some window managers or desktop environments may also place it in the window frame, or display it in other contexts.
+
+This property allows you to pass in the same icon in several hand-drawn sizes. The list should contain the natural sizes your icon is available in; that is, don't scale the image before passing it to GTK+. Scaling is postponed until the last minute, when the desired final size is known, to allow best quality.
+
+By passing several sizes, you may improve the final image quality of the icon, by reducing or eliminating automatic image scaling.
+
+Recommended sizes to provide: 16x16, 32x32, 48x48 at minimum, and larger images (64x64, 128x128) if you have them.
+
+See also @ref{window-default-icon-list} to set the icon for all windows in your application in one go.
+
+Note that transient windows (those who have been set transient for another window using @SlotRef{gtk-window,transient-for}) will inherit their icon from their transient parent. So there's no need to explicitly set the icon on transient windows.
+
 @item @anchor{slot.gtk-window.icon-name}icon-name. Type: @code{string}. Accessor: @anchor{fn.gtk-window-icon-name}@code{gtk-window-icon-name}.
 
 The icon-name property specifies the name of the themed icon to use as the window icon. See @ref{icon-theme} for more details.
@@ -1697,6 +1720,9 @@ Default value: NIL
 Whether the toplevel is the current active window.
 
 Default value: False
+@item @anchor{slot.gtk-window.mnemonic-modifier}mnemonic-modifier. Type: @ref{modifier-type}. Accessor: @anchor{fn.gtk-window-mnemonic-modifier}@code{gtk-window-mnemonic-modifier}.
+
+The modifier mask used to activate mnemonics on this window.
 @item @anchor{slot.gtk-window.modal}modal. Type: @code{boolean}. Accessor: @anchor{fn.gtk-window-modal}@code{gtk-window-modal}.
 
 If True, the window is modal (other windows are not usable while this one is up).
@@ -1848,7 +1874,7 @@ This function sets up hints about how a @var{window} (an @ref{gtk-window}) can b
 
 @var{geometry-mask}: a @ref{window-hints} - mask indicating which struct fields should be paid attention to
 
-@Function window-list-toplevels
+@RFunction window-list-toplevels
 @lisp
 (window-list-toplevels) @result{} windows
 @end lisp
@@ -2078,7 +2104,7 @@ Starts moving a window. This function is used if an application has window movem
 (window-set-frame-dimensions window left top right bottom)
 @end lisp
 
-(Note: this is a special-purpose function intended for the framebuffer port; see @ref{window-set-has-frame}. It will have no effect on the window border drawn by the window manager, which is the normal case when using the X Window system.)
+(Note: this is a special-purpose function intended for the framebuffer port; see @SlotRef{gtk-window,has-frame}. It will have no effect on the window border drawn by the window manager, which is the normal case when using the X Window system.)
 
 For windows with frames this function can be used to change the size of the frame border.
 
@@ -2086,43 +2112,24 @@ For windows with frames this function can be used to change the size of the fram
 
 @var{left}, @var{top}, @var{right}, @var{bottom} - integers; sizes of left, top, right, bottom borders
 
-@RMethod window-set-has-frame
+@RFunction window-default-icon-list
 @lisp
-(window-set-has-frame window setting)
-@end lisp
-
-(Note: this is a special-purpose function for the framebuffer port, that causes GTK+ to draw its own window border. For most applications, you want @SlotRef{gtk-window,decorated} instead, which tells the window manager whether to draw the window border.)
-
-If this function is called on a @var{window} (a @ref{gtk-window}) with setting of True, before it is realized or showed, it will have a "frame" window around window->window, accessible in window->frame. Using the signal @SignalRef{gtk-window,frame-event} you can receive all events targeted at the frame.
-
-This function is used by the linux-fb port to implement managed windows, but it could conceivably be used by X-programs that want to do their own window decorations.
-
-@var{setting}: a boolean
-
-@RMethod window-set-mnemonic-modifier
-@lisp
-(window-set-mnemonic-modifier window modifier)
-@end lisp
-
-Sets the mnemonic @var{modifier} (a @ref{modifier-type}) for this @var{window} (a @ref{gtk-window}).
-
-@Function window-default-icon-list
-@lisp
+(window-default-icon-list) @result icons
 (setf (window-default-icon-list) icons)
 @end lisp
 
-Sets an icon list to be used as fallback for windows that haven't had @code{gtk_window_set_icon_list} set on them to set up a window-specific icon list. This function allows you to set up the icon for all windows in your app at once.
+An icon list to be used as fallback for windows that haven't had @SlotRef{gtk-window,icon-list} set on them to set up a window-specific icon list. This function allows you to set up the icon for all windows in your app at once.
 
 @var{icons}: a list of @ref{pixbuf}s.
 
-@Function window-default-icon
+@RFunction window-default-icon
 @lisp
 (setf (window-default-icon) icon)
 @end lisp
 
 Sets an @var{icon} (a @ref{pixbuf}) to be used as fallback for windows that haven't had @SlotRef{gtk-window,icon} set on them from a pixbuf.
 
-@Function window-default-icon-name
+@RFunction window-default-icon-name
 @lisp
 (setf (window-default-icon-name) name)
 @end lisp
@@ -2522,7 +2529,7 @@ Signals:
 @Class item
 Superclass: @ref{bin} @ref{atk-implementor-iface} @ref{buildable}
 
-Subclasses: @ref{tree-item} @ref{menu-item}
+Subclasses: @ref{menu-item}
 
 Slots:
 @itemize
@@ -3036,38 +3043,21 @@ Signals:
 
 
 
-@node old-editable
-@section old-editable
-@Class old-editable
-Superclass: @ref{widget} @ref{atk-implementor-iface} @ref{buildable} @ref{editable}
-
-Subclasses: @ref{text}
+@node page-setup-unix-dialog
+@section page-setup-unix-dialog
+@Class page-setup-unix-dialog
+Superclass: @ref{dialog} @ref{atk-implementor-iface} @ref{buildable}
 
 Slots:
 @itemize
-@item @anchor{slot.old-editable.editable}editable. Type: @code{boolean}. Accessor: @anchor{fn.old-editable-editable}@code{old-editable-editable}.
-@item @anchor{slot.old-editable.text-position}text-position. Type: @code{integer}. Accessor: @anchor{fn.old-editable-text-position}@code{old-editable-text-position}.
+@item @anchor{slot.page-setup-unix-dialog.page-setup}page-setup. Type: @ref{page-setup}. Accessor: @anchor{fn.page-setup-unix-dialog-page-setup}@code{page-setup-unix-dialog-page-setup}.
+@item @anchor{slot.page-setup-unix-dialog.print-settings}print-settings. Type: @ref{print-settings}. Accessor: @anchor{fn.page-setup-unix-dialog-print-settings}@code{page-setup-unix-dialog-print-settings}.
 @end itemize
 
 
 Signals:
 @itemize
-@item @anchor{signal.old-editable.activate}"activate". Signature: (instance @ref{old-editable}) @result{} void. Options: run-last, action.
-@item @anchor{signal.old-editable.copy-clipboard}"copy-clipboard". Signature: (instance @ref{old-editable}) @result{} void. Options: run-last, action.
-@item @anchor{signal.old-editable.cut-clipboard}"cut-clipboard". Signature: (instance @ref{old-editable}) @result{} void. Options: run-last, action.
-@item @anchor{signal.old-editable.kill-char}"kill-char". Signature: (instance @ref{old-editable}), (arg-1 @code{integer}) @result{} void. Options: run-last, action.
-@item @anchor{signal.old-editable.kill-line}"kill-line". Signature: (instance @ref{old-editable}), (arg-1 @code{integer}) @result{} void. Options: run-last, action.
-@item @anchor{signal.old-editable.kill-word}"kill-word". Signature: (instance @ref{old-editable}), (arg-1 @code{integer}) @result{} void. Options: run-last, action.
-@item @anchor{signal.old-editable.move-cursor}"move-cursor". Signature: (instance @ref{old-editable}), (arg-1 @code{integer}), (arg-2 @code{integer}) @result{} void. Options: run-last, action.
-@item @anchor{signal.old-editable.move-page}"move-page". Signature: (instance @ref{old-editable}), (arg-1 @code{integer}), (arg-2 @code{integer}) @result{} void. Options: run-last, action.
-@item @anchor{signal.old-editable.move-to-column}"move-to-column". Signature: (instance @ref{old-editable}), (arg-1 @code{integer}) @result{} void. Options: run-last, action.
-@item @anchor{signal.old-editable.move-to-row}"move-to-row". Signature: (instance @ref{old-editable}), (arg-1 @code{integer}) @result{} void. Options: run-last, action.
-@item @anchor{signal.old-editable.move-word}"move-word". Signature: (instance @ref{old-editable}), (arg-1 @code{integer}) @result{} void. Options: run-last, action.
-@item @anchor{signal.old-editable.paste-clipboard}"paste-clipboard". Signature: (instance @ref{old-editable}) @result{} void. Options: run-last, action.
-@item @anchor{signal.old-editable.set-editable}"set-editable". Signature: (instance @ref{old-editable}), (arg-1 @code{boolean}) @result{} void. Options: run-last, action.
 @end itemize
-
-
 
 
 @node paned
@@ -3117,6 +3107,25 @@ Signals:
 @end itemize
 
 
+
+
+@node print-unix-dialog
+@section print-unix-dialog
+@Class print-unix-dialog
+Superclass: @ref{dialog} @ref{atk-implementor-iface} @ref{buildable}
+
+Slots:
+@itemize
+@item @anchor{slot.print-unix-dialog.current-page}current-page. Type: @code{integer}. Accessor: @anchor{fn.print-unix-dialog-current-page}@code{print-unix-dialog-current-page}.
+@item @anchor{slot.print-unix-dialog.page-setup}page-setup. Type: @ref{page-setup}. Accessor: @anchor{fn.print-unix-dialog-page-setup}@code{print-unix-dialog-page-setup}.
+@item @anchor{slot.print-unix-dialog.print-settings}print-settings. Type: @ref{print-settings}. Accessor: @anchor{fn.print-unix-dialog-print-settings}@code{print-unix-dialog-print-settings}.
+@item @anchor{slot.print-unix-dialog.selected-printer}selected-printer. Type: @code{GtkPrinter}. Accessor: @anchor{fn.print-unix-dialog-selected-printer}@code{print-unix-dialog-selected-printer}. Read-only.
+@end itemize
+
+
+Signals:
+@itemize
+@end itemize
 
 
 @node progress
@@ -3751,28 +3760,6 @@ Signals:
 
 
 
-@node text
-@section text
-@Class text
-Superclass: @ref{old-editable} @ref{atk-implementor-iface} @ref{buildable} @ref{editable}
-
-Slots:
-@itemize
-@item @anchor{slot.text.hadjustment}hadjustment. Type: @ref{adjustment}. Accessor: @anchor{fn.text-hadjustment}@code{text-hadjustment}.
-@item @anchor{slot.text.line-wrap}line-wrap. Type: @code{boolean}. Accessor: @anchor{fn.text-line-wrap}@code{text-line-wrap}.
-@item @anchor{slot.text.vadjustment}vadjustment. Type: @ref{adjustment}. Accessor: @anchor{fn.text-vadjustment}@code{text-vadjustment}.
-@item @anchor{slot.text.word-wrap}word-wrap. Type: @code{boolean}. Accessor: @anchor{fn.text-word-wrap}@code{text-word-wrap}.
-@end itemize
-
-
-Signals:
-@itemize
-@item @anchor{signal.text.set-scroll-adjustments}"set-scroll-adjustments". Signature: (instance @ref{text}), (arg-1 @ref{adjustment}), (arg-2 @ref{adjustment}) @result{} void. Options: run-last.
-@end itemize
-
-
-
-
 @node text-view
 @section text-view
 @Class text-view
@@ -3960,45 +3947,6 @@ Signals:
 @item @anchor{signal.toolbar.orientation-changed}"orientation-changed". Signature: (instance @ref{toolbar}), (arg-1 @ref{orientation}) @result{} void. Options: run-first.
 @item @anchor{signal.toolbar.popup-context-menu}"popup-context-menu". Signature: (instance @ref{toolbar}), (arg-1 @code{integer}), (arg-2 @code{integer}), (arg-3 @code{integer}) @result{} @code{boolean}. Options: run-last.
 @item @anchor{signal.toolbar.style-changed}"style-changed". Signature: (instance @ref{toolbar}), (arg-1 @ref{toolbar-style}) @result{} void. Options: run-first.
-@end itemize
-
-
-
-
-@node tree
-@section tree
-@Class tree
-Superclass: @ref{container} @ref{atk-implementor-iface} @ref{buildable}
-
-Slots:
-@itemize
-@end itemize
-
-
-Signals:
-@itemize
-@item @anchor{signal.tree.select-child}"select-child". Signature: (instance @ref{tree}), (arg-1 @ref{widget}) @result{} void. Options: run-first.
-@item @anchor{signal.tree.selection-changed}"selection-changed". Signature: (instance @ref{tree}) @result{} void. Options: run-first.
-@item @anchor{signal.tree.unselect-child}"unselect-child". Signature: (instance @ref{tree}), (arg-1 @ref{widget}) @result{} void. Options: run-first.
-@end itemize
-
-
-
-
-@node tree-item
-@section tree-item
-@Class tree-item
-Superclass: @ref{item} @ref{atk-implementor-iface} @ref{buildable}
-
-Slots:
-@itemize
-@end itemize
-
-
-Signals:
-@itemize
-@item @anchor{signal.tree-item.collapse}"collapse". Signature: (instance @ref{tree-item}) @result{} void. Options: run-first.
-@item @anchor{signal.tree-item.expand}"expand". Signature: (instance @ref{tree-item}) @result{} void. Options: run-first.
 @end itemize
 
 
@@ -4233,7 +4181,7 @@ Signals:
 @Class widget
 Superclass: @ref{gtk-object} @ref{atk-implementor-iface} @ref{buildable}
 
-Subclasses: @ref{old-editable} @ref{progress} @ref{invisible} @ref{h-s-v} @ref{separator} @ref{range} @ref{ruler} @ref{entry} @ref{drawing-area} @ref{cell-view} @ref{calendar} @ref{misc} @ref{container}
+Subclasses: @ref{separator} @ref{ruler} @ref{range} @ref{progress} @ref{misc} @ref{invisible} @ref{h-s-v} @ref{entry} @ref{drawing-area} @ref{container} @ref{cell-view} @ref{calendar}
 
 Slots:
 @itemize
@@ -4241,6 +4189,8 @@ Slots:
 @item @anchor{slot.widget.app-paintable}app-paintable. Type: @code{boolean}. Accessor: @anchor{fn.widget-app-paintable}@code{widget-app-paintable}.
 @item @anchor{slot.widget.can-default}can-default. Type: @code{boolean}. Accessor: @anchor{fn.widget-can-default}@code{widget-can-default}.
 @item @anchor{slot.widget.can-focus}can-focus. Type: @code{boolean}. Accessor: @anchor{fn.widget-can-focus}@code{widget-can-focus}.
+@item @anchor{slot.widget.child-visible}child-visible. Type: @code{boolean}. Accessor: @anchor{fn.widget-child-visible}@code{widget-child-visible}.
+@item @anchor{slot.widget.colormap}colormap. Type: @ref{gdk-colormap}. Accessor: @anchor{fn.widget-colormap}@code{widget-colormap}.
 @item @anchor{slot.widget.composite-child}composite-child. Type: @code{boolean}. Accessor: @anchor{fn.widget-composite-child}@code{widget-composite-child}. Read-only.
 @item @anchor{slot.widget.composite-name}composite-name. Type: @code{string}. Accessor: @anchor{fn.widget-composite-name}@code{widget-composite-name}.
 @item @anchor{slot.widget.direction}direction. Type: @ref{text-direction}. Accessor: @anchor{fn.widget-direction}@code{widget-direction}.
@@ -4251,9 +4201,12 @@ Slots:
 @item @anchor{slot.widget.has-tooltip}has-tooltip. Type: @code{boolean}. Accessor: @anchor{fn.widget-has-tooltip}@code{widget-has-tooltip}.
 @item @anchor{slot.widget.height-request}height-request. Type: @code{integer}. Accessor: @anchor{fn.widget-height-request}@code{widget-height-request}.
 @item @anchor{slot.widget.is-focus}is-focus. Type: @code{boolean}. Accessor: @anchor{fn.widget-is-focus}@code{widget-is-focus}.
+@item @anchor{slot.widget.modifier-style}modifier-style. Type: @ref{rc-style}. Accessor: @anchor{fn.widget-modifier-style}@code{widget-modifier-style}.
 @item @anchor{slot.widget.name}name. Type: @code{string}. Accessor: @anchor{fn.widget-name}@code{widget-name}.
 @item @anchor{slot.widget.no-show-all}no-show-all. Type: @code{boolean}. Accessor: @anchor{fn.widget-no-show-all}@code{widget-no-show-all}.
+@item @anchor{slot.widget.pango-context}pango-context. Type: @ref{g-object}. Accessor: @anchor{fn.widget-pango-context}@code{widget-pango-context}. Read-only.
 @item @anchor{slot.widget.parent}parent. Type: @ref{container}. Accessor: @anchor{fn.widget-parent}@code{widget-parent}.
+@item @anchor{slot.widget.parent-window}parent-window. Type: @ref{gdk-window}. Accessor: @anchor{fn.widget-parent-window}@code{widget-parent-window}.
 @item @anchor{slot.widget.receives-default}receives-default. Type: @code{boolean}. Accessor: @anchor{fn.widget-receives-default}@code{widget-receives-default}.
 @item @anchor{slot.widget.redraw-on-allocate}redraw-on-allocate. Type: @code{boolean}. Accessor: @anchor{fn.widget-redraw-on-allocate}@code{widget-redraw-on-allocate}. Write-only.
 @item @anchor{slot.widget.sensitive}sensitive. Type: @code{boolean}. Accessor: @anchor{fn.widget-sensitive}@code{widget-sensitive}.
@@ -4261,7 +4214,9 @@ Slots:
 @item @anchor{slot.widget.tooltip-markup}tooltip-markup. Type: @code{string}. Accessor: @anchor{fn.widget-tooltip-markup}@code{widget-tooltip-markup}.
 @item @anchor{slot.widget.tooltip-text}tooltip-text. Type: @code{string}. Accessor: @anchor{fn.widget-tooltip-text}@code{widget-tooltip-text}.
 @item @anchor{slot.widget.tooltip-window}tooltip-window. Type: @ref{g-object}. Accessor: @anchor{fn.widget-tooltip-window}@code{widget-tooltip-window}.
+@item @anchor{slot.widget.toplevel}toplevel. Type: @ref{widget}. Accessor: @anchor{fn.widget-toplevel}@code{widget-toplevel}. Read-only.
 @item @anchor{slot.widget.visible}visible. Type: @code{boolean}. Accessor: @anchor{fn.widget-visible}@code{widget-visible}.
+@item @anchor{slot.widget.visual}visual. Type: @ref{visual}. Accessor: @anchor{fn.widget-visual}@code{widget-visual}. Read-only.
 @item @anchor{slot.widget.width-request}width-request. Type: @code{integer}. Accessor: @anchor{fn.widget-width-request}@code{widget-width-request}.
 @item @anchor{slot.widget.window}window. Type: @ref{gdk-window}. Accessor: @anchor{fn.widget-window}@code{widget-window}. Read-only.
 @end itemize
@@ -4269,75 +4224,77 @@ Slots:
 
 Signals:
 @itemize
-@item @anchor{signal.widget.accel-closures-changed}"accel-closures-changed". Signature: (instance @ref{widget}) @result{} void. Options: .
-@item @anchor{signal.widget.button-press-event}"button-press-event". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
-@item @anchor{signal.widget.button-release-event}"button-release-event". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
-@item @anchor{signal.widget.can-activate-accel}"can-activate-accel". Signature: (instance @ref{widget}), (arg-1 @code{integer}) @result{} @code{boolean}. Options: run-last.
-@item @anchor{signal.widget.child-notify}"child-notify". Signature: (instance @ref{widget}), (arg-1 GParam) @result{} void. Options: run-first, no-recurse, detailed, no-hooks.
-@item @anchor{signal.widget.client-event}"client-event". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
-@item @anchor{signal.widget.composited-changed}"composited-changed". Signature: (instance @ref{widget}) @result{} void. Options: run-last, action.
-@item @anchor{signal.widget.configure-event}"configure-event". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
-@item @anchor{signal.widget.damage-event}"damage-event". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
-@item @anchor{signal.widget.delete-event}"delete-event". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
-@item @anchor{signal.widget.destroy-event}"destroy-event". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
-@item @anchor{signal.widget.direction-changed}"direction-changed". Signature: (instance @ref{widget}), (arg-1 @ref{text-direction}) @result{} void. Options: run-first.
-@item @anchor{signal.widget.drag-begin}"drag-begin". Signature: (instance @ref{widget}), (arg-1 @ref{drag-context}) @result{} void. Options: run-last.
-@item @anchor{signal.widget.drag-data-delete}"drag-data-delete". Signature: (instance @ref{widget}), (arg-1 @ref{drag-context}) @result{} void. Options: run-last.
-@item @anchor{signal.widget.drag-data-get}"drag-data-get". Signature: (instance @ref{widget}), (arg-1 @ref{drag-context}), (arg-2 @code{GtkSelectionData}), (arg-3 @code{integer}), (arg-4 @code{integer}) @result{} void. Options: run-last.
-@item @anchor{signal.widget.drag-data-received}"drag-data-received". Signature: (instance @ref{widget}), (arg-1 @ref{drag-context}), (arg-2 @code{integer}), (arg-3 @code{integer}), (arg-4 @code{GtkSelectionData}), (arg-5 @code{integer}), (arg-6 @code{integer}) @result{} void. Options: run-last.
-@item @anchor{signal.widget.drag-drop}"drag-drop". Signature: (instance @ref{widget}), (arg-1 @ref{drag-context}), (arg-2 @code{integer}), (arg-3 @code{integer}), (arg-4 @code{integer}) @result{} @code{boolean}. Options: run-last.
-@item @anchor{signal.widget.drag-end}"drag-end". Signature: (instance @ref{widget}), (arg-1 @ref{drag-context}) @result{} void. Options: run-last.
-@item @anchor{signal.widget.drag-failed}"drag-failed". Signature: (instance @ref{widget}), (arg-1 @ref{drag-context}), (arg-2 @ref{drag-result}) @result{} @code{boolean}. Options: run-last.
-@item @anchor{signal.widget.drag-leave}"drag-leave". Signature: (instance @ref{widget}), (arg-1 @ref{drag-context}), (arg-2 @code{integer}) @result{} void. Options: run-last.
-@item @anchor{signal.widget.drag-motion}"drag-motion". Signature: (instance @ref{widget}), (arg-1 @ref{drag-context}), (arg-2 @code{integer}), (arg-3 @code{integer}), (arg-4 @code{integer}) @result{} @code{boolean}. Options: run-last.
-@item @anchor{signal.widget.enter-notify-event}"enter-notify-event". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
-@item @anchor{signal.widget.event}"event". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
-@item @anchor{signal.widget.event-after}"event-after". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} void. Options: .
-@item @anchor{signal.widget.expose-event}"expose-event". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
-@item @anchor{signal.widget.focus}"focus". Signature: (instance @ref{widget}), (arg-1 @ref{direction-type}) @result{} @code{boolean}. Options: run-last.
-@item @anchor{signal.widget.focus-in-event}"focus-in-event". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
-@item @anchor{signal.widget.focus-out-event}"focus-out-event". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
-@item @anchor{signal.widget.grab-broken-event}"grab-broken-event". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
-@item @anchor{signal.widget.grab-focus}"grab-focus". Signature: (instance @ref{widget}) @result{} void. Options: run-last, action.
-@item @anchor{signal.widget.grab-notify}"grab-notify". Signature: (instance @ref{widget}), (arg-1 @code{boolean}) @result{} void. Options: run-first.
-@item @anchor{signal.widget.hide}"hide". Signature: (instance @ref{widget}) @result{} void. Options: run-first.
-@item @anchor{signal.widget.hierarchy-changed}"hierarchy-changed". Signature: (instance @ref{widget}), (arg-1 @ref{widget}) @result{} void. Options: run-last.
-@item @anchor{signal.widget.key-press-event}"key-press-event". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
-@item @anchor{signal.widget.key-release-event}"key-release-event". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
-@item @anchor{signal.widget.keynav-failed}"keynav-failed". Signature: (instance @ref{widget}), (arg-1 @ref{direction-type}) @result{} @code{boolean}. Options: run-last.
-@item @anchor{signal.widget.leave-notify-event}"leave-notify-event". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
-@item @anchor{signal.widget.map}"map". Signature: (instance @ref{widget}) @result{} void. Options: run-first.
-@item @anchor{signal.widget.map-event}"map-event". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
-@item @anchor{signal.widget.mnemonic-activate}"mnemonic-activate". Signature: (instance @ref{widget}), (arg-1 @code{boolean}) @result{} @code{boolean}. Options: run-last.
-@item @anchor{signal.widget.motion-notify-event}"motion-notify-event". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
-@item @anchor{signal.widget.move-focus}"move-focus". Signature: (instance @ref{widget}), (arg-1 @ref{direction-type}) @result{} void. Options: run-last, action.
-@item @anchor{signal.widget.no-expose-event}"no-expose-event". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
-@item @anchor{signal.widget.parent-set}"parent-set". Signature: (instance @ref{widget}), (arg-1 @ref{widget}) @result{} void. Options: run-first.
-@item @anchor{signal.widget.popup-menu}"popup-menu". Signature: (instance @ref{widget}) @result{} @code{boolean}. Options: run-last, action.
-@item @anchor{signal.widget.property-notify-event}"property-notify-event". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
-@item @anchor{signal.widget.proximity-in-event}"proximity-in-event". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
-@item @anchor{signal.widget.proximity-out-event}"proximity-out-event". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
-@item @anchor{signal.widget.query-tooltip}"query-tooltip". Signature: (instance @ref{widget}), (arg-1 @code{integer}), (arg-2 @code{integer}), (arg-3 @code{boolean}), (arg-4 @ref{tooltip}) @result{} @code{boolean}. Options: run-last.
-@item @anchor{signal.widget.realize}"realize". Signature: (instance @ref{widget}) @result{} void. Options: run-first.
-@item @anchor{signal.widget.screen-changed}"screen-changed". Signature: (instance @ref{widget}), (arg-1 @ref{screen}) @result{} void. Options: run-last.
-@item @anchor{signal.widget.scroll-event}"scroll-event". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
-@item @anchor{signal.widget.selection-clear-event}"selection-clear-event". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
-@item @anchor{signal.widget.selection-get}"selection-get". Signature: (instance @ref{widget}), (arg-1 @code{GtkSelectionData}), (arg-2 @code{integer}), (arg-3 @code{integer}) @result{} void. Options: run-last.
-@item @anchor{signal.widget.selection-notify-event}"selection-notify-event". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
-@item @anchor{signal.widget.selection-received}"selection-received". Signature: (instance @ref{widget}), (arg-1 @code{GtkSelectionData}), (arg-2 @code{integer}) @result{} void. Options: run-last.
-@item @anchor{signal.widget.selection-request-event}"selection-request-event". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
-@item @anchor{signal.widget.show}"show". Signature: (instance @ref{widget}) @result{} void. Options: run-first.
-@item @anchor{signal.widget.show-help}"show-help". Signature: (instance @ref{widget}), (arg-1 @ref{widget-help-type}) @result{} @code{boolean}. Options: run-last, action.
-@item @anchor{signal.widget.size-allocate}"size-allocate". Signature: (instance @ref{widget}), (arg-1 @ref{rectangle}) @result{} void. Options: run-first.
-@item @anchor{signal.widget.size-request}"size-request". Signature: (instance @ref{widget}), (arg-1 @code{GtkRequisition}) @result{} void. Options: run-first.
-@item @anchor{signal.widget.state-changed}"state-changed". Signature: (instance @ref{widget}), (arg-1 @ref{state-type}) @result{} void. Options: run-first.
-@item @anchor{signal.widget.style-set}"style-set". Signature: (instance @ref{widget}), (arg-1 @ref{style}) @result{} void. Options: run-first.
-@item @anchor{signal.widget.unmap}"unmap". Signature: (instance @ref{widget}) @result{} void. Options: run-first.
-@item @anchor{signal.widget.unmap-event}"unmap-event". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
-@item @anchor{signal.widget.unrealize}"unrealize". Signature: (instance @ref{widget}) @result{} void. Options: run-last.
-@item @anchor{signal.widget.visibility-notify-event}"visibility-notify-event". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
-@item @anchor{signal.widget.window-state-event}"window-state-event". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
+@item @anchor{signal.widget.accel-closures-changed}\"accel-closures-changed\". Signature: (instance @ref{widget}) @result{} void. Options: .
+@item @anchor{signal.widget.button-press-event}\"button-press-event\". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
+@item @anchor{signal.widget.button-release-event}\"button-release-event\". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
+@item @anchor{signal.widget.can-activate-accel}\"can-activate-accel\". Signature: (instance @ref{widget}), (arg-1 @code{integer}) @result{} @code{boolean}. Options: run-last.
+@item @anchor{signal.widget.child-notify}\"child-notify\". Signature: (instance @ref{widget}), (arg-1 GParam) @result{} void. Options: run-first, no-recurse, detailed, no-hooks.
+@item @anchor{signal.widget.client-event}\"client-event\". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
+@item @anchor{signal.widget.composited-changed}\"composited-changed\". Signature: (instance @ref{widget}) @result{} void. Options: run-last, action.
+@item @anchor{signal.widget.configure-event}\"configure-event\". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
+@item @anchor{signal.widget.damage-event}\"damage-event\". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
+@item @anchor{signal.widget.delete-event}\"delete-event\". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
+@item @anchor{signal.widget.destroy-event}\"destroy-event\". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
+@item @anchor{signal.widget.direction-changed}\"direction-changed\". Signature: (instance @ref{widget}), (arg-1 @ref{text-direction}) @result{} void. Options: run-first.
+@item @anchor{signal.widget.drag-begin}\"drag-begin\". Signature: (instance @ref{widget}), (arg-1 @ref{drag-context}) @result{} void. Options: run-last.
+@item @anchor{signal.widget.drag-data-delete}\"drag-data-delete\". Signature: (instance @ref{widget}), (arg-1 @ref{drag-context}) @result{} void. Options: run-last.
+@item @anchor{signal.widget.drag-data-get}\"drag-data-get\". Signature: (instance @ref{widget}), (arg-1 @ref{drag-context}), (arg-2 @code{GtkSelectionData}), (arg-3 @code{integer}), (arg-4 @code{integer}) @result{} void. Options: run-last.
+@item @anchor{signal.widget.drag-data-received}\"drag-data-received\". Signature: (instance @ref{widget}), (arg-1 @ref{drag-context}), (arg-2 @code{integer}), (arg-3 @code{integer}), (arg-4 @code{GtkSelectionData}), (arg-5 @code{integer}), (arg-6 @code{integer}) @result{} void. Options: run-last.
+@item @anchor{signal.widget.drag-drop}\"drag-drop\". Signature: (instance @ref{widget}), (arg-1 @ref{drag-context}), (arg-2 @code{integer}), (arg-3 @code{integer}), (arg-4 @code{integer}) @result{} @code{boolean}. Options: run-last.
+@item @anchor{signal.widget.drag-end}\"drag-end\". Signature: (instance @ref{widget}), (arg-1 @ref{drag-context}) @result{} void. Options: run-last.
+@item @anchor{signal.widget.drag-failed}\"drag-failed\". Signature: (instance @ref{widget}), (arg-1 @ref{drag-context}), (arg-2 @ref{drag-result}) @result{} @code{boolean}. Options: run-last.
+@item @anchor{signal.widget.drag-leave}\"drag-leave\". Signature: (instance @ref{widget}), (arg-1 @ref{drag-context}), (arg-2 @code{integer}) @result{} void. Options: run-last.
+@item @anchor{signal.widget.drag-motion}\"drag-motion\". Signature: (instance @ref{widget}), (arg-1 @ref{drag-context}), (arg-2 @code{integer}), (arg-3 @code{integer}), (arg-4 @code{integer}) @result{} @code{boolean}. Options: run-last.
+@item @anchor{signal.widget.enter-notify-event}\"enter-notify-event\". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
+@item @anchor{signal.widget.event}\"event\". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
+@item @anchor{signal.widget.event-after}\"event-after\". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} void. Options: .
+@item @anchor{signal.widget.expose-event}\"expose-event\". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
+@item @anchor{signal.widget.focus}\"focus\". Signature: (instance @ref{widget}), (arg-1 @ref{direction-type}) @result{} @code{boolean}. Options: run-last.
+@item @anchor{signal.widget.focus-in-event}\"focus-in-event\". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
+@item @anchor{signal.widget.focus-out-event}\"focus-out-event\". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
+@item @anchor{signal.widget.grab-broken-event}\"grab-broken-event\". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
+@item @anchor{signal.widget.grab-focus}\"grab-focus\". Signature: (instance @ref{widget}) @result{} void. Options: run-last, action.
+@item @anchor{signal.widget.grab-notify}\"grab-notify\". Signature: (instance @ref{widget}), (arg-1 @code{boolean}) @result{} void. Options: run-first.
+@item @anchor{signal.widget.hide}\"hide\". Signature: (instance @ref{widget}) @result{} void. Options: run-first.
+@item @anchor{signal.widget.hierarchy-changed}\"hierarchy-changed\". Signature: (instance @ref{widget}), (arg-1 @ref{widget}) @result{} void. Options: run-last.
+@item @anchor{signal.widget.key-press-event}\"key-press-event\". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
+@item @anchor{signal.widget.key-release-event}\"key-release-event\". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
+@item @anchor{signal.widget.keynav-failed}\"keynav-failed\". Signature: (instance @ref{widget}), (arg-1 @ref{direction-type}) @result{} @code{boolean}. Options: run-last.
+@item @anchor{signal.widget.leave-notify-event}\"leave-notify-event\". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
+@item @anchor{signal.widget.map}\"map\". Signature: (instance @ref{widget}) @result{} void. Options: run-first.
+@item @anchor{signal.widget.map-event}\"map-event\". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
+@item @anchor{signal.widget.mnemonic-activate}\"mnemonic-activate\". Signature: (instance @ref{widget}), (arg-1 @code{boolean}) @result{} @code{boolean}. Options: run-last.
+@item @anchor{signal.widget.motion-notify-event}\"motion-notify-event\". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
+@item @anchor{signal.widget.move-focus}\"move-focus\". Signature: (instance @ref{widget}), (arg-1 @ref{direction-type}) @result{} void. Options: run-last, action.
+@item @anchor{signal.widget.no-expose-event}\"no-expose-event\". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
+@item @anchor{signal.widget.parent-set}\"parent-set\". Signature: (instance @ref{widget}), (arg-1 @ref{widget}) @result{} void. Options: run-first.
+@item @anchor{signal.widget.popup-menu}\"popup-menu\". Signature: (instance @ref{widget}) @result{} @code{boolean}. Options: run-last, action.
+@item @anchor{signal.widget.property-notify-event}\"property-notify-event\". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
+@item @anchor{signal.widget.proximity-in-event}\"proximity-in-event\". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
+@item @anchor{signal.widget.proximity-out-event}\"proximity-out-event\". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
+@item @anchor{signal.widget.query-tooltip}\"query-tooltip\". Signature: (instance @ref{widget}), (arg-1 @code{integer}), (arg-2 @code{integer}), (arg-3 @code{boolean}), (arg-4 @ref{tooltip}) @result{} @code{boolean}. Options: run-last.
+@item @anchor{signal.widget.realize}\"realize\". Signature: (instance @ref{widget}) @result{} void. Options: run-first.
+@item @anchor{signal.widget.screen-changed}\"screen-changed\". Signature: (instance @ref{widget}), (arg-1 @ref{screen}) @result{} void. Options: run-last.
+@item @anchor{signal.widget.scroll-event}\"scroll-event\". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
+@item @anchor{signal.widget.selection-clear-event}\"selection-clear-event\". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
+@item @anchor{signal.widget.selection-get}\"selection-get\". Signature: (instance @ref{widget}), (arg-1 @code{GtkSelectionData}), (arg-2 @code{integer}), (arg-3 @code{integer}) @result{} void. Options: run-last.
+@item @anchor{signal.widget.selection-notify-event}\"selection-notify-event\". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
+@item @anchor{signal.widget.selection-received}\"selection-received\". Signature: (instance @ref{widget}), (arg-1 @code{GtkSelectionData}), (arg-2 @code{integer}) @result{} void. Options: run-last.
+@item @anchor{signal.widget.selection-request-event}\"selection-request-event\". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
+@item @anchor{signal.widget.show}\"show\". Signature: (instance @ref{widget}) @result{} void. Options: run-first.
+@item @anchor{signal.widget.show-help}\"show-help\". Signature: (instance @ref{widget}), (arg-1 @ref{widget-help-type}) @result{} @code{boolean}. Options: run-last, action.
+@item @anchor{signal.widget.size-allocate}\"size-allocate\". Signature: (instance @ref{widget}), (arg-1 @ref{rectangle}) @result{} void. Options: run-first.
+@item @anchor{signal.widget.size-request}\"size-request\". Signature: (instance @ref{widget}), (arg-1 @code{GtkRequisition}) @result{} void. Options: run-first.
+@item @anchor{signal.widget.state-changed}\"state-changed\". Signature: (instance @ref{widget}), (arg-1 @ref{state-type}) @result{} void. Options: run-first.
+@item @anchor{signal.widget.style-set}\"style-set\". Signature: (instance @ref{widget}), (arg-1 @ref{style}) @result{} void. Options: run-first.
+@item @anchor{signal.widget.unmap}\"unmap\". Signature: (instance @ref{widget}) @result{} void. Options: run-first.
+@item @anchor{signal.widget.unmap-event}\"unmap-event\". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
+@item @anchor{signal.widget.unrealize}\"unrealize\". Signature: (instance @ref{widget}) @result{} void. Options: run-last.
+@item @anchor{signal.widget.visibility-notify-event}\"visibility-notify-event\". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
+@item @anchor{signal.widget.window-state-event}\"window-state-event\". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
 @end itemize
+
+
 
 @RMethod widget-show
 

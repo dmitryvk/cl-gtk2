@@ -158,18 +158,6 @@
 
 (export 'gtk-window-set-frame-dimensions)
 
-(defcfun (gtk-window-set-has-frame "gtk_window_set_has_frame") :void
-  (window (g-object gtk-window))
-  (setting :boolean))
-
-(export 'gtk-window-set-has-frame)
-
-(defcfun (gtk-window-set-mnemonic-modifier "gtk_window_set_mnemonic_modifier") :void
-  (window (g-object gtk-window))
-  (modifier modifier-type))
-
-(export 'gtk-window-set-mnemonic-modifier)
-
 (defcfun (%gtk-window-get-position "gtk_window_get_position") :void
   (window (g-object gtk-window))
   (root-x (:pointer :int))
@@ -221,16 +209,16 @@
 
 (export 'window-resize)
 
-(defcfun (default-window-icon-list "gtk_window_get_default_icon_list") (glist (g-object pixbuf)))
+(defcfun (window-default-icon-list "gtk_window_get_default_icon_list") (glist (g-object pixbuf)))
 
 (defcfun (set-default-window-icon-list "gtk_window_set_default_icon_list") :boolean
   (icon-list (glist (g-object pixbuf))))
 
-(defun (setf default-window-icon-list) (icon-list)
+(defun (setf window-default-icon-list) (icon-list)
   (set-default-window-icon-list icon-list)
   icon-list)
 
-(export 'default-window-icon-list)
+(export 'window-default-icon-list)
 
 (defcfun (set-default-window-icon "gtk_window_set_default_icon") :void
   (icon (g-object pixbuf)))

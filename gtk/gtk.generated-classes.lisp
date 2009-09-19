@@ -891,19 +891,9 @@
                          "gtk_file_filter_get_name"
                          "gtk_file_filter_set_name")))
 
-(define-g-object-class "GtkItemFactory" item-factory
-                       (:superclass gtk-object :export t :interfaces nil
-                        :type-initializer "gtk_item_factory_get_type")
-                       nil)
-
 (define-g-object-class "GtkRecentFilter" recent-filter
                        (:superclass gtk-object :export t :interfaces nil
                         :type-initializer "gtk_recent_filter_get_type")
-                       nil)
-
-(define-g-object-class "GtkTooltips" tooltips
-                       (:superclass gtk-object :export t :interfaces nil
-                        :type-initializer "gtk_tooltips_get_type")
                        nil)
 
 (define-g-object-class "GtkTreeViewColumn" tree-view-column
@@ -986,6 +976,23 @@
                         (width-request widget-width-request "width-request"
                          "gint" t t)
                         (window widget-window "window" "GdkWindow" t nil)
+                        (:cffi parent-window widget-parent-window
+                         (g-object gdk-window) "gtk_widget_get_parent_window"
+                         "gtk_widget_set_parent_window")
+                        (:cffi toplevel widget-toplevel (g-object widget)
+                         "gtk_widget_get_toplevel" nil)
+                        (:cffi colormap widget-colormap (g-object gdk-colormap)
+                         "gtk_widget_get_colormap" "gtk_widget_set_colormap")
+                        (:cffi visual widget-visual (g-object visual)
+                         "gtk_widget_get_visual" nil)
+                        (:cffi modifier-style widget-modifier-style
+                         (g-object rc-style) "gtk_widget_get_modifier_style"
+                         "gtk_widget_modify_style")
+                        (:cffi pango-context widget-pango-context g-object
+                         "gtk_widget_get_pango_context" nil)
+                        (:cffi child-visible widget-child-visible :boolean
+                         "gtk_widget_get_child_visible"
+                         "gtk_widget_set_child_visible")
                         (:cffi direction widget-direction text-direction
                          "gtk_widget_get_direction" "gtk_widget_set_direction")
                         (:cffi composite-name widget-composite-name
@@ -1336,12 +1343,6 @@
                         :type-initializer "gtk_tearoff_menu_item_get_type")
                        nil)
 
-(define-g-object-class "GtkTreeItem" tree-item
-                       (:superclass item :export t :interfaces
-                        ("AtkImplementorIface" "GtkBuildable")
-                        :type-initializer "gtk_tree_item_get_type")
-                       nil)
-
 (define-g-object-class "GtkScrolledWindow" scrolled-window
                        (:superclass bin :export t :interfaces
                         ("AtkImplementorIface" "GtkBuildable")
@@ -1497,11 +1498,22 @@
                          "gboolean" t t)
                         (window-position gtk-window-window-position
                          "window-position" "GtkWindowPosition" t t)
-                        (:cffi default-widget window-default-widget
+                        (:cffi focus gtk-window-focus (g-object widget)
+                         "gtk_window_get_focus" "gtk_window_set_focus")
+                        (:cffi default-widget gtk-window-default-widget
                          (g-object widget) "gtk_window_get_default_widget"
                          "gtk_window_set_default")
-                        (:cffi focus window-focus (g-object widget)
-                         "gtk_window_get_focus" "gtk_window_set_focus")))
+                        (:cffi has-frame gtk-window-has-frame :boolean
+                         "gtk_window_get_has_frame" "gtk_window_set_has_frame")
+                        (:cffi mnemonic-modifier gtk-window-mnemonic-modifier
+                         (g-object modifier-type)
+                         "gtk_window_get_mnemonic_modifier"
+                         "gtk_window_set_mnemonic_modifier")
+                        (:cffi icon-list gtk-window-icon-list
+                         (glist pixbuf :free-from-foreign t :free-to-foreign t)
+                         "gtk_window_get_icon_list" "gtk_window_set_icon_list")
+                        (:cffi group gtk-window-group (g-object window-group)
+                         "gtk_window_get_group" nil)))
 
 (define-g-object-class "GtkAssistant" assistant
                        (:superclass gtk-window :export t :interfaces
@@ -1623,6 +1635,34 @@
                         (text message-dialog-text "text" "gchararray" t t)
                         (use-markup message-dialog-use-markup "use-markup"
                          "gboolean" t t)))
+
+(define-g-object-class "GtkPageSetupUnixDialog" page-setup-unix-dialog
+                       (:superclass dialog :export t :interfaces
+                        ("AtkImplementorIface" "GtkBuildable")
+                        :type-initializer
+                        "gtk_page_setup_unix_dialog_get_type")
+                       ((:cffi page-setup page-setup-unix-dialog-page-setup
+                         (g-object page-setup)
+                         "gtk_page_setup_unix_dialog_get_page_setup"
+                         "gtk_page_setup_unix_dialog_set_page_setup")
+                        (:cffi print-settings
+                         page-setup-unix-dialog-print-settings
+                         (g-object print-settings)
+                         "gtk_page_setup_unix_dialog_get_print_settings"
+                         "gtk_page_setup_unix_dialog_set_print_settings")))
+
+(define-g-object-class "GtkPrintUnixDialog" print-unix-dialog
+                       (:superclass dialog :export t :interfaces
+                        ("AtkImplementorIface" "GtkBuildable")
+                        :type-initializer "gtk_print_unix_dialog_get_type")
+                       ((current-page print-unix-dialog-current-page
+                         "current-page" "gint" t t)
+                        (page-setup print-unix-dialog-page-setup "page-setup"
+                         "GtkPageSetup" t t)
+                        (print-settings print-unix-dialog-print-settings
+                         "print-settings" "GtkPrintSettings" t t)
+                        (selected-printer print-unix-dialog-selected-printer
+                         "selected-printer" "GtkPrinter" t nil)))
 
 (define-g-object-class "GtkRecentChooserDialog" recent-chooser-dialog
                        (:superclass dialog :export t :interfaces
@@ -1950,12 +1990,6 @@
                          "GtkToolbarStyle" t t)
                         (tooltips toolbar-tooltips "tooltips" "gboolean" t t)))
 
-(define-g-object-class "GtkTree" tree
-                       (:superclass container :export t :interfaces
-                        ("AtkImplementorIface" "GtkBuildable")
-                        :type-initializer "gtk_tree_get_type")
-                       nil)
-
 (define-g-object-class "GtkTreeView" tree-view
                        (:superclass container :export t :interfaces
                         ("AtkImplementorIface" "GtkBuildable")
@@ -2258,26 +2292,6 @@
                          "accel-closure" "GClosure" t t)
                         (accel-widget accel-label-accel-widget "accel-widget"
                          "GtkWidget" t t)))
-
-(define-g-object-class "GtkOldEditable" old-editable
-                       (:superclass widget :export t :interfaces
-                        ("AtkImplementorIface" "GtkBuildable" "GtkEditable")
-                        :type-initializer "gtk_old_editable_get_type")
-                       ((editable old-editable-editable "editable" "gboolean" t
-                         t)
-                        (text-position old-editable-text-position
-                         "text-position" "gint" t t)))
-
-(define-g-object-class "GtkText" text
-                       (:superclass old-editable :export t :interfaces
-                        ("AtkImplementorIface" "GtkBuildable" "GtkEditable")
-                        :type-initializer "gtk_text_get_type")
-                       ((hadjustment text-hadjustment "hadjustment"
-                         "GtkAdjustment" t t)
-                        (line-wrap text-line-wrap "line-wrap" "gboolean" t t)
-                        (vadjustment text-vadjustment "vadjustment"
-                         "GtkAdjustment" t t)
-                        (word-wrap text-word-wrap "word-wrap" "gboolean" t t)))
 
 (define-g-object-class "GtkProgress" progress
                        (:superclass widget :export t :interfaces
@@ -2996,7 +3010,7 @@
                        (:superclass g-object :export t :interfaces nil
                         :type-initializer "gtk_window_group_get_type")
                        ((:cffi windows window-group-windows
-                         (glist (g-object window))
+                         (glist (g-object gtk-window))
                          "gtk_window_group_list_windows" nil)))
 
 (define-g-object-class "GtkToggleAction" toggle-action
