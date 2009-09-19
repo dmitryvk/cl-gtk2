@@ -70,7 +70,7 @@
                 "GtkTextTagTable" "GtkTreeModelFilter" "GtkTreeModelSort"
                 "GtkTreeSelection" "GtkTreeStore" "GtkUIManager" "GtkWindowGroup"
                 "GtkToggleAction" "GtkRecentAction" "GtkRadioAction" "GtkItemFactory"
-		"GtkFileSelection" "GtkPageSetupUnixDialog" "GtkPrintUnixDialog")
+		"GtkPageSetupUnixDialog" "GtkPrintUnixDialog")
      :flags '("GtkTextSearchFlags" "GtkAccelFlags" "GtkArgFlags" "GtkAttachOptions"
               "GtkButtonAction" "GtkCalendarDisplayOptions" "GtkCellRendererState"
               "GtkDebugFlag" "GtkDestDefaults" "GtkDialogFlags" "GtkFileFilterFlags"
@@ -105,7 +105,10 @@
               "GtkSubmenuDirection" "GtkSubmenuPlacement" "GtkTextWindowType"
               "GtkToolbarChildType" "GtkToolbarSpaceStyle" "GtkTreeViewDropPosition"
               "GtkTreeViewMode" "GtkVisibility" "GtkEntryIconPosition")
-     :exclusions '("PangoStretch" "PangoVariant" "PangoStyle" "PangoUnderline" "GtkGLDrawingArea")
+     :exclusions '("PangoStretch" "PangoVariant" "PangoStyle" "PangoUnderline" "GtkGLDrawingArea"
+                   "GtkCList" "GtkCTree" "GtkCombo" "GtkFileSelection" "GtkItemFactory" "GtkList"
+                   "GtkListItem" "GtkOldEditable" "GtkOptionMenu" "GtkPixmap" "GtkPreview"
+                   "GtkText" "GtkTooltips" "GtkTipsQuery" "GtkTree" "GtkTreeItem")
      :additional-properties
      '(("GtkWindow"
 	(:cffi gtk::focus gtk::gtk-window-focus (g-object gtk::widget)
