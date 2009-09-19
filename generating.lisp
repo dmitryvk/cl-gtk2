@@ -235,7 +235,7 @@
         (:cffi gtk::focus-hadjustment gtk::container-focus-hadjustment g-object
          "gtk_container_get_focus_hadjustment" "gtk_container_set_focus_hadjustment"))
        ("GtkWidget"
-	(:cffi gtk::parent-window gtk::widget-parent-window (g-object gdk::window)
+	(:cffi gtk::parent-window gtk::widget-parent-window (g-object gdk::gdk-window)
 	 "gtk_widget_get_parent_window" "gtk_widget_set_parent_window")
 	(:cffi gtk::toplevel gtk::widget-toplevel (g-object gtk::widget)
 	 "gtk_widget_get_toplevel" nil)
@@ -260,7 +260,7 @@
         (:cffi gtk::tooltip-window gtk::widget-tooltip-window g-object
 	 "gtk_widget_get_tooltip_window" "gtk_widget_set_tooltip_window"))
        ("GtkWindowGroup"
-        (:cffi gtk::windows gtk::window-group-windows (glist (g-object gtk::window))
+        (:cffi gtk::windows gtk::window-group-windows (glist (g-object gtk::gtk-window))
          "gtk_window_group_list_windows" nil))
        ("GtkTextTag"
         (:cffi gtk::priority gtk::text-tag-priority :int
