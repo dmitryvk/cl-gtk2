@@ -3,7 +3,8 @@
   (:export #:with-gl-context #:with-matrix-mode
 	   #:gl-drawing-area
            #:gl-drawing-area-on-expose
-           #:gl-drawing-area-on-init))
+           #:gl-drawing-area-on-init
+           #:gl-drawing-area-on-resize))
 
 (in-package :gtkglext)
 
