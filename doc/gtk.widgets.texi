@@ -1618,13 +1618,13 @@ Default value: True
 
 The default height of the window, used when initially showing the window.
 
-If the window's "natural" size (its size request) is larger than the default, the default will be ignored. More generally, if the default size does not obey the geometry hints for the window (@ref{window-set-geometry-hints} can be used to set these explicitly), the default size will be clamped to the nearest permitted size.
+If the window's "natural" size (its size request) is larger than the default, the default will be ignored. More generally, if the default size does not obey the geometry hints for the window (@ref{gtk-window-set-geometry-hints} can be used to set these explicitly), the default size will be clamped to the nearest permitted size.
 
 Unlike @SlotRef{widget,width-request} and @SlotRef{widget,height-request}, that set a size request for a widget and thus would keep users from shrinking the window, this function only sets the initial size, just as if the user had resized the window themselves. Users can still shrink the window again as they normally would. Setting a default size of -1 means to use the "natural" default size (the size request of the window).
 
-For more control over a window's initial size and how resizing works, see @ref{window-set-geometry-hints}.
+For more control over a window's initial size and how resizing works, see @ref{gtk-window-set-geometry-hints}.
 
-For some uses, @ref{window-resize} is a more appropriate function. @ref{window-resize} changes the current size of the window, rather than the size to be used on initial display. @ref{window-resize} always affects the window itself, not the geometry widget.
+For some uses, @ref{gtk-window-resize} is a more appropriate function. @ref{gtk-window-resize} changes the current size of the window, rather than the size to be used on initial display. @ref{gtk-window-resize} always affects the window itself, not the geometry widget.
 
 The default size of a window only affects the first time a window is shown; if a window is hidden and re-shown, it will remember the size it had prior to hiding, rather than using the default size.
 
@@ -1671,7 +1671,7 @@ Default value: True
 Returns the group for window or the default group, if window does not have an explicit window group.
 @item @anchor{slot.gtk-window.gravity}gravity. Type: @ref{gravity}. Accessor: @anchor{fn.gtk-window-gravity}@code{gtk-window-gravity}.
 
-The window gravity of the window. See @ref{window-move} and @ref{gravity} for more details about window gravity.
+The window gravity of the window. See @ref{gtk-window-move} and @ref{gravity} for more details about window gravity.
 
 Default value: @EnumVRef{anchor-type,north-west}
 
@@ -1704,7 +1704,7 @@ By passing several sizes, you may improve the final image quality of the icon, b
 
 Recommended sizes to provide: 16x16, 32x32, 48x48 at minimum, and larger images (64x64, 128x128) if you have them.
 
-See also @ref{window-default-icon-list} to set the icon for all windows in your application in one go.
+See also @ref{gtk-window-default-icon-list} to set the icon for all windows in your application in one go.
 
 Note that transient windows (those who have been set transient for another window using @SlotRef{gtk-window,transient-for}) will inherit their icon from their transient parent. So there's no need to explicitly set the icon on transient windows.
 
@@ -1720,6 +1720,24 @@ Default value: NIL
 Whether the toplevel is the current active window.
 
 Default value: False
+@item @anchor{slot.gtk-window.keep-above}keep-above. Type: @code{boolean}. Accessor: @anchor{fn.gtk-window-keep-above}@code{gtk-window-keep-above}. Write-only.
+
+Setting this to True asks to keep window above, so that it stays on top. Note that you shouldn't assume the window is definitely above afterward, because other entities (e.g. the user or window manager) could not keep it above, and not all window managers support keeping windows above. But normally the window will end kept above. Just don't write code that crashes if not.
+
+It's permitted to set this property before showing a window, in which case the window will be kept above when it appears onscreen initially.
+
+You can track the above state via the @SignalRef{widget,window-state-event} signal.
+
+Note that, according to the Extended Window Manager Hints specification, the above state is mainly meant for user preferences and should not be used by applications e.g. for drawing attention to their dialogs.
+@item @anchor{slot.gtk-window.keep-below}keep-below. Type: @code{boolean}. Accessor: @anchor{fn.gtk-window-keep-below}@code{gtk-window-keep-below}. Write-only.
+
+Setting this to True asks to keep window below, so that it stays in bottom. Note that you shouldn't assume the window is definitely below afterward, because other entities (e.g. the user or window manager) could not keep it below, and not all window managers support putting windows below. But normally the window will be kept below. Just don't write code that crashes if not.
+
+It's permitted to set this property before showing a window, in which case the window will be kept below when it appears onscreen initially.
+
+You can track the below state via the @SignalRef{widget,window-state-event} signal.
+
+Note that, according to the Extended Window Manager Hints specification, the above state is mainly meant for user preferences and should not be used by applications e.g. for drawing attention to their dialogs.
 @item @anchor{slot.gtk-window.mnemonic-modifier}mnemonic-modifier. Type: @ref{modifier-type}. Accessor: @anchor{fn.gtk-window-mnemonic-modifier}@code{gtk-window-mnemonic-modifier}.
 
 The modifier mask used to activate mnemonics on this window.
@@ -1772,7 +1790,7 @@ Default value: False
 
 The startup-id is a write-only property for setting window's startup notification identifier.
 
-Startup notification identifiers are used by desktop environment to track application startup, to provide user feedback and other features. This function changes the corresponding property on the underlying @ref{gdk-window}. Normally, startup identifier is managed automatically and you should only use this function in special cases like transferring focus from other processes. You should set this before calling @ref{window-present} or any equivalent function generating a window map event.
+Startup notification identifiers are used by desktop environment to track application startup, to provide user feedback and other features. This function changes the corresponding property on the underlying @ref{gdk-window}. Normally, startup identifier is managed automatically and you should only use this function in special cases like transferring focus from other processes. You should set this before calling @ref{gtk-window-present} or any equivalent function generating a window map event.
 
 This is only useful on X11, not with other GTK+ targets.
 
@@ -1831,39 +1849,39 @@ The keys-changed signal gets emitted when the set of accelerators or mnemonics t
 @item @anchor{signal.gtk-window.set-focus}"set-focus". Signature: (instance @ref{gtk-window}), (widget @ref{widget}) @result{} void. Options: run-last.
 @end itemize
 
-@RMethod window-add-accel-group
+@RMethod gtk-window-add-accel-group
 @lisp
-(window-add-accel-group window accel-group)
+(gtk-window-add-accel-group window accel-group)
 @end lisp
 
 Associate @var{accel-group} (an @ref{accel-group}) with @var{window} (an @ref{gtk-window}).
 
-@RMethod window-remove-accel-group
+@RMethod gtk-window-remove-accel-group
 @lisp
-(window-remove-accel-group window accel-group)
+(gtk-window-remove-accel-group window accel-group)
 @end lisp
 
-Reverses the effect of @ref{window-add-accel-group}.
+Reverses the effect of @ref{gtk-window-add-accel-group}.
 
-@RMethod window-activate-focus
+@RMethod gtk-window-activate-focus
 @lisp
-(window-activate-focus window)
+(gtk-window-activate-focus window)
 @end lisp
 
 Activates the current focused widget within the @var{window} (an @ref{gtk-window}).
 
-@RMethod window-activate-default
+@RMethod gtk-window-activate-default
 @lisp
-(window-activate-default window) @result{} activated-p
+(gtk-window-activate-default window) @result{} activated-p
 @end lisp
 
 Activates the default widget for the @var{window} (an @ref{gtk-window}), unless the current focused widget has been configured to receive the default action (see @SlotRef{widget,receives-default}), in which case the focused widget is activated.
 
 Returns True if a widget got activated.
 
-@RMethod window-set-geometry-hints
+@RMethod gtk-window-set-geometry-hints
 @lisp
-(window-set-geometry-hints window geometry-widget geometry geometry-mask)
+(gtk-window-set-geometry-hints window geometry-widget geometry geometry-mask)
 @end lisp
 
 This function sets up hints about how a @var{window} (an @ref{gtk-window}) can be resized by the user. You can set a minimum and maximum size; allowed resize increments (e.g. for xterm, you can only resize by the size of a character); aspect ratios; and more. See the @ref{geometry} struct.
@@ -1874,16 +1892,16 @@ This function sets up hints about how a @var{window} (an @ref{gtk-window}) can b
 
 @var{geometry-mask}: a @ref{window-hints} - mask indicating which struct fields should be paid attention to
 
-@RFunction window-list-toplevels
+@RFunction gtk-window-list-toplevels
 @lisp
-(window-list-toplevels) @result{} windows
+(gtk-window-list-toplevels) @result{} windows
 @end lisp
 
 Returns a list of all existing toplevel windows. The widgets in the list are not individually referenced.
 
 @var{windows}: fresh list of @ref{gtk-window}
 
-@RMethod window-add-mnemonic
+@RMethod gtk-window-add-mnemonic
 @lisp
 (window-add-mnemonic window keyval target)
 @end lisp
@@ -1894,9 +1912,9 @@ Adds a mnemonic to this @var{window} (a @ref{gtk-window}).
 
 @var{target}: the @ref{widget} that gets activated by the mnemonic
 
-@RMethod window-remove-mnemonic
+@RMethod gtk-window-remove-mnemonic
 @lisp
-(window-remove-mnemonic window keyval target)
+(gtk-window-remove-mnemonic window keyval target)
 @end lisp
 
 Removes a mnemonic from this @var{window} (a @ref{gtk-window}).
@@ -1905,9 +1923,9 @@ Removes a mnemonic from this @var{window} (a @ref{gtk-window}).
 
 @var{target}: the @ref{widget} that gets activated by the mnemonic
 
-@RMethod window-mnemonic-activate
+@RMethod gtk-window-activate-mnemonic
 @lisp
-(window-mnemonic-activate window keyval modifier)
+(gtk-window-activate-mnemonic window keyval modifier)
 @end lisp
 
 Activates the targets associated with the mnemonic.
@@ -1916,9 +1934,9 @@ Activates the targets associated with the mnemonic.
 
 @var{modifier}: a @ref{modifier-type} - modifiers
 
-@RMethod window-activate-key
+@RMethod gtk-window-activate-key
 @lisp
-(window-activate-key window event) @result{} activated-p
+(gtk-window-activate-key window event) @result{} activated-p
 @end lisp
 
 Activates mnemonics and accelerators for this @ref{gtk-window}. This is normally called by the default @SignalRef{widget,key-press-event} handler for toplevel windows, however in some cases it may be useful to call this directly when overriding the standard key handling for a toplevel window.
@@ -1927,9 +1945,9 @@ Returns True if a mnemonic or accelerator was found and activated.
 
 @var{event}: a @ref{event-key}
 
-@RMethod window-propagate-key-event
+@RMethod gtk-window-propagate-key-event
 @lisp
-(window-propagate-key-event window event) @result{} handled-p
+(gtk-window-propagate-key-event window event) @result{} handled-p
 @end lisp
 
 Propagate a key press or release event to the focus widget and up the focus container chain until a widget handles @var{event}. This is normally called by the default @SignalRef{widget,key-press-event} and @SignalRef{widget,key-release-event} handlers for toplevel windows, however in some cases it may be useful to call this directly when overriding the standard key handling for a toplevel window.
@@ -1938,31 +1956,31 @@ Returns True if a widget in the focus chain handled the event.
 
 @var{event}: a @ref{event-key}
 
-@RMethod window-present
+@RMethod gtk-window-present
 @lisp
-(window-present window)
+(gtk-window-present window)
 @end lisp
 
 Presents a @var{window} (a @ref{gtk-window}) to the user. This may mean raising the window in the stacking order, deiconifying it, moving it to the current desktop, and/or giving it the keyboard focus, possibly dependent on the user's platform, window manager, and preferences.
 
 If window is hidden, this function calls @ref{widget-show} as well.
 
-This function should be used when the user tries to open a window that's already open. Say for example the preferences dialog is currently open, and the user chooses Preferences from the menu a second time; use @ref{window-present} to move the already-open dialog where the user can see it.
+This function should be used when the user tries to open a window that's already open. Say for example the preferences dialog is currently open, and the user chooses Preferences from the menu a second time; use @ref{gtk-window-present} to move the already-open dialog where the user can see it.
 
-If you are calling this function in response to a user interaction, it is preferable to use @ref{window-present-with-time}.
+If you are calling this function in response to a user interaction, it is preferable to use @ref{gtk-window-present-with-time}.
 
-@RMethod window-present-with-time
+@RMethod gtk-window-present-with-time
 @lisp
-(window-present-with-time window timestamp)
+(gtk-window-present-with-time window timestamp)
 @end lisp
 
-Presents a @var{window} (a @ref{gtk-window}) to the user in response to a user interaction. If you need to present a window without a timestamp, use @ref{window-present}. See @ref{window-present} for details.
+Presents a @var{window} (a @ref{gtk-window}) to the user in response to a user interaction. If you need to present a window without a timestamp, use @ref{gtk-window-present}. See @ref{gtk-window-present} for details.
 
 @var{timestamp}: the timestamp of the user interaction (typically a button or key press event) which triggered this call
 
-@RMethod window-iconify
+@RMethod gtk-window-iconify
 @lisp
-(window-iconify window)
+(gtk-window-iconify window)
 @end lisp
 
 Asks to iconify (i.e. minimize) the specified @var{window} (a @ref{gtk-window}). Note that you shouldn't assume the window is definitely iconified afterward, because other entities (e.g. the user or window manager) could deiconify it again, or there may not be a window manager in which case iconification isn't possible, etc. But normally the window will end up iconified. Just don't write code that crashes if not.
@@ -1971,18 +1989,18 @@ It's permitted to call this function before showing a window, in which case the 
 
 You can track iconification via the @SignalRef{widget,window-state-event} signal on GtkWidget.
 
-@RMethod window-deiconify
+@RMethod gtk-window-deiconify
 @lisp
-(window-deiconify window)
+(gtk-window-deiconify window)
 @end lisp
 
 Asks to deiconify (i.e. unminimize) the specified window. Note that you shouldn't assume the window is definitely deiconified afterward, because other entities (e.g. the user or window manager) could iconify it again before your code which assumes deiconification gets to run.
 
 You can track iconification via the @SignalRef{widget,window-state-event}.
 
-@RMethod window-stick
+@RMethod gtk-window-stick
 @lisp
-(window-stick window)
+(gtk-window-stick window)
 @end lisp
 Asks to stick @var{window} (a @ref{gtk-window}), which means that it will appear on all user desktops. Note that you shouldn't assume the window is definitely stuck afterward, because other entities (e.g. the user or window manager) could unstick it again, and some window managers do not support sticking windows. But normally the window will end up stuck. Just don't write code that crashes if not.
 
@@ -1990,17 +2008,17 @@ It's permitted to call this function before showing a window.
 
 You can track stickiness via the @SignalRef{widget,window-state-event} signal.
 
-@RMethod window-unstick
+@RMethod gtk-window-unstick
 @lisp
-(window-unstick window)
+(gtk-window-unstick window)
 @end lisp
 Asks to unstick @var{window} (a @ref{gtk-window}), which means that it will appear on only one of the user's desktops. Note that you shouldn't assume the window is definitely unstuck afterward, because other entities (e.g. the user or window manager) could stick it again. But normally the window will end up stuck. Just don't write code that crashes if not.
 
 You can track stickiness via the @SignalRef{widget,window-state-event} signal.
 
-@RMethod window-maximize
+@RMethod gtk-window-maximize
 @lisp
-(window-maximize window)
+(gtk-window-maximize window)
 @end lisp
 
 Asks to maximize @var{window} (a @ref{gtk-window}), so that it becomes full-screen. Note that you shouldn't assume the window is definitely maximized afterward, because other entities (e.g. the user or window manager) could unmaximize it again, and not all window managers support maximization. But normally the window will end up maximized. Just don't write code that crashes if not.
@@ -2009,65 +2027,36 @@ It's permitted to call this function before showing a window, in which case the 
 
 You can track maximization via the @SignalRef{widget,window-state-event} signal.
 
-@RMethod window-unmaximize
+@RMethod gtk-window-unmaximize
 @lisp
-(window-unmaximize window)
+(gtk-window-unmaximize window)
 @end lisp
 
 Asks to unmaximize @var{window} (a @ref{gtk-window}). Note that you shouldn't assume the window is definitely unmaximized afterward, because other entities (e.g. the user or window manager) could maximize it again, and not all window managers honor requests to unmaximize. But normally the window will end up unmaximized. Just don't write code that crashes if not.
 
 You can track maximization via the @SignalRef{widget,window-state-event} signal on GtkWidget.
 
-@RMethod window-fullscreen
+@RMethod gtk-window-fullscreen
 @lisp
-(window-fullscreen window)
+(gtk-window-fullscreen window)
 @end lisp
 
 Asks to place @var{window} (a @ref{gtk-window}) in the fullscreen state. Note that you shouldn't assume the window is definitely full screen afterward, because other entities (e.g. the user or window manager) could unfullscreen it again, and not all window managers honor requests to fullscreen windows. But normally the window will end up fullscreen. Just don't write code that crashes if not.
 
 You can track the fullscreen state via the @SignalRef{widget,window-state-event} signal.
 
-@RMethod window-unfullscreen
+@RMethod gtk-window-unfullscreen
 @lisp
-(window-unfullscreen window)
+(gtk-window-unfullscreen window)
 @end lisp
 
 Asks to toggle off the fullscreen state for @var{window} (a @ref{gtk-window}). Note that you shouldn't assume the window is definitely not full screen afterward, because other entities (e.g. the user or window manager) could fullscreen it again, and not all window managers honor requests to unfullscreen windows. But normally the window will end up restored to its normal state. Just don't write code that crashes if not.
 
 You can track the fullscreen state via the @SignalRef{widget,window-state-event} signal.
 
-@RMethod window-set-keep-above
+@RMethod gtk-window-begin-resize-drag
 @lisp
-(window-set-keep-above window setting)
-@end lisp
-
-Asks to keep @var{window} (a @ref{gtk-window}) above, so that it stays on top. Note that you shouldn't assume the window is definitely above afterward, because other entities (e.g. the user or window manager) could not keep it above, and not all window managers support keeping windows above. But normally the window will end kept above. Just don't write code that crashes if not.
-
-It's permitted to call this function before showing a window, in which case the window will be kept above when it appears onscreen initially.
-
-You can track the above state via the @SignalRef{widget,window-state-event} signal.
-
-Note that, according to the Extended Window Manager Hints specification, the above state is mainly meant for user preferences and should not be used by applications e.g. for drawing attention to their dialogs.
-
-@var{setting}: a boolean; whether to keep @var{window} above other windows
-
-@RMethod window-set-keep-below
-@lisp
-(window-set-keep-below window setting)
-@end lisp
-Asks to keep window below, so that it stays in bottom. Note that you shouldn't assume the window is definitely below afterward, because other entities (e.g. the user or window manager) could not keep it below, and not all window managers support putting windows below. But normally the window will be kept below. Just don't write code that crashes if not.
-
-It's permitted to call this function before showing a window, in which case the window will be kept below when it appears onscreen initially.
-
-You can track the below state via the "window-state-event" signal on GtkWidget.
-
-Note that, according to the Extended Window Manager Hints specification, the above state is mainly meant for user preferences and should not be used by applications e.g. for drawing attention to their dialogs.
-
-@var{setting}: a boolean; whether to keep window below other windows
-
-@RMethod window-begin-resize-drag
-@lisp
-(window-begin-resize-drag window edge button root-x root-y timestamp)
+(gtk-window-begin-resize-drag window edge button root-x root-y timestamp)
 @end lisp
 
 Starts resizing a @var{window} (a @ref{gtk-window}). This function is used if an application has window resizing controls. When GDK can support it, the resize will be done using the standard mechanism for the window manager or windowing system. Otherwise, GDK will try to emulate window resizing, potentially not all that well, depending on the windowing system.
@@ -2082,9 +2071,9 @@ Starts resizing a @var{window} (a @ref{gtk-window}). This function is used if an
 
 @var{timestamp}: timestamp from the click event that initiated the drag
 
-@RMethod window-begin-move-drag
+@RMethod gtk-window-begin-move-drag
 @lisp
-(window-begin-move-drag window button root-x root-y timestamp)
+(gtk-window-begin-move-drag window button root-x root-y timestamp)
 @end lisp
 
 Starts moving a window. This function is used if an application has window movement grips. When GDK can support it, the window movement will be done using the standard mechanism for the window manager or windowing system. Otherwise, GDK will try to emulate window movement, potentially not all that well, depending on the windowing system.
@@ -2099,9 +2088,9 @@ Starts moving a window. This function is used if an application has window movem
 
 @var{timestamp}: timestamp from the click event that initiated the drag
 
-@RMethod window-set-frame-dimensions
+@RMethod gtk-window-set-frame-dimensions
 @lisp
-(window-set-frame-dimensions window left top right bottom)
+(gtk-window-set-frame-dimensions window left top right bottom)
 @end lisp
 
 (Note: this is a special-purpose function intended for the framebuffer port; see @SlotRef{gtk-window,has-frame}. It will have no effect on the window border drawn by the window manager, which is the normal case when using the X Window system.)
@@ -2112,33 +2101,33 @@ For windows with frames this function can be used to change the size of the fram
 
 @var{left}, @var{top}, @var{right}, @var{bottom} - integers; sizes of left, top, right, bottom borders
 
-@RFunction window-default-icon-list
+@RFunction gtk-window-default-icon-list
 @lisp
-(window-default-icon-list) @result icons
-(setf (window-default-icon-list) icons)
+(gtk-window-default-icon-list) @result icons
+(setf (gtk-window-default-icon-list) icons)
 @end lisp
 
 An icon list to be used as fallback for windows that haven't had @SlotRef{gtk-window,icon-list} set on them to set up a window-specific icon list. This function allows you to set up the icon for all windows in your app at once.
 
 @var{icons}: a list of @ref{pixbuf}s.
 
-@RFunction window-default-icon
+@RFunction gtk-window-default-icon
 @lisp
-(setf (window-default-icon) icon)
+(setf (gtk-window-default-icon) icon)
 @end lisp
 
 Sets an @var{icon} (a @ref{pixbuf}) to be used as fallback for windows that haven't had @SlotRef{gtk-window,icon} set on them from a pixbuf.
 
-@RFunction window-default-icon-name
+@RFunction gtk-window-default-icon-name
 @lisp
-(setf (window-default-icon-name) name)
+(setf (gtk-window-default-icon-name) name)
 @end lisp
 
 Sets an icon (a @code{string} - the name of the themed icon) to be used as fallback for windows.
 
-@RMethod window-move
+@RMethod gtk-window-move
 @lisp
-(window-move window x y)
+(gtk-window-move window x y)
 @end lisp
 
 Asks the window manager to move @var{window} (a @ref{gtk-window}) to the given position (defined by integers @var{x}, @var{y}). Window managers are free to ignore this; most window managers ignore requests for initial window positions (instead using a user-defined placement algorithm) and honor requests after the window has already been shown.
@@ -2151,14 +2140,14 @@ To position a window at the bottom right corner of the screen, you would set @En
 
 The Extended Window Manager Hints specification at http://www.freedesktop.org/Standards/wm-spec has a nice table of gravities in the "implementation notes" section.
 
-@RMethod window-resize
+@RMethod gtk-window-resize
 @lisp
-(window-resize window width height)
+(gtk-window-resize window width height)
 @end lisp
 
 Resizes the @var{window} (a @ref{gtk-window}) to @var{width} pixels by @var{height} pixels as if the user had done so, obeying geometry constraints. The default geometry constraint is that windows may not be smaller than their size request (see @SlotRef{widget,width-request}, @SlotRef{widget,height-request}).
 
-If @ref{window-resize} is called before showing a window for the first time, it overrides any default size set with @SlotRef{gtk-window,default-width}, @SlotRef{gtk-window,default-height}.
+If @ref{gtk-window-resize} is called before showing a window for the first time, it overrides any default size set with @SlotRef{gtk-window,default-width}, @SlotRef{gtk-window,default-height}.
 
 Windows may not be resized smaller than 1 by 1 pixels.
 
@@ -3919,7 +3908,7 @@ Slots:
 Signals:
 @itemize
 @item @anchor{signal.tool-item.create-menu-proxy}"create-menu-proxy". Signature: (instance @ref{tool-item}) @result{} @code{boolean}. Options: run-last.
-@item @anchor{signal.tool-item.set-tooltip}"set-tooltip". Signature: (instance @ref{tool-item}), (arg-1 @ref{tooltips}), (arg-2 @code{string}), (arg-3 @code{string}) @result{} @code{boolean}. Options: run-last.
+@item @anchor{signal.tool-item.set-tooltip}"set-tooltip". Signature: (instance @ref{tool-item}), (arg-1 @code{tooltips}), (arg-2 @code{string}), (arg-3 @code{string}) @result{} @code{boolean}. Options: run-last.
 @item @anchor{signal.tool-item.toolbar-reconfigured}"toolbar-reconfigured". Signature: (instance @ref{tool-item}) @result{} void. Options: run-last.
 @end itemize
 
@@ -4293,7 +4282,6 @@ Signals:
 @item @anchor{signal.widget.visibility-notify-event}\"visibility-notify-event\". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
 @item @anchor{signal.widget.window-state-event}\"window-state-event\". Signature: (instance @ref{widget}), (arg-1 @ref{event}) @result{} @code{boolean}. Options: run-last.
 @end itemize
-
 
 
 @RMethod widget-show

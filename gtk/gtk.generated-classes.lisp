@@ -1513,7 +1513,11 @@
                          (glist pixbuf :free-from-foreign t :free-to-foreign t)
                          "gtk_window_get_icon_list" "gtk_window_set_icon_list")
                         (:cffi group gtk-window-group (g-object window-group)
-                         "gtk_window_get_group" nil)))
+                         "gtk_window_get_group" nil)
+                        (:cffi keep-above gtk-window-keep-above :boolean nil
+                         "gtk_window_set_keep_above")
+                        (:cffi keep-below gtk-window-keep-below :boolean nil
+                         "gtk_window_set_keep_below")))
 
 (define-g-object-class "GtkAssistant" assistant
                        (:superclass gtk-window :export t :interfaces

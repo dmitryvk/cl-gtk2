@@ -122,7 +122,11 @@
 	(:cffi gtk::icon-list gtk::gtk-window-icon-list (glist gtk::pixbuf :free-from-foreign t :free-to-foreign t)
 	 "gtk_window_get_icon_list" "gtk_window_set_icon_list")
 	(:cffi gtk::group gtk::gtk-window-group (g-object gtk::window-group)
-	 "gtk_window_get_group" nil))
+	 "gtk_window_get_group" nil)
+        (:cffi gtk::keep-above gtk::gtk-window-keep-above :boolean
+         nil "gtk_window_set_keep_above")
+        (:cffi gtk::keep-below gtk::gtk-window-keep-below :boolean
+         nil "gtk_window_set_keep_below"))
        ("GtkTreeViewColumn"
         (:cffi gtk::tree-view gtk::tree-view-column-tree-view g-object
 	 "gtk_tree_view_column_get_tree_view" nil)
