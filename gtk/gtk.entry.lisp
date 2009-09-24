@@ -86,7 +86,7 @@
   (start-pos :int)
   (end-pos :int))
 
-(defun editable-get-chars (editable &key (start -1) (end -1))
+(defun editable-get-chars (editable &key (start 0) (end -1))
   (gtk-editable-get-chars editable start end))
 
 (export 'editable-get-chars)
