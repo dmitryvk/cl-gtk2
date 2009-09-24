@@ -1,666 +1,1168 @@
 (in-package :gtk)
-(define-g-enum "GtkTextDirection" text-direction
-               (:export t :type-initializer "gtk_text_direction_get_type")
-               (:none 0) (:ltr 1) (:rtl 2))
-
-(define-g-enum "GtkSizeGroupMode" size-group-mode
-               (:export t :type-initializer "gtk_size_group_mode_get_type")
-               (:none 0) (:horizontal 1) (:vertical 2) (:both 3))
-
-(define-g-enum "GtkUnit" unit (:export t :type-initializer "gtk_unit_get_type")
-               (:pixel 0) (:points 1) (:inch 2) (:mm 3))
-
-(define-g-enum "GtkPrintStatus" print-status
-               (:export t :type-initializer "gtk_print_status_get_type")
-               (:initial 0) (:preparing 1) (:generating-data 2)
-               (:sending-data 3) (:pending 4) (:pending-issue 5) (:printing 6)
-               (:finished 7) (:finished-aborted 8))
-
-(define-g-enum "GtkRecentSortType" recent-sort-type
-               (:export t :type-initializer "gtk_recent_sort_type_get_type")
-               (:none 0) (:mru 1) (:lru 2) (:custom 3))
-
-(define-g-enum "GtkFileChooserAction" file-chooser-action
-               (:export t :type-initializer "gtk_file_chooser_action_get_type")
-               (:open 0) (:save 1) (:select-folder 2) (:create-folder 3))
-
-(define-g-enum "GtkCellRendererAccelMode" cell-renderer-accel-mode
-               (:export t :type-initializer
-                "gtk_cell_renderer_accel_mode_get_type")
-               (:gtk 0) (:other 1))
-
-(define-g-enum "GtkCellRendererMode" cell-renderer-mode
-               (:export t :type-initializer "gtk_cell_renderer_mode_get_type")
-               (:inert 0) (:activatable 1) (:editable 2))
-
-(define-g-enum "GtkTreeViewColumnSizing" tree-view-column-sizing
-               (:export t :type-initializer
-                "gtk_tree_view_column_sizing_get_type")
-               (:grow-only 0) (:autosize 1) (:fixed 2))
-
-(define-g-enum "GtkProgressBarOrientation" progress-bar-orientation
-               (:export t :type-initializer
-                "gtk_progress_bar_orientation_get_type")
-               (:left-to-right 0) (:right-to-left 1) (:bottom-to-top 2)
-               (:top-to-bottom 3))
-
-(define-g-enum "GtkProgressBarStyle" progress-bar-style
-               (:export t :type-initializer "gtk_progress_bar_style_get_type")
-               (:continuous 0) (:discrete 1))
-
-(define-g-enum "GtkUpdateType" update-type
-               (:export t :type-initializer "gtk_update_type_get_type")
-               (:continuous 0) (:discontinuous 1) (:delayed 2))
-
-(define-g-enum "GtkMetricType" metric-type
-               (:export t :type-initializer "gtk_metric_type_get_type")
-               (:pixels 0) (:inches 1) (:centimeters 2))
-
-(define-g-enum "GtkSpinButtonUpdatePolicy" spin-button-update-policy
-               (:export t :type-initializer
-                "gtk_spin_button_update_policy_get_type")
-               (:always 0) (:if-valid 1))
-
-(define-g-enum "GtkCurveType" curve-type
-               (:export t :type-initializer "gtk_curve_type_get_type")
-               (:linear 0) (:spline 1) (:free 2))
-
-(define-g-enum "GtkImageType" image-type
-               (:export t :type-initializer "gtk_image_type_get_type")
-               (:empty 0) (:pixmap 1) (:image 2) (:pixbuf 3) (:stock 4)
-               (:icon-set 5) (:animation 6) (:icon-name 7) (:gicon 8))
-
-(define-g-enum "GtkArrowType" arrow-type
-               (:export t :type-initializer "gtk_arrow_type_get_type") (:up 0)
-               (:down 1) (:left 2) (:right 3) (:none 4))
-
-(define-g-enum "GtkSortType" sort-type
-               (:export t :type-initializer "gtk_sort_type_get_type")
-               (:ascending 0) (:descending 1))
-
-(define-g-enum "GtkToolbarStyle" toolbar-style
-               (:export t :type-initializer "gtk_toolbar_style_get_type")
-               (:icons 0) (:text 1) (:both 2) (:both-horiz 3))
-
-(define-g-enum "GtkWrapMode" wrap-mode
-               (:export t :type-initializer "gtk_wrap_mode_get_type") (:none 0)
-               (:char 1) (:word 2) (:word-char 3))
-
-(define-g-enum "GtkJustification" justification
-               (:export t :type-initializer "gtk_justification_get_type")
-               (:left 0) (:right 1) (:center 2) (:fill 3))
-
-(define-g-enum "GtkButtonBoxStyle" button-box-style
-               (:export t :type-initializer "gtk_button_box_style_get_type")
-               (:default-style 0) (:spread 1) (:edge 2) (:start 3) (:end 4)
-               (:center 5))
-
-(define-g-enum "GtkSelectionMode" selection-mode
-               (:export t :type-initializer "gtk_selection_mode_get_type")
-               (:none 0) (:single 1) (:browse 2) (:multiple 3) (:extended 3))
-
-(define-g-enum "GtkTreeViewGridLines" tree-view-grid-lines
-               (:export t :type-initializer
-                "gtk_tree_view_grid_lines_get_type")
-               (:none 0) (:horizontal 1) (:vertical 2) (:both 3))
-
-(define-g-enum "GtkPackDirection" pack-direction
-               (:export t :type-initializer "gtk_pack_direction_get_type")
-               (:ltr 0) (:rtl 1) (:ttb 2) (:btt 3))
-
-(define-g-enum "GtkPolicyType" policy-type
-               (:export t :type-initializer "gtk_policy_type_get_type")
-               (:always 0) (:automatic 1) (:never 2))
-
-(define-g-enum "GtkCornerType" corner-type
-               (:export t :type-initializer "gtk_corner_type_get_type")
-               (:top-left 0) (:bottom-left 1) (:top-right 2) (:bottom-right 3))
-
-(define-g-enum "GtkSensitivityType" sensitivity-type
-               (:export t :type-initializer "gtk_sensitivity_type_get_type")
-               (:auto 0) (:on 1) (:off 2))
-
-(define-g-enum "GtkShadowType" shadow-type
-               (:export t :type-initializer "gtk_shadow_type_get_type")
-               (:none 0) (:in 1) (:out 2) (:etched-in 3) (:etched-out 4))
-
-(define-g-enum "GtkIconSize" icon-size
-               (:export t :type-initializer "gtk_icon_size_get_type")
-               (:invalid 0) (:menu 1) (:small-toolbar 2) (:large-toolbar 3)
-               (:button 4) (:dnd 5) (:dialog 6))
-
-(define-g-enum "GtkOrientation" orientation
-               (:export t :type-initializer "gtk_orientation_get_type")
-               (:horizontal 0) (:vertical 1))
-
-(define-g-enum "GtkPositionType" position-type
-               (:export t :type-initializer "gtk_position_type_get_type")
-               (:left 0) (:right 1) (:top 2) (:bottom 3))
-
-(define-g-enum "GtkReliefStyle" relief-style
-               (:export t :type-initializer "gtk_relief_style_get_type")
-               (:normal 0) (:half 1) (:none 2))
-
-(define-g-enum "GtkMessageType" message-type
-               (:export t :type-initializer "gtk_message_type_get_type")
-               (:info 0) (:warning 1) (:question 2) (:error 3) (:other 4))
-
-(define-g-enum "GtkButtonsType" buttons-type
-               (:export t :type-initializer "gtk_buttons_type_get_type")
-               (:none 0) (:ok 1) (:close 2) (:cancel 3) (:yes-no 4)
-               (:ok-cancel 5))
-
-(define-g-enum "GtkWindowType" window-type
-               (:export t :type-initializer "gtk_window_type_get_type")
-               (:toplevel 0) (:popup 1))
-
-(define-g-enum "GtkWindowPosition" window-position
-               (:export t :type-initializer "gtk_window_position_get_type")
-               (:none 0) (:center 1) (:mouse 2) (:center-always 3)
-               (:center-on-parent 4))
-
-(define-g-enum "GtkResizeMode" resize-mode
-               (:export t :type-initializer "gtk_resize_mode_get_type")
-               (:parent 0) (:queue 1) (:immediate 2))
-
-(define-g-enum "GtkTextBufferTargetInfo" text-buffer-target-info
-               (:export t :type-initializer
-                "gtk_text_buffer_target_info_get_type")
-               (:buffer-contents -1) (:rich-text -2) (:text -3))
-
-(define-g-enum "GtkStateType" state-type
-               (:export t :type-initializer "gtk_state_type_get_type")
-               (:normal 0) (:active 1) (:prelight 2) (:selected 3)
-               (:insensitive 4))
-
-(define-g-enum "GtkDirectionType" direction-type
-               (:export t :type-initializer "gtk_direction_type_get_type")
-               (:tab-forward 0) (:tab-backward 1) (:up 2) (:down 3) (:left 4)
-               (:right 5))
-
-(define-g-enum "GtkDragResult" drag-result
-               (:export t :type-initializer "gtk_drag_result_get_type")
-               (:success 0) (:no-target 1) (:user-cancelled 2)
-               (:timeout-expired 3) (:grab-broken 4) (:error 5))
-
-(define-g-enum "GtkWidgetHelpType" widget-help-type
-               (:export t :type-initializer "gtk_widget_help_type_get_type")
-               (:tooltip 0) (:whats-this 1))
-
-(define-g-enum "GtkPackType" pack-type
-               (:export t :type-initializer "gtk_pack_type_get_type")
-               (:start 0) (:end 1))
-
-(define-g-enum "GtkNotebookTab" notebook-tab
-               (:export t :type-initializer "gtk_notebook_tab_get_type")
-               (:first 0) (:last 1))
-
-(define-g-enum "GtkMovementStep" movement-step
-               (:export t :type-initializer "gtk_movement_step_get_type")
-               (:logical-positions 0) (:visual-positions 1) (:words 2)
-               (:display-lines 3) (:display-line-ends 4) (:paragraphs 5)
-               (:paragraph-ends 6) (:pages 7) (:buffer-ends 8)
-               (:horizontal-pages 9))
-
-(define-g-enum "GtkAnchorType" anchor-type
-               (:export t :type-initializer "gtk_anchor_type_get_type")
-               (:center 0) (:north 1) (:north-west 2) (:north-east 3)
-               (:south 4) (:south-west 5) (:south-east 6) (:west 7) (:east 8)
-               (:n 1) (:nw 2) (:ne 3) (:s 4) (:sw 5) (:se 6) (:w 7) (:e 8))
-
-(define-g-enum "GtkAssistantPageType" assistant-page-type
-               (:export t :type-initializer "gtk_assistant_page_type_get_type")
-               (:content 0) (:intro 1) (:confirm 2) (:summary 3) (:progress 4))
-
-(define-g-enum "GtkBuilderError" builder-error
-               (:export t :type-initializer "gtk_builder_error_get_type")
-               (:invalid-type-function 0) (:unhandled-tag 1)
-               (:missing-attribute 2) (:invalid-attribute 3) (:invalid-tag 4)
-               (:missing-property-value 5) (:invalid-value 6)
-               (:version-mismatch 7) (:duplicate-id 8))
-
-(define-g-enum "GtkCellType" cell-type
-               (:export t :type-initializer "gtk_cell_type_get_type")
-               (:empty 0) (:text 1) (:pixmap 2) (:pixtext 3) (:widget 4))
-
-(define-g-enum "GtkCListDragPos" c-list-drag-pos
-               (:export t :type-initializer "gtk_clist_drag_pos_get_type")
-               (:none 0) (:before 1) (:into 2) (:after 3))
-
-(define-g-enum "GtkCTreeExpanderStyle" c-tree-expander-style
-               (:export t :type-initializer
-                "gtk_ctree_expander_style_get_type")
-               (:none 0) (:square 1) (:triangle 2) (:circular 3))
-
-(define-g-enum "GtkCTreeExpansionType" c-tree-expansion-type
-               (:export t :type-initializer
-                "gtk_ctree_expansion_type_get_type")
-               (:expand 0) (:expand-recursive 1) (:collapse 2)
-               (:collapse-recursive 3) (:toggle 4) (:toggle-recursive 5))
-
-(define-g-enum "GtkCTreeLineStyle" c-tree-line-style
-               (:export t :type-initializer "gtk_ctree_line_style_get_type")
-               (:none 0) (:solid 1) (:dotted 2) (:tabbed 3))
-
-(define-g-enum "GtkCTreePos" c-tree-pos
-               (:export t :type-initializer "gtk_ctree_pos_get_type")
-               (:before 0) (:as-child 1) (:after 2))
-
-(define-g-enum "GtkDeleteType" delete-type
-               (:export t :type-initializer "gtk_delete_type_get_type")
-               (:chars 0) (:word-ends 1) (:words 2) (:display-lines 3)
-               (:display-line-ends 4) (:paragraph-ends 5) (:paragraphs 6)
-               (:whitespace 7))
-
-(define-g-enum "GtkExpanderStyle" expander-style
-               (:export t :type-initializer "gtk_expander_style_get_type")
-               (:collapsed 0) (:semi-collapsed 1) (:semi-expanded 2)
-               (:expanded 3))
-
-(define-g-enum "GtkFileChooserConfirmation" file-chooser-confirmation
-               (:export t :type-initializer
-                "gtk_file_chooser_confirmation_get_type")
-               (:confirm 0) (:accept-filename 1) (:select-again 2))
-
-(define-g-enum "GtkFileChooserError" file-chooser-error
-               (:export t :type-initializer "gtk_file_chooser_error_get_type")
-               (:nonexistent 0) (:bad-filename 1) (:already-exists 2)
-               (:incomplete-hostname 3))
-
-(define-g-enum "GtkIconThemeError" icon-theme-error
-               (:export t :type-initializer "gtk_icon_theme_error_get_type")
-               (:not-found 0) (:failed 1))
-
-(define-g-enum "GtkIconViewDropPosition" icon-view-drop-position
-               (:export t :type-initializer
-                "gtk_icon_view_drop_position_get_type")
-               (:no-drop 0) (:drop-into 1) (:drop-left 2) (:drop-right 3)
-               (:drop-above 4) (:drop-below 5))
-
-(define-g-enum "GtkIMPreeditStyle" i-m-preedit-style (:export t) (:nothing 0)
-               (:callback 1) (:none 2))
-
-(define-g-enum "GtkIMStatusStyle" i-m-status-style (:export t) (:nothing 0)
-               (:callback 1) (:none 2))
-
-(define-g-enum "GtkMatchType" match-type
-               (:export t :type-initializer "gtk_match_type_get_type") (:all 0)
-               (:all-tail 1) (:head 2) (:tail 3) (:exact 4) (:last 5))
-
-(define-g-enum "GtkMenuDirectionType" menu-direction-type
-               (:export t :type-initializer "gtk_menu_direction_type_get_type")
-               (:parent 0) (:child 1) (:next 2) (:prev 3))
-
-(define-g-enum "GtkNumberUpLayout" number-up-layout
-               (:export t :type-initializer "gtk_number_up_layout_get_type")
-               (:lrtb 0) (:lrbt 1) (:rltb 2) (:rlbt 3) (:tblr 4) (:tbrl 5)
-               (:btlr 6) (:btrl 7))
-
-(define-g-enum "GtkPageOrientation" page-orientation
-               (:export t :type-initializer "gtk_page_orientation_get_type")
-               (:portrait 0) (:landscape 1) (:reverse-portrait 2)
-               (:reverse-landscape 3))
-
-(define-g-enum "GtkPageSet" page-set
-               (:export t :type-initializer "gtk_page_set_get_type") (:all 0)
-               (:even 1) (:odd 2))
-
-(define-g-enum "GtkPathPriorityType" path-priority-type
-               (:export t :type-initializer "gtk_path_priority_type_get_type")
-               (:lowest 0) (:gtk 4) (:application 8) (:theme 10) (:rc 12)
-               (:highest 15))
-
-(define-g-enum "GtkPathType" path-type
-               (:export t :type-initializer "gtk_path_type_get_type")
-               (:widget 0) (:widget-class 1) (:class 2))
-
-(define-g-enum "GtkPreviewType" preview-type
-               (:export t :type-initializer "gtk_preview_type_get_type")
-               (:color 0) (:grayscale 1))
-
-(define-g-enum "GtkPrintDuplex" print-duplex
-               (:export t :type-initializer "gtk_print_duplex_get_type")
-               (:simplex 0) (:horizontal 1) (:vertical 2))
-
-(define-g-enum "GtkPrintError" print-error
-               (:export t :type-initializer "gtk_print_error_get_type")
-               (:general 0) (:internal-error 1) (:nomem 2) (:invalid-file 3))
-
-(define-g-enum "GtkPrintOperationAction" print-operation-action
-               (:export t :type-initializer
-                "gtk_print_operation_action_get_type")
-               (:print-dialog 0) (:print 1) (:preview 2) (:export 3))
-
-(define-g-enum "GtkPrintOperationResult" print-operation-result
-               (:export t :type-initializer
-                "gtk_print_operation_result_get_type")
-               (:error 0) (:apply 1) (:cancel 2) (:in-progress 3))
-
-(define-g-enum "GtkPrintPages" print-pages
-               (:export t :type-initializer "gtk_print_pages_get_type")
-               (:all 0) (:current 1) (:ranges 2))
-
-(define-g-enum "GtkPrintQuality" print-quality
-               (:export t :type-initializer "gtk_print_quality_get_type")
-               (:low 0) (:normal 1) (:high 2) (:draft 3))
-
-(define-g-enum "GtkRcTokenType" rc-token-type
-               (:export t :type-initializer "gtk_rc_token_type_get_type")
-               (:invalid 270) (:include 271) (:normal 272) (:active 273)
-               (:prelight 274) (:selected 275) (:insensitive 276) (:fg 277)
-               (:bg 278) (:text 279) (:base 280) (:xthickness 281)
-               (:ythickness 282) (:font 283) (:fontset 284) (:font-name 285)
-               (:bg-pixmap 286) (:pixmap-path 287) (:style 288) (:binding 289)
-               (:bind 290) (:widget 291) (:widget-class 292) (:class 293)
-               (:lowest 294) (:gtk 295) (:application 296) (:theme 297)
-               (:rc 298) (:highest 299) (:engine 300) (:module-path 301)
-               (:im-module-path 302) (:im-module-file 303) (:stock 304)
-               (:ltr 305) (:rtl 306) (:color 307) (:unbind 308) (:last 309))
-
-(define-g-enum "GtkRecentChooserError" recent-chooser-error
-               (:export t :type-initializer
-                "gtk_recent_chooser_error_get_type")
-               (:not-found 0) (:invalid-uri 1))
-
-(define-g-enum "GtkRecentManagerError" recent-manager-error
-               (:export t :type-initializer
-                "gtk_recent_manager_error_get_type")
-               (:not-found 0) (:invalid-uri 1) (:invalid-encoding 2)
-               (:not-registered 3) (:read 4) (:write 5) (:unknown 6))
-
-(define-g-enum "GtkResponseType" response-type
-               (:export t :type-initializer "gtk_response_type_get_type")
-               (:none -1) (:reject -2) (:accept -3) (:delete-event -4) (:ok -5)
-               (:cancel -6) (:close -7) (:yes -8) (:no -9) (:apply -10)
-               (:help -11))
-
-(define-g-enum "GtkScrollStep" scroll-step
-               (:export t :type-initializer "gtk_scroll_step_get_type")
-               (:steps 0) (:pages 1) (:ends 2) (:horizontal-steps 3)
-               (:horizontal-pages 4) (:horizontal-ends 5))
-
-(define-g-enum "GtkScrollType" scroll-type
-               (:export t :type-initializer "gtk_scroll_type_get_type")
-               (:none 0) (:jump 1) (:step-backward 2) (:step-forward 3)
-               (:page-backward 4) (:page-forward 5) (:step-up 6) (:step-down 7)
-               (:page-up 8) (:page-down 9) (:step-left 10) (:step-right 11)
-               (:page-left 12) (:page-right 13) (:start 14) (:end 15))
-
-(define-g-enum "GtkSideType" side-type
-               (:export t :type-initializer "gtk_side_type_get_type") (:top 0)
-               (:bottom 1) (:left 2) (:right 3))
-
-(define-g-enum "GtkSpinType" spin-type
-               (:export t :type-initializer "gtk_spin_type_get_type")
-               (:step-forward 0) (:step-backward 1) (:page-forward 2)
-               (:page-backward 3) (:home 4) (:end 5) (:user-defined 6))
-
-(define-g-enum "GtkSubmenuDirection" submenu-direction
-               (:export t :type-initializer "gtk_submenu_direction_get_type")
-               (:left 0) (:right 1))
-
-(define-g-enum "GtkSubmenuPlacement" submenu-placement
-               (:export t :type-initializer "gtk_submenu_placement_get_type")
-               (:top-bottom 0) (:left-right 1))
-
-(define-g-enum "GtkTextWindowType" text-window-type
-               (:export t :type-initializer "gtk_text_window_type_get_type")
-               (:private 0) (:widget 1) (:text 2) (:left 3) (:right 4) (:top 5)
-               (:bottom 6))
-
-(define-g-enum "GtkToolbarChildType" toolbar-child-type
-               (:export t :type-initializer "gtk_toolbar_child_type_get_type")
-               (:space 0) (:button 1) (:togglebutton 2) (:radiobutton 3)
-               (:widget 4))
-
-(define-g-enum "GtkToolbarSpaceStyle" toolbar-space-style
-               (:export t :type-initializer "gtk_toolbar_space_style_get_type")
-               (:empty 0) (:line 1))
-
-(define-g-enum "GtkTreeViewDropPosition" tree-view-drop-position
-               (:export t :type-initializer
-                "gtk_tree_view_drop_position_get_type")
-               (:before 0) (:after 1) (:into-or-before 2) (:into-or-after 3))
-
-(define-g-enum "GtkTreeViewMode" tree-view-mode
-               (:export t :type-initializer "gtk_tree_view_mode_get_type")
-               (:line 0) (:item 1))
-
-(define-g-enum "GtkVisibility" visibility
-               (:export t :type-initializer "gtk_visibility_get_type")
-               (:none 0) (:partial 1) (:full 2))
-
-(define-g-enum "GtkEntryIconPosition" entry-icon-position
-               (:export t :type-initializer "gtk_entry_icon_position_get_type")
-               (:primary 0) (:secondary 1))
-
-(define-g-flags "GtkTextSearchFlags" text-search-flags
-                (:export t :type-initializer "gtk_text_search_flags_get_type")
-                (:visible-only 1) (:text-only 2))
-
-(define-g-flags "GtkAccelFlags" accel-flags
-                (:export t :type-initializer "gtk_accel_flags_get_type")
-                (:visible 1) (:locked 2) (:mask 7))
-
-(define-g-flags "GtkArgFlags" arg-flags
-                (:export t :type-initializer "gtk_arg_flags_get_type")
-                (:readable 1) (:writable 2) (:construct 4) (:construct-only 8)
-                (:child-arg 16))
-
-(define-g-flags "GtkAttachOptions" attach-options
-                (:export t :type-initializer "gtk_attach_options_get_type")
-                (:expand 1) (:shrink 2) (:fill 4))
-
-(define-g-flags "GtkButtonAction" button-action
-                (:export t :type-initializer "gtk_button_action_get_type")
-                (:ignored 0) (:selects 1) (:drags 2) (:expands 4))
-
-(define-g-flags "GtkCalendarDisplayOptions" calendar-display-options
-                (:export t :type-initializer
-                 "gtk_calendar_display_options_get_type")
-                (:show-heading 1) (:show-day-names 2) (:no-month-change 4)
-                (:show-week-numbers 8) (:week-start-monday 16)
-                (:show-details 32))
-
-(define-g-flags "GtkCellRendererState" cell-renderer-state
-                (:export t :type-initializer
-                 "gtk_cell_renderer_state_get_type")
-                (:selected 1) (:prelit 2) (:insensitive 4) (:sorted 8)
-                (:focused 16))
-
-(define-g-flags "GtkDebugFlag" debug-flag
-                (:export t :type-initializer "gtk_debug_flag_get_type")
-                (:misc 1) (:plugsocket 2) (:text 4) (:tree 8) (:updates 16)
-                (:keybindings 32) (:multihead 64) (:modules 128)
-                (:geometry 256) (:icontheme 512) (:printing 1024)
-                (:builder 2048))
-
-(define-g-flags "GtkDestDefaults" dest-defaults
-                (:export t :type-initializer "gtk_dest_defaults_get_type")
-                (:motion 1) (:highlight 2) (:drop 4) (:all 7))
-
-(define-g-flags "GtkDialogFlags" dialog-flags
-                (:export t :type-initializer "gtk_dialog_flags_get_type")
-                (:modal 1) (:destroy-with-parent 2) (:no-separator 4))
-
-(define-g-flags "GtkFileFilterFlags" file-filter-flags
-                (:export t :type-initializer "gtk_file_filter_flags_get_type")
-                (:filename 1) (:uri 2) (:display-name 4) (:mime-type 8))
-
-(define-g-flags "GtkIconLookupFlags" icon-lookup-flags
-                (:export t :type-initializer "gtk_icon_lookup_flags_get_type")
-                (:no-svg 1) (:force-svg 2) (:use-builtin 4)
-                (:generic-fallback 8) (:force-size 16))
-
-(define-g-flags "GtkObjectFlags" object-flags
-                (:export t :type-initializer "gtk_object_flags_get_type")
-                (:in-destruction 1) (:floating 2) (:reserved-1 4)
-                (:reserved-2 8))
-
-(define-g-flags "GtkPrivateFlags" private-flags
-                (:export t :type-initializer "gtk_private_flags_get_type")
-                (:user-style 1) (:resize-pending 4) (:has-pointer 8)
-                (:shadowed 16) (:has-shape-mask 32) (:in-reparent 64)
-                (:direction-set 128) (:direction-ltr 256) (:anchored 512)
-                (:child-visible 1024) (:redraw-on-alloc 2048)
-                (:alloc-needed 4096) (:request-needed 8192))
-
-(define-g-flags "GtkRcFlags" rc-flags
-                (:export t :type-initializer "gtk_rc_flags_get_type") (:fg 1)
-                (:bg 2) (:text 4) (:base 8))
-
-(define-g-flags "GtkRecentFilterFlags" recent-filter-flags
-                (:export t :type-initializer
-                 "gtk_recent_filter_flags_get_type")
-                (:uri 1) (:display-name 2) (:mime-type 4) (:application 8)
-                (:group 16) (:age 32))
-
-(define-g-flags "GtkSignalRunType" signal-run-type
-                (:export t :type-initializer "gtk_signal_run_type_get_type")
-                (:first 1) (:last 2) (:both 3) (:no-recurse 8) (:action 32)
-                (:no-hooks 64))
-
-(define-g-flags "GtkTargetFlags" target-flags
-                (:export t :type-initializer "gtk_target_flags_get_type")
-                (:same-app 1) (:same-widget 2) (:other-app 4) (:other-widget 8))
-
-(define-g-flags "GtkTreeModelFlags" tree-model-flags
-                (:export t :type-initializer "gtk_tree_model_flags_get_type")
-                (:iters-persist 1) (:list-only 2))
-
-(define-g-flags "GtkUIManagerItemType" ui-manager-item-type (:export t)
-                (:auto 0) (:menubar 1) (:menu 2) (:toolbar 4) (:placeholder 8)
-                (:popup 16) (:menuitem 32) (:toolitem 64) (:separator 128)
-                (:accelerator 256) (:popup-with-accels 512))
-
-(define-g-flags "GtkWidgetFlags" widget-flags
-                (:export t :type-initializer "gtk_widget_flags_get_type")
-                (:toplevel 16) (:no-window 32) (:realized 64) (:mapped 128)
-                (:visible 256) (:sensitive 512) (:parent-sensitive 1024)
-                (:can-focus 2048) (:has-focus 4096) (:can-default 8192)
-                (:has-default 16384) (:has-grab 32768) (:rc-style 65536)
-                (:composite-child 131072) (:no-reparent 262144)
-                (:app-paintable 524288) (:receives-default 1048576)
-                (:double-buffered 2097152) (:no-show-all 4194304))
-
-(define-g-interface "GtkBuildable" buildable
-                    (:export t :type-initializer "gtk_buildable_get_type"))
-
-(define-g-interface "GtkCellEditable" cell-editable
-                    (:export t :type-initializer "gtk_cell_editable_get_type"))
-
-(define-g-interface "GtkCellLayout" cell-layout
-                    (:export t :type-initializer "gtk_cell_layout_get_type"))
-
-(define-g-interface "GtkEditable" editable
-                    (:export t :type-initializer "gtk_editable_get_type"))
-
-(define-g-interface "GtkFileChooser" file-chooser
-                    (:export t :type-initializer "gtk_file_chooser_get_type")
-                    (action file-chooser-action "action" "GtkFileChooserAction"
-                     t t)
-                    (do-overwrite-confirmation
-                     file-chooser-do-overwrite-confirmation
-                     "do-overwrite-confirmation" "gboolean" t t)
-                    (extra-widget file-chooser-extra-widget "extra-widget"
-                     "GtkWidget" t t)
-                    (file-system-backend file-chooser-file-system-backend
-                     "file-system-backend" "gchararray" nil nil)
-                    (filter file-chooser-filter "filter" "GtkFileFilter" t t)
-                    (local-only file-chooser-local-only "local-only" "gboolean"
-                     t t)
-                    (preview-widget file-chooser-preview-widget
-                     "preview-widget" "GtkWidget" t t)
-                    (preview-widget-active file-chooser-preview-widget-active
-                     "preview-widget-active" "gboolean" t t)
-                    (select-multiple file-chooser-select-multiple
-                     "select-multiple" "gboolean" t t)
-                    (show-hidden file-chooser-show-hidden "show-hidden"
-                     "gboolean" t t)
-                    (use-preview-label file-chooser-use-preview-label
-                     "use-preview-label" "gboolean" t t)
-                    (:cffi current-name file-chooser-current-name
-                     (:string :free-to-foreign t :encoding :utf-8) nil
-                     "gtk_file_chooser_set_current_name")
-                    (:cffi filename file-chooser-filename
-                     (g-string :free-from-foreign t :free-to-foreign t)
-                     "gtk_file_chooser_get_filename"
-                     "gtk_file_chooser_set_filename")
-                    (:cffi current-folder file-chooser-current-folder
-                     (g-string :free-from-foreign t :free-to-foreign t)
-                     "gtk_file_chooser_get_current_folder"
-                     "gtk_file_chooser_set_current_folder")
-                    (:cffi uri file-chooser-uri
-                     (g-string :free-from-foreign t :free-to-foreign t)
-                     "gtk_file_chooser_get_uri" "gtk_file_chooser_set_uri")
-                    (:cffi current-folder-uri file-chooser-current-folder-uri
-                     (g-string :free-from-foreign t :free-to-foreign t)
-                     "gtk_file_chooser_get_current_folder_uri"
-                     "gtk_file_chooser_set_current_folder_uri")
-                    (:cffi preview-filename file-chooser-preview-filename
-                     (g-string :free-from-foreign t :free-to-foreign t)
-                     "gtk_file_chooser_get_preview_filename" nil)
-                    (:cffi preview-uri file-chooser-preview-uri
-                     (g-string :free-from-foreign t :free-to-foreign t)
-                     "gtk_file_chooser_get_preview_uri" nil))
-
-(define-g-interface "GtkFileChooserEmbed" file-chooser-embed (:export t))
-
-(define-g-interface "GtkTreeModel" tree-model
-                    (:export t :type-initializer "gtk_tree_model_get_type"))
-
-(define-g-interface "GtkTreeDragSource" tree-drag-source
-                    (:export t :type-initializer
-                     "gtk_tree_drag_source_get_type"))
-
-(define-g-interface "GtkTreeDragDest" tree-drag-dest
-                    (:export t :type-initializer "gtk_tree_drag_dest_get_type"))
-
-(define-g-interface "GtkTreeSortable" tree-sortable
-                    (:export t :type-initializer "gtk_tree_sortable_get_type"))
-
-(define-g-interface "GtkPrintOperationPreview" print-operation-preview
-                    (:export t :type-initializer
-                     "gtk_print_operation_preview_get_type"))
-
-(define-g-interface "GtkRecentChooser" recent-chooser
-                    (:export t :type-initializer "gtk_recent_chooser_get_type")
-                    (filter recent-chooser-filter "filter" "GtkRecentFilter" t
-                     t)
-                    (limit recent-chooser-limit "limit" "gint" t t)
-                    (local-only recent-chooser-local-only "local-only"
-                     "gboolean" t t)
-                    (recent-manager recent-chooser-recent-manager
-                     "recent-manager" "GtkRecentManager" nil nil)
-                    (select-multiple recent-chooser-select-multiple
-                     "select-multiple" "gboolean" t t)
-                    (show-icons recent-chooser-show-icons "show-icons"
-                     "gboolean" t t)
-                    (show-not-found recent-chooser-show-not-found
-                     "show-not-found" "gboolean" t t)
-                    (show-private recent-chooser-show-private "show-private"
-                     "gboolean" t t)
-                    (show-tips recent-chooser-show-tips "show-tips" "gboolean"
-                     t t)
-                    (sort-type recent-chooser-sort-type "sort-type"
-                     "GtkRecentSortType" t t))
-
-(define-g-interface "GtkToolShell" tool-shell
-                    (:export t :type-initializer "gtk_tool_shell_get_type"))
-
-(define-g-interface "GtkOrientable" orientable
-                    (:export t :type-initializer "gtk_orientable_get_type")
-                    (orientation orientable-orientation "orientation"
-                     "GtkOrientation" t t))
-
-(define-g-interface "GtkActivatable" activatable
-                    (:export t :type-initializer "gtk_activatable_get_type")
-                    (related-action activatable-related-action "related-action"
-                     "GtkAction" t t)
-                    (use-action-appearance activatable-use-action-appearance
-                     "use-action-appearance" "gboolean" t t))
-
-(define-g-interface "AtkImplementorIface" atk-implementor-iface (:export t))
+(define-g-enum "GtkTextDirection"
+    text-direction
+    (:export t :type-initializer "gtk_text_direction_get_type")
+  (:none 0)
+  (:ltr 1)
+  (:rtl 2))
+
+(define-g-enum "GtkSizeGroupMode"
+    size-group-mode
+    (:export t :type-initializer "gtk_size_group_mode_get_type")
+  (:none 0)
+  (:horizontal 1)
+  (:vertical 2)
+  (:both 3))
+
+(define-g-enum "GtkUnit"
+    unit
+    (:export t :type-initializer "gtk_unit_get_type")
+  (:pixel 0)
+  (:points 1)
+  (:inch 2)
+  (:mm 3))
+
+(define-g-enum "GtkPrintStatus"
+    print-status
+    (:export t :type-initializer "gtk_print_status_get_type")
+  (:initial 0)
+  (:preparing 1)
+  (:generating-data 2)
+  (:sending-data 3)
+  (:pending 4)
+  (:pending-issue 5)
+  (:printing 6)
+  (:finished 7)
+  (:finished-aborted 8))
+
+(define-g-enum "GtkRecentSortType"
+    recent-sort-type
+    (:export t :type-initializer "gtk_recent_sort_type_get_type")
+  (:none 0)
+  (:mru 1)
+  (:lru 2)
+  (:custom 3))
+
+(define-g-enum "GtkFileChooserAction"
+    file-chooser-action
+    (:export t :type-initializer "gtk_file_chooser_action_get_type")
+  (:open 0)
+  (:save 1)
+  (:select-folder 2)
+  (:create-folder 3))
+
+(define-g-enum "GtkCellRendererAccelMode"
+    cell-renderer-accel-mode
+    (:export t :type-initializer "gtk_cell_renderer_accel_mode_get_type")
+  (:gtk 0)
+  (:other 1))
+
+(define-g-enum "GtkCellRendererMode"
+    cell-renderer-mode
+    (:export t :type-initializer "gtk_cell_renderer_mode_get_type")
+  (:inert 0)
+  (:activatable 1)
+  (:editable 2))
+
+(define-g-enum "GtkTreeViewColumnSizing"
+    tree-view-column-sizing
+    (:export t :type-initializer "gtk_tree_view_column_sizing_get_type")
+  (:grow-only 0)
+  (:autosize 1)
+  (:fixed 2))
+
+(define-g-enum "GtkProgressBarOrientation"
+    progress-bar-orientation
+    (:export t :type-initializer "gtk_progress_bar_orientation_get_type")
+  (:left-to-right 0)
+  (:right-to-left 1)
+  (:bottom-to-top 2)
+  (:top-to-bottom 3))
+
+(define-g-enum "GtkProgressBarStyle"
+    progress-bar-style
+    (:export t :type-initializer "gtk_progress_bar_style_get_type")
+  (:continuous 0)
+  (:discrete 1))
+
+(define-g-enum "GtkUpdateType"
+    update-type
+    (:export t :type-initializer "gtk_update_type_get_type")
+  (:continuous 0)
+  (:discontinuous 1)
+  (:delayed 2))
+
+(define-g-enum "GtkMetricType"
+    metric-type
+    (:export t :type-initializer "gtk_metric_type_get_type")
+  (:pixels 0)
+  (:inches 1)
+  (:centimeters 2))
+
+(define-g-enum "GtkSpinButtonUpdatePolicy"
+    spin-button-update-policy
+    (:export t :type-initializer "gtk_spin_button_update_policy_get_type")
+  (:always 0)
+  (:if-valid 1))
+
+(define-g-enum "GtkCurveType"
+    curve-type
+    (:export t :type-initializer "gtk_curve_type_get_type")
+  (:linear 0)
+  (:spline 1)
+  (:free 2))
+
+(define-g-enum "GtkImageType"
+    image-type
+    (:export t :type-initializer "gtk_image_type_get_type")
+  (:empty 0)
+  (:pixmap 1)
+  (:image 2)
+  (:pixbuf 3)
+  (:stock 4)
+  (:icon-set 5)
+  (:animation 6)
+  (:icon-name 7)
+  (:gicon 8))
+
+(define-g-enum "GtkArrowType"
+    arrow-type
+    (:export t :type-initializer "gtk_arrow_type_get_type")
+  (:up 0)
+  (:down 1)
+  (:left 2)
+  (:right 3)
+  (:none 4))
+
+(define-g-enum "GtkSortType"
+    sort-type
+    (:export t :type-initializer "gtk_sort_type_get_type")
+  (:ascending 0)
+  (:descending 1))
+
+(define-g-enum "GtkToolbarStyle"
+    toolbar-style
+    (:export t :type-initializer "gtk_toolbar_style_get_type")
+  (:icons 0)
+  (:text 1)
+  (:both 2)
+  (:both-horiz 3))
+
+(define-g-enum "GtkWrapMode"
+    wrap-mode
+    (:export t :type-initializer "gtk_wrap_mode_get_type")
+  (:none 0)
+  (:char 1)
+  (:word 2)
+  (:word-char 3))
+
+(define-g-enum "GtkJustification"
+    justification
+    (:export t :type-initializer "gtk_justification_get_type")
+  (:left 0)
+  (:right 1)
+  (:center 2)
+  (:fill 3))
+
+(define-g-enum "GtkButtonBoxStyle"
+    button-box-style
+    (:export t :type-initializer "gtk_button_box_style_get_type")
+  (:default-style 0)
+  (:spread 1)
+  (:edge 2)
+  (:start 3)
+  (:end 4)
+  (:center 5))
+
+(define-g-enum "GtkSelectionMode"
+    selection-mode
+    (:export t :type-initializer "gtk_selection_mode_get_type")
+  (:none 0)
+  (:single 1)
+  (:browse 2)
+  (:multiple 3)
+  (:extended 3))
+
+(define-g-enum "GtkTreeViewGridLines"
+    tree-view-grid-lines
+    (:export t :type-initializer "gtk_tree_view_grid_lines_get_type")
+  (:none 0)
+  (:horizontal 1)
+  (:vertical 2)
+  (:both 3))
+
+(define-g-enum "GtkPackDirection"
+    pack-direction
+    (:export t :type-initializer "gtk_pack_direction_get_type")
+  (:ltr 0)
+  (:rtl 1)
+  (:ttb 2)
+  (:btt 3))
+
+(define-g-enum "GtkPolicyType"
+    policy-type
+    (:export t :type-initializer "gtk_policy_type_get_type")
+  (:always 0)
+  (:automatic 1)
+  (:never 2))
+
+(define-g-enum "GtkCornerType"
+    corner-type
+    (:export t :type-initializer "gtk_corner_type_get_type")
+  (:top-left 0)
+  (:bottom-left 1)
+  (:top-right 2)
+  (:bottom-right 3))
+
+(define-g-enum "GtkSensitivityType"
+    sensitivity-type
+    (:export t :type-initializer "gtk_sensitivity_type_get_type")
+  (:auto 0)
+  (:on 1)
+  (:off 2))
+
+(define-g-enum "GtkShadowType"
+    shadow-type
+    (:export t :type-initializer "gtk_shadow_type_get_type")
+  (:none 0)
+  (:in 1)
+  (:out 2)
+  (:etched-in 3)
+  (:etched-out 4))
+
+(define-g-enum "GtkIconSize"
+    icon-size
+    (:export t :type-initializer "gtk_icon_size_get_type")
+  (:invalid 0)
+  (:menu 1)
+  (:small-toolbar 2)
+  (:large-toolbar 3)
+  (:button 4)
+  (:dnd 5)
+  (:dialog 6))
+
+(define-g-enum "GtkOrientation"
+    orientation
+    (:export t :type-initializer "gtk_orientation_get_type")
+  (:horizontal 0)
+  (:vertical 1))
+
+(define-g-enum "GtkPositionType"
+    position-type
+    (:export t :type-initializer "gtk_position_type_get_type")
+  (:left 0)
+  (:right 1)
+  (:top 2)
+  (:bottom 3))
+
+(define-g-enum "GtkReliefStyle"
+    relief-style
+    (:export t :type-initializer "gtk_relief_style_get_type")
+  (:normal 0)
+  (:half 1)
+  (:none 2))
+
+(define-g-enum "GtkMessageType"
+    message-type
+    (:export t :type-initializer "gtk_message_type_get_type")
+  (:info 0)
+  (:warning 1)
+  (:question 2)
+  (:error 3)
+  (:other 4))
+
+(define-g-enum "GtkButtonsType"
+    buttons-type
+    (:export t :type-initializer "gtk_buttons_type_get_type")
+  (:none 0)
+  (:ok 1)
+  (:close 2)
+  (:cancel 3)
+  (:yes-no 4)
+  (:ok-cancel 5))
+
+(define-g-enum "GtkWindowType"
+    window-type
+    (:export t :type-initializer "gtk_window_type_get_type")
+  (:toplevel 0)
+  (:popup 1))
+
+(define-g-enum "GtkWindowPosition"
+    window-position
+    (:export t :type-initializer "gtk_window_position_get_type")
+  (:none 0)
+  (:center 1)
+  (:mouse 2)
+  (:center-always 3)
+  (:center-on-parent 4))
+
+(define-g-enum "GtkResizeMode"
+    resize-mode
+    (:export t :type-initializer "gtk_resize_mode_get_type")
+  (:parent 0)
+  (:queue 1)
+  (:immediate 2))
+
+(define-g-enum "GtkTextBufferTargetInfo"
+    text-buffer-target-info
+    (:export t :type-initializer "gtk_text_buffer_target_info_get_type")
+  (:buffer-contents -1)
+  (:rich-text -2)
+  (:text -3))
+
+(define-g-enum "GtkStateType"
+    state-type
+    (:export t :type-initializer "gtk_state_type_get_type")
+  (:normal 0)
+  (:active 1)
+  (:prelight 2)
+  (:selected 3)
+  (:insensitive 4))
+
+(define-g-enum "GtkDirectionType"
+    direction-type
+    (:export t :type-initializer "gtk_direction_type_get_type")
+  (:tab-forward 0)
+  (:tab-backward 1)
+  (:up 2)
+  (:down 3)
+  (:left 4)
+  (:right 5))
+
+(define-g-enum "GtkDragResult"
+    drag-result
+    (:export t :type-initializer "gtk_drag_result_get_type")
+  (:success 0)
+  (:no-target 1)
+  (:user-cancelled 2)
+  (:timeout-expired 3)
+  (:grab-broken 4)
+  (:error 5))
+
+(define-g-enum "GtkWidgetHelpType"
+    widget-help-type
+    (:export t :type-initializer "gtk_widget_help_type_get_type")
+  (:tooltip 0)
+  (:whats-this 1))
+
+(define-g-enum "GtkPackType"
+    pack-type
+    (:export t :type-initializer "gtk_pack_type_get_type")
+  (:start 0)
+  (:end 1))
+
+(define-g-enum "GtkNotebookTab"
+    notebook-tab
+    (:export t :type-initializer "gtk_notebook_tab_get_type")
+  (:first 0)
+  (:last 1))
+
+(define-g-enum "GtkMovementStep"
+    movement-step
+    (:export t :type-initializer "gtk_movement_step_get_type")
+  (:logical-positions 0)
+  (:visual-positions 1)
+  (:words 2)
+  (:display-lines 3)
+  (:display-line-ends 4)
+  (:paragraphs 5)
+  (:paragraph-ends 6)
+  (:pages 7)
+  (:buffer-ends 8)
+  (:horizontal-pages 9))
+
+(define-g-enum "GtkAnchorType"
+    anchor-type
+    (:export t :type-initializer "gtk_anchor_type_get_type")
+  (:center 0)
+  (:north 1)
+  (:north-west 2)
+  (:north-east 3)
+  (:south 4)
+  (:south-west 5)
+  (:south-east 6)
+  (:west 7)
+  (:east 8)
+  (:n 1)
+  (:nw 2)
+  (:ne 3)
+  (:s 4)
+  (:sw 5)
+  (:se 6)
+  (:w 7)
+  (:e 8))
+
+(define-g-enum "GtkAssistantPageType"
+    assistant-page-type
+    (:export t :type-initializer "gtk_assistant_page_type_get_type")
+  (:content 0)
+  (:intro 1)
+  (:confirm 2)
+  (:summary 3)
+  (:progress 4))
+
+(define-g-enum "GtkBuilderError"
+    builder-error
+    (:export t :type-initializer "gtk_builder_error_get_type")
+  (:invalid-type-function 0)
+  (:unhandled-tag 1)
+  (:missing-attribute 2)
+  (:invalid-attribute 3)
+  (:invalid-tag 4)
+  (:missing-property-value 5)
+  (:invalid-value 6)
+  (:version-mismatch 7)
+  (:duplicate-id 8))
+
+(define-g-enum "GtkCellType"
+    cell-type
+    (:export t :type-initializer "gtk_cell_type_get_type")
+  (:empty 0)
+  (:text 1)
+  (:pixmap 2)
+  (:pixtext 3)
+  (:widget 4))
+
+(define-g-enum "GtkCListDragPos"
+    c-list-drag-pos
+    (:export t :type-initializer "gtk_clist_drag_pos_get_type")
+  (:none 0)
+  (:before 1)
+  (:into 2)
+  (:after 3))
+
+(define-g-enum "GtkCTreeExpanderStyle"
+    c-tree-expander-style
+    (:export t :type-initializer "gtk_ctree_expander_style_get_type")
+  (:none 0)
+  (:square 1)
+  (:triangle 2)
+  (:circular 3))
+
+(define-g-enum "GtkCTreeExpansionType"
+    c-tree-expansion-type
+    (:export t :type-initializer "gtk_ctree_expansion_type_get_type")
+  (:expand 0)
+  (:expand-recursive 1)
+  (:collapse 2)
+  (:collapse-recursive 3)
+  (:toggle 4)
+  (:toggle-recursive 5))
+
+(define-g-enum "GtkCTreeLineStyle"
+    c-tree-line-style
+    (:export t :type-initializer "gtk_ctree_line_style_get_type")
+  (:none 0)
+  (:solid 1)
+  (:dotted 2)
+  (:tabbed 3))
+
+(define-g-enum "GtkCTreePos"
+    c-tree-pos
+    (:export t :type-initializer "gtk_ctree_pos_get_type")
+  (:before 0)
+  (:as-child 1)
+  (:after 2))
+
+(define-g-enum "GtkDeleteType"
+    delete-type
+    (:export t :type-initializer "gtk_delete_type_get_type")
+  (:chars 0)
+  (:word-ends 1)
+  (:words 2)
+  (:display-lines 3)
+  (:display-line-ends 4)
+  (:paragraph-ends 5)
+  (:paragraphs 6)
+  (:whitespace 7))
+
+(define-g-enum "GtkExpanderStyle"
+    expander-style
+    (:export t :type-initializer "gtk_expander_style_get_type")
+  (:collapsed 0)
+  (:semi-collapsed 1)
+  (:semi-expanded 2)
+  (:expanded 3))
+
+(define-g-enum "GtkFileChooserConfirmation"
+    file-chooser-confirmation
+    (:export t :type-initializer "gtk_file_chooser_confirmation_get_type")
+  (:confirm 0)
+  (:accept-filename 1)
+  (:select-again 2))
+
+(define-g-enum "GtkFileChooserError"
+    file-chooser-error
+    (:export t :type-initializer "gtk_file_chooser_error_get_type")
+  (:nonexistent 0)
+  (:bad-filename 1)
+  (:already-exists 2)
+  (:incomplete-hostname 3))
+
+(define-g-enum "GtkIconThemeError"
+    icon-theme-error
+    (:export t :type-initializer "gtk_icon_theme_error_get_type")
+  (:not-found 0)
+  (:failed 1))
+
+(define-g-enum "GtkIconViewDropPosition"
+    icon-view-drop-position
+    (:export t :type-initializer "gtk_icon_view_drop_position_get_type")
+  (:no-drop 0)
+  (:drop-into 1)
+  (:drop-left 2)
+  (:drop-right 3)
+  (:drop-above 4)
+  (:drop-below 5))
+
+(define-g-enum "GtkIMPreeditStyle"
+    i-m-preedit-style
+    (:export t)
+  (:nothing 0)
+  (:callback 1)
+  (:none 2))
+
+(define-g-enum "GtkIMStatusStyle"
+    i-m-status-style
+    (:export t)
+  (:nothing 0)
+  (:callback 1)
+  (:none 2))
+
+(define-g-enum "GtkMatchType"
+    match-type
+    (:export t :type-initializer "gtk_match_type_get_type")
+  (:all 0)
+  (:all-tail 1)
+  (:head 2)
+  (:tail 3)
+  (:exact 4)
+  (:last 5))
+
+(define-g-enum "GtkMenuDirectionType"
+    menu-direction-type
+    (:export t :type-initializer "gtk_menu_direction_type_get_type")
+  (:parent 0)
+  (:child 1)
+  (:next 2)
+  (:prev 3))
+
+(define-g-enum "GtkNumberUpLayout"
+    number-up-layout
+    (:export t :type-initializer "gtk_number_up_layout_get_type")
+  (:lrtb 0)
+  (:lrbt 1)
+  (:rltb 2)
+  (:rlbt 3)
+  (:tblr 4)
+  (:tbrl 5)
+  (:btlr 6)
+  (:btrl 7))
+
+(define-g-enum "GtkPageOrientation"
+    page-orientation
+    (:export t :type-initializer "gtk_page_orientation_get_type")
+  (:portrait 0)
+  (:landscape 1)
+  (:reverse-portrait 2)
+  (:reverse-landscape 3))
+
+(define-g-enum "GtkPageSet"
+    page-set
+    (:export t :type-initializer "gtk_page_set_get_type")
+  (:all 0)
+  (:even 1)
+  (:odd 2))
+
+(define-g-enum "GtkPathPriorityType"
+    path-priority-type
+    (:export t :type-initializer "gtk_path_priority_type_get_type")
+  (:lowest 0)
+  (:gtk 4)
+  (:application 8)
+  (:theme 10)
+  (:rc 12)
+  (:highest 15))
+
+(define-g-enum "GtkPathType"
+    path-type
+    (:export t :type-initializer "gtk_path_type_get_type")
+  (:widget 0)
+  (:widget-class 1)
+  (:class 2))
+
+(define-g-enum "GtkPreviewType"
+    preview-type
+    (:export t :type-initializer "gtk_preview_type_get_type")
+  (:color 0)
+  (:grayscale 1))
+
+(define-g-enum "GtkPrintDuplex"
+    print-duplex
+    (:export t :type-initializer "gtk_print_duplex_get_type")
+  (:simplex 0)
+  (:horizontal 1)
+  (:vertical 2))
+
+(define-g-enum "GtkPrintError"
+    print-error
+    (:export t :type-initializer "gtk_print_error_get_type")
+  (:general 0)
+  (:internal-error 1)
+  (:nomem 2)
+  (:invalid-file 3))
+
+(define-g-enum "GtkPrintOperationAction"
+    print-operation-action
+    (:export t :type-initializer "gtk_print_operation_action_get_type")
+  (:print-dialog 0)
+  (:print 1)
+  (:preview 2)
+  (:export 3))
+
+(define-g-enum "GtkPrintOperationResult"
+    print-operation-result
+    (:export t :type-initializer "gtk_print_operation_result_get_type")
+  (:error 0)
+  (:apply 1)
+  (:cancel 2)
+  (:in-progress 3))
+
+(define-g-enum "GtkPrintPages"
+    print-pages
+    (:export t :type-initializer "gtk_print_pages_get_type")
+  (:all 0)
+  (:current 1)
+  (:ranges 2))
+
+(define-g-enum "GtkPrintQuality"
+    print-quality
+    (:export t :type-initializer "gtk_print_quality_get_type")
+  (:low 0)
+  (:normal 1)
+  (:high 2)
+  (:draft 3))
+
+(define-g-enum "GtkRcTokenType"
+    rc-token-type
+    (:export t :type-initializer "gtk_rc_token_type_get_type")
+  (:invalid 270)
+  (:include 271)
+  (:normal 272)
+  (:active 273)
+  (:prelight 274)
+  (:selected 275)
+  (:insensitive 276)
+  (:fg 277)
+  (:bg 278)
+  (:text 279)
+  (:base 280)
+  (:xthickness 281)
+  (:ythickness 282)
+  (:font 283)
+  (:fontset 284)
+  (:font-name 285)
+  (:bg-pixmap 286)
+  (:pixmap-path 287)
+  (:style 288)
+  (:binding 289)
+  (:bind 290)
+  (:widget 291)
+  (:widget-class 292)
+  (:class 293)
+  (:lowest 294)
+  (:gtk 295)
+  (:application 296)
+  (:theme 297)
+  (:rc 298)
+  (:highest 299)
+  (:engine 300)
+  (:module-path 301)
+  (:im-module-path 302)
+  (:im-module-file 303)
+  (:stock 304)
+  (:ltr 305)
+  (:rtl 306)
+  (:color 307)
+  (:unbind 308)
+  (:last 309))
+
+(define-g-enum "GtkRecentChooserError"
+    recent-chooser-error
+    (:export t :type-initializer "gtk_recent_chooser_error_get_type")
+  (:not-found 0)
+  (:invalid-uri 1))
+
+(define-g-enum "GtkRecentManagerError"
+    recent-manager-error
+    (:export t :type-initializer "gtk_recent_manager_error_get_type")
+  (:not-found 0)
+  (:invalid-uri 1)
+  (:invalid-encoding 2)
+  (:not-registered 3)
+  (:read 4)
+  (:write 5)
+  (:unknown 6))
+
+(define-g-enum "GtkResponseType"
+    response-type
+    (:export t :type-initializer "gtk_response_type_get_type")
+  (:none -1)
+  (:reject -2)
+  (:accept -3)
+  (:delete-event -4)
+  (:ok -5)
+  (:cancel -6)
+  (:close -7)
+  (:yes -8)
+  (:no -9)
+  (:apply -10)
+  (:help -11))
+
+(define-g-enum "GtkScrollStep"
+    scroll-step
+    (:export t :type-initializer "gtk_scroll_step_get_type")
+  (:steps 0)
+  (:pages 1)
+  (:ends 2)
+  (:horizontal-steps 3)
+  (:horizontal-pages 4)
+  (:horizontal-ends 5))
+
+(define-g-enum "GtkScrollType"
+    scroll-type
+    (:export t :type-initializer "gtk_scroll_type_get_type")
+  (:none 0)
+  (:jump 1)
+  (:step-backward 2)
+  (:step-forward 3)
+  (:page-backward 4)
+  (:page-forward 5)
+  (:step-up 6)
+  (:step-down 7)
+  (:page-up 8)
+  (:page-down 9)
+  (:step-left 10)
+  (:step-right 11)
+  (:page-left 12)
+  (:page-right 13)
+  (:start 14)
+  (:end 15))
+
+(define-g-enum "GtkSideType"
+    side-type
+    (:export t :type-initializer "gtk_side_type_get_type")
+  (:top 0)
+  (:bottom 1)
+  (:left 2)
+  (:right 3))
+
+(define-g-enum "GtkSpinType"
+    spin-type
+    (:export t :type-initializer "gtk_spin_type_get_type")
+  (:step-forward 0)
+  (:step-backward 1)
+  (:page-forward 2)
+  (:page-backward 3)
+  (:home 4)
+  (:end 5)
+  (:user-defined 6))
+
+(define-g-enum "GtkSubmenuDirection"
+    submenu-direction
+    (:export t :type-initializer "gtk_submenu_direction_get_type")
+  (:left 0)
+  (:right 1))
+
+(define-g-enum "GtkSubmenuPlacement"
+    submenu-placement
+    (:export t :type-initializer "gtk_submenu_placement_get_type")
+  (:top-bottom 0)
+  (:left-right 1))
+
+(define-g-enum "GtkTextWindowType"
+    text-window-type
+    (:export t :type-initializer "gtk_text_window_type_get_type")
+  (:private 0)
+  (:widget 1)
+  (:text 2)
+  (:left 3)
+  (:right 4)
+  (:top 5)
+  (:bottom 6))
+
+(define-g-enum "GtkToolbarChildType"
+    toolbar-child-type
+    (:export t :type-initializer "gtk_toolbar_child_type_get_type")
+  (:space 0)
+  (:button 1)
+  (:togglebutton 2)
+  (:radiobutton 3)
+  (:widget 4))
+
+(define-g-enum "GtkToolbarSpaceStyle"
+    toolbar-space-style
+    (:export t :type-initializer "gtk_toolbar_space_style_get_type")
+  (:empty 0)
+  (:line 1))
+
+(define-g-enum "GtkTreeViewDropPosition"
+    tree-view-drop-position
+    (:export t :type-initializer "gtk_tree_view_drop_position_get_type")
+  (:before 0)
+  (:after 1)
+  (:into-or-before 2)
+  (:into-or-after 3))
+
+(define-g-enum "GtkTreeViewMode"
+    tree-view-mode
+    (:export t :type-initializer "gtk_tree_view_mode_get_type")
+  (:line 0)
+  (:item 1))
+
+(define-g-enum "GtkVisibility"
+    visibility
+    (:export t :type-initializer "gtk_visibility_get_type")
+  (:none 0)
+  (:partial 1)
+  (:full 2))
+
+(define-g-enum "GtkEntryIconPosition"
+    entry-icon-position
+    (:export t :type-initializer "gtk_entry_icon_position_get_type")
+  (:primary 0)
+  (:secondary 1))
+
+(define-g-flags "GtkTextSearchFlags"
+    text-search-flags
+    (:export t :type-initializer "gtk_text_search_flags_get_type")
+  (:visible-only 1)
+  (:text-only 2))
+
+(define-g-flags "GtkAccelFlags"
+    accel-flags
+    (:export t :type-initializer "gtk_accel_flags_get_type")
+  (:visible 1)
+  (:locked 2)
+  (:mask 7))
+
+(define-g-flags "GtkArgFlags"
+    arg-flags
+    (:export t :type-initializer "gtk_arg_flags_get_type")
+  (:readable 1)
+  (:writable 2)
+  (:construct 4)
+  (:construct-only 8)
+  (:child-arg 16))
+
+(define-g-flags "GtkAttachOptions"
+    attach-options
+    (:export t :type-initializer "gtk_attach_options_get_type")
+  (:expand 1)
+  (:shrink 2)
+  (:fill 4))
+
+(define-g-flags "GtkButtonAction"
+    button-action
+    (:export t :type-initializer "gtk_button_action_get_type")
+  (:ignored 0)
+  (:selects 1)
+  (:drags 2)
+  (:expands 4))
+
+(define-g-flags "GtkCalendarDisplayOptions"
+    calendar-display-options
+    (:export t :type-initializer "gtk_calendar_display_options_get_type")
+  (:show-heading 1)
+  (:show-day-names 2)
+  (:no-month-change 4)
+  (:show-week-numbers 8)
+  (:week-start-monday 16)
+  (:show-details 32))
+
+(define-g-flags "GtkCellRendererState"
+    cell-renderer-state
+    (:export t :type-initializer "gtk_cell_renderer_state_get_type")
+  (:selected 1)
+  (:prelit 2)
+  (:insensitive 4)
+  (:sorted 8)
+  (:focused 16))
+
+(define-g-flags "GtkDebugFlag"
+    debug-flag
+    (:export t :type-initializer "gtk_debug_flag_get_type")
+  (:misc 1)
+  (:plugsocket 2)
+  (:text 4)
+  (:tree 8)
+  (:updates 16)
+  (:keybindings 32)
+  (:multihead 64)
+  (:modules 128)
+  (:geometry 256)
+  (:icontheme 512)
+  (:printing 1024)
+  (:builder 2048))
+
+(define-g-flags "GtkDestDefaults"
+    dest-defaults
+    (:export t :type-initializer "gtk_dest_defaults_get_type")
+  (:motion 1)
+  (:highlight 2)
+  (:drop 4)
+  (:all 7))
+
+(define-g-flags "GtkDialogFlags"
+    dialog-flags
+    (:export t :type-initializer "gtk_dialog_flags_get_type")
+  (:modal 1)
+  (:destroy-with-parent 2)
+  (:no-separator 4))
+
+(define-g-flags "GtkFileFilterFlags"
+    file-filter-flags
+    (:export t :type-initializer "gtk_file_filter_flags_get_type")
+  (:filename 1)
+  (:uri 2)
+  (:display-name 4)
+  (:mime-type 8))
+
+(define-g-flags "GtkIconLookupFlags"
+    icon-lookup-flags
+    (:export t :type-initializer "gtk_icon_lookup_flags_get_type")
+  (:no-svg 1)
+  (:force-svg 2)
+  (:use-builtin 4)
+  (:generic-fallback 8)
+  (:force-size 16))
+
+(define-g-flags "GtkObjectFlags"
+    object-flags
+    (:export t :type-initializer "gtk_object_flags_get_type")
+  (:in-destruction 1)
+  (:floating 2)
+  (:reserved-1 4)
+  (:reserved-2 8))
+
+(define-g-flags "GtkPrivateFlags"
+    private-flags
+    (:export t :type-initializer "gtk_private_flags_get_type")
+  (:user-style 1)
+  (:resize-pending 4)
+  (:has-pointer 8)
+  (:shadowed 16)
+  (:has-shape-mask 32)
+  (:in-reparent 64)
+  (:direction-set 128)
+  (:direction-ltr 256)
+  (:anchored 512)
+  (:child-visible 1024)
+  (:redraw-on-alloc 2048)
+  (:alloc-needed 4096)
+  (:request-needed 8192))
+
+(define-g-flags "GtkRcFlags"
+    rc-flags
+    (:export t :type-initializer "gtk_rc_flags_get_type")
+  (:fg 1)
+  (:bg 2)
+  (:text 4)
+  (:base 8))
+
+(define-g-flags "GtkRecentFilterFlags"
+    recent-filter-flags
+    (:export t :type-initializer "gtk_recent_filter_flags_get_type")
+  (:uri 1)
+  (:display-name 2)
+  (:mime-type 4)
+  (:application 8)
+  (:group 16)
+  (:age 32))
+
+(define-g-flags "GtkSignalRunType"
+    signal-run-type
+    (:export t :type-initializer "gtk_signal_run_type_get_type")
+  (:first 1)
+  (:last 2)
+  (:both 3)
+  (:no-recurse 8)
+  (:action 32)
+  (:no-hooks 64))
+
+(define-g-flags "GtkTargetFlags"
+    target-flags
+    (:export t :type-initializer "gtk_target_flags_get_type")
+  (:same-app 1)
+  (:same-widget 2)
+  (:other-app 4)
+  (:other-widget 8))
+
+(define-g-flags "GtkTreeModelFlags"
+    tree-model-flags
+    (:export t :type-initializer "gtk_tree_model_flags_get_type")
+  (:iters-persist 1)
+  (:list-only 2))
+
+(define-g-flags "GtkUIManagerItemType"
+    ui-manager-item-type
+    (:export t)
+  (:auto 0)
+  (:menubar 1)
+  (:menu 2)
+  (:toolbar 4)
+  (:placeholder 8)
+  (:popup 16)
+  (:menuitem 32)
+  (:toolitem 64)
+  (:separator 128)
+  (:accelerator 256)
+  (:popup-with-accels 512))
+
+(define-g-flags "GtkWidgetFlags"
+    widget-flags
+    (:export t :type-initializer "gtk_widget_flags_get_type")
+  (:toplevel 16)
+  (:no-window 32)
+  (:realized 64)
+  (:mapped 128)
+  (:visible 256)
+  (:sensitive 512)
+  (:parent-sensitive 1024)
+  (:can-focus 2048)
+  (:has-focus 4096)
+  (:can-default 8192)
+  (:has-default 16384)
+  (:has-grab 32768)
+  (:rc-style 65536)
+  (:composite-child 131072)
+  (:no-reparent 262144)
+  (:app-paintable 524288)
+  (:receives-default 1048576)
+  (:double-buffered 2097152)
+  (:no-show-all 4194304))
+
+(define-g-interface "GtkBuildable"
+    buildable
+    (:export t :type-initializer "gtk_buildable_get_type"))
+
+(define-g-interface "GtkCellEditable"
+    cell-editable
+    (:export t :type-initializer "gtk_cell_editable_get_type"))
+
+(define-g-interface "GtkCellLayout"
+    cell-layout
+    (:export t :type-initializer "gtk_cell_layout_get_type"))
+
+(define-g-interface "GtkEditable"
+    editable
+    (:export t :type-initializer "gtk_editable_get_type")
+  (:cffi position editable-position :int "gtk_editable_get_position"
+   "gtk_editable_set_position")
+  (:cffi editable editable-editable :boolean "gtk_editable_get_editable"
+   "gtk_editable_set_editable"))
+
+(define-g-interface "GtkFileChooser"
+    file-chooser
+    (:export t :type-initializer "gtk_file_chooser_get_type")
+  (action file-chooser-action "action" "GtkFileChooserAction" t t)
+  (do-overwrite-confirmation file-chooser-do-overwrite-confirmation
+   "do-overwrite-confirmation" "gboolean" t t)
+  (extra-widget file-chooser-extra-widget "extra-widget" "GtkWidget" t t)
+  (file-system-backend file-chooser-file-system-backend "file-system-backend"
+   "gchararray" nil nil)
+  (filter file-chooser-filter "filter" "GtkFileFilter" t t)
+  (local-only file-chooser-local-only "local-only" "gboolean" t t)
+  (preview-widget file-chooser-preview-widget "preview-widget" "GtkWidget" t t)
+  (preview-widget-active file-chooser-preview-widget-active
+   "preview-widget-active" "gboolean" t t)
+  (select-multiple file-chooser-select-multiple "select-multiple" "gboolean" t
+   t)
+  (show-hidden file-chooser-show-hidden "show-hidden" "gboolean" t t)
+  (use-preview-label file-chooser-use-preview-label "use-preview-label"
+   "gboolean" t t)
+  (:cffi current-name file-chooser-current-name
+   (:string :free-to-foreign t :encoding :utf-8) nil
+   "gtk_file_chooser_set_current_name")
+  (:cffi filename file-chooser-filename
+   (g-string :free-from-foreign t :free-to-foreign t)
+   "gtk_file_chooser_get_filename" "gtk_file_chooser_set_filename")
+  (:cffi current-folder file-chooser-current-folder
+   (g-string :free-from-foreign t :free-to-foreign t)
+   "gtk_file_chooser_get_current_folder" "gtk_file_chooser_set_current_folder")
+  (:cffi uri file-chooser-uri
+   (g-string :free-from-foreign t :free-to-foreign t)
+   "gtk_file_chooser_get_uri" "gtk_file_chooser_set_uri")
+  (:cffi current-folder-uri file-chooser-current-folder-uri
+   (g-string :free-from-foreign t :free-to-foreign t)
+   "gtk_file_chooser_get_current_folder_uri"
+   "gtk_file_chooser_set_current_folder_uri")
+  (:cffi preview-filename file-chooser-preview-filename
+   (g-string :free-from-foreign t :free-to-foreign t)
+   "gtk_file_chooser_get_preview_filename" nil)
+  (:cffi preview-uri file-chooser-preview-uri
+   (g-string :free-from-foreign t :free-to-foreign t)
+   "gtk_file_chooser_get_preview_uri" nil))
+
+(define-g-interface "GtkFileChooserEmbed"
+    file-chooser-embed
+    (:export t))
+
+(define-g-interface "GtkTreeModel"
+    tree-model
+    (:export t :type-initializer "gtk_tree_model_get_type"))
+
+(define-g-interface "GtkTreeDragSource"
+    tree-drag-source
+    (:export t :type-initializer "gtk_tree_drag_source_get_type"))
+
+(define-g-interface "GtkTreeDragDest"
+    tree-drag-dest
+    (:export t :type-initializer "gtk_tree_drag_dest_get_type"))
+
+(define-g-interface "GtkTreeSortable"
+    tree-sortable
+    (:export t :type-initializer "gtk_tree_sortable_get_type"))
+
+(define-g-interface "GtkPrintOperationPreview"
+    print-operation-preview
+    (:export t :type-initializer "gtk_print_operation_preview_get_type"))
+
+(define-g-interface "GtkRecentChooser"
+    recent-chooser
+    (:export t :type-initializer "gtk_recent_chooser_get_type")
+  (filter recent-chooser-filter "filter" "GtkRecentFilter" t t)
+  (limit recent-chooser-limit "limit" "gint" t t)
+  (local-only recent-chooser-local-only "local-only" "gboolean" t t)
+  (recent-manager recent-chooser-recent-manager "recent-manager"
+   "GtkRecentManager" nil nil)
+  (select-multiple recent-chooser-select-multiple "select-multiple" "gboolean"
+   t t)
+  (show-icons recent-chooser-show-icons "show-icons" "gboolean" t t)
+  (show-not-found recent-chooser-show-not-found "show-not-found" "gboolean" t t)
+  (show-private recent-chooser-show-private "show-private" "gboolean" t t)
+  (show-tips recent-chooser-show-tips "show-tips" "gboolean" t t)
+  (sort-type recent-chooser-sort-type "sort-type" "GtkRecentSortType" t t))
+
+(define-g-interface "GtkToolShell"
+    tool-shell
+    (:export t :type-initializer "gtk_tool_shell_get_type"))
+
+(define-g-interface "GtkOrientable"
+    orientable
+    (:export t :type-initializer "gtk_orientable_get_type")
+  (orientation orientable-orientation "orientation" "GtkOrientation" t t))
+
+(define-g-interface "GtkActivatable"
+    activatable
+    (:export t :type-initializer "gtk_activatable_get_type")
+  (related-action activatable-related-action "related-action" "GtkAction" t t)
+  (use-action-appearance activatable-use-action-appearance
+   "use-action-appearance" "gboolean" t t))
+
+(define-g-interface "AtkImplementorIface"
+    atk-implementor-iface
+    (:export t))
 
 (define-g-object-class "GtkObject" gtk-object
                        (:superclass g-initially-unowned :export t :interfaces
@@ -894,6 +1396,11 @@
 (define-g-object-class "GtkRecentFilter" recent-filter
                        (:superclass gtk-object :export t :interfaces nil
                         :type-initializer "gtk_recent_filter_get_type")
+                       nil)
+
+(define-g-object-class "GtkTooltips" tooltips
+                       (:superclass gtk-object :export t :interfaces nil
+                        :type-initializer "gtk_tooltips_get_type")
                        nil)
 
 (define-g-object-class "GtkTreeViewColumn" tree-view-column

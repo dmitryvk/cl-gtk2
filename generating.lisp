@@ -315,7 +315,12 @@
         (:cffi gtk::entry gtk::entry-completion-entry (g-object gtk::entry)
          "gtk_entry_completion_get_entry" nil)
         (:cffi gtk::match-function gtk::entry-completion-match-function nil
-         nil gtk::gtk-entry-completion-set-match-function))))))
+         nil gtk::gtk-entry-completion-set-match-function))
+       ("GtkEditable"
+        (:cffi gtk::position gtk::editable-position :int
+         "gtk_editable_get_position" "gtk_editable_set_position")
+        (:cffi gtk::editable gtk::editable-editable :boolean
+         "gtk_editable_get_editable" "gtk_editable_set_editable"))))))
 
 (defun gtk-generate-child-properties (filename)
   (with-open-file (stream filename :direction :output :if-exists :supersede)

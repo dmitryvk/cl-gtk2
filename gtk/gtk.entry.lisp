@@ -111,30 +111,6 @@
 
 (export 'editable-delete-selection)
 
-(defcfun (editable-position "gtk_editable_get_position") :int
-  (editable (g-object editable)))
-
-(defcfun gtk-editable-set-position :void
-  (editable (g-object editable))
-  (pos :int))
-
-(defun (setf editable-position) (position editable)
-  (gtk-editable-set-position editable position))
-
-(export 'editable-position)
-
-(defcfun (editable-editable "gtk_editable_get_editable") :boolean
-  (editable (g-object editable)))
-
-(defcfun gtk-editable-set-editable :void
-  (editable (g-object editable))
-  (is-editable :boolean))
-
-(defun (setf editable-editable) (is-editable editable)
-  (gtk-editable-set-editable editable is-editable))
-
-(export 'editable-editable)
-
 ;; GtkEntryCompletion
 
 (define-cb-methods entry-completion-match-func :boolean
