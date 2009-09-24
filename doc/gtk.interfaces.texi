@@ -100,18 +100,101 @@ Signals:
 @section editable
 @Class editable
 
+The @ref{editable} interface is an interface which should be implemented by text editing widgets, such as @ref{entry}. It contains functions for generically manipulating an editable widget, a large number of action signals used for key bindings, and several signals that an application can connect to to modify the behavior of a widget.
 
 Slots:
 @itemize
+@item @anchor{slot.editable.editable}editable. Type: @code{boolean}. Accessor: @anchor{fn.editable-editable}@code{editable-editable}.
+
+Whether the user can edit the text in the editable widget or not.
+@item @anchor{slot.editable.position}position. Type: @code{integer}. Accessor: @anchor{fn.editable-position}@code{editable-position}.
+
+The cursor position in the editable.
+
+The cursor is displayed before the character with the given (base 0) index in the contents of the editable. The value must be less than or equal to the number of characters in the editable. A value of -1 indicates that the position should be set after the last character of the editable. Note that position is in characters, not in bytes.
 @end itemize
 
 
 Signals:
 @itemize
-@item @anchor{signal.editable.changed}"changed". Signature: (instance GtkEditable) @result{} void. Options: run-last.
-@item @anchor{signal.editable.delete-text}"delete-text". Signature: (instance GtkEditable), (arg-1 @code{integer}), (arg-2 @code{integer}) @result{} void. Options: run-last.
-@item @anchor{signal.editable.insert-text}"insert-text". Signature: (instance GtkEditable), (arg-1 @code{string}), (arg-2 @code{integer}), (arg-3 gpointer) @result{} void. Options: run-last.
+@item @anchor{signal.editable.changed}"changed". Signature: (instance @ref{editable}) @result{} void. Options: run-last.
+
+This signal is emitted at the end of a single user-visible operation on the contents of the @ref{editable}.
+
+E.g., a paste operation that replaces the contents of the selection will cause only one signal emission (even though it is implemented by first deleting the selection, then inserting the new content, and may cause multiple @code{::notify::text} signals to be emitted).
+@item @anchor{signal.editable.delete-text}"delete-text". Signature: (instance @ref{editable}), (starting-position @code{integer}), (end-position @code{integer}) @result{} void. Options: run-last.
+
+This signal is emitted when text is deleted from the widget by the user. The default handler for this signal will normally be responsible for deleting the text, so by connecting to this signal and then stopping the signal with @code{g_signal_stop_emission} (TODO), it is possible to modify the range of deleted text, or prevent it from being deleted entirely. The start_pos and end_pos parameters are interpreted as for @ref{editable-delete-text}.
+@item @anchor{signal.editable.insert-text}"insert-text". Signature: (instance @ref{editable}), (new-text @code{string}), (new-text-length @code{integer}), (position gpointer) @result{} void. Options: run-last.
+
+This signal is emitted when text is inserted into the widget by the user. The default handler for this signal will normally be responsible for inserting the text, so by connecting to this signal and then stopping the signal with g_signal_stop_emission(), it is possible to modify the inserted text, or prevent it from being inserted entirely.
+
+@var{position}: a pointer to the position (of the CFFI foreign type @code{:integer}), in characters, at which to insert the new text. After the signal emission is finished, it should point after the newly inserted text.
 @end itemize
+
+@RMethod editable-select-region
+@lisp
+(editable-select-region editable start end)
+@end lisp
+
+Selects a region of text in @var{editable}. The characters that are selected are those characters at positions from @var{start} (an integer) up to, but not including @var{end} (an integer). If @var{end} is negative, then the the characters selected are those characters from @var{start} to the end of the text.
+
+Note that positions are specified in characters, not bytes.
+
+@RMethod editable-selection
+@lisp
+(editable-selection editable) @result{} (values selected-p start end)
+@end lisp
+
+Retrieves the selection bounds of the @var{editable}. @var{selected-p} is a @code{boolean} specifying whether there is a selection, @var{start} is the start of the selection and @var{end} is the end of the selection. If no text was selected, @var{start} and @var{end} will be identical and @var{selected-p} will be @code{NIL}.
+
+Note that positions are specified in characters, not bytes.
+
+@RMethod editable-insert-text
+@lisp
+(editable-insert-text editable text position) @result{} new-position
+@end lisp
+
+Inserts the @var{text} (a string) into the contents of the @var{editable}, at position specified by @var{position} (an integer). Returns the position after the inserted text.
+
+Note that the position is in characters, not in bytes.
+
+@RMethod editable-delete-text
+@lisp
+(editable-delete-text editable start end)
+@end lisp
+
+Deletes a sequence of characters. The characters that are deleted are those characters at positions from @var{start} up to, but not including @var{end}. If @var{end} is negative, then the the characters deleted are those from @var{start} to the end of the text.
+
+Note that the positions are specified in characters, not bytes.
+
+@RMethod editable-get-chars
+@lisp
+(editable-get-chars editable &key (start 0) (end -1)) @result{} string
+@end lisp
+
+Retrieves a substring from @var{editable} contents. The characters that are retrieved are those characters at positions from @var{start} up to, but not including @var{end}. If @var{end} is negative, then the the characters retrieved are those characters from @var{start} to the end of the text.
+
+@RMethod editable-cut-clipboard
+@lisp
+(editable-cut-clipboard editable)
+@end lisp
+
+Removes the contents of the currently selected content in the @var{editable} and puts it on the clipboard.
+
+@RMethod editable-copy-clipboard
+@lisp
+(editable-copy-clipboard editable)
+@end lisp
+
+Copies the contents of the currently selected content in the @var{editable} and puts it on the clipboard.
+
+@RMethod editable-paste-clipboard
+@lisp
+(editable-paste-clipboard editable)
+@end lisp
+
+Pastes the content of the clipboard to the current position of the cursor in the @var{editable}.
 
 
 @node file-chooser
