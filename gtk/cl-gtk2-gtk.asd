@@ -56,6 +56,8 @@
                
                (:file "gtk.high-level")
 
+               (:file "ui-markup")
+
                (:file "gtk.dialog.example")
                
                (:file "gtk.demo")

@@ -6,6 +6,7 @@
 * Gtk+ Structs::
 * Gtk+ Enums::
 * Gtk+ Flags::
+* Gtk+ Embedded UI Mini-language::
 @end menu
 
 All symbols of Gtk+ binding in cl-gtk2 reside in @code{gtk} package.
@@ -44,3 +45,104 @@ All symbols of Gtk+ binding in cl-gtk2 reside in @code{gtk} package.
 @chapter Gtk+ Flags
 
 @include gtk.flags.texi
+
+@node Gtk+ Embedded UI Mini-language
+@chapter Gtk+ Embedded UI Mini-language
+
+For convenience of specifying widgets hierarchy in Lisp code, the @ref{let-ui} macro is introduced.
+
+@RMacro let-ui
+@lisp
+(let-ui ui-description &body body)
+
+ui-description ::= widget
+widget ::= (class properties child*)
+properties ::= @{:prop-name prop-value@}*
+child ::= widget properties
+child ::= (:expr expr) properties
+@end lisp
+
+@table @var
+@item @var{class}
+Name of class of a widget
+@item @var{:prop-name}
+Name of class's slot or a @code{:var} for specifying the variable name to which the object will be bound
+@item @var{prop-value}
+A Lisp expression that will be evaluated to obtain the initarg for slot of a class; or a symbol if @code{:prop-name} is @code{:var}
+@item @var{expr}
+An expression that will be evaluated to obtain the widget
+@end table
+
+This macro creates widgets and evaluates the @var{body}. Widgets that have @code{:var} specified are bound to lexical variables with specified names.
+
+@var{ui-description} specifies the hierarchy of widgets in a window. It can specify either the entire top-level window or other kind of widgets. @var{ui-description} is a mini-language for specifying widgets. @ref{let-ui} creates specified widgets, lexically binds specified variables to widgets and evaluates the @var{body}. The @var{body} my refer to these widgets.
+
+@var{widget} is the specification of a single widget. It may specify some properties (slots of objects) and their values (the expressions to be evaluated), a variable name that will be bound to the widget (the @code{:var} property whose @var{prop-value} must be a symbol) and widget's children.
+
+@var{class} specifies the class of the widget (e.g., @ref{label}, @ref{button}, @ref{gtk-window}). @var{:prop-name} may be any slot of the class. If @var{:var} property is specified, then corresponding variable is accessible in @var{body} and its value is the widget on which it is specified as @var{:var}.
+
+Container widgets may specify their @var{children} along with their @var{child properties}. Child properties specify how @var{children} are used in @var{widget}. They are specific to the type of the container:
+@itemize
+@item @ref{box} specifies @code{:expand}, @code{:fill}. See @ref{box-pack-start} for information.
+@item @ref{paned} specifies @code{:resize}, @code{:shrink}. See @ref{paned-pack-1} for information.
+@item @ref{table} specifies @code{:left}, @code{:right}, @code{:top}, @code{:bottom}, @code{:x-options}, @code{:y-options}, @code{x-padding}, @code{y-padding}. Of these, @code{:left}, @code{:right}, @code{:top} and @code{:bottom} are mandatory. See @ref{table-attach} for information.
+@end itemize
+
+An example:
+@lisp
+(let-ui (gtk-window :title "Hello" :position :center :var w
+                    (v-box
+                     (label :label "Hello, world!")
+                     (button :label "gtk-ok" :use-stock t) :expand nil))
+  (widget-show w))
+@end lisp
+produces this output:
+
+@image{let-ui,,,,png}
+
+More complex example from demo of cl-gtk2-gtk-glext:
+@lisp
+(let-ui (v-paned :var v
+                 (:expr (opengl-window-drawing-area window))
+                 :resize t :shrink nil
+                 (v-box
+                  (h-paned
+                   (scrolled-window
+                    :hscrollbar-policy :automatic
+                    :vscrollbar-policy :automatic
+                    (:expr (opengl-window-expose-fn-text-view window)))
+                   :resize t :shrink nil
+                   (scrolled-window
+                    :hscrollbar-policy :automatic
+                    :vscrollbar-policy :automatic
+                    (:expr (opengl-window-resize-fn-text-view window)))
+                   :resize t :shrink nil)
+                  (h-box
+                   (button :label "Update functions" :var update-fns-button) :expand nil
+                   (button :label "Redraw" :var redraw-button) :expand nil)
+                  :expand nil)
+                 :resize t :shrink nil)
+  (container-add window v)
+  (connect-signal update-fns-button "clicked"
+                  (lambda (b)
+                    (declare (ignore b))
+                    (update-fns window)))
+  (connect-signal redraw-button "clicked"
+                  (lambda (b)
+                    (declare (ignore b))
+                    (widget-queue-draw (opengl-window-drawing-area window))))
+  (let ((area (opengl-window-drawing-area window)))
+    (setf (gl-drawing-area-on-expose area)
+          (lambda (w e)
+            (declare (ignore w e))
+            (opengl-interactive-on-expose window))
+          (gl-drawing-area-on-resize area)
+          (lambda (widget w h)
+            (declare (ignore widget))
+            (opengl-interactive-on-resize window w h)))))
+@end lisp
+produces this output:
+
+@image{let-ui-glext,,,,png}
+
+In this example, not top-level window, but a widget is created and then added to already existing window. This UI also uses some already created widgets: @code{(:expr (opengl-window-resize-fn-text-view window))}.

@@ -27,7 +27,8 @@
            #:demo-treeview-tree
            #:test-custom-window
            #:test-assistant
-           #:test-entry-completion))
+           #:test-entry-completion
+           #:test-ui-markup))
 
 (in-package :gtk-demo)
 
@@ -922,3 +923,39 @@
                                 (funcall fn))))
             (box-pack-start v-box-buttons button :expand nil))
       (widget-show window))))
+
+(defun test-ui-markup ()
+  (within-main-loop
+    (let ((label (make-instance 'label :label "Hello!")))
+      (let-ui (gtk-window :type :toplevel
+                          :position :center
+                          :title "Hello, world!"
+                          :default-width 300
+                          :default-height 400
+                          :var w
+                          (v-box
+                           (:expr label) :expand nil
+                           (scrolled-window
+                            :hscrollbar-policy :automatic
+                            :vscrollbar-policy :automatic
+                            :shadow-type :etched-in
+                            (text-view :var tv))
+                           (h-box
+                            (label :label "Insert:") :expand nil
+                            (entry :var entry)
+                            (button :label "gtk-ok" :use-stock t :var btn) :expand nil)
+                           :expand nil
+                           (label :label "Table packing")
+                           :expand nil
+                           (table
+                            :n-columns 2
+                            :n-rows 2
+                            (label :label "2 x 1") :left 0 :right 2 :top 0 :bottom 1
+                            (label :label "1 x 1") :left 0 :right 1 :top 1 :bottom 2
+                            (label :label "1 x 1") :left 1 :right 2 :top 1 :bottom 2)))
+        (connect-signal btn "clicked"
+                        (lambda (b)
+                          (declare (ignore b))
+                          (text-buffer-insert (text-view-buffer tv)
+                                              (entry-text entry))))
+        (widget-show w)))))

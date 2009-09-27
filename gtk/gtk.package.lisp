@@ -23,7 +23,8 @@
            #:tree-lisp-store-add-column
            #:gtk-main-add-timeout
            #:gtk-call-aborted
-           #:gtk-call-aborted-condition))
+           #:gtk-call-aborted-condition
+           #:let-ui))
 
 (defpackage :gtk-examples
   (:use :cl :gtk :gdk :gobject)

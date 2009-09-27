@@ -141,29 +141,27 @@
         (text-buffer-text (text-view-buffer (opengl-window-resize-fn-text-view window)))
         ";; Resize-fn. Parameters: w h
 ")
-  (let ((v (make-instance 'v-paned))
-        (lower-v-box (make-instance 'v-box))
-        (h (make-instance 'h-paned))
-        (buttons (make-instance 'h-box))
-        (update-fns-button (make-instance 'button :label "Update functions"))
-        (redraw-button (make-instance 'button :label "Redraw")))
+  (let-ui (v-paned :var v
+                   (:expr (opengl-window-drawing-area window))
+                   :resize t :shrink nil
+                   (v-box
+                    (h-paned
+                     (scrolled-window
+                      :hscrollbar-policy :automatic
+                      :vscrollbar-policy :automatic
+                      (:expr (opengl-window-expose-fn-text-view window)))
+                     :resize t :shrink nil
+                     (scrolled-window
+                      :hscrollbar-policy :automatic
+                      :vscrollbar-policy :automatic
+                      (:expr (opengl-window-resize-fn-text-view window)))
+                     :resize t :shrink nil)
+                    (h-box
+                     (button :label "Update functions" :var update-fns-button) :expand nil
+                     (button :label "Redraw" :var redraw-button) :expand nil)
+                    :expand nil)
+                   :resize t :shrink nil)
     (container-add window v)
-    (paned-pack-1 v (opengl-window-drawing-area window) :resize t :shrink nil)
-    (paned-pack-2 v lower-v-box :resize t :shrink nil)
-    (box-pack-start lower-v-box h)
-    (let ((scrolled (make-instance 'scrolled-window
-                                   :hscrollbar-policy :automatic
-                                   :vscrollbar-policy :automatic)))
-      (container-add scrolled (opengl-window-expose-fn-text-view window))
-      (paned-pack-1 h scrolled :resize t :shrink nil))
-    (let ((scrolled (make-instance 'scrolled-window
-                                   :hscrollbar-policy :automatic
-                                   :vscrollbar-policy :automatic)))
-      (container-add scrolled (opengl-window-resize-fn-text-view window))
-      (paned-pack-2 h scrolled :resize t :shrink nil))
-    (box-pack-start lower-v-box buttons :expand nil)
-    (box-pack-start buttons update-fns-button :expand nil)
-    (box-pack-start buttons redraw-button :expand nil)
     (connect-signal update-fns-button "clicked"
                     (lambda (b)
                       (declare (ignore b))

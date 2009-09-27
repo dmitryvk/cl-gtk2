@@ -1,4 +1,4 @@
-all: doc.html tutorial.html gobject/index.html gtk/index.html gobject/style.css gtk/style.css
+all: doc.html tutorial.html gobject/index.html gtk/index.html gobject/style.css gtk/style.css gtk/let-ui.png gtk/let-ui-glext.png
 
 .PHONY: all archive
 
@@ -26,6 +26,12 @@ gobject/index.html: gobject.texi gobject.ref.texi
 
 gtk/style.css: style.css
 	([ -x gtk ] || mkdir gtk) && cp $< $@
+
+gtk/let-ui.png: let-ui.png
+	cp $< $@
+
+gtk/let-ui-glext.png: let-ui-glext.png
+	cp $< $@
 
 gtk/index.html: gtk.texi gtk.ref.texi gdk.ref.texi gobject.ref.texi glib.ref.texi gdk.enums.texi \
 gtk.flags.texi gtk.objects.texi gdk.flags.texi gdk.structs.texi gtk.interfaces.texi gtk.widgets.texi gdk.objects.texi \

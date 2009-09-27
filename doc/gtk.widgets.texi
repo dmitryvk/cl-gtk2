@@ -427,6 +427,10 @@ Signals:
 @itemize
 @end itemize
 
+@RMethod box-pack-start
+@lisp
+box-pack-start
+@end lisp
 
 
 
@@ -3076,6 +3080,11 @@ Signals:
 @end itemize
 
 
+@RMethod paned-pack-1
+@lisp
+paned-pack-1
+@end lisp
+
 
 
 @node plug
@@ -3729,6 +3738,11 @@ Signals:
 @itemize
 @end itemize
 
+
+@RMethod table-attach
+@lisp
+table-attach
+@end lisp
 
 
 
