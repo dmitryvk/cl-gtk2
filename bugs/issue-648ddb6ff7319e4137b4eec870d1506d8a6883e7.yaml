@@ -1,0 +1,18 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: make bindings for GtkTextBuffer serialization/deserialization
+desc: ""
+type: :task
+component: cl-gtk2
+release: "0.1"
+reporter: Kalyanov Dmitry <Kalyanov.Dmitry@gmail.com>
+status: :unstarted
+disposition: 
+creation_time: 2009-10-01 19:42:13.954638 Z
+references: []
+
+id: 648ddb6ff7319e4137b4eec870d1506d8a6883e7
+log_events: 
+- - 2009-10-01 19:42:15.010731 Z
+  - Kalyanov Dmitry <Kalyanov.Dmitry@gmail.com>
+  - created
+  - ""
