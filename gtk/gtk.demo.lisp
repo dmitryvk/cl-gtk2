@@ -638,7 +638,7 @@
                                 (save))
                               (object-destroy d))))
                (cut (&rest args) (declare (ignore args))
-                    (text-buffer-cut-clipboard (text-view-buffer text-view) (get-clipboard "CLIPBOARD")))
+                    (text-buffer-cut-clipboard (text-view-buffer text-view) (get-clipboard "CLIPBOARD") t))
                (copy (&rest args) (declare (ignore args))
                      (text-buffer-copy-clipboard (text-view-buffer text-view) (get-clipboard "CLIPBOARD")))
                (paste (&rest args) (declare (ignore args))

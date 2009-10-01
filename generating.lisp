@@ -320,7 +320,17 @@
         (:cffi gtk::position gtk::editable-position :int
          "gtk_editable_get_position" "gtk_editable_set_position")
         (:cffi gtk::editable gtk::editable-editable :boolean
-         "gtk_editable_get_editable" "gtk_editable_set_editable"))))))
+         "gtk_editable_get_editable" "gtk_editable_set_editable"))
+       ("GtkTextMark"
+        (:cffi gtk::visible gtk::text-mark-visible :boolean
+         "gtk_text_mark_get_visible" "gtk_text_mark_set_visible")
+        (:cffi gtk::deleted gtk::text-mark-deleted :boolean
+         "gtk_text_mark_get_deleted" nil)
+        (:cffi gtk::buffer gtk::text-mark-buffer (g-object gtk::text-buffer)
+         "gtk_text_mark_get_buffer" nil))
+       ("GtkTextBuffer"
+        (:cffi gtk::modified gtk::text-buffer-modified :boolean
+         "gtk_text_buffer_get_modified" "gtk_text_buffer_set_modified"))))))
 
 (defun gtk-generate-child-properties (filename)
   (with-open-file (stream filename :direction :output :if-exists :supersede)

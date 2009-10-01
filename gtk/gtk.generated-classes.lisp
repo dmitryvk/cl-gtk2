@@ -1398,11 +1398,6 @@
                         :type-initializer "gtk_recent_filter_get_type")
                        nil)
 
-(define-g-object-class "GtkTooltips" tooltips
-                       (:superclass gtk-object :export t :interfaces nil
-                        :type-initializer "gtk_tooltips_get_type")
-                       nil)
-
 (define-g-object-class "GtkTreeViewColumn" tree-view-column
                        (:superclass gtk-object :export t :interfaces
                         ("GtkBuildable" "GtkCellLayout") :type-initializer
@@ -3332,7 +3327,10 @@
                          "paste-target-list" "GtkTargetList" t nil)
                         (tag-table text-buffer-tag-table "tag-table"
                          "GtkTextTagTable" t nil)
-                        (text text-buffer-text "text" "gchararray" t t)))
+                        (text text-buffer-text "text" "gchararray" t t)
+                        (:cffi modified text-buffer-modified :boolean
+                         "gtk_text_buffer_get_modified"
+                         "gtk_text_buffer_set_modified")))
 
 (define-g-object-class "GtkTextChildAnchor" text-child-anchor
                        (:superclass g-object :export t :interfaces nil
@@ -3344,7 +3342,14 @@
                         :type-initializer "gtk_text_mark_get_type")
                        ((left-gravity text-mark-left-gravity "left-gravity"
                          "gboolean" t nil)
-                        (name text-mark-name "name" "gchararray" t nil)))
+                        (name text-mark-name "name" "gchararray" t nil)
+                        (:cffi visible text-mark-visible :boolean
+                         "gtk_text_mark_get_visible"
+                         "gtk_text_mark_set_visible")
+                        (:cffi deleted text-mark-deleted :boolean
+                         "gtk_text_mark_get_deleted" nil)
+                        (:cffi buffer text-mark-buffer (g-object text-buffer)
+                         "gtk_text_mark_get_buffer" nil)))
 
 (define-g-object-class "GtkTextTag" text-tag
                        (:superclass g-object :export t :interfaces nil

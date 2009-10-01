@@ -31,7 +31,6 @@
 (define-boxed-opaque-accessor text-iter text-iter-language :reader "gtk_text_iter_get_language" :type :pointer)
 (define-boxed-opaque-accessor text-iter text-iter-is-end :reader "gtk_text_iter_is_end" :type :boolean)
 (define-boxed-opaque-accessor text-iter text-iter-is-start :reader "gtk_text_iter_is_start" :type :boolean)
-(define-boxed-opaque-accessor text-iter text-iter-can-insert :reader "gtk_text_iter_can_insert" :type :boolean)
 (define-boxed-opaque-accessor text-iter text-iter-starts-word :reader "gtk_text_iter_starts_word" :type :boolean)
 (define-boxed-opaque-accessor text-iter text-iter-ends-word :reader "gtk_text_iter_ends_word" :type :boolean)
 (define-boxed-opaque-accessor text-iter text-iter-inside-word :reader "gtk_text_iter_inside_word" :type :boolean)
@@ -78,25 +77,25 @@
   (with-foreign-object (iter '%text-iter)
     (gtk-text-iter-copy iter)))
 
-(defcfun (text-iter-slice "gtk_text_iter_get_slice") (:string :free-from-foreign t)
+(defcfun (text-iter-slice "gtk_text_iter_get_slice") (g-string :free-from-foreign t)
   (start (g-boxed-foreign text-iter))
   (end (g-boxed-foreign text-iter)))
 
 (export 'text-iter-slice)
 
-(defcfun (text-iter-text "gtk_text_iter_get_text") (:string :free-from-foreign t)
+(defcfun (text-iter-text "gtk_text_iter_get_text") (g-string :free-from-foreign t)
   (start (g-boxed-foreign text-iter))
   (end (g-boxed-foreign text-iter)))
 
 (export 'text-iter-text)
 
-(defcfun (text-iter-visible-slice "gtk_text_iter_get_visible_slice") (:string :free-from-foreign t)
+(defcfun (text-iter-visible-slice "gtk_text_iter_get_visible_slice") (g-string :free-from-foreign t)
   (start (g-boxed-foreign text-iter))
   (end (g-boxed-foreign text-iter)))
 
 (export 'text-iter-visible-slice)
 
-(defcfun (text-iter-visible-text "gtk_text_iter_get_visible_text") (:string :free-from-foreign t)
+(defcfun (text-iter-visible-text "gtk_text_iter_get_visible_text") (g-string :free-from-foreign t)
   (start (g-boxed-foreign text-iter))
   (end (g-boxed-foreign text-iter)))
 
@@ -137,6 +136,12 @@
   (default :boolean))
 
 (export 'text-iter-editable)
+
+(defcfun (text-iter-can-insert "gtk_text_iter_can_insert") :boolean
+  (iter (g-boxed-foreign text-iter))
+  (default-editable :boolean))
+
+(export 'text-iter-can-insert)
 
 (defcfun gtk-text-iter-get-attributes :boolean
   (iter (g-boxed-foreign text-iter))
@@ -312,30 +317,6 @@
   (iter-2 (g-boxed-foreign text-iter)))
 
 (export 'text-iter-order)
-
-;; text mark
-
-(defcfun (text-mark-visible "gtk_text_mark_get_visible") :boolean
-  (mark (g-object text-mark)))
-
-(defcfun gtk-text-mark-set-visible :void
-  (mark (g-object text-mark))
-  (visible :boolean))
-
-(defun (setf text-mark-visible) (new-value mark)
-  (gtk-text-mark-set-visible mark new-value))
-
-(export 'text-mark-visible)
-
-(defcfun (text-mark-deleted "gtk_text_mark_get_deleted") :boolean
-  (mark (g-object text-mark)))
-
-(export 'text-mark-deleted)
-
-(defcfun (text-mark-buffer "gtk_text_mark_get_buffer") (g-object text-buffer)
-  (mark (g-object text-mark)))
-
-(export 'text-mark-buffer)
 
 ;; text buffer
 
@@ -534,8 +515,7 @@
 (export 'text-buffer-insertion-mark)
 
 (defcfun (text-buffer-selection-bound "gtk_text_buffer_get_selection_bound") (g-object text-mark)
-  (buffer (g-object text-buffer))
-  (name (:string :free-to-foreign t)))
+  (buffer (g-object text-buffer)))
 
 (export 'text-buffer-selection-bound)
 
@@ -722,7 +702,8 @@
 
 (defcfun (text-buffer-cut-clipboard "gtk_text_buffer_cut_clipboard") :void
   (buffer (g-object text-buffer))
-  (clipboard (g-object clipboard)))
+  (clipboard (g-object clipboard))
+  (default-editable :boolean))
 
 (export 'text-buffer-cut-clipboard)
 
