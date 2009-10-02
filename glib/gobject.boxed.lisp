@@ -347,10 +347,10 @@
         (collect variant)))
 
 (defun generated-cstruct-name (symbol)
-  (intern (format nil "~A-CSTRUCT-GENERATED-BY-GOBJECT-BOXED" (symbol-name symbol)) (symbol-package symbol)))
+  (intern (format nil "~A-CSTRUCT" (symbol-name symbol)) (symbol-package symbol)))
 
 (defun generated-cunion-name (symbol)
-  (intern (format nil "~A-CUNION-GENERATED-BY-GOBJECT-BOXED" (symbol-name symbol)) (symbol-package symbol)))
+  (intern (format nil "~A-CUNION" (symbol-name symbol)) (symbol-package symbol)))
 
 (defun generate-cstruct-1 (struct)
   `(defcstruct ,(generated-cstruct-name (cstruct-description-name struct))

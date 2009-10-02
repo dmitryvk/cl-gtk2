@@ -1842,7 +1842,7 @@ A form that is the initform of Lisp structure slot
 A boolean. If it is true, then the slot contains GBoxed structure whose name is @code{slot-type}.
 @end table
 
-Defines the ``simple'' GBoxed structure corresponding to C structure. The slot specification is analogous to CFFI @code{defstruct} slot specification with the addition of @code{inline} option.
+Defines the ``simple'' GBoxed structure corresponding to C structure. The slot specification is analogous to CFFI @code{defstruct} slot specification with the addition of @code{inline} option. This also defines the @var{name}-cstruct CFFI structure definition with equivalent structure.
 
 Example of usage:
 @lisp
@@ -1905,6 +1905,8 @@ Defines the variant GBoxed structure. Slots of variant structures are defined th
 Variant structure is represented in Lisp via a hierarchy on structures. For example, @code{GdkEvent} structure has variants @code{GdkEventAny}, @code{GdkEventButton}, @code{GdkEventMotion}. In Lisp, @code{event} structure is defined with all common fields of these structures and @code{event-button}, @code{event-motion} structures inherit from @code{event} structure.
 
 It is assumed that the variant of structures can be represented as C structures with fields of their ``parent'' structures prepended to them. This assumption breaks when structures include their ``parent'' structure as a first field (this changes the memory alignment and changes offsets of fields).
+
+This also defines the @var{name}-cstruct, @var{structure-name}-cstruct, @var{structure-name}-cunion CFFI structures definitions with equivalent structures (unions).
 
 For example, for these structures this assumption holds:
 @example
