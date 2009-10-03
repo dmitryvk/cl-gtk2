@@ -1,0 +1,18 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: make bindings for GtkBuildable
+desc: ""
+type: :task
+component: cl-gtk2
+release: 
+reporter: Kalyanov Dmitry <Kalyanov.Dmitry@gmail.com>
+status: :unstarted
+disposition: 
+creation_time: 2009-10-03 19:01:23.359691 Z
+references: []
+
+id: 88836c61db109ee78dec552d38cde9fc66deac35
+log_events: 
+- - 2009-10-03 19:01:23.879643 Z
+  - Kalyanov Dmitry <Kalyanov.Dmitry@gmail.com>
+  - created
+  - ""

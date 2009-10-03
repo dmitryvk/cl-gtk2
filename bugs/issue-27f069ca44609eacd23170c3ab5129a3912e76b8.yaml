@@ -1,0 +1,18 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: fix running on ecl
+desc: ""
+type: :task
+component: cl-gtk2
+release: "0.1"
+reporter: Kalyanov Dmitry <Kalyanov.Dmitry@gmail.com>
+status: :unstarted
+disposition: 
+creation_time: 2009-10-02 19:33:58.167071 Z
+references: []
+
+id: 27f069ca44609eacd23170c3ab5129a3912e76b8
+log_events: 
+- - 2009-10-02 19:33:59.062857 Z
+  - Kalyanov Dmitry <Kalyanov.Dmitry@gmail.com>
+  - created
+  - ""

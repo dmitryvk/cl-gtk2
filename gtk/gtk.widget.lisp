@@ -12,16 +12,6 @@
 
 (export 'widget-flags)
 
-(defcstruct %gtk-requisition
-  (:width :int)
-  (:height :int))
-
-(defcstruct %gtk-allocation
-  (:x :int)
-  (:y :int)
-  (:width :int)
-  (:height :int))
-
 (defcstruct %gtk-widget
   (:object %gtk-object)
   (:private-flags :uint16)
@@ -29,8 +19,8 @@
   (:saved-state state-type)
   (:name (:pointer :char))
   (:style :pointer)
-  (:requisition %gtk-requisition)
-  (:allocation %gtk-allocation)
+  (:requisition requisition-cstruct)
+  (:allocation allocation-cstruct)
   (:window :pointer)
   (:parent :pointer))
 

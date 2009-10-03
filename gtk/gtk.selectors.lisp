@@ -1,11 +1,43 @@
 (in-package :gtk)
 
+(defcfun (%gtk-color-selection-get-previous-color "gtk_color_selection_get_previous_color") :void
+  (color-selection (g-object color-selection))
+  (color (g-boxed-foreign color)))
+
+(defun gtk-color-selection-get-previous-color (color-selection)
+  (let ((color (make-color)))
+    (%gtk-color-selection-get-previous-color color-selection color)
+    color))
+
+(defcfun gtk-color-selection-set-previous-color :void
+  (color-selection (g-object color-selection))
+  (color (g-boxed-foreign color)))
+
 (defcfun (color-selection-adjusting-p "gtk_color_selection_is_adjusting") :boolean
   (color-selection g-object))
 
 (export 'color-selection-adjusting-p)
 
-; TODO: gtk_color_selection_palette_from_string
+(defcfun gtk-color-selection-palette-from-string :boolean
+  (str :string)
+  (colors :pointer)
+  (n-colors :pointer))
+
+(defun color-selection-palette-from-string (str)
+  (with-foreign-objects ((colors :pointer) (n-colors :int))
+    (when (gtk-color-selection-palette-from-string str colors n-colors)
+      (iter (with colors-ar = (mem-ref colors :pointer))
+            (for i from 0 below (mem-ref n-colors :int))
+            (for color-ptr =
+                 (inc-pointer colors-ar
+                              (* i (foreign-type-size 'gdk::color-cstruct))))
+            (for color = (convert-from-foreign color-ptr '(g-boxed-foreign color)))
+            (collect color)
+            (finally (g-free colors-ar))))))
+
+(defcfun gtk-color-selection-palette-to-string (g-string :free-from-foreign t)
+  (colors :pointer)
+  (n-colors :int))
 
 ; TODO: gtk_color_selection_palette_to_string
 

@@ -49,25 +49,24 @@
 (defcfun (container-children "gtk_container_get_children") (glist g-object :free-from-foreign t)
   (container g-object))
 
-; TODO: ownership issues
-
 (export 'container-children)
-
-; TODO: gtk_container_set_reallocate_redraws
 
 (defcfun (container-resize-children "gtk_container_resize_children") :void
   (container g-object))
 
 (export 'container-resize-children)
 
-(defcfun gtk-container-child-type g-type
+(defcfun (container-child-type "gtk_container_child_type") g-type-designator
   (container g-object))
 
-; TODO: export gtk-container-child-type, requires better interface
+(export 'container-child-type)
 
-; TODO: child properties
+(defcfun (container-propagate-expose "gtk_container_propagate_expose") :void
+  (container (g-object container))
+  (child (g-object widget))
+  (event (g-boxed-foreign event)))
 
-; TODO: gtk_container_propagate_expose
+(export 'container-propagate-expose)
 
 ; TODO: gtk_container_get_focus_chain
 

@@ -200,6 +200,16 @@
 
 (export 'action-disconnect-accelerator)
 
+(defcfun (action-block-activate "gtk_action_block_activate") :void
+  (action (g-object action)))
+
+(export 'action-block-activate)
+
+(defcfun (action-unblock-activate "gtk_action_unblock_activate") :void
+  (action (g-object action)))
+
+(export 'action-unblock-activate)
+
 (defcfun (action-block-activate-from "gtk_action_block_activate_from") :void
   (action g-object)
   (proxy g-object))
@@ -211,3 +221,8 @@
   (proxy g-object))
 
 (export 'action-unblock-activate-from)
+
+(defcfun (radio-action-get-group "gtk_radio_action_get_group") (gslist (g-object radio-action) :free-from-foreign nil)
+  (action (g-object radio-action)))
+
+(export 'radio-action-get-group)

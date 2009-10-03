@@ -1146,7 +1146,14 @@
 
 (define-g-interface "GtkToolShell"
     tool-shell
-    (:export t :type-initializer "gtk_tool_shell_get_type"))
+    (:export t :type-initializer "gtk_tool_shell_get_type")
+  (:cffi icon-size tool-shell-icon-size icon-size
+   "gtk_tool_shell_get_icon_size" nil)
+  (:cffi orientation tool-shell-orientation orientation
+   "gtk_tool_shell_get_orientation" nil)
+  (:cffi relief-style tool-shell-relief-style relief-style
+   "gtk_tool_shell_get_relief_style" nil)
+  (:cffi style tool-shell-style toolbar-style "gtk_tool_shell_get_style" nil))
 
 (define-g-interface "GtkOrientable"
     orientable
@@ -1531,7 +1538,11 @@
                          "show-week-numbers" "gboolean" t t)
                         (year calendar-year "year" "gint" t t)
                         (:cffi detail-function calendar-detail-function nil nil
-                         calendar-set-detail-function)))
+                         calendar-set-detail-function)
+                        (:cffi display-options calendar-display-options
+                         calendar-display-options
+                         "gtk_calendar_get_display_options"
+                         "gtk_calendar_set_display_options")))
 
 (define-g-object-class "GtkCellView" cell-view
                        (:superclass widget :export t :interfaces
@@ -1547,7 +1558,10 @@
                         (:cffi displayed-row cell-view-displayed-row
                          (g-boxed-foreign tree-path)
                          "gtk_cell_view_get_displayed_row"
-                         "gtk_cell_view_set_displayed_row")))
+                         "gtk_cell_view_set_displayed_row")
+                        (:cffi cell-renderers cell-view-cell-renderers
+                         (glist (g-object cell-renderer) :free-from-foreign t)
+                         "gtk_cell_view_get_cell_renderers" nil)))
 
 (define-g-object-class "GtkContainer" container
                        (:superclass widget :export t :interfaces
@@ -1566,13 +1580,16 @@
                          "gtk_container_set_focus_vadjustment")
                         (:cffi focus-hadjustment container-focus-hadjustment
                          g-object "gtk_container_get_focus_hadjustment"
-                         "gtk_container_set_focus_hadjustment")))
+                         "gtk_container_set_focus_hadjustment")
+                        (:cffi reallocate-redraws container-reallocate-redraws
+                         :boolean nil "gtk_container_set_reallocate_redraws")))
 
 (define-g-object-class "GtkBin" bin
                        (:superclass container :export t :interfaces
                         ("AtkImplementorIface" "GtkBuildable")
                         :type-initializer "gtk_bin_get_type")
-                       nil)
+                       ((:cffi child bin-child (g-object widget)
+                         "gtk_bin_get_child" nil)))
 
 (define-g-object-class "GtkAlignment" alignment
                        (:superclass bin :export t :interfaces
@@ -1711,7 +1728,10 @@
                          (g-boxed-foreign tree-iter) combo-box-get-active-iter
                          "gtk_combo_box_set_active_iter")
                         (:cffi row-separator-func combo-box-separator-func nil
-                         nil combo-box-set-separator-func)))
+                         nil combo-box-set-separator-func)
+                        (:cffi title combo-box-title
+                         (:string :free-from-foreign nil :free-to-foreign t)
+                         "gtk_combo_box_get_title" "gtk_combo_box_set_title")))
 
 (define-g-object-class "GtkComboBoxEntry" combo-box-entry
                        (:superclass combo-box :export t :interfaces
@@ -1863,7 +1883,13 @@
                          "window-placement" "GtkCornerType" t t)
                         (window-placement-set
                          scrolled-window-window-placement-set
-                         "window-placement-set" "gboolean" t t)))
+                         "window-placement-set" "gboolean" t t)
+                        (:cffi hscrollbar scrolled-window-hscrollbar
+                         (g-object widget) "gtk_scrolled_window_get_hscrollbar"
+                         nil)
+                        (:cffi vscrollbar scrolled-window-vscrollbar
+                         (g-object widget) "gtk_scrolled_window_get_vscrollbar"
+                         nil)))
 
 (define-g-object-class "GtkToolItem" tool-item
                        (:superclass bin :export t :interfaces
@@ -2257,7 +2283,14 @@
                          color-selection-has-opacity-control
                          "has-opacity-control" "gboolean" t t)
                         (has-palette color-selection-has-palette "has-palette"
-                         "gboolean" t t)))
+                         "gboolean" t t)
+                        (:cffi previous-alpha color-selection-previous-alpha
+                         :uint16 "gtk_color_selection_get_previous_alpha"
+                         "gtk_color_selection_set_previous_alpha")
+                        (:cffi previous-color color-selection-previous-color
+                         (g-boxed-foreign color)
+                         gtk-color-selection-get-previous-color
+                         gtk-color-selection-set-previous-color)))
 
 (define-g-object-class "GtkFileChooserWidget" file-chooser-widget
                        (:superclass v-box :export t :interfaces
@@ -2363,7 +2396,10 @@
                         (tearoff-title menu-tearoff-title "tearoff-title"
                          "gchararray" t t)
                         (:cffi screen menu-screen g-object nil
-                         "gtk_menu_set_screen")))
+                         "gtk_menu_set_screen")
+                        (:cffi title menu-title
+                         (:string :free-from-foreign nil :free-to-foreign t)
+                         "gtk_menu_get_title" "gtk_menu_set_title")))
 
 (define-g-object-class "GtkRecentChooserMenu" recent-chooser-menu
                        (:superclass menu :export t :interfaces
@@ -3504,7 +3540,10 @@
                          "gtk_tree_selection_set_mode")
                         (:cffi select-function tree-selection-select-function
                          nil tree-selection-get-selection-function
-                         tree-selection-set-select-function)))
+                         tree-selection-set-select-function)
+                        (:cffi tree-view tree-selection-tree-view
+                         (g-object tree-view)
+                         "gtk_tree_selection_get_tree_view" nil)))
 
 (define-g-object-class "GtkTreeStore" tree-store
                        (:superclass g-object :export t :interfaces

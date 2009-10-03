@@ -1,0 +1,18 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: make GtkCellLayout interface implementor binding
+desc: ""
+type: :task
+component: cl-gtk2
+release: "0.1"
+reporter: Kalyanov Dmitry <Kalyanov.Dmitry@gmail.com>
+status: :unstarted
+disposition: 
+creation_time: 2009-10-02 21:01:20.927960 Z
+references: []
+
+id: 24992d0ce785d18d70ee0aeb17c5a5fdecdc5354
+log_events: 
+- - 2009-10-02 21:01:21.663782 Z
+  - Kalyanov Dmitry <Kalyanov.Dmitry@gmail.com>
+  - created
+  - ""

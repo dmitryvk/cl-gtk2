@@ -60,11 +60,27 @@
 
 ; TODO: gtk_menu_attach_to_widget
 
-; TODO: gtk_menu_detach
+(defcfun (menu-detach "gtk_menu_detach") :void
+  (menu (g-object menu)))
 
-; TODO: gtk_menu_get_attach_widget
+(export 'menu-detach)
 
-; TODO: gtk_menu_get_for_attach_widget
+; TODO: gtk_menu_get_attach_to_widget
+
+(defcfun (menu-attached-to-widget "gtk_menu_get_for_attach_widget") (glist (g-object menu) :free-from-foreign nil)
+  (width (g-object widget)))
+
+(export 'menu-attached-to-widget)
+
+(defcfun (radio-menu-item-group "gtk_radio_menu_item_get_group") (glist (g-object radio-menu-item) :free-from-foreign nil)
+  (radio-menu-item (g-object radio-menu-item)))
+
+(export 'radio-menu-item-group)
+
+(defcfun (tool-shell-rebuild-menu "gtk_tool_shell_rebuild_menu") :void
+  (shell (g-object tool-shell)))
+
+(export 'tool-shell-rebuild-menu)
 
 (defcfun (menu-shell-append "gtk_menu_shell_append") :void
   (menu-shell g-object)
@@ -184,3 +200,6 @@
 
 (export 'tool-item-rebuild-menu)
 
+(defcfun (radio-tool-button-get-group "gtk_radio_tool_button_get_group")
+    (gslist (g-object radio-tool-button) :free-from-foreign nil)
+  (button (g-object radio-tool-button)))

@@ -75,9 +75,34 @@
   (is-expander :boolean)
   (is-expanded :boolean))
 
-(export 'tree-view-column-set-cell-data)
+(export 'tree-view-column-cell-set-data)
 
-;; TODO gtk_tree_view_column_cell_get_size () gtk_tree_view_column_cell_get_position ()
+(defcfun gtk-tree-view-column-cell-get-size :void
+  (tree-column (g-object tree-view-column))
+  (cell-area (g-boxed-foreign rectangle))
+  (x-offset (:pointer :int))
+  (y-offset (:pointer :int))
+  (width (:pointer :int))
+  (height (:pointer :int)))
+
+(defun tree-view-column-cell-size (tree-column cell-area)
+  (with-foreign-objects ((x :int) (y :int) (width :int) (height :int))
+    (gtk-tree-view-column-cell-get-size tree-column cell-area x y width height)
+    (values (mem-ref x :int) (mem-ref y :int) (mem-ref width :int) (mem-ref height :int))))
+
+(export 'tree-view-column-cell-size)
+
+(defcfun gtk-tree-view-column-cell-get-position :boolean
+  (tree-column (g-object tree-view-column))
+  (cell-renderer (g-object cell-renderer))
+  (start-pos (:pointer :int))
+  (width (:pointer :int)))
+
+(defun tree-view-column-cell-position (tree-column cell-renderer)
+  (with-foreign-objects ((start :int) (width :int))
+    (when (gtk-tree-view-column-cell-get-position tree-column cell-renderer start width)
+      (list (mem-ref start :int) (mem-ref width :int)))))
+
 
 (defcfun (tree-view-column-focus-cell "gtk_tree_view_column_focus_cell") :void
   (tree-column (g-object tree-view-column))

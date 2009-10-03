@@ -1,0 +1,18 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: fix running on win32
+desc: ""
+type: :task
+component: cl-gtk2
+release: "0.1"
+reporter: Kalyanov Dmitry <Kalyanov.Dmitry@gmail.com>
+status: :unstarted
+disposition: 
+creation_time: 2009-10-02 19:33:09.967891 Z
+references: []
+
+id: f26913fe08284ee04e9d0a3f6acd36faa2341aae
+log_events: 
+- - 2009-10-02 19:33:11.063621 Z
+  - Kalyanov Dmitry <Kalyanov.Dmitry@gmail.com>
+  - created
+  - ""

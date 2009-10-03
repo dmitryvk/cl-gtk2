@@ -1,0 +1,18 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: make GtkCellEditable interface binding
+desc: ""
+type: :task
+component: cl-gtk2
+release: "0.1"
+reporter: Kalyanov Dmitry <Kalyanov.Dmitry@gmail.com>
+status: :unstarted
+disposition: 
+creation_time: 2009-10-02 21:04:55.400564 Z
+references: []
+
+id: ed99e9ad80242712fe92e0a6d8f3925ae30bd3ed
+log_events: 
+- - 2009-10-02 21:04:56.352332 Z
+  - Kalyanov Dmitry <Kalyanov.Dmitry@gmail.com>
+  - created
+  - ""

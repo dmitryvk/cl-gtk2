@@ -453,3 +453,15 @@
 (export 'tree-view-get-tooltip-context)
 
 ; TODO: GtkTreeView drag-and-drop
+
+(defcfun gtk-cell-view-get-size-of-row :boolean
+  (cell-view (g-object cell-view))
+  (path (g-boxed-foreign tree-path))
+  (requisition (g-boxed-foreign requisition)))
+
+(defun cell-view-get-size-of-row (cell-view path)
+  (let ((requisition (make-requisition)))
+    (gtk-cell-view-get-size-of-row cell-view path requisition)
+    requisition))
+
+(export 'cell-view-get-size-of-row)

@@ -1,0 +1,18 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: make binding to GtkTreeStore
+desc: ""
+type: :task
+component: cl-gtk2
+release: "0.1"
+reporter: Kalyanov Dmitry <Kalyanov.Dmitry@gmail.com>
+status: :unstarted
+disposition: 
+creation_time: 2009-10-02 21:13:54.989400 Z
+references: []
+
+id: bb8c71d21d73d1ad594c73f0ac5ac8a6db82729c
+log_events: 
+- - 2009-10-02 21:13:55.957193 Z
+  - Kalyanov Dmitry <Kalyanov.Dmitry@gmail.com>
+  - created
+  - ""

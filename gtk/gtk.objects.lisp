@@ -85,3 +85,24 @@
     (:export t :type-initializer
              "pango_ellipsize_mode_get_type")
   (:none 0) (:start 1) (:middle 2) (:end 3))
+
+(defcfun (adjustment-clamp-page "gtk_adjustment_clamp_page") :void
+  (adjustment (g-object adjustment))
+  (lower :double)
+  (upper :double))
+
+(export 'adjustment-clamp-page)
+
+(define-g-boxed-cstruct requisition "GtkRequisition"
+  (width :int :initform 0)
+  (height :int :initform 0))
+
+(export (boxed-related-symbols 'requisition))
+
+(define-g-boxed-cstruct allocation "GtkAllocation"
+  (x :int :initform 0)
+  (y :int :initform 0)
+  (width :int :initform 0)
+  (height :int :initform 0))
+
+(export (boxed-related-symbols 'allocation))

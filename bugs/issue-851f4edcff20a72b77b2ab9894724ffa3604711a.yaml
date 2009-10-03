@@ -1,0 +1,18 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: finish GtkTreeView binding
+desc: ""
+type: :task
+component: cl-gtk2
+release: "0.1"
+reporter: Kalyanov Dmitry <Kalyanov.Dmitry@gmail.com>
+status: :unstarted
+disposition: 
+creation_time: 2009-10-02 20:28:42.648171 Z
+references: []
+
+id: 851f4edcff20a72b77b2ab9894724ffa3604711a
+log_events: 
+- - 2009-10-02 20:28:43.743906 Z
+  - Kalyanov Dmitry <Kalyanov.Dmitry@gmail.com>
+  - created
+  - ""

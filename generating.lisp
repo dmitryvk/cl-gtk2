@@ -138,7 +138,9 @@
         (:cffi gtk::mode gtk::tree-selection-mode gtk::selection-mode
          "gtk_tree_selection_get_mode" "gtk_tree_selection_set_mode")
         (:cffi gtk::select-function gtk::tree-selection-select-function nil
-         gtk::tree-selection-get-selection-function gtk::tree-selection-set-select-function))
+         gtk::tree-selection-get-selection-function gtk::tree-selection-set-select-function)
+        (:cffi gtk::tree-view gtk::tree-selection-tree-view (g-object gtk::tree-view)
+         "gtk_tree_selection_get_tree_view" nil))
        ("GtkTreeView"
         (:cffi gtk::selection gtk::tree-view-selection g-object
          "gtk_tree_view_get_selection" nil)
@@ -156,15 +158,21 @@
          nil gtk::tree-view-set-row-separartor-func))
        ("GtkCellView"
         (:cffi gtk::displayed-row gtk::cell-view-displayed-row (g-boxed-foreign gtk::tree-path)
-         "gtk_cell_view_get_displayed_row" "gtk_cell_view_set_displayed_row"))
+         "gtk_cell_view_get_displayed_row" "gtk_cell_view_set_displayed_row")
+        (:cffi gtk::cell-renderers gtk::cell-view-cell-renderers (glist (g-object gtk::cell-renderer) :free-from-foreign t)
+         "gtk_cell_view_get_cell_renderers" nil))
        ("GtkComboBox"
         (:cffi gtk::active-iter gtk::combo-box-active-iter (g-boxed-foreign gtk::tree-iter)
          gtk::combo-box-get-active-iter "gtk_combo_box_set_active_iter")
         (:cffi gtk::row-separator-func gtk::combo-box-separator-func nil
-         nil gtk::combo-box-set-separator-func))
+         nil gtk::combo-box-set-separator-func)
+        (:cffi gtk::title gtk::combo-box-title (:string :free-from-foreign nil :free-to-foreign t)
+         "gtk_combo_box_get_title" "gtk_combo_box_set_title"))
        ("GtkMenu"
         (:cffi gtk::screen gtk::menu-screen g-object
-         nil "gtk_menu_set_screen"))
+         nil "gtk_menu_set_screen")
+        (:cffi gtk::title gtk::menu-title (:string :free-from-foreign nil :free-to-foreign t)
+         "gtk_menu_get_title" "gtk_menu_set_title"))
        ("GtkToolItem"
         (:cffi gtk::expand gtk::tool-item-expand :boolean
          "gtk_tool_item_get_expand" "gtk_tool_item_set_expand")
@@ -233,14 +241,18 @@
          "gtk_layout_get_bin_window" nil))
        ("GtkCalendar"
         (:cffi gtk::detail-function gtk::calendar-detail-function nil
-         nil gtk::calendar-set-detail-function))
+         nil gtk::calendar-set-detail-function)
+        (:cffi gtk::display-options gtk::calendar-display-options gtk::calendar-display-options
+         "gtk_calendar_get_display_options" "gtk_calendar_set_display_options"))
        ("GtkContainer"
         (:cffi gtk::focus-child gtk::container-focus-child g-object
          "gtk_container_get_focus_child" "gtk_container_set_focus_child")
         (:cffi gtk::focus-vadjustment gtk::container-focus-vadjustment g-object
          "gtk_container_get_focus_vadjustment" "gtk_container_set_focus_vadjustment")
         (:cffi gtk::focus-hadjustment gtk::container-focus-hadjustment g-object
-         "gtk_container_get_focus_hadjustment" "gtk_container_set_focus_hadjustment"))
+         "gtk_container_get_focus_hadjustment" "gtk_container_set_focus_hadjustment")
+        (:cffi gtk::reallocate-redraws gtk::container-reallocate-redraws :boolean
+         nil "gtk_container_set_reallocate_redraws"))
        ("GtkWidget"
 	(:cffi gtk::parent-window gtk::widget-parent-window (g-object gdk::gdk-window)
 	 "gtk_widget_get_parent_window" "gtk_widget_set_parent_window")
@@ -330,7 +342,29 @@
          "gtk_text_mark_get_buffer" nil))
        ("GtkTextBuffer"
         (:cffi gtk::modified gtk::text-buffer-modified :boolean
-         "gtk_text_buffer_get_modified" "gtk_text_buffer_set_modified"))))))
+         "gtk_text_buffer_get_modified" "gtk_text_buffer_set_modified"))
+       ("GtkToolShell"
+        (:cffi gtk::icon-size gtk::tool-shell-icon-size gtk::icon-size
+         "gtk_tool_shell_get_icon_size" nil)
+        (:cffi gtk::orientation gtk::tool-shell-orientation gtk::orientation
+         "gtk_tool_shell_get_orientation" nil)
+        (:cffi gtk::relief-style gtk::tool-shell-relief-style gtk::relief-style
+         "gtk_tool_shell_get_relief_style" nil)
+        (:cffi gtk::style gtk::tool-shell-style gtk::toolbar-style
+         "gtk_tool_shell_get_style" nil))
+       ("GtkColorSelection"
+        (:cffi gtk::previous-alpha gtk::color-selection-previous-alpha :uint16
+         "gtk_color_selection_get_previous_alpha" "gtk_color_selection_set_previous_alpha")
+        (:cffi gtk::previous-color gtk::color-selection-previous-color (g-boxed-foreign gdk::color)
+         gtk::gtk-color-selection-get-previous-color gtk::gtk-color-selection-set-previous-color))
+       ("GtkScrolledWindow"
+        (:cffi gtk::hscrollbar gtk::scrolled-window-hscrollbar (g-object gtk::widget)
+         "gtk_scrolled_window_get_hscrollbar" nil)
+        (:cffi gtk::vscrollbar gtk::scrolled-window-vscrollbar (g-object gtk::widget)
+         "gtk_scrolled_window_get_vscrollbar" nil))
+       ("GtkBin"
+        (:cffi gtk::child gtk::bin-child (g-object gtk::widget)
+         "gtk_bin_get_child" nil))))))
 
 (defun gtk-generate-child-properties (filename)
   (with-open-file (stream filename :direction :output :if-exists :supersede)

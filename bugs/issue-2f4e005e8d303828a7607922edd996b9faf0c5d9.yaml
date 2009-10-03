@@ -1,0 +1,18 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: add GtkTreeView drag-and-drop binding
+desc: ""
+type: :task
+component: cl-gtk2
+release: "0.1"
+reporter: Kalyanov Dmitry <Kalyanov.Dmitry@gmail.com>
+status: :unstarted
+disposition: 
+creation_time: 2009-10-02 20:29:13.250523 Z
+references: []
+
+id: 2f4e005e8d303828a7607922edd996b9faf0c5d9
+log_events: 
+- - 2009-10-02 20:29:14.586319 Z
+  - Kalyanov Dmitry <Kalyanov.Dmitry@gmail.com>
+  - created
+  - ""

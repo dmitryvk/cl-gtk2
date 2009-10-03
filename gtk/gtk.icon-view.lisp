@@ -1,6 +1,6 @@
 (in-package :gtk)
 
-(defcfun (icon-view-get-path-at-pos "gtk_icon_view_get_path_at_pos") g-object
+(defcfun (icon-view-get-path-at-pos "gtk_icon_view_get_path_at_pos") (g-boxed-foreign tree-path :return)
   (icon-view g-object)
   (x :int)
   (y :int))

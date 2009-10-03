@@ -39,7 +39,6 @@
                (:file "gtk.calendar")
                (:file "gtk.size-group")
                (:file "gtk.tooltip")
-               (:file "gtk.bin")
                (:file "gtk.box")
                (:file "gtk.container")
                (:file "gtk.paned")

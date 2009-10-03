@@ -29,3 +29,9 @@
 ; TODO: GtkCellRendererText
 
 ; TODO: GtkCellRendererToggle
+
+(defcfun (cell-renderer-text-set-fixed-height-from-font "gtk_cell_renderer_text_set_fixed_height_from_font") :void
+  (renderer (g-object cell-renderer-text))
+  (number-of-rows :int))
+
+(export 'cell-renderer-text-set-fixed-height-from-font)
