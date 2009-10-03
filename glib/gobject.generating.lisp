@@ -138,7 +138,9 @@
 (defun type-initializer-call (type-initializer)
   (etypecase type-initializer
     (string `(if (foreign-symbol-pointer ,type-initializer)
-                 (foreign-funcall ,type-initializer g-type)
+                 (foreign-funcall-pointer
+                  (foreign-symbol-pointer ,type-initializer) ()
+                  g-type)
                  (warn "Type initializer '~A' is not available" ,type-initializer)))
     (symbol `(funcall ',type-initializer))))
 
