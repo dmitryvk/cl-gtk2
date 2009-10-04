@@ -265,4 +265,5 @@
   (slot-boundp object 'pointer))
 
 (defmethod slot-makunbound-using-class ((class gobject-class) object (slot gobject-effective-slot-definition))
+  (declare (ignore object))
   nil)

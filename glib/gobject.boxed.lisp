@@ -250,6 +250,7 @@
     (tg:finalize proxy (make-boxed-free-finalizer type native))))
 
 (defmethod cleanup-translated-object-for-callback ((type boxed-opaque-foreign-type) proxy native)
+  (declare (ignore native))
   (tg:cancel-finalization proxy)
   (setf (g-boxed-opaque-pointer proxy) nil))
 
@@ -338,8 +339,7 @@
       (list thing)))
 
 (defun parse-variants (parent variants)
-  (iter (for var-descr in variants)
-        (for (options variant-name . slots) in variants)
+  (iter (for (options variant-name . slots) in variants)
         (for variant =
              (make-var-structure-variant
               :discriminating-values (ensure-list options)

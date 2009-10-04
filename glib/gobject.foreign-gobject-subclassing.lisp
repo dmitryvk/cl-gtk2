@@ -208,6 +208,7 @@
                (gobject::g-object-has-reference object) t)))
      (progn
        ,@(iter (for (prop-name prop-type prop-accessor prop-reader prop-writer) in properties)
+               (declare (ignorable prop-type))
                (when prop-reader
                  (collect `(defun ,prop-accessor (object) (g-object-call-get-property object ,prop-name))))
                (when prop-writer

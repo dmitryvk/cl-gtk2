@@ -109,6 +109,7 @@
   (g-value-set-pointer gvalue-ptr value))
 
 (defmethod set-gvalue-for-type (gvalue-ptr (type-numeric (eql +g-type-param+)) value)
+  (declare (ignore gvalue-ptr value))
   (error "Setting of GParam is not implemented"))
 
 ;;Enums

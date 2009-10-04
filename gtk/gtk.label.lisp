@@ -7,7 +7,7 @@
 
 (defun gtk-label-get-layout-offsets (label)
   (with-foreign-objects ((x :int) (y :int))
-    (gtk-label-get-layout-offsets label x y)
+    (%gtk-label-get-layout-offsets label x y)
     (list (mem-ref x :int) (mem-ref y :int))))
 
 (defcfun (label-select-region "gtk_label_select_region") :void

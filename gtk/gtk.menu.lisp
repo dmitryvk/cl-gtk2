@@ -72,11 +72,6 @@
 
 (export 'menu-attached-to-widget)
 
-(defcfun (radio-menu-item-group "gtk_radio_menu_item_get_group") (glist (g-object radio-menu-item) :free-from-foreign nil)
-  (radio-menu-item (g-object radio-menu-item)))
-
-(export 'radio-menu-item-group)
-
 (defcfun (tool-shell-rebuild-menu "gtk_tool_shell_rebuild_menu") :void
   (shell (g-object tool-shell)))
 

@@ -96,8 +96,10 @@
       (setf (tree-iter-stamp iter) 0 (tree-iter-user-data iter) (first indices))
       t)))
 
-(defmethod tree-model-ref-node-impl ((model array-list-store) iter))
-(defmethod tree-model-unref-node-impl ((model array-list-store) iter))
+(defmethod tree-model-ref-node-impl ((model array-list-store) iter)
+  (declare (ignorable model iter)))
+(defmethod tree-model-unref-node-impl ((model array-list-store) iter)
+  (declare (ignorable model iter)))
 
 (defmethod tree-model-iter-next-impl ((model array-list-store) iter)
   (let ((n (tree-iter-user-data iter)))
@@ -106,6 +108,7 @@
       t)))
 
 (defmethod tree-model-iter-nth-child-impl ((model array-list-store) iter parent n)
+  (declare (ignorable parent))
   (setf (tree-iter-stamp iter) 0
         (tree-iter-user-data iter) n)
   t)
@@ -121,6 +124,7 @@
     path))
 
 (defmethod tree-model-iter-has-child-impl ((model array-list-store) iter)
+  (declare (ignorable iter))
   nil)
 
 (defgeneric tree-model-item (model iter-or-path))
@@ -506,10 +510,10 @@
             (tree-iter-user-data iter) (get-assigned-id store (tree-node-parent node))))))
 
 (defmethod tree-model-ref-node-impl ((store tree-lisp-store) iter)
-  )
+  (declare (ignorable iter)))
 
 (defmethod tree-model-unref-node-impl ((store tree-lisp-store) iter)
-  )
+  (declare (ignorable iter)))
 
 (defun notice-tree-node-insertion (tree node child index)
   (declare (ignore node index))
