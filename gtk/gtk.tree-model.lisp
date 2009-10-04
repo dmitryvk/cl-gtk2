@@ -55,7 +55,7 @@
 (defun store-add-item (store item)
   (vector-push-extend item (store-items store))
   (let* ((path (make-instance 'tree-path))
-         (iter (make-instance 'tree-iter)))
+         (iter (make-tree-iter)))
     (setf (tree-path-indices path) (list (1- (length (store-items store)))))
     (setf (tree-iter-stamp iter) 0 (tree-iter-user-data iter) (1- (length (store-items store))))
     (emit-signal store "row-inserted" path iter)))
@@ -164,7 +164,7 @@
   (path (g-boxed-foreign tree-path)))
 
 (defun tree-model-iter-by-path (tree-model tree-path)
-  (let ((iter (make-instance 'tree-iter)))
+  (let ((iter (make-tree-iter)))
     (if (tree-model-set-iter-to-path tree-model iter tree-path)
         iter
         nil)))
@@ -177,7 +177,7 @@
   (path-string :string))
 
 (defun tree-model-iter-from-string (tree-model path-string)
-  (let ((iter (make-instance 'tree-iter)))
+  (let ((iter (make-tree-iter)))
     (if (tree-model-set-iter-from-string tree-model iter path-string)
         iter
         nil)))
@@ -189,7 +189,7 @@
   (iter (g-boxed-foreign tree-iter)))
 
 (defun tree-model-iter-first (tree-model)
-  (let ((iter (make-instance 'tree-iter)))
+  (let ((iter (make-tree-iter)))
     (if (tree-model-set-iter-to-first tree-model iter)
         iter
         nil)))
@@ -229,7 +229,7 @@
   (parent (g-boxed-foreign tree-iter)))
 
 (defun tree-model-iter-first-child (tree-model parent)
-  (let ((iter (make-instance 'tree-iter)))
+  (let ((iter (make-tree-iter)))
     (if (gtk-tree-model-iter-children tree-model iter parent)
         iter
         nil)))
@@ -255,7 +255,7 @@
   (n :int))
 
 (defun tree-model-iter-nth-child (tree-model parent n)
-  (let ((iter (make-instance 'tree-iter)))
+  (let ((iter (make-tree-iter)))
     (if (gtk-tree-model-iter-nth-child tree-model iter parent n)
         iter
         n)))
@@ -268,7 +268,7 @@
   (parent (g-boxed-foreign tree-iter)))
 
 (defun tree-model-iter-parent (tree-model iter)
-  (let ((parent (make-instance 'tree-iter)))
+  (let ((parent (make-tree-iter)))
     (if (gtk-tree-model-iter-parent tree-model iter parent)
         parent
         nil)))
@@ -328,6 +328,13 @@
   (adjust-array array (1- (length array)) :fill-pointer t)
   array)
 
+(defstruct tree-node
+  (tree nil)
+  (parent nil)
+  (id nil)
+  (item nil)
+  (children (make-array 0 :element-type 'tree-node :adjustable t :fill-pointer t)))
+
 (defclass tree-lisp-store (g-object tree-model)
   ((columns-getters :initform (make-array 0 :adjustable t :fill-pointer t) :reader tree-lisp-store-getters)
    (columns-types :initform (make-array 0 :adjustable t :fill-pointer t) :reader tree-lisp-store-types)
@@ -341,13 +348,6 @@
   (setf (tree-node-tree (tree-lisp-store-root object)) object))
 
 (register-object-type-implementation "LispTreeStore" tree-lisp-store "GObject" ("GtkTreeModel") nil)
-
-(defstruct tree-node
-  (tree nil)
-  (parent nil)
-  (id nil)
-  (item nil)
-  (children (make-array 0 :element-type 'tree-node :adjustable t :fill-pointer t)))
 
 (defun map-subtree (node fn)
   (funcall fn node)
@@ -515,7 +515,7 @@
   (declare (ignore node index))
   (when tree
     (let* ((path (make-instance 'tree-path))
-           (iter (make-instance 'tree-iter)))
+           (iter (make-tree-iter)))
       (setf (tree-path-indices path) (get-node-path child)
             (tree-iter-stamp iter) 0
             (tree-iter-user-data iter) (get-assigned-id tree child))
@@ -531,7 +531,7 @@
       (emit-signal tree "row-deleted" path))
     (when (zerop (length (tree-node-children node)))
       (let* ((path (make-instance 'tree-path))
-             (iter (make-instance 'tree-iter)))
+             (iter (make-tree-iter)))
         (setf (tree-path-indices path) (get-node-path node)
               (tree-iter-stamp iter) 0
               (tree-iter-user-data iter) (get-assigned-id tree node))
