@@ -56,9 +56,13 @@
 
 #+sbcl
 (pushnew 'run-initializers sb-ext:*init-hooks*)
+#+openmcl
+(pushnew 'run-initializers ccl:*restore-lisp-functions*)
 
 #+sbcl
 (pushnew 'run-finalizers sb-ext:*save-hooks*)
+#+openmcl
+(pushnew 'run-finalizers ccl:*save-exit-functions*)
 
 (defmacro at-init ((&rest keys) &body body)
   "
