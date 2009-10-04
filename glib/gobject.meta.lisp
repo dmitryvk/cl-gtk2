@@ -231,7 +231,8 @@
 
 (defmethod slot-boundp-using-class ((class gobject-class) object (slot gobject-property-effective-slot-definition))
   (handler-case
-      (and (pointer object)
+      (and (slot-boundp object 'pointer)
+           (pointer object)
            (progn (g-object-property-type (pointer object) (gobject-property-effective-slot-definition-g-property-name slot) :assert-readable t) t))
     (property-unreadable-error () nil)))
 
@@ -248,7 +249,8 @@
   new-value)
 
 (defmethod slot-boundp-using-class ((class gobject-class) object (slot gobject-fn-effective-slot-definition))
-  (and (pointer object)
+  (and (slot-boundp object 'pointer)
+       (pointer object)
        (not (null (gobject-fn-effective-slot-definition-g-getter-fn slot)))))
 
 (defmethod slot-value-using-class ((class gobject-class) object (slot gobject-fn-effective-slot-definition))
@@ -260,7 +262,7 @@
   new-value)
 
 (defmethod slot-boundp-using-class ((class gobject-class) object (slot gobject-effective-slot-definition))
-  t)
+  (slot-boundp object 'pointer))
 
 (defmethod slot-makunbound-using-class ((class gobject-class) object (slot gobject-effective-slot-definition))
   nil)
