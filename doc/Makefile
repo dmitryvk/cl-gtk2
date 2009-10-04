@@ -4,7 +4,7 @@ all: doc.html tutorial.html gobject/index.html gtk/index.html gobject/style.css 
 
 publish: archive
 	scp manual.tar.bz2 kdmitry@common-lisp.net:/project/cl-gtk2/manual.tar.bz2
-	ssh kdmitry@common-lisp.net 'cd /project/cl-gtk2/doc/ && rm -rf gtk && tar xf /project/cl-gtk2/manual.tar.bz2'
+	ssh kdmitry@common-lisp.net 'cd /project/cl-gtk2/public_html/doc/ && rm -rf gobject gtk && tar xf /project/cl-gtk2/manual.tar.bz2'
 
 archive: manual.tar.bz2
 
