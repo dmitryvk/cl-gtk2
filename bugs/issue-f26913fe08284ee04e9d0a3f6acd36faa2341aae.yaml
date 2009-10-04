@@ -16,3 +16,7 @@ log_events:
   - Kalyanov Dmitry <Kalyanov.Dmitry@gmail.com>
   - created
   - ""
+- - 2009-10-04 10:42:50.725764 Z
+  - Kalyanov Dmitry <Kalyanov.Dmitry@gmail.com>
+  - commented
+  - Now it runs on SBCL from cmd.exe but not from SLIME.
