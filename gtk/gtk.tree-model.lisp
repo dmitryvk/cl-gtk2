@@ -31,7 +31,7 @@
 ; TODO: GtkTreeModelFilter
 
 
-(defclass array-list-store (g-object tree-model)
+(defclass array-list-store (tree-model)
   ((items :initform (make-array 0 :adjustable t :fill-pointer t) :reader store-items)
    (columns-getters :initform (make-array 0 :adjustable t :fill-pointer t) :reader store-getters)
    (columns-types :initform (make-array 0 :adjustable t :fill-pointer t) :reader store-types))
@@ -339,7 +339,7 @@
   (item nil)
   (children (make-array 0 :element-type 'tree-node :adjustable t :fill-pointer t)))
 
-(defclass tree-lisp-store (g-object tree-model)
+(defclass tree-lisp-store (tree-model)
   ((columns-getters :initform (make-array 0 :adjustable t :fill-pointer t) :reader tree-lisp-store-getters)
    (columns-types :initform (make-array 0 :adjustable t :fill-pointer t) :reader tree-lisp-store-types)
    (root :initform (make-tree-node) :reader tree-lisp-store-root)
