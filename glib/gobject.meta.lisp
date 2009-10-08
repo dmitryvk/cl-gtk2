@@ -122,22 +122,27 @@
 (defmethod validate-superclass ((class gobject-class) (superclass standard-class))
   t)
 
-(defmethod direct-slot-definition-class ((class gobject-class) &rest initargs &key allocation)
+(defmethod direct-slot-definition-class ((class gobject-class) &rest initargs &key allocation &allow-other-keys)
   (declare (ignore initargs))
   (case allocation
-    (:gobject-property 'gobject-property-direct-slot-definition)
-    (:gobject-fn 'gobject-fn-direct-slot-definition)
+    (:gobject-property (find-class 'gobject-property-direct-slot-definition))
+    (:gobject-fn (find-class 'gobject-fn-direct-slot-definition))
     (otherwise (call-next-method))))
 
-(defmethod effective-slot-definition-class ((class gobject-class) &rest initargs &key allocation)
+(defvar *e-s-d* nil)
+
+(defmethod effective-slot-definition-class ((class gobject-class) &rest initargs)
   (declare (ignore initargs))
-  (case allocation
-    (:gobject-property 'gobject-property-effective-slot-definition)
-    (:gobject-fn 'gobject-fn-effective-slot-definition)
-    (otherwise (call-next-method))))
+  (or *e-s-d* (call-next-method)))
 
 (defmethod compute-effective-slot-definition ((class gobject-class) name direct-slots)
-  (let ((effective-slot (call-next-method)))
+  (let ((effective-slot (let ((*e-s-d* (loop
+					  for slot in direct-slots
+					  when (typep slot 'gobject-direct-slot-definition)
+					  return (etypecase slot
+						   (gobject-property-direct-slot-definition (find-class 'gobject-property-effective-slot-definition))
+						   (gobject-fn-direct-slot-definition (find-class 'gobject-fn-effective-slot-definition))))))
+			  (call-next-method))))
     (when (typep effective-slot 'gobject-effective-slot-definition)
       (let ((allocation (loop
                               for direct-slot in direct-slots
@@ -176,31 +181,28 @@
                              (gobject-fn-effective-slot-definition-g-getter-fn effective-slot)
                              (and property-getter
                                   (if (stringp property-getter)
-                                      (if (foreign-symbol-pointer property-getter)
-                                          (compile nil `(lambda (object)
-                                                          (foreign-funcall ,property-getter
-                                                                           g-object object
-                                                                           ,property-type)))
-                                          (progn 
-                                            (warn "Property reader function '~A' has not been found" property-getter)
-                                            (lambda (object)
-                                              (declare (ignore object))
-                                              (error "Property reader function '~A' has not been found" property-getter))))
+                                      (compile nil (if (foreign-symbol-pointer property-getter)
+						       `(lambda (object)
+							  (foreign-funcall ,property-getter
+									   g-object object
+									   ,property-type))
+						       `(lambda (object)
+							  (declare (ignore object))
+							  (error "Property getter ~A is not available" ,property-getter))
+						       ))
                                       property-getter))
                              (gobject-fn-effective-slot-definition-g-setter-fn effective-slot)
                              (and property-setter
                                   (if (stringp property-setter)
-                                      (if (foreign-symbol-pointer property-setter)
-                                          (compile nil `(lambda (object new-value)
-                                                          (foreign-funcall ,property-setter
-                                                                           g-object object
-                                                                           ,property-type new-value
-                                                                           :void)))
-                                          (progn
-                                            (warn "Property writer function '~A' has not been found" property-setter)
-                                            (lambda (object)
-                                              (declare (ignore object))
-                                              (error "Property writer function '~A' has not been found" property-setter))))
+                                      (compile nil (if (foreign-symbol-pointer property-setter)
+						       `(lambda (object new-value)
+							  (foreign-funcall ,property-setter
+									   g-object object
+									   ,property-type new-value
+									   :void))
+						       `(lambda (object)
+							  (declare (ignore object))
+							  (error "Property setter ~A is not avaiable" ,property-setter))))
                                       property-setter)))))))
     effective-slot))
 
