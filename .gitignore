@@ -7,4 +7,6 @@
 
 *~
 *.fasl
+*.fas
+*.lib
 bugs/html/
