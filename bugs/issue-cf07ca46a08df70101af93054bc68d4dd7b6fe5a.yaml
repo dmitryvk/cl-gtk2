@@ -1,0 +1,18 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: Make metaobject protocol for GBoxed instead of macros
+desc: ""
+type: :task
+component: cl-gtk2
+release: 
+reporter: Kalyanov Dmitry <Kalyanov.Dmitry@gmail.com>
+status: :unstarted
+disposition: 
+creation_time: 2009-10-08 20:02:45.858289 Z
+references: []
+
+id: cf07ca46a08df70101af93054bc68d4dd7b6fe5a
+log_events: 
+- - 2009-10-08 20:02:46.506306 Z
+  - Kalyanov Dmitry <Kalyanov.Dmitry@gmail.com>
+  - created
+  - ""

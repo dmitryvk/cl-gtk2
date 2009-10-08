@@ -76,6 +76,67 @@
 (export 'tree-path)
 (export 'tree-path-indices)
 
+(defcfun (tree-path-compare "gtk_tree_path_compare") :int
+  (tree-path-1 (g-boxed-foreign tree-path))
+  (tree-path-2 (g-boxed-foreign tree-path)))
+
+(export 'tree-path-compare)
+
+(defcfun (tree-path-next "gtk_tree_path_next") :void
+  (tree-path (g-boxed-foreign tree-path)))
+
+(export 'tree-path-next)
+
+(defcfun (tree-path-prev "gtk_tree_path_prev") :void
+  (tree-path (g-boxed-foreign tree-path)))
+
+(export 'tree-path-prev)
+
+(defcfun (tree-path-up "gtk_tree_path_up") :boolean
+  (tree-path (g-boxed-foreign tree-path)))
+
+(export 'tree-path-up)
+
+(defcfun (tree-path-down "gtk_tree_path_down") :void
+  (tree-path (g-boxed-foreign tree-path)))
+
+(export 'tree-path-down)
+
+(defcfun (tree-path-is-ancestor "gtk_tree_path_is_ancestor") :boolean
+  (tree-path (g-boxed-foreign tree-path))
+  (descendant (g-boxed-foreign tree-path)))
+
+(export 'tree-path-is-ancestor)
+
+(defcfun (tree-path-is-descendant "gtk_tree_path_is_descendant") :boolean
+  (tree-path (g-boxed-foreign tree-path))
+  (ancestor (g-boxed-foreign tree-path)))
+
+(export 'tree-path-is-descendant)
+
+(at-init () (gobject::type-initializer-call "gtk_tree_row_reference_get_type"))
+
+(define-g-boxed-opaque tree-row-reference "GtkTreeRowReference" :alloc (lambda () (error "")))
+
+(export 'tree-row-reference)
+
+(defcfun (tree-row-reference-new "gtk_tree_row_reference_new") (g-boxed-foreign tree-row-reference :return)
+  (model (g-object tree-model))
+  (path (g-boxed-foreign tree-path)))
+
+(export 'tree-row-reference)
+
+(define-boxed-opaque-accessor tree-row-reference tree-row-reference-model
+  :reader "gtk_tree_row_reference_get_model" :type (g-object tree-model))
+
+(define-boxed-opaque-accessor tree-row-reference tree-row-reference-path
+  :reader "gtk_tree_row_reference_get_path" :type (g-boxed-foreign tree-path :return))
+
+(define-boxed-opaque-accessor tree-row-reference tree-row-reference-valid
+  :reader "gtk_tree_row_reference_valid" :type :boolean)
+
+(export '(tree-row-reference-model tree-row-reference-path tree-row-reference-valid))
+
 (define-g-enum "PangoWrapMode" pango-wrap-mode
     (:export t :type-initializer
              "pango_wrap_mode_get_type")
