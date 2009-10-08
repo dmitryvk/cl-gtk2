@@ -364,7 +364,10 @@
          "gtk_scrolled_window_get_vscrollbar" nil))
        ("GtkBin"
         (:cffi gtk::child gtk::bin-child (g-object gtk::widget)
-         "gtk_bin_get_child" nil))))))
+         "gtk_bin_get_child" nil))
+       ("GtkTextChildAnchor"
+        (:cffi gtk::deleted-p gtk::text-child-anchor-deleted-p :boolean
+         "gtk_text_child_anchor_get_deleted" nil))))))
 
 (defun gtk-generate-child-properties (filename)
   (with-open-file (stream filename :direction :output :if-exists :supersede)

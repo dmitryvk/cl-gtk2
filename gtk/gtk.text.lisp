@@ -890,6 +890,12 @@
 
 (export 'text-view-scroll-to-iter)
 
+(defcfun (text-view-scroll-mark-onscreen "gtk_text_view_scroll_mark_onscreen") :void
+  (text-view (g-object text-view))
+  (mark (g-object text-mark)))
+
+(export 'text-view-scroll-mark-onscreen)
+
 (defcfun (text-view-move-mark-onscreen "gtk_text_view_move_mark_onscreen") :boolean
   (text-view (g-object text-view))
   (mark (g-object text-mark)))
@@ -924,15 +930,32 @@
 
 (export 'text-view-iter-location)
 
+(defcfun gtk-text-view-get-line-at-y :void
+  (text-view (g-object text-view))
+  (target-iter (g-boxed-foreign text-iter))
+  (y :int)
+  (line-top (:pointer :int)))
 
-;; void                gtk_text_view_get_line_at_y         (GtkTextView *text_view,
-;;                                                          GtkTextIter *target_iter,
-;;                                                          gint y,
-;;                                                          gint *line_top);
-;; void                gtk_text_view_get_line_yrange       (GtkTextView *text_view,
-;;                                                          const GtkTextIter *iter,
-;;                                                          gint *y,
-;;                                                          gint *height);
+(defun text-view-get-line-at-y (text-view y)
+  (let ((iter (make-instance 'text-iter)))
+    (with-foreign-object (line-top :int)
+      (gtk-text-view-get-line-at-y text-view iter y line-top)
+      (values iter (mem-ref line-top :int)))))
+
+(export 'text-view-get-line-at-y)
+
+(defcfun gtk-text-view-get-line-yrange :void
+  (text-view (g-object text-view))
+  (iter (g-boxed-foreign text-iter))
+  (y (:pointer :int))
+  (height (:pointer :int)))
+
+(defun text-view-get-line-yrange (text-view iter)
+  (with-foreign-objects ((y :int) (height :int))
+    (gtk-text-view-get-line-yrange text-view iter y height)
+    (values (mem-ref y :int) (mem-ref height :int))))
+
+(export 'text-view-get-line-yrange)
 
 (defcfun gtk-text-view-get-iter-at-location :void
   (text-view (g-object text-view))
@@ -947,18 +970,35 @@
 
 (export 'text-view-get-iter-at-location)
 
-;; void                gtk_text_view_get_iter_at_position  (GtkTextView *text_view,
-;;                                                          GtkTextIter *iter,
-;;                                                          gint *trailing,
-;;                                                          gint x,
-;;                                                          gint y);
-;; void                gtk_text_view_buffer_to_window_coords
-;;                                                         (GtkTextView *text_view,
-;;                                                          GtkTextWindowType win,
-;;                                                          gint buffer_x,
-;;                                                          gint buffer_y,
-;;                                                          gint *window_x,
-;;                                                          gint *window_y);
+(defcfun gtk-text-view-get-iter-at-position :void
+  (text-view (g-object text-view))
+  (iter (g-boxed-foreign text-iter))
+  (trailing (:pointer :int))
+  (x :int)
+  (y :int))
+
+(defun text-view-get-iter-at-position (text-view x y)
+  (with-foreign-object (trailing :int)
+    (let ((iter (make-instance 'text-iter)))
+      (gtk-text-view-get-iter-at-position text-view iter trailing x y)
+      (values iter (mem-ref trailing :int)))))
+
+(export 'text-view-get-iter-at-position)
+
+(defcfun gtk-text-view-buffer-to-window-coords :void
+  (text-view (g-object text-view))
+  (win text-window-type)
+  (buffer-x :int)
+  (buffer-y :int)
+  (window-x (:pointer :int))
+  (window-y (:pointer :int)))
+
+(defun text-view-buffer-to-window-coords (text-view window-type buffer-x buffer-y)
+  (with-foreign-objects ((window-x :int) (window-y :int))
+    (gtk-text-view-buffer-to-window-coords text-view window-type buffer-x buffer-y window-x window-y)
+    (values (mem-ref window-x :int) (mem-ref window-y :int))))
+
+(export 'text-view-buffer-to-window-coords)
 
 (defcfun gtk-text-view-window-to-buffer-coords :void
   (text-view (g-object text-view))
@@ -985,33 +1025,63 @@
 
 (export 'text-view-get-window)
 
-;; GtkTextWindowType   gtk_text_view_get_window_type       (GtkTextView *text_view,
-;;                                                          GdkWindow *window);
-;; void                gtk_text_view_set_border_window_size
-;;                                                         (GtkTextView *text_view,
-;;                                                          GtkTextWindowType type,
-;;                                                          gint size);
-;; gint                gtk_text_view_get_border_window_size
-;;                                                         (GtkTextView *text_view,
-;;                                                          GtkTextWindowType type);
-;; gboolean            gtk_text_view_forward_display_line  (GtkTextView *text_view,
-;;                                                          GtkTextIter *iter);
-;; gboolean            gtk_text_view_backward_display_line (GtkTextView *text_view,
-;;                                                          GtkTextIter *iter);
-;; gboolean            gtk_text_view_forward_display_line_end
-;;                                                         (GtkTextView *text_view,
-;;                                                          GtkTextIter *iter);
-;; gboolean            gtk_text_view_backward_display_line_start
-;;                                                         (GtkTextView *text_view,
-;;                                                          GtkTextIter *iter);
-;; gboolean            gtk_text_view_starts_display_line   (GtkTextView *text_view,
-;;                                                          const GtkTextIter *iter);
-;; gboolean            gtk_text_view_move_visually         (GtkTextView *text_view,
-;;                                                          GtkTextIter *iter,
-;;                                                          gint count);
-;; void                gtk_text_view_add_child_at_anchor   (GtkTextView *text_view,
-;;                                                          GtkWidget *child,
-;;                                                          GtkTextChildAnchor *anchor);
+(defcfun (text-view-get-window-type "gtk_text_view_get_window_type") text-window-type
+  (text-view (g-object text-view))
+  (window (g-object gdk-window)))
+
+(export 'text-view-get-window-type)
+
+(defcfun gtk-text-view-set-border-window-size :void
+  (text-view (g-object text-view))
+  (window-type text-window-type)
+  (size :int))
+
+(defcfun (text-view-border-window-size "gtk_text_view_get_border_window_size") :int
+  (text-view (g-object text-view))
+  (window-type text-window-type))
+
+(defun (setf text-view-border-window-size) (new-value text-view window-type)
+  (gtk-text-view-set-border-window-size text-view window-type new-value)
+  new-value)
+
+(export 'text-view-border-window-size)
+
+(defcfun (text-view-forward-display-line "gtk_text_view_forward_display_line") :boolean
+  (text-view (g-object text-view))
+  (iter (g-boxed-foreign text-iter)))
+
+(export 'text-view-forward-display-line)
+
+(defcfun (text-view-backward-display-line "gtk_text_view_backward_display_line") :boolean
+  (text-view (g-object text-view))
+  (iter (g-boxed-foreign text-iter)))
+
+(export 'text-view-backward-display-line)
+
+(defcfun (text-view-forward-display-line-end "gtk_text_view_forward_display_line_end") :boolean
+  (text-view (g-object text-view))
+  (iter (g-boxed-foreign text-iter)))
+
+(export 'text-view-forward-display-line-end)
+
+(defcfun (text-view-backward-display-line-start "gtk_text_view_backward_display_line_start") :boolean
+  (text-view (g-object text-view))
+  (iter (g-boxed-foreign text-iter)))
+
+(export 'text-view-backward-display-line-start)
+
+(defcfun (text-view-starts-display-line "gtk_text_view_starts_display_line") :boolean
+  (text-view (g-object text-view))
+  (iter (g-boxed-foreign text-iter)))
+
+(export 'text-view-starts-display-line)
+
+(defcfun (text-view-move-visually "gtk_text_view_move_visually") :boolean
+  (text-view (g-object text-view))
+  (iter (g-boxed-foreign text-iter))
+  (count :int))
+
+(export 'text-view-move-visually)
 
 (defcfun (text-view-add-child-at-anchor "gtk_text_view_add_child_at_anchor") :void
   (text-view g-object)
@@ -1020,16 +1090,24 @@
 
 (export 'text-view-add-child-at-anchor)
 
-;;                     GtkTextChildAnchor;
-;; GtkTextChildAnchor* gtk_text_child_anchor_new           (void);
-;; GList*              gtk_text_child_anchor_get_widgets   (GtkTextChildAnchor *anchor);
-;; gboolean            gtk_text_child_anchor_get_deleted   (GtkTextChildAnchor *anchor);
-;; void                gtk_text_view_add_child_in_window   (GtkTextView *text_view,
-;;                                                          GtkWidget *child,
-;;                                                          GtkTextWindowType which_window,
-;;                                                          gint xpos,
-;;                                                          gint ypos);
-;; void                gtk_text_view_move_child            (GtkTextView *text_view,
-;;                                                          GtkWidget *child,
-;;                                                          gint xpos,
-;;                                                          gint ypos);
+(defcfun (text-child-anchor-widgets "gtk_text_child_anchor_get_widgets") (glist (g-object widget) :free-from-foreign t)
+  (anchor (g-object text-child-anchor)))
+
+(export 'text-child-anchor-widgets)
+
+(defcfun (text-view-add-child-in-window "gtk_text_view_add_child_in_window") :void
+  (text-view (g-object text-view))
+  (child (g-object widget))
+  (which-window text-window-type)
+  (x-pos :int)
+  (y-pos :int))
+
+(export 'text-view-add-child-in-window)
+
+(defcfun (text-view-move-child "gtk_text_view_move_child") :void
+  (text-view (g-object text-view))
+  (child (g-object widget))
+  (x-pos :int)
+  (y-pos :int))
+
+(export 'text-view-move-child)

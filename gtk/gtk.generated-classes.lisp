@@ -3371,7 +3371,8 @@
 (define-g-object-class "GtkTextChildAnchor" text-child-anchor
                        (:superclass g-object :export t :interfaces nil
                         :type-initializer "gtk_text_child_anchor_get_type")
-                       nil)
+                       ((:cffi deleted-p text-child-anchor-deleted-p :boolean
+                         "gtk_text_child_anchor_get_deleted" nil)))
 
 (define-g-object-class "GtkTextMark" text-mark
                        (:superclass g-object :export t :interfaces nil
