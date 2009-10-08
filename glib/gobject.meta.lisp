@@ -37,6 +37,35 @@
         (warn "Declared GType name '~A' for class '~A' is invalid (g_type_name returned 0)"
               (gobject-class-direct-g-type-name class) (class-name class)))))
 
+(defun filter-from-initargs (initargs removed-key)
+  (loop
+     for (key value) on initargs by #'cddr
+     unless (eq key removed-key)
+     collect key and collect value))
+
+(defun initargs-have-base-in-superclass (initargs base-class)
+  (let ((d-s (getf initargs :direct-superclasses)))
+    (loop
+       for class in d-s
+       thereis (subtypep class base-class))))
+
+(defun compute-new-initargs-for-metaclass (initargs base-class)
+  (if (initargs-have-base-in-superclass initargs base-class)
+      initargs
+      (append (filter-from-initargs initargs :direct-superclasses)
+	      (list :direct-superclasses
+		    (append (getf initargs :direct-superclasses)
+			    (list (find-class base-class)))))))
+
+(defmethod initialize-instance :around ((class gobject-class) &rest initargs)
+  (apply #'call-next-method class (compute-new-initargs-for-metaclass initargs 'g-object)))
+
+(defmethod reinitialize-instance :around ((class gobject-class) &rest initargs &key (direct-superclasses nil d-s-p) &allow-other-keys)
+  (declare (ignore direct-superclasses))
+  (if d-s-p
+      (call-next-method)
+      (apply #'call-next-method class (compute-new-initargs-for-metaclass initargs 'g-object))))
+
 (defmethod initialize-instance :after ((object gobject-class) &key &allow-other-keys)
   (when (gobject-class-direct-g-type-name object)
     (register-object-type (gobject-class-direct-g-type-name object) (class-name object))
@@ -92,12 +121,6 @@
 
 (defmethod validate-superclass ((class gobject-class) (superclass standard-class))
   t)
-
-(defmethod compute-class-precedence-list ((class gobject-class))
-  (let ((classes (call-next-method)))
-    (if (member (find-class 'g-object) classes)
-        classes
-        `(,class ,(find-class 'g-object) ,@(rest classes)))))
 
 (defmethod direct-slot-definition-class ((class gobject-class) &rest initargs &key allocation)
   (declare (ignore initargs))
