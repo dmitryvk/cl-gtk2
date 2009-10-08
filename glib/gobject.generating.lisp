@@ -167,7 +167,7 @@
                                  (&rest properties))
   (setf properties (mapcar #'parse-property properties))
   `(progn
-     (defclass ,name (,superclass ,@(mapcar #'interface->lisp-class-name interfaces))
+     (defclass ,name (,@(when (and superclass (not (eq superclass 'g-object))) (list superclass)) ,@(mapcar #'interface->lisp-class-name interfaces))
        (,@(mapcar (lambda (property) (meta-property->slot name property)) properties))
        (:metaclass gobject-class)
        (:g-type-name . ,g-type-name)
