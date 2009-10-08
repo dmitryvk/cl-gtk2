@@ -5,8 +5,8 @@ type: :task
 component: cl-gtk2
 release: "0.1"
 reporter: Kalyanov Dmitry <Kalyanov.Dmitry@gmail.com>
-status: :unstarted
-disposition: 
+status: :closed
+disposition: :fixed
 creation_time: 2009-10-02 19:33:27.068743 Z
 references: []
 
@@ -15,4 +15,8 @@ log_events:
 - - 2009-10-02 19:33:28.028531 Z
   - Kalyanov Dmitry <Kalyanov.Dmitry@gmail.com>
   - created
+  - ""
+- - 2009-10-05 18:32:17.460608 Z
+  - Kalyanov Dmitry <Kalyanov.Dmitry@gmail.com>
+  - closed with disposition fixed
   - ""
