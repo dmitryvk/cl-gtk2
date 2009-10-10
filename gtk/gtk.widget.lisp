@@ -28,6 +28,7 @@
   (foreign-slot-value (pointer widget) '%gtk-widget :state))
 
 (export 'widget-state)
+
 (defun widget-saved-state (widget)
   (foreign-slot-value (pointer widget) '%gtk-widget :saved-state))
 
@@ -169,7 +170,11 @@
 
 (export 'widget-can-activate-accel)
 
-; TODO: gtk_widget_event
+(defcfun (widget-event "gtk_widget_event") :boolean
+  (widget (g-object widget))
+  (event (g-boxed-foreign event)))
+
+(export 'widget-event)
 
 (defcfun (widget-activate "gtk_widget_activate") :boolean
   (widget g-object))
@@ -185,10 +190,10 @@
 (defcfun gtk-widget-intersect :boolean
   (widget g-object)
   (area (g-boxed-foreign rectangle))
-  (intersection (g-boxed-foreign rectangle :in-out)))
+  (intersection (g-boxed-foreign rectangle)))
 
 (defun widget-intersect (widget rectangle)
-  (let ((result (make-rectangle :x 0 :y 0 :width 0 :height 0)))
+  (let ((result (make-rectangle)))
     (when (gtk-widget-intersect widget rectangle result)
       result)))
 
@@ -209,25 +214,17 @@
 
 (export 'widget-grab-default)
 
-; TODO: gtk_widget_set_state
+(defcfun (widget-set-state "gtk_widget_set_state") :void
+  (widget (g-object widget))
+  (state state-type))
 
-; TODO: gtk_widget_set_parent_window
+(export 'widget-set-state)
 
-; TODO: gtk_widget_get_parent_window
+(defcfun (widget-ancestor "gtk_widget_get_ancestor") (g-object widget)
+  (widget (g-object widget))
+  (type g-type-designator))
 
-; TODO: gtk_widget_set_extension_events
-
-; TODO: gtk_widget_get_extension_events
-
-
-; fix ownership issues:
-; TODO: gtk_widget_get_toplevel
-
-; TODO: gtk_widget_get_ancestor
-
-; TODO: gtk_widget_get_colormap
-
-; TODO: gtk_widget_get_visual
+(export 'widget-ancestor)
 
 (defcfun gtk-widget-get-pointer :void
   (widget g-object)
@@ -241,11 +238,11 @@
 
 (export 'widget-pointer)
 
-(defcfun (widget-contained-p "gtk_widget_is_ancestor") :boolean
+(defcfun (widget-is-ancestor "gtk_widget_is_ancestor") :boolean
   (widget g-object)
   (container g-object))
 
-(export 'widget-contained-p)
+(export 'widget-is-ancestor)
 
 (defcfun gtk-widget-translate-coordinates :boolean
   (src-widget g-object)
@@ -273,17 +270,32 @@
 
 (export 'widget-reset-rc-styles)
 
-; TODO: gtk_widget_push_colormap
+(defcfun (widget-push-colormap "gtk_widget_push_colormap") :void
+  (colormap (g-object gdk-colormap)))
 
-; TODO: gtk_widget_pop_colormap
+(export 'widget-push-colormap)
 
-; TODO: gtk_widget_set_default_colormap
+(defcfun (widget-pop-colormap "gtk_widget_pop_colormap") :void)
 
-; TODO: gtk_widget_get_default_colormap
+(export 'widget-pop-colormap)
 
-; TODO: gtk_widget_get_default_style (ownership)
+(defcfun (widget-default-colormap "gtk_widget_get_default_colormap") (g-object gdk-colormap))
 
-; TODO: gtk_widget_get_default_visual
+(defcfun gtk-widget-set-default-colormap :void
+  (colormap (g-object gdk-colormap)))
+
+(defun (setf widget-default-colormap) (colormap)
+  (gtk-widget-set-default-colormap colormap))
+
+(export 'widget-default-colormap)
+
+(defcfun (widget-default-style "gtk_widget_get_default_style") (g-object style))
+
+(export 'widget-default-style)
+
+(defcfun (widget-default-visual "gtk_widget_get_default_visual") (g-object visual))
+
+(export 'widget-default-visual)
 
 (defcfun (widget-default-direction "gtk_widget_get_default_direction") text-direction)
 
@@ -295,9 +307,21 @@
 
 (export 'widget-default-direction)
 
-; TODO: gtk_widget_shape_combine_mask 
+(defcfun (widget-shape-combine-mask "gtk_widget_shape_combine_mask") :void
+  (widget (g-object widget))
+  (shape-mask g-object)
+  (offset-x :int)
+  (offset-y :int))
 
-; TODO: gtk_widget_input_shape_combine_mask
+(export 'widget-shape-combine-mask)
+
+(defcfun (widget-input-shape-combine-mask "gtk_widget_input_shape_combine_mask") :void
+  (widget (g-object widget))
+  (shape-mask g-object)
+  (offset-x :int)
+  (offset-y :int))
+
+(export 'widget-input-shape-combine-mask)
 
 (defcfun gtk-widget-path :void
   (widget g-object)
@@ -321,19 +345,45 @@
 
 (export 'widget-path)
 
-; TODO: gtk_widget_modify_fg
+(defcfun (widget-modify-fg "gtk_widget_modify_fg") :void
+  (widget (g-object widget))
+  (state state-type)
+  (color (g-boxed-foreign color)))
 
-; TODO: gtk_widget_modify_bg
+(export 'widget-modify-fg)
 
-; TODO: gtk_widget_modify_text
+(defcfun (widget-modify-bg "gtk_widget_modify_bg") :void
+  (widget (g-object widget))
+  (state state-type)
+  (color (g-boxed-foreign color)))
 
-; TODO: gtk_widget_modify_base
+(export 'widget-modify-bg)
 
-; TODO: gtk_widget_modify_font
+(defcfun (widget-modify-text "gtk_widget_modify_text") :void
+  (widget (g-object widget))
+  (state state-type)
+  (color (g-boxed-foreign color)))
 
-; TODO: gtk_widget_modify_cursor 
+(export 'widget-modify-text)
 
-(defcfun (widget-create-pango-context "gtk_widget_create_pango_context") g-object
+(defcfun (widget-modify-base "gtk_widget_modify_base") :void
+  (widget (g-object widget))
+  (state state-type)
+  (color (g-boxed-foreign color)))
+
+(export 'widget-modify-base)
+
+;void                gtk_widget_modify_font              (GtkWidget *widget,
+;                                                         PangoFontDescription *font_desc);
+
+(defcfun (widget-modify-cursor "gtk_widget_modify_cursor") :void
+  (widget (g-object widget))
+  (primary (g-boxed-foreign color))
+  (secondary (g-boxed-foreign color)))
+
+(export 'widget-modify-cursor)
+
+(defcfun (widget-create-pango-context "gtk_widget_create_pango_context") (g-object :already-referenced)
   (widget g-object))
 
 (export 'widget-create-pango-context)
@@ -367,6 +417,20 @@
 
 (export 'widget-pop-composite-child)
 
+(defcfun (widget-queue-clear "gtk_widget_queue_clear") :void
+  (widget (g-object widget)))
+
+(export 'widget-queue-clear)
+
+(defcfun (widget-queue-clear-area "gtk_widget_queue_clear_area") :void
+  (widget (g-object widget))
+  (x :int)
+  (y :int)
+  (width :int)
+  (height :int))
+
+(export 'widget-queue-clear-area)
+
 (defcfun (widget-queue-draw-area "gtk_widget_queue_draw_area") :void
   (widget g-object)
   (x :int)
@@ -381,12 +445,24 @@
 
 (export 'widget-reset-shapes)
 
+(defcfun (widget-set-double-buffered "gtk_widget_set_double_buffered") :void
+  (widget (g-object widget))
+  (double-buffered :boolean))
+
+(export 'widget-set-double-buffered)
+
 (defcfun (widget-set-scroll-adjustments "gtk_widget_set_scroll_adjustments") :boolean
   (widget g-object)
   (hadjustment g-object)
   (vadjustment g-object))
 
 (export 'widget-set-scroll-adjustments)
+
+(defcfun (widget-mnemonic-activate "gtk_widget_mnemonic_activate") :boolean
+  (widget (g-object widget))
+  (group-cycling :boolean))
+
+(export 'widget-mnemonic-activate)
 
 ; TODO: gtk_widget_class_install_style_property
 
@@ -411,7 +487,7 @@
   (class :pointer)
   (n-properties (:pointer :int)))
 
-(defun widget-class-get-style-properties (type)
+(defun widget-get-style-properties (type)
   (setf type (ensure-g-type type))
   (let ((class (g-type-class-ref type)))
     (unwind-protect
@@ -426,19 +502,23 @@
                (g-free specs))))
       (g-type-class-unref class))))
 
-(export 'widget-class-get-style-properties)
+(export 'widget-get-style-properties)
 
-(defun widget-child-property-type (widget property-name)
-  (let* ((type (g-type-from-object widget))
-         (class (g-type-class-ref type)))
+(defun widget-style-property-info (type property-name)
+  (let ((class (g-type-class-ref type)))
     (unwind-protect
          (let ((g-param-spec (gtk-widget-class-find-style-property class property-name)))
-           (when (null-pointer-p g-param-spec) (error "Widget ~A has no style-property named '~A'" widget property-name))
-           (foreign-slot-value g-param-spec 'gobject:g-param-spec :value-type))
+           (parse-g-param-spec g-param-spec))
       (g-type-class-unref class))))
 
-(defun widget-child-property-value (widget property-name &optional property-type)
-  (unless property-type (setf property-type (widget-child-property-type widget property-name)))
+(export 'widget-style-property-info)
+
+(defun widget-style-property-type (widget property-name)
+  (let ((property-info (widget-style-property-info (g-type-from-object widget) property-name)))
+    (g-class-property-definition-type property-info)))
+
+(defun widget-style-property-value (widget property-name &optional property-type)
+  (unless property-type (setf property-type (widget-style-property-type widget property-name)))
   (setf property-type (ensure-g-type property-type))
   (with-foreign-object (gvalue 'g-value)
     (g-value-zero gvalue)
@@ -446,13 +526,19 @@
     (prog1 (gtk-widget-style-get-property widget property-name gvalue)
       (g-value-unset gvalue))))
 
-(export 'widget-child-property-value)
+(export 'widget-style-property-value)
 
 (defcfun (widget-child-focus "gtk_widget_child_focus") :boolean
   (widget g-object)
   (direction direction-type))
 
 (export 'widget-child-focus)
+
+(defcfun (widget-child-notify "gtk_widget_child_notify") :void
+  (widget (g-object widget))
+  (property-name :string))
+
+(export 'widget-child-notify)
 
 (defcfun (widget-freeze-child-notify "gtk_widget_freeze_child_notify") :void
   (widget g-object))
@@ -464,7 +550,11 @@
 
 (export 'widget-settings)
 
-; TODO: gtk_widget_get_clipboard
+(defcfun (widget-clipboard "gtk_widget_get_clipboard") (g-object clipboard)
+  (widget (g-object widget))
+  (selection gdk-atom-as-string))
+
+(export 'widget-clipboard)
 
 (defcfun (widget-display "gtk_widget_get_display") g-object
   (widget g-object))
@@ -486,14 +576,15 @@
 
 (export 'widget-has-screen)
 
-; TODO: gtk_widget_set_child_visible
-
 (defcfun (widget-thaw-child-notify "gtk_widget_thaw_child_notify") :void
   (widget g-object))
 
 (export 'widget-thaw-child-notify)
 
-; TODO: gtk_widget_list_mnemonic_labels
+(defcfun (widget-mnemonic-labels "gtk_widget_list_mnemonic_labels") (glist (g-object widget) :free-from-foreign t)
+  (widget (g-object widget)))
+
+(export 'widget-mnemonic-labels)
 
 (defcfun (widget-add-mnemonic-label "gtk_widget_add_mnemonic_label") :void
   (widget g-object)

@@ -277,7 +277,9 @@
         (:cffi gtk::accessible gtk::widget-accessible g-object
          "gtk_widget_get_accessible" nil)
         (:cffi gtk::tooltip-window gtk::widget-tooltip-window g-object
-	 "gtk_widget_get_tooltip_window" "gtk_widget_set_tooltip_window"))
+	 "gtk_widget_get_tooltip_window" "gtk_widget_set_tooltip_window")
+        (:cffi gtk::style gtk::widget-style (g-object gtk::style)
+         "gtk_widget_get_style" "gtk_widget_set_style"))
        ("GtkWindowGroup"
         (:cffi gtk::windows gtk::window-group-windows (glist (g-object gtk::gtk-window))
          "gtk_window_group_list_windows" nil))
