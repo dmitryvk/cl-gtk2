@@ -12,6 +12,19 @@
   (property-name :string)
   (value (:pointer g-value)))
 
+(defcfun gtk-container-class-find-child-property :pointer
+  (class :pointer)
+  (property-name :string))
+
+(defun container-child-property-info (type property-name)
+  (let ((class (g-type-class-ref type)))
+    (unwind-protect
+         (let ((g-param-spec (gtk-container-class-find-child-property class property-name)))
+           (parse-g-param-spec g-param-spec))
+      (g-type-class-unref class))))
+
+(export 'container-child-property-info)
+
 (defun container-call-get-property (container child property-name type)
   (with-foreign-object (gvalue 'g-value)
     (g-value-unset gvalue)
@@ -26,6 +39,8 @@
     (gtk-container-child-set-property container child property-name gvalue)
     (g-value-unset gvalue)
     (values)))
+
+(export '(container-call-get-property container-call-set-property))
 
 (defmacro define-child-property (container-type property-name property-gname property-type readable writable export)
   (when (stringp container-type) (setf container-type (registered-object-type-by-name container-type)))

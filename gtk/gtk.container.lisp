@@ -67,10 +67,3 @@
   (event (g-boxed-foreign event)))
 
 (export 'container-propagate-expose)
-
-; TODO: gtk_container_get_focus_chain
-
-; TODO: gtk_container_set_focus_chain
-
-; TODO: gtk_container_unset_focus_chain
-
