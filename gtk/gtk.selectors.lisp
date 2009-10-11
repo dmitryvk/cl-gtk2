@@ -82,17 +82,27 @@
 
 (export 'file-chooser-unselect-uri)
 
-(defcfun (file-chooser-uris "gtk_file_chooser_get_uris") (gslist (g-string :free-from-foreign t))
+(defcfun (file-chooser-uris "gtk_file_chooser_get_uris") (gslist (g-string :free-from-foreign t) :free-from-foreign t)
   (file-chooser g-object))
 
 (export 'file-chooser-uris)
 
-; TODO: gtk_file_chooser_add_filter
-; --- ownership issues
+(defcfun (file-chooser-add-filter "gtk_file_chooser_add_filter") :void
+  (chooser (g-object file-chooser))
+  (filter (g-object file-filter)))
 
-; TODO: gtk_file_chooser_remove_filter
+(export 'file-chooser-add-filter)
 
-; TODO: gtk_file_chooser_list_filters
+(defcfun (file-chooser-remove-filter "gtk_file_chooser_remove_filter") :void
+  (chooser (g-object file-chooser))
+  (filter (g-object file-filter)))
+
+(export 'file-chooser-remove-filter)
+
+(defcfun (file-chooser-filters "gtk_file_chooser_list_filters") (glist (g-string :free-from-foreign t) :free-from-foreign t)
+  (chooser (g-object file-chooser)))
+
+(export 'file-chooser-filters)
 
 (defcfun gtk-file-chooser-add-shortcut-folder :boolean
   (file-chooser g-object)
@@ -144,21 +154,37 @@
 
 (export 'file-chooser-shortcut-folder-uris)
 
-; TODO: gtk_file_chooser_get_current_folder_file
+(defcfun (file-chooser-get-current-folder-file "gtk_file_chooser_get_current_folder_file") g-object
+  (chooser (g-object file-chooser)))
 
-; TODO: gtk_file_chooser_get_file
+(defcfun gtk-file-chooser-set-current-folder-file :boolean
+  (file-chooser (g-object file-chooser))
+  (file g-object)
+  (error :pointer))
 
-; TODO: gtk_file_chooser_get_files
+(defun file-chooser-set-current-folder-file (file-chooser file)
+  (gtk-file-chooser-set-current-folder-file file-chooser file (null-pointer)))
 
-; TODO: gtk_file_chooser_get_preview_file
+(export '(file-chooser-get-current-folder-file file-chooser-set-current-folder-file))
 
-; TODO: gtk_file_chooser_select_file
+(defcfun (file-chooser-get-file "gtk_file_chooser_get_file") g-object
+  (file-chooser (g-object file-chooser)))
 
-; TODO: gtk_file_chooser_set_current_folder_file
+(defcfun gtk-file-chooser-set-file g-object
+  (file-chooser (g-object file-chooser))
+  (file g-object)
+  (error :pointer))
 
-; TODO: gtk_file_chooser_set_file
+(defun file-chooser-set-file (file-chooser file)
+  (gtk-file-chooser-set-file file-chooser file (null-pointer)))
 
-; TODO: gtk_file_chooser_unselect_file
+(export '(file-chooser-get-file file-chooser-set-file))
+
+(defcfun (file-chooser-unselect-file "gtk_file_chooser_unselect_file") :void
+  (file-chooser (g-object file-chooser))
+  (file g-object))
+
+(export 'file-chooser-unselect-file)
 
 (defcfun (file-filter-add-pattern "gtk_file_filter_add_pattern") :void
   (file-filter g-object)
