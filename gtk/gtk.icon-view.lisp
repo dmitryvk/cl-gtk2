@@ -137,11 +137,40 @@
 
 (export 'icon-view-get-visible-range)
 
-; TODO: gtk_icon_view_set_tooltip_item
+(defcfun (icon-view-set-tooltip-item "gtk_icon_view_set_tooltip_item") :void
+  (icon-view (g-object icon-view))
+  (tooltip (g-object tooltip))
+  (path (g-boxed-foreign tree-path)))
 
-; TODO: gtk_icon_view_set_tooltip_cell
+(export 'icon-view-set-tooltip-item)
 
-; TODO: gtk_icon_view_get_tooltip_context
+(defcfun (icon-view-set-tooltip-cell "gtk_icon_view_set_tooltip_cell") :void
+  (icon-view (g-object icon-view))
+  (tooltip (g-object tooltip))
+  (path (g-boxed-foreign tree-path))
+  (cell-renderer (g-object cell-renderer)))
+
+(export 'icon-view-set-tooltip-cell)
+
+(defcfun gtk-icon-view-get-tooltip-context :boolean
+  (icon-view (g-object icon-view))
+  (x (:pointer :int))
+  (y (:pointer :int))
+  (keyboard-tip :boolean)
+  (model (:pointer (g-object tree-model)))
+  (path (:pointer (g-boxed-foreign tree-path)))
+  (iter (g-boxed-foreign tree-iter)))
+
+(defun icon-view-get-tooltip-context (icon-view x y keyboard-tip)
+  (with-foreign-objects ((xx :int) (yy :int) (model-ptr :pointer) (path-ptr :pointer))
+    (setf (mem-ref xx :int) x
+          (mem-ref yy :int) y)
+    (let ((iter (make-tree-iter)))
+      (when (gtk-icon-view-get-tooltip-context icon-view xx yy keyboard-tip model-ptr path-ptr iter)
+        (values (mem-ref xx :int) (mem-ref yy :int)
+                (convert-from-foreign (mem-ref model-ptr :pointer) '(g-object tree-model))
+                (convert-from-foreign (mem-ref path-ptr :pointer) '(g-boxed-foreign tree-path :return))
+                iter)))))
 
 ; TODO: gtk_icon_view_enable_model_drag_source
 
