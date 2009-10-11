@@ -3,7 +3,7 @@ title: Make metaobject protocol for GBoxed instead of macros
 desc: ""
 type: :task
 component: cl-gtk2
-release: 
+release: "0.2"
 reporter: Kalyanov Dmitry <Kalyanov.Dmitry@gmail.com>
 status: :unstarted
 disposition: 
@@ -15,4 +15,8 @@ log_events:
 - - 2009-10-08 20:02:46.506306 Z
   - Kalyanov Dmitry <Kalyanov.Dmitry@gmail.com>
   - created
+  - ""
+- - 2009-10-11 18:24:56.287946 Z
+  - Kalyanov Dmitry <Kalyanov.Dmitry@gmail.com>
+  - assigned to release 0.2 from unassigned
   - ""

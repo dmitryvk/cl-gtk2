@@ -14,3 +14,12 @@ releases:
     - Kalyanov Dmitry <Kalyanov.Dmitry@gmail.com>
     - created
     - ""
+- !ditz.rubyforge.org,2008-03-06/release 
+  name: "0.2"
+  status: :unreleased
+  release_time: 
+  log_events: 
+  - - 2009-10-11 18:24:12.694312 Z
+    - Kalyanov Dmitry <Kalyanov.Dmitry@gmail.com>
+    - created
+    - ""

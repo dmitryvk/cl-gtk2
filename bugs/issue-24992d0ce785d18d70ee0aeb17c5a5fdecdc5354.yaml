@@ -3,7 +3,7 @@ title: make GtkCellLayout interface implementor binding
 desc: ""
 type: :task
 component: cl-gtk2
-release: "0.1"
+release: 
 reporter: Kalyanov Dmitry <Kalyanov.Dmitry@gmail.com>
 status: :unstarted
 disposition: 
@@ -15,4 +15,8 @@ log_events:
 - - 2009-10-02 21:01:21.663782 Z
   - Kalyanov Dmitry <Kalyanov.Dmitry@gmail.com>
   - created
+  - ""
+- - 2009-10-11 18:18:21.516610 Z
+  - Kalyanov Dmitry <Kalyanov.Dmitry@gmail.com>
+  - unassigned from release 0.1
   - ""

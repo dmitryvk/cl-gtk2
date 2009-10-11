@@ -3,7 +3,7 @@ title: "Implement signal control: stop/resume emission, block, find signal"
 desc: ""
 type: :task
 component: cl-gtk2
-release: 
+release: "0.2"
 reporter: Kalyanov Dmitry <Kalyanov.Dmitry@gmail.com>
 status: :unstarted
 disposition: 
@@ -23,4 +23,8 @@ log_events:
 - - 2009-10-10 21:03:35.125379 Z
   - Kalyanov Dmitry <Kalyanov.Dmitry@gmail.com>
   - unassigned from release 0.1
+  - ""
+- - 2009-10-11 18:24:26.739631 Z
+  - Kalyanov Dmitry <Kalyanov.Dmitry@gmail.com>
+  - assigned to release 0.2 from unassigned
   - ""
