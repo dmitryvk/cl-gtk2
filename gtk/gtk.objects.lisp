@@ -157,3 +157,78 @@
   (height :int :initform 0))
 
 (export (boxed-related-symbols 'allocation))
+
+(defcfun (h-s-v-set-color "gtk_hsv_set_color") :void
+  (h-s-v (g-object h-s-v))
+  (h :double)
+  (s :double)
+  (v :double))
+
+(export 'h-s-v-set-color)
+
+(defcfun gtk-hsv-get-color :void
+  (h-s-v (g-object h-s-v))
+  (h (:pointer :double))
+  (s (:pointer :double))
+  (v (:pointer :double)))
+
+(defun h-s-v-get-color (h-s-v)
+  (with-foreign-objects ((h :double) (s :double) (v :double))
+    (gtk-hsv-get-color h-s-v h s v)
+    (values (mem-ref h :double) (mem-ref s :double) (mem-ref v :double))))
+
+(export 'h-s-v-get-color)
+
+(defcfun (h-s-v-set-metrics "gtk_hsv_set_metrics") :void
+  (h-s-v (g-object h-s-v))
+  (size :int)
+  (ring-width :int))
+
+(export 'h-s-v-set-metrics)
+
+(defcfun gtk-hsv-get-metrics :void
+  (h-s-v (g-object h-s-v))
+  (size (:pointer :int))
+  (ring-width (:pointer :int)))
+
+(defun h-s-v-get-metrics (h-s-v)
+  (with-foreign-objects ((size :int) (ring-width :int))
+    (gtk-hsv-get-metrics h-s-v size ring-width)
+    (values (mem-ref size :int) (mem-ref ring-width :int))))
+
+(export 'h-s-v-get-metrics)
+
+(defcfun (h-s-v-is-adjusting "gtk_hsv_is_adjusting") :boolean
+  (h-s-v (g-object h-s-v)))
+
+(export 'h-s-v-is-adjusting)
+
+(defcfun gtk-hsv-to-rgb :void
+  (h :double)
+  (s :double)
+  (v :double)
+  (r (:pointer :double))
+  (g (:pointer :double))
+  (b (:pointer :double)))
+
+(defun h-s-v-to-r-g-b (h s v)
+  (with-foreign-objects ((r :double) (g :double) (b :double))
+    (gtk-hsv-to-rgb h s v r g b)
+    (values (mem-ref r :double) (mem-ref g :double) (mem-ref b :double))))
+
+(export 'h-s-v-to-r-g-b)
+
+(defcfun gtk-rgb-to-hsv :void
+  (r :double)
+  (g :double)
+  (b :double)
+  (h (:pointer :double))
+  (s (:pointer :double))
+  (v (:pointer :double)))
+
+(defun r-g-b-to-h-s-v (r g b)
+  (with-foreign-objects ((h :double) (s :double) (v :double))
+    (gtk-rgb-to-hsv r g b h s v)
+    (values (mem-ref h :double) (mem-ref s :double) (mem-ref v :double))))
+
+(export 'r-g-b-to-h-s-v)
