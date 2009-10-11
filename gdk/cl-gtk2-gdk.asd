@@ -7,4 +7,4 @@
                (:file "gdk.objects")
                (:file "gdk.functions")
                (:file "gdk.general"))
-  :depends-on (:cl-gtk2-glib :cffi))
+  :depends-on (:cl-gtk2-glib :cffi :cl-gtk2-pango))

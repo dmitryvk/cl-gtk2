@@ -19,6 +19,8 @@
 (defun (setf gdk-window-events) (new-value window)
   (gdk-window-set-events window new-value))
 
+(export 'gdk-window-events)
+
 (defcfun gdk-gc-new (g-object graphics-context :already-referenced)
   (drawable (g-object drawable)))
 
@@ -45,7 +47,7 @@
     (gdk-drawable-get-size drawable x y)
     (values (mem-ref x :int) (mem-ref y :int))))
 
-(define-g-object-class "PangoLayout" pango-layout (:type-initializer "pango_layout_get_type") ())
+(export 'drawable-get-size)
 
 (defcfun gdk-draw-layout :void
   (drawable (g-object drawable))

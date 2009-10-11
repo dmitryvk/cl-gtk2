@@ -388,12 +388,7 @@
 
 (export 'widget-create-pango-context)
 
-(defcfun (widget-get-pango-context "gtk_widget_get_pango_context") g-object
-  (widget g-object))
-
-(export 'widget-get-pango-context)
-
-(defcfun (widget-create-pango-layout "gtk_widget_create_pango_layout") (g-object gdk::pango-layout :already-referenced)
+(defcfun (widget-create-pango-layout "gtk_widget_create_pango_layout") (g-object pango-layout :already-referenced)
   (widget (g-object widget))
   (text :string))
 

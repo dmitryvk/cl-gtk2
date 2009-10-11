@@ -137,16 +137,6 @@
 
 (export '(tree-row-reference-model tree-row-reference-path tree-row-reference-valid))
 
-(define-g-enum "PangoWrapMode" pango-wrap-mode
-    (:export t :type-initializer
-             "pango_wrap_mode_get_type")
-  (:word 0) (:char 1) (:word-char 2))
-
-(define-g-enum "PangoEllipsizeMode" pango-ellipsize-mode
-    (:export t :type-initializer
-             "pango_ellipsize_mode_get_type")
-  (:none 0) (:start 1) (:middle 2) (:end 3))
-
 (defcfun (adjustment-clamp-page "gtk_adjustment_clamp_page") :void
   (adjustment (g-object adjustment))
   (lower :double)
