@@ -1,0 +1,18 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: Add GError binding
+desc: ""
+type: :task
+component: cl-gtk2
+release: 
+reporter: Kalyanov Dmitry <Kalyanov.Dmitry@gmail.com>
+status: :unstarted
+disposition: 
+creation_time: 2009-10-11 19:13:11.816681 Z
+references: []
+
+id: 41e0963df897d6800ef9b4c3abbc9c3ee46f14da
+log_events: 
+- - 2009-10-11 19:13:12.792642 Z
+  - Kalyanov Dmitry <Kalyanov.Dmitry@gmail.com>
+  - created
+  - ""
