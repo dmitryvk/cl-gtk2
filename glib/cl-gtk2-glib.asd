@@ -8,6 +8,7 @@
                (:file "glib.gstrv")
                (:file "glib.string")
                (:file "glib.quark")
+               (:file "glib.gerror")
 
                (:file "gobject.init")
                (:file "gobject.ffi.package")

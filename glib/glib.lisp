@@ -26,7 +26,13 @@
            #:g-idle-add
            #:g-timeout-add-full
            #:g-source-remove
-           #:at-finalize)
+           #:at-finalize
+           #:with-g-error
+           #:with-catching-to-g-error
+           #:g-error-condition
+           #:g-error-condition-domain
+           #:g-error-condition-code
+           #:g-error-condition-message)
   (:documentation
    "Cl-gtk2-glib is wrapper for @a[http://library.gnome.org/devel/glib/]{GLib}."))
 
