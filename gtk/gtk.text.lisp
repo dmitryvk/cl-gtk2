@@ -751,75 +751,178 @@
 
 (export 'text-buffer-remove-selection-clipboard)
 
-;; enum                GtkTextBufferTargetInfo;
-;; gboolean            (*GtkTextBufferDeserializeFunc)     (GtkTextBuffer *register_buffer,
-;;                                                          GtkTextBuffer *content_buffer,
-;;                                                          GtkTextIter *iter,
-;;                                                          const guint8 *data,
-;;                                                          gsize length,
-;;                                                          gboolean create_tags,
-;;                                                          gpointer user_data,
-;;                                                          GError **error);
-;; gboolean            gtk_text_buffer_deserialize         (GtkTextBuffer *register_buffer,
-;;                                                          GtkTextBuffer *content_buffer,
-;;                                                          GdkAtom format,
-;;                                                          GtkTextIter *iter,
-;;                                                          const guint8 *data,
-;;                                                          gsize length,
-;;                                                          GError **error);
-;; gboolean            gtk_text_buffer_deserialize_get_can_create_tags
-;;                                                         (GtkTextBuffer *buffer,
-;;                                                          GdkAtom format);
-;; void                gtk_text_buffer_deserialize_set_can_create_tags
-;;                                                         (GtkTextBuffer *buffer,
-;;                                                          GdkAtom format,
-;;                                                          gboolean can_create_tags);
-;; GtkTargetList*      gtk_text_buffer_get_copy_target_list
-;;                                                         (GtkTextBuffer *buffer);
-;; GdkAtom*            gtk_text_buffer_get_deserialize_formats
-;;                                                         (GtkTextBuffer *buffer,
-;;                                                          gint *n_formats);
-;; GtkTargetList*      gtk_text_buffer_get_paste_target_list
-;;                                                         (GtkTextBuffer *buffer);
-;; GdkAtom*            gtk_text_buffer_get_serialize_formats
-;;                                                         (GtkTextBuffer *buffer,
-;;                                                          gint *n_formats);
-;; GdkAtom             gtk_text_buffer_register_deserialize_format
-;;                                                         (GtkTextBuffer *buffer,
-;;                                                          const gchar *mime_type,
-;;                                                          GtkTextBufferDeserializeFunc function,
-;;                                                          gpointer user_data,
-;;                                                          GDestroyNotify user_data_destroy);
-;; GdkAtom             gtk_text_buffer_register_deserialize_tagset
-;;                                                         (GtkTextBuffer *buffer,
-;;                                                          const gchar *tagset_name);
-;; GdkAtom             gtk_text_buffer_register_serialize_format
-;;                                                         (GtkTextBuffer *buffer,
-;;                                                          const gchar *mime_type,
-;;                                                          GtkTextBufferSerializeFunc function,
-;;                                                          gpointer user_data,
-;;                                                          GDestroyNotify user_data_destroy);
-;; GdkAtom             gtk_text_buffer_register_serialize_tagset
-;;                                                         (GtkTextBuffer *buffer,
-;;                                                          const gchar *tagset_name);
-;; guint8*             (*GtkTextBufferSerializeFunc)       (GtkTextBuffer *register_buffer,
-;;                                                          GtkTextBuffer *content_buffer,
-;;                                                          const GtkTextIter *start,
-;;                                                          const GtkTextIter *end,
-;;                                                          gsize *length,
-;;                                                          gpointer user_data);
-;; guint8*             gtk_text_buffer_serialize           (GtkTextBuffer *register_buffer,
-;;                                                          GtkTextBuffer *content_buffer,
-;;                                                          GdkAtom format,
-;;                                                          const GtkTextIter *start,
-;;                                                          const GtkTextIter *end,
-;;                                                          gsize *length);
-;; void                gtk_text_buffer_unregister_deserialize_format
-;;                                                         (GtkTextBuffer *buffer,
-;;                                                          GdkAtom format);
-;; void                gtk_text_buffer_unregister_serialize_format
-;;                                                         (GtkTextBuffer *buffer,
-;;                                                          GdkAtom format);
+(defcfun gtk-text-buffer-deserialize :boolean
+  (register-buffer (g-object text-buffer))
+  (content-buffer (g-object text-buffer))
+  (format gdk-atom-as-string)
+  (iter (g-boxed-foreign text-iter))
+  (data :pointer)
+  (length gsize)
+  (error :pointer))
+
+(defun text-buffer-deserialize (register-buffer content-buffer format iter data)
+  (let ((bytes (foreign-alloc :uint8 :count (length data))))
+    (iter (for i from 0 below (length data))
+          (setf (mem-aref bytes :uint8 i) (aref data i)))
+    (unwind-protect
+         (with-g-error (err)
+           (gtk-text-buffer-deserialize register-buffer content-buffer
+                                        format iter bytes (length data) err))
+      (foreign-free bytes))))
+
+(export 'text-buffer-deserialize)
+
+(defcfun (text-buffer-deserialize-can-create-tags "gtk_text_buffer_deserialize_get_can_create_tags") :boolean
+  (buffer (g-object text-buffer))
+  (format gdk-atom-as-string))
+
+(defcfun gtk-text-buffer-deserialize-set-can-create-tags :void
+  (buffer (g-object text-buffer))
+  (format gdk-atom-as-string)
+  (can-create-tags :boolean))
+
+(defun (setf text-buffer-deserialize-can-create-tags) (new-value buffer format)
+  (gtk-text-buffer-deserialize-set-can-create-tags buffer format new-value))
+
+(export 'text-buffer-deserialize-can-create-tags)
+
+(defcfun gtk-text-buffer-get-deserialize-formats (:pointer gdk-atom-as-string)
+  (text-buffer (g-object text-buffer))
+  (n-formats (:pointer :int)))
+
+(defun text-buffer-get-deserialize-formats (text-buffer)
+  (with-foreign-object (n-formats :int)
+    (let ((atoms-ptr (gtk-text-buffer-get-deserialize-formats text-buffer n-formats)))
+      (iter (for i from 0 below (mem-ref n-formats :int))
+            (for atom = (mem-aref atoms-ptr 'gdk-atom-as-string i))
+            (collect atom)))))
+
+(export 'text-buffer-get-deserialize-formats)
+
+(defcfun gtk-text-buffer-get-serialize-formats (:pointer gdk-atom-as-string)
+  (text-buffer (g-object text-buffer))
+  (n-formats (:pointer :int)))
+
+(defun text-buffer-get-serialize-formats (text-buffer)
+  (with-foreign-object (n-formats :int)
+    (let ((atoms-ptr (gtk-text-buffer-get-serialize-formats text-buffer n-formats)))
+      (iter (for i from 0 below (mem-ref n-formats :int))
+            (for atom = (mem-aref atoms-ptr 'gdk-atom-as-string i))
+            (collect atom)))))
+
+(export 'text-buffer-get-serialize-formats)
+
+(defcallback gtk-text-buffer-deserialize-cb :boolean
+    ((register-buffer (g-object text-buffer))
+     (content-buffer (g-object text-buffer))
+     (iter (g-boxed-foreign text-iter))
+     (data :pointer)
+     (length gsize)
+     (create-tags :boolean)
+     (user-data :pointer)
+     (error :pointer))
+  (with-catching-to-g-error (error)
+    (let ((fn (stable-pointer-value user-data)))
+      (restart-case
+          (let ((bytes (iter (with bytes = (make-array length :element-type '(unsigned-byte 8)))
+                             (for i from 0 below length)
+                             (setf (aref bytes i) (mem-ref data :uint8 i))
+                             (finally (return bytes)))))
+            (progn (funcall fn register-buffer content-buffer iter bytes create-tags) t))
+        (return-from-text-buffer-deserialize-cb ()
+          (error 'g-error-condition
+                 :domain "cl-gtk2"
+                 :code 0
+                 :message "'return-from-text-buffer-deserialize-cb' restart was called"))))))
+
+(defcfun gtk-text-buffer-register-deserialize-format gdk-atom-as-string
+  (buffer (g-object text-buffer))
+  (mime-type :string)
+  (function :pointer)
+  (user-data :pointer)
+  (destroy-notify :pointer))
+
+(defun text-buffer-register-deserialize-format (buffer mime-type function)
+  (gtk-text-buffer-register-deserialize-format buffer mime-type
+                                               (callback gtk-text-buffer-deserialize-cb)
+                                               (allocate-stable-pointer function)
+                                               (callback stable-pointer-free-destroy-notify-callback)))
+
+(export 'text-buffer-register-deserialize-format)
+
+(defcfun (text-buffer-register-deserialize-tagset "gtk_text_buffer_register_deserialize_tagset") gdk-atom-as-string
+  (buffer (g-object text-buffer))
+  (tagset-name :string))
+
+(export 'text-buffer-register-deserialize-tagset)
+
+(defcallback gtk-text-buffer-serialize-cb :pointer
+    ((register-buffer (g-object text-buffer))
+     (content-buffer (g-object text-buffer))
+     (start-iter (g-boxed-foreign text-iter))
+     (end-iter (g-boxed-foreign text-iter))
+     (length (:pointer gsize))
+     (user-data :pointer))
+  (let ((fn (stable-pointer-value user-data)))
+    (restart-case
+        (let* ((bytes (funcall fn register-buffer content-buffer start-iter end-iter))
+               (bytes-ptr (g-malloc (length bytes))))
+          (setf (mem-ref length 'gsize) (length bytes))
+          (iter (for i from 0 below (length bytes))
+                (setf (mem-aref bytes-ptr :uint8 i) (aref bytes i)))
+          bytes-ptr)
+      (return-from-text-buffer-serialize-cb () nil))))
+
+(defcfun gtk-text-buffer-register-serialize-format gdk-atom-as-string
+  (buffer (g-object text-buffer))
+  (mime-type :string)
+  (function :pointer)
+  (user-data :pointer)
+  (destroy-notify :pointer))
+
+(defun text-buffer-register-serialize-format (buffer mime-type function)
+  (gtk-text-buffer-register-serialize-format buffer mime-type
+                                             (callback gtk-text-buffer-serialize-cb)
+                                             (allocate-stable-pointer function)
+                                             (callback stable-pointer-free-destroy-notify-callback)))
+
+(export 'text-buffer-register-serialize-format)
+
+(defcfun (text-buffer-register-serialize-tagset "gtk_text_buffer_register_serialize_tagset") gdk-atom-as-string
+  (buffer (g-object text-buffer))
+  (tagset-name :string))
+
+(export 'text-buffer-register-serialize-tagset)
+
+(defcfun gtk-text-buffer-serialize :pointer
+  (register-buffer (g-object text-buffer))
+  (content-buffer (g-object text-buffer))
+  (format gdk-atom-as-string)
+  (start (g-boxed-foreign text-iter))
+  (end (g-boxed-foreign text-iter))
+  (length (:pointer gsize)))
+
+(defun text-buffer-serialize (register-buffer content-buffer format start end)
+  (with-foreign-object (length 'gsize)
+    (let ((bytes (gtk-text-buffer-serialize register-buffer content-buffer format start end length)))
+      (iter (for i from 0 to (mem-ref length 'gsize))
+            (for byte = (mem-aref bytes :uint8 i))
+            (collect byte result-type vector)
+            (finally (g-free bytes))))))
+
+(export 'text-buffer-serialize)
+
+(defcfun (text-buffer-unregister-deserialize-format "gtk_text_buffer_unregister_deserialize_format") :void
+  (buffer (g-object text-buffer))
+  (format gdk-atom-as-string))
+
+(export 'text-buffer-unregister-deserialize-format)
+
+(defcfun (text-buffer-unregister-serialize-format "gtk_text_buffer_unregister_serialize_format") :void
+  (buffer (g-object text-buffer))
+  (format gdk-atom-as-string))
+
+(export 'text-buffer-unregister-serialize-format)
 
 ;; text tag
 
