@@ -3,7 +3,7 @@ title: add GtkTreeView, GtkIconView drag-and-drop binding
 desc: ""
 type: :task
 component: cl-gtk2
-release: "0.1"
+release: 
 reporter: Kalyanov Dmitry <Kalyanov.Dmitry@gmail.com>
 status: :unstarted
 disposition: 
@@ -19,4 +19,8 @@ log_events:
 - - 2009-10-11 18:41:10.845450 Z
   - Kalyanov Dmitry <Kalyanov.Dmitry@gmail.com>
   - edited title
+  - ""
+- - 2009-10-13 20:46:38.751427 Z
+  - Kalyanov Dmitry <Kalyanov.Dmitry@gmail.com>
+  - unassigned from release 0.1
   - ""
