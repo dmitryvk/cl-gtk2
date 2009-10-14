@@ -1674,23 +1674,19 @@ Unfortunately, GObject does not provide information about vtables, and does not 
 
 @Macro define-vtable
 @lisp
-(define-vtable (type-name cstruct-name)
+(define-vtable (g-type-name type-name)
   &body item*)
 
-item ::= (name callback-name return-type &rest arg*)
+item ::= (method-name return-type &rest arg*)
 item ::= (:skip cffi-structure-item)
 arg ::= (arg-name arg-type)
 @end lisp
 
 @table @var
-@item @var{type-name}
+@item @var{g-type-name}
 A string naming the GObject type of interface
-@item @var{cstruct-name}
-A name for a generated CFFI foreign structure
-@item @var{name}
+@item @var{method-name}
 A name for implementation generic function
-@item @var{callback-name}
-A name for generated callback function
 @item @var{return-type}
 A CFFI specifier for foreign function return type
 @item @var{arg-name}
@@ -1699,11 +1695,11 @@ A symbol naming the argument of interface method
 A CFFI specifier for foreign function argument type
 @end table
 
-Macro that specifies the vtable for an interface. This macro defines generic functions (named by @code{name}) that correspond to methods of an interface. On these generic functions methods should be defined that implement the interface method. @code{item}s specify the CFFI foreign structure for vtable. Vtable contains not only function pointers, but other slots. Such slots should be specified here with @code{:skip} prepended to them. This is needed to be able to correctly calculate offsets to function pointers in vtable.
+Macro that specifies the vtable for an interface. This macro defines generic functions (named by concatenatinag @var{type-name}, @var{name} and @code{impl}; e.g., @code{get-flags} method of class @code{tree-model} will have generic function named @code{tree-model-get-flags-impl}) that correspond to methods of an interface. On these generic functions methods should be defined that implement the interface method. @code{item}s specify the CFFI foreign structure for vtable. Vtable contains not only function pointers, but other slots. Such slots should be specified here with @code{:skip} prepended to them. This is needed to be able to correctly calculate offsets to function pointers in vtable.
 
 Example:
 @lisp
-(define-vtable ("GtkTreeModel" c-gtk-tree-model)
+(define-vtable ("GtkTreeModel" tree-model)
   (:skip parent-instance g-type-interface)
   ;;some signals
   (:skip tree-model-row-changed :pointer)
@@ -1712,48 +1708,42 @@ Example:
   (:skip tree-model-row-deleted :pointer)
   (:skip tree-model-rows-reordered :pointer)
   ;;methods
-  (tree-model-get-flags-impl tree-model-get-flags-cb
-    tree-model-flags
+  (get-flags tree-model-flags
     (tree-model g-object))
-  (tree-model-get-n-columns-impl tree-model-get-n-columns-cb
-    :int
+  (get-n-columns :int
     (tree-model g-object))
-  (tree-model-get-column-type-impl tree-model-get-column-type-cb
-    g-type-designator
+  (get-column-type g-type-designator
     (tree-model g-object) (index :int))
-  (tree-model-get-iter-impl tree-model-get-iter-cb
-    :boolean
-    (tree-model g-object) (iter (g-boxed-foreign tree-iter)) (path (g-boxed-foreign tree-path)))
-  (tree-model-get-path-impl tree-model-get-path-cb
-    (g-boxed-foreign tree-path :return)
+  (get-iter :boolean
+    (tree-model g-object) (iter (g-boxed-foreign tree-iter))
+    (path (g-boxed-foreign tree-path)))
+  (get-path (g-boxed-foreign tree-path :return)
     (tree-model g-object) (iter (g-boxed-foreign tree-iter)))
-  (tree-model-get-value-impl tree-model-get-value-cb
-    :void
-    (tree-model g-object) (iter (g-boxed-foreign tree-iter)) (n :int) (value (:pointer g-value)))
-  (tree-model-iter-next-impl tree-model-iter-next-cb
-    :boolean
+  (get-value :void
+    (tree-model g-object) (iter (g-boxed-foreign tree-iter))
+    (n :int) (value (:pointer g-value)))
+  (iter-next :boolean
     (tree-model g-object) (iter (g-boxed-foreign tree-iter)))
-  (tree-model-iter-children-impl tree-model-iter-children-cb
-    :boolean
-    (tree-model g-object) (iter (g-boxed-foreign tree-iter)) (parent (g-boxed-foreign tree-iter)))
-  (tree-model-iter-has-child-impl tree-model-iter-has-child-cb
-    :boolean
+  (iter-children :boolean
+    (tree-model g-object) (iter (g-boxed-foreign tree-iter))
+    (parent (g-boxed-foreign tree-iter)))
+  (iter-has-child :boolean
     (tree-model g-object) (iter (g-boxed-foreign tree-iter)))
-  (tree-model-iter-n-children-impl tree-model-iter-n-children-cb
-    :int
+  (iter-n-children :int
     (tree-model g-object) (iter (g-boxed-foreign tree-iter)))
-  (tree-model-iter-nth-child-impl tree-model-iter-nth-child-cb
-    :boolean
-    (tree-model g-object) (iter (g-boxed-foreign tree-iter)) (parent (g-boxed-foreign tree-iter)) (n :int))
-  (tree-model-iter-parent-impl tree-model-iter-parent-cb
-    :boolean
-    (tree-model g-object) (iter (g-boxed-foreign tree-iter)) (child (g-boxed-foreign tree-iter)))
-  (tree-model-ref-node-impl tree-model-ref-node-cb
-    :void
+  (iter-nth-child :boolean
+    (tree-model g-object) (iter (g-boxed-foreign tree-iter))
+    (parent (g-boxed-foreign tree-iter)) (n :int))
+  (iter-parent :boolean
+    (tree-model g-object) (iter (g-boxed-foreign tree-iter))
+    (child (g-boxed-foreign tree-iter)))
+  (ref-node :void
     (tree-model g-object) (iter (g-boxed-foreign tree-iter)))
-  (tree-model-unref-node-impl tree-model-unref-node-cb
-    :void
+  (unref-node :void
     (tree-model g-object) (iter (g-boxed-foreign tree-iter))))
+
+(defmethod tree-model-get-flags-impl ((model array-list-store))
+  '(:list-only))
 @end lisp
 
 @node register-object-type-implementation

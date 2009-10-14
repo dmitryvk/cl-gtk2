@@ -78,37 +78,51 @@
       (rest item)
       (list (first item) :pointer)))
 
-(defstruct vtable-method-info name return-type args callback-name)
+(defstruct vtable-method-info slot-name name return-type args callback-name)
 
 (defmethod make-load-form ((object vtable-method-info) &optional environment)
   (declare (ignore environment))
-  `(make-vtable-method-info :name ',(vtable-method-info-name object)
+  `(make-vtable-method-info :slot-name ',(vtable-method-info-slot-name object)
+                            :name ',(vtable-method-info-name object)
                             :return-type ',(vtable-method-info-return-type object)
                             :args ',(vtable-method-info-args object)
                             :callback-name ',(vtable-method-info-callback-name object)))
 
-(defun vtable-methods (items)
+(defun vtable-methods (iface-name items)
   (iter (for item in items)
         (when (eq :skip (first item)) (next-iteration))
-        (destructuring-bind (name callback-name return-type &rest args) item
-          (collect (make-vtable-method-info :name name :return-type return-type :args args :callback-name callback-name)))))
+        (destructuring-bind (name return-type &rest args) item
+          (for method-name = (intern (format nil "~A-~A-IMPL" (symbol-name iface-name) (symbol-name name))))
+          (for callback-name = (intern (format nil "~A-~A-CALLBACK" (symbol-name iface-name) (symbol-name name))))
+          (collect (make-vtable-method-info :slot-name name
+                                            :name method-name
+                                            :return-type return-type
+                                            :args args
+                                            :callback-name callback-name)))))
 
 (defvar *vtables* (make-hash-table :test 'equal))
 
 (defstruct vtable-description type-name cstruct-name methods)
 
-(defmacro define-vtable ((type-name cstruct-name) &body items)
-  `(progn
-     (defcstruct ,cstruct-name ,@(mapcar #'vtable-item->cstruct-item items))
-     (setf (gethash ,type-name *vtables*)
-           (make-vtable-description :type-name ,type-name :cstruct-name ',cstruct-name :methods (list ,@(mapcar #'make-load-form (vtable-methods items)))))
-     ,@(iter (for method in (vtable-methods items))
-             (collect `(defgeneric ,(vtable-method-info-name method) (,@(mapcar #'first (vtable-method-info-args method)))))
-             (collect `(glib-defcallback ,(vtable-method-info-callback-name method) ,(vtable-method-info-return-type method)
-                           (,@(vtable-method-info-args method))
-                         (restart-case 
-                             (,(vtable-method-info-name method) ,@(mapcar #'first (vtable-method-info-args method)))
-                           (return-from-interface-method-implementation (v) :interactive (lambda () (list (eval (read)))) v)))))))
+(defmacro define-vtable ((type-name name) &body items)
+  (let ((cstruct-name (intern (format nil "~A-VTABLE" (symbol-name name))))
+        (methods (vtable-methods name items)))
+    `(progn
+       (defcstruct ,cstruct-name ,@(mapcar #'vtable-item->cstruct-item items))
+       (setf (gethash ,type-name *vtables*)
+             (make-vtable-description :type-name ,type-name
+                                      :cstruct-name ',cstruct-name
+                                      :methods (list ,@(mapcar #'make-load-form methods))))
+       ,@(iter (for method in methods)
+               (collect `(defgeneric ,(vtable-method-info-name method)
+                             (,@(mapcar #'first (vtable-method-info-args method)))))
+               (collect `(glib-defcallback ,(vtable-method-info-callback-name method)
+                             ,(vtable-method-info-return-type method)
+                             (,@(vtable-method-info-args method))
+                           (restart-case 
+                               (,(vtable-method-info-name method) ,@(mapcar #'first (vtable-method-info-args method)))
+                             (return-from-interface-method-implementation (v)
+                               :interactive (lambda () (list (eval (read)))) v))))))))
 
 (defun interface-init (iface data)
   (destructuring-bind (class-name interface-name) (prog1 (get-stable-pointer-value data) (free-stable-pointer data))
@@ -117,7 +131,10 @@
            (vtable-cstruct (vtable-description-cstruct-name vtable)))
       (log-for :subclass "interface-init for class ~A and interface ~A~%" class-name interface-name)
       (iter (for method in (vtable-description-methods vtable))
-            (setf (foreign-slot-value iface vtable-cstruct (vtable-method-info-name method)) (get-callback (vtable-method-info-callback-name method)))))))
+            (for cb = (get-callback (vtable-method-info-callback-name method)))
+            (for slot-name = (vtable-method-info-slot-name method))
+            (log-for :subclass "->setting method ~A to ~A~%" method cb)
+            (setf (foreign-slot-value iface vtable-cstruct slot-name) cb)))))
 
 (defcallback c-interface-init :void ((iface :pointer) (data :pointer))
   (interface-init iface data))

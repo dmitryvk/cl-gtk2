@@ -1,6 +1,6 @@
 (in-package :gtk)
 
-(define-vtable ("GtkTreeModel" c-gtk-tree-model)
+(define-vtable ("GtkTreeModel" tree-model)
   (:skip parent-instance g-type-interface)
   ;;some signals
   (:skip tree-model-row-changed :pointer)
@@ -9,20 +9,20 @@
   (:skip tree-model-row-deleted :pointer)
   (:skip tree-model-rows-reordered :pointer)
   ;;methods
-  (tree-model-get-flags-impl tree-model-get-flags-cb tree-model-flags (tree-model g-object))
-  (tree-model-get-n-columns-impl tree-model-get-n-columns-cb :int (tree-model g-object))
-  (tree-model-get-column-type-impl tree-model-get-column-type-cb g-type-designator (tree-model g-object) (index :int))
-  (tree-model-get-iter-impl tree-model-get-iter-cb :boolean (tree-model g-object) (iter (g-boxed-foreign tree-iter)) (path (g-boxed-foreign tree-path)))
-  (tree-model-get-path-impl tree-model-get-path-cb (g-boxed-foreign tree-path :return) (tree-model g-object) (iter (g-boxed-foreign tree-iter)))
-  (tree-model-get-value-impl tree-model-get-value-cb :void (tree-model g-object) (iter (g-boxed-foreign tree-iter)) (n :int) (value (:pointer g-value)))
-  (tree-model-iter-next-impl tree-model-iter-next-cb :boolean (tree-model g-object) (iter (g-boxed-foreign tree-iter)))
-  (tree-model-iter-children-impl tree-model-iter-children-cb :boolean (tree-model g-object) (iter (g-boxed-foreign tree-iter)) (parent (g-boxed-foreign tree-iter)))
-  (tree-model-iter-has-child-impl tree-model-iter-has-child-cb :boolean (tree-model g-object) (iter (g-boxed-foreign tree-iter)))
-  (tree-model-iter-n-children-impl tree-model-iter-n-children-cb :int (tree-model g-object) (iter (g-boxed-foreign tree-iter)))
-  (tree-model-iter-nth-child-impl tree-model-iter-nth-child-cb :boolean (tree-model g-object) (iter (g-boxed-foreign tree-iter)) (parent (g-boxed-foreign tree-iter)) (n :int))
-  (tree-model-iter-parent-impl tree-model-iter-parent-cb :boolean (tree-model g-object) (iter (g-boxed-foreign tree-iter)) (child (g-boxed-foreign tree-iter)))
-  (tree-model-ref-node-impl tree-model-ref-node-cb :void (tree-model g-object) (iter (g-boxed-foreign tree-iter)))
-  (tree-model-unref-node-impl tree-model-unref-node-cb :void (tree-model g-object) (iter (g-boxed-foreign tree-iter))))
+  (get-flags tree-model-flags (tree-model g-object))
+  (get-n-columns :int (tree-model g-object))
+  (get-column-type g-type-designator (tree-model g-object) (index :int))
+  (get-iter :boolean (tree-model g-object) (iter (g-boxed-foreign tree-iter)) (path (g-boxed-foreign tree-path)))
+  (get-path (g-boxed-foreign tree-path :return) (tree-model g-object) (iter (g-boxed-foreign tree-iter)))
+  (get-value :void (tree-model g-object) (iter (g-boxed-foreign tree-iter)) (n :int) (value (:pointer g-value)))
+  (iter-next :boolean (tree-model g-object) (iter (g-boxed-foreign tree-iter)))
+  (iter-children :boolean (tree-model g-object) (iter (g-boxed-foreign tree-iter)) (parent (g-boxed-foreign tree-iter)))
+  (iter-has-child :boolean (tree-model g-object) (iter (g-boxed-foreign tree-iter)))
+  (iter-n-children :int (tree-model g-object) (iter (g-boxed-foreign tree-iter)))
+  (iter-nth-child :boolean (tree-model g-object) (iter (g-boxed-foreign tree-iter)) (parent (g-boxed-foreign tree-iter)) (n :int))
+  (iter-parent :boolean (tree-model g-object) (iter (g-boxed-foreign tree-iter)) (child (g-boxed-foreign tree-iter)))
+  (ref-node :void (tree-model g-object) (iter (g-boxed-foreign tree-iter)))
+  (unref-node :void (tree-model g-object) (iter (g-boxed-foreign tree-iter))))
 
 ; TODO: GtkTreeSortable
 
