@@ -24,6 +24,17 @@
   (ref-node :void (tree-model g-object) (iter (g-boxed-foreign tree-iter)))
   (unref-node :void (tree-model g-object) (iter (g-boxed-foreign tree-iter))))
 
+(define-vtable ("GtkTreeSortable" tree-sortable)
+  (:skip parent-instance g-type-interface)
+  ;; signal
+  (:skip sort-columns-changed :pointer)
+  ;; methods
+  (get-sort-column-id :boolean (sortable (g-object tree-sortable)) (sort-column-id (:pointer :int)) (order (:pointer sort-type)))
+  (set-sort-column-id :void (sortable (g-object tree-sortable)) (sort-column-id :int) (order sort-type))
+  (set-sort-func :void (sortable (g-object tree-sortable)) (sort-column-id :int) (func :pointer) (data :pointer) (destroy-notify :pointer))
+  (set-default-sort-func :void (sortable (g-object tree-sortable)) (func :pointer) (data :pointer) (destroy-notify :pointer))
+  (has-default-sort-func :boolean (sortable (g-object tree-sortable))))
+
 ; TODO: GtkTreeSortable
 
 ; TODO: GtkTreeModelSort
