@@ -166,6 +166,10 @@
         (tree-iter-user-data iter) n)
   t)
 
+(defmethod tree-model-iter-children-impl ((model array-list-store) iter parent)
+  (declare (ignore iter parent))
+  nil)
+
 (defmethod tree-model-iter-n-children-impl ((model array-list-store) iter)
   (if (null iter)
       (length (store-items model))
