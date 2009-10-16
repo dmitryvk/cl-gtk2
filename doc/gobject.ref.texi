@@ -1677,14 +1677,17 @@ Unfortunately, GObject does not provide information about vtables, and does not 
 (define-vtable (g-type-name type-name)
   &body item*)
 
-item ::= (method-name return-type &rest arg*)
 item ::= (:skip cffi-structure-item)
+item ::= (method-name (return-type &rest arg*) &key impl-call)
 arg ::= (arg-name arg-type)
+impl-call ::= ((arg-name*) &body call-code)
 @end lisp
 
 @table @var
 @item @var{g-type-name}
 A string naming the GObject type of interface
+@item @var{cffi-structure-item}
+A structure item that is inserted verbatim into foreign structure definition of vtable and is not used as a pointer to method
 @item @var{method-name}
 A name for implementation generic function
 @item @var{return-type}
@@ -1693,9 +1696,17 @@ A CFFI specifier for foreign function return type
 A symbol naming the argument of interface method
 @item @var{arg-type}
 A CFFI specifier for foreign function argument type
+@item @var{call-code}
+A body of code that is used to convert arguments and return values between interface signature and desired implementor generic function signature
 @end table
 
-Macro that specifies the vtable for an interface. This macro defines generic functions (named by concatenatinag @var{type-name}, @var{name} and @code{impl}; e.g., @code{get-flags} method of class @code{tree-model} will have generic function named @code{tree-model-get-flags-impl}) that correspond to methods of an interface. On these generic functions methods should be defined that implement the interface method. @code{item}s specify the CFFI foreign structure for vtable. Vtable contains not only function pointers, but other slots. Such slots should be specified here with @code{:skip} prepended to them. This is needed to be able to correctly calculate offsets to function pointers in vtable.
+Macro that specifies the vtable for an interface. Vtable for an interface is a structure that contains pointer to implementations of interface methods. Vtable is used to dispach method calls to corresponding method implementations. In cl-gtk2-gobject, vtables are needed to create classes that implement GObject interfaces.
+
+GObject interfaces are implemented in the following way. For every method, an implementor generic function is defined. This generic function is called by interface method callback, and CLOS classes specialize on this generic function to implement an interface. The generic function has the same signature as the interface's function, but signatures may differ.
+
+This macro defines generic functions (named by concatenatinag @var{type-name}, @var{name} and @code{impl}; e.g., @code{get-flags} method of class @code{tree-model} will have generic function named @code{tree-model-get-flags-impl}) that correspond to methods of an interface. On these generic functions methods should be defined that implement the interface method. @code{item}s specify the CFFI foreign structure for vtable. Vtable contains not only function pointers, but other slots. Such slots should be specified here with @code{:skip} prepended to them. This is needed to be able to correctly calculate offsets to function pointers in vtable.
+
+In some cases, the signature of interface method is not very lispy: it may pass @code{void*} pointers, pointers to places where return values should be stored. To conceal such unlispy things, you specify your own code that will call the generic function and translate arguments for implementor generic function. This is implemented by specifying @var{impl-call} method option. @var{impl-call} specifies the signature of implementor function and code that calls the generic function and returns its result. The code is put in return position of callback, and it has access to the arguments of callback and its return value becomes the return value of callback.
 
 Example:
 @lisp
@@ -1708,42 +1719,25 @@ Example:
   (:skip tree-model-row-deleted :pointer)
   (:skip tree-model-rows-reordered :pointer)
   ;;methods
-  (get-flags tree-model-flags
-    (tree-model g-object))
-  (get-n-columns :int
-    (tree-model g-object))
-  (get-column-type g-type-designator
-    (tree-model g-object) (index :int))
-  (get-iter :boolean
-    (tree-model g-object) (iter (g-boxed-foreign tree-iter))
-    (path (g-boxed-foreign tree-path)))
-  (get-path (g-boxed-foreign tree-path :return)
-    (tree-model g-object) (iter (g-boxed-foreign tree-iter)))
-  (get-value :void
-    (tree-model g-object) (iter (g-boxed-foreign tree-iter))
-    (n :int) (value (:pointer g-value)))
-  (iter-next :boolean
-    (tree-model g-object) (iter (g-boxed-foreign tree-iter)))
-  (iter-children :boolean
-    (tree-model g-object) (iter (g-boxed-foreign tree-iter))
-    (parent (g-boxed-foreign tree-iter)))
-  (iter-has-child :boolean
-    (tree-model g-object) (iter (g-boxed-foreign tree-iter)))
-  (iter-n-children :int
-    (tree-model g-object) (iter (g-boxed-foreign tree-iter)))
-  (iter-nth-child :boolean
-    (tree-model g-object) (iter (g-boxed-foreign tree-iter))
-    (parent (g-boxed-foreign tree-iter)) (n :int))
-  (iter-parent :boolean
-    (tree-model g-object) (iter (g-boxed-foreign tree-iter))
-    (child (g-boxed-foreign tree-iter)))
-  (ref-node :void
-    (tree-model g-object) (iter (g-boxed-foreign tree-iter)))
-  (unref-node :void
-    (tree-model g-object) (iter (g-boxed-foreign tree-iter))))
+  (get-flags (tree-model-flags (tree-model g-object)))
+  (get-value (:void
+              (tree-model g-object)
+              (iter (g-boxed-foreign tree-iter))
+              (n :int)
+              (value (:pointer g-value)))
+             :impl-call
+             ((tree-model iter n)
+              (multiple-value-bind (v type) (tree-model-get-value-impl tree-model iter n)
+                (set-g-value value v type)))))
 
 (defmethod tree-model-get-flags-impl ((model array-list-store))
   '(:list-only))
+
+(defmethod tree-model-get-value-impl ((model array-list-store) iter n)
+  (let ((n-row (tree-iter-user-data iter)))
+    (values (funcall (aref (store-getters model) n) 
+                     (aref (store-items model) n-row))
+            (aref (store-types model) n))))
 @end lisp
 
 @node register-object-type-implementation

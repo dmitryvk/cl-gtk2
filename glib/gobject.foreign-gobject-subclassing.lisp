@@ -78,7 +78,7 @@
       (rest item)
       (list (first item) :pointer)))
 
-(defstruct vtable-method-info slot-name name return-type args callback-name)
+(defstruct vtable-method-info slot-name name return-type args callback-name impl-call)
 
 (defmethod make-load-form ((object vtable-method-info) &optional environment)
   (declare (ignore environment))
@@ -91,14 +91,15 @@
 (defun vtable-methods (iface-name items)
   (iter (for item in items)
         (when (eq :skip (first item)) (next-iteration))
-        (destructuring-bind (name return-type &rest args) item
+        (destructuring-bind (name (return-type &rest args) &key impl-call) item
           (for method-name = (intern (format nil "~A-~A-IMPL" (symbol-name iface-name) (symbol-name name))))
           (for callback-name = (intern (format nil "~A-~A-CALLBACK" (symbol-name iface-name) (symbol-name name))))
           (collect (make-vtable-method-info :slot-name name
                                             :name method-name
                                             :return-type return-type
                                             :args args
-                                            :callback-name callback-name)))))
+                                            :callback-name callback-name
+                                            :impl-call impl-call)))))
 
 (defvar *vtables* (make-hash-table :test 'equal))
 
@@ -114,13 +115,19 @@
                                       :cstruct-name ',cstruct-name
                                       :methods (list ,@(mapcar #'make-load-form methods))))
        ,@(iter (for method in methods)
-               (collect `(defgeneric ,(vtable-method-info-name method)
-                             (,@(mapcar #'first (vtable-method-info-args method)))))
+               (for args = 
+                    (if (vtable-method-info-impl-call method)
+                        (first (vtable-method-info-impl-call method))
+                        (mapcar #'first (vtable-method-info-args method))))
+               (collect `(defgeneric ,(vtable-method-info-name method) (,@args)))
                (collect `(glib-defcallback ,(vtable-method-info-callback-name method)
                              ,(vtable-method-info-return-type method)
                              (,@(vtable-method-info-args method))
-                           (restart-case 
-                               (,(vtable-method-info-name method) ,@(mapcar #'first (vtable-method-info-args method)))
+                           (restart-case
+                               ,(if (vtable-method-info-impl-call method)
+                                    `(progn ,@(rest (vtable-method-info-impl-call method)))
+                                    `(,(vtable-method-info-name method)
+                                       ,@(mapcar #'first (vtable-method-info-args method))))
                              (return-from-interface-method-implementation (v)
                                :interactive (lambda () (list (eval (read)))) v))))))))
 

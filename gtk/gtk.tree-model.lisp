@@ -9,38 +9,80 @@
   (:skip tree-model-row-deleted :pointer)
   (:skip tree-model-rows-reordered :pointer)
   ;;methods
-  (get-flags tree-model-flags (tree-model g-object))
-  (get-n-columns :int (tree-model g-object))
-  (get-column-type g-type-designator (tree-model g-object) (index :int))
-  (get-iter :boolean (tree-model g-object) (iter (g-boxed-foreign tree-iter)) (path (g-boxed-foreign tree-path)))
-  (get-path (g-boxed-foreign tree-path :return) (tree-model g-object) (iter (g-boxed-foreign tree-iter)))
-  (get-value :void (tree-model g-object) (iter (g-boxed-foreign tree-iter)) (n :int) (value (:pointer g-value)))
-  (iter-next :boolean (tree-model g-object) (iter (g-boxed-foreign tree-iter)))
-  (iter-children :boolean (tree-model g-object) (iter (g-boxed-foreign tree-iter)) (parent (g-boxed-foreign tree-iter)))
-  (iter-has-child :boolean (tree-model g-object) (iter (g-boxed-foreign tree-iter)))
-  (iter-n-children :int (tree-model g-object) (iter (g-boxed-foreign tree-iter)))
-  (iter-nth-child :boolean (tree-model g-object) (iter (g-boxed-foreign tree-iter)) (parent (g-boxed-foreign tree-iter)) (n :int))
-  (iter-parent :boolean (tree-model g-object) (iter (g-boxed-foreign tree-iter)) (child (g-boxed-foreign tree-iter)))
-  (ref-node :void (tree-model g-object) (iter (g-boxed-foreign tree-iter)))
-  (unref-node :void (tree-model g-object) (iter (g-boxed-foreign tree-iter))))
+  (get-flags (tree-model-flags (tree-model g-object)))
+  (get-n-columns (:int (tree-model g-object)))
+  (get-column-type (g-type-designator
+                    (tree-model g-object)
+                    (index :int)))
+  (get-iter (:boolean
+             (tree-model g-object)
+             (iter (g-boxed-foreign tree-iter))
+             (path (g-boxed-foreign tree-path))))
+  (get-path ((g-boxed-foreign tree-path :return)
+             (tree-model g-object)
+             (iter (g-boxed-foreign tree-iter))))
+  (get-value (:void
+              (tree-model g-object)
+              (iter (g-boxed-foreign tree-iter))
+              (n :int)
+              (value (:pointer g-value)))
+             :impl-call
+             ((tree-model iter n)
+              (multiple-value-bind (v type) (tree-model-get-value-impl tree-model iter n)
+                (set-g-value value v type))))
+  (iter-next (:boolean
+              (tree-model g-object)
+              (iter (g-boxed-foreign tree-iter))))
+  (iter-children (:boolean
+                  (tree-model g-object)
+                  (iter (g-boxed-foreign tree-iter))
+                  (parent (g-boxed-foreign tree-iter))))
+  (iter-has-child (:boolean
+                   (tree-model g-object)
+                   (iter (g-boxed-foreign tree-iter))))
+  (iter-n-children (:int
+                    (tree-model g-object)
+                    (iter (g-boxed-foreign tree-iter))))
+  (iter-nth-child (:boolean
+                   (tree-model g-object)
+                   (iter (g-boxed-foreign tree-iter))
+                   (parent (g-boxed-foreign tree-iter))
+                   (n :int)))
+  (iter-parent (:boolean
+                (tree-model g-object)
+                (iter (g-boxed-foreign tree-iter))
+                (child (g-boxed-foreign tree-iter))))
+  (ref-node (:void
+             (tree-model g-object)
+             (iter (g-boxed-foreign tree-iter))))
+  (unref-node (:void
+               (tree-model g-object)
+               (iter (g-boxed-foreign tree-iter)))))
 
 (define-vtable ("GtkTreeSortable" tree-sortable)
   (:skip parent-instance g-type-interface)
   ;; signal
   (:skip sort-columns-changed :pointer)
   ;; methods
-  (get-sort-column-id :boolean (sortable (g-object tree-sortable)) (sort-column-id (:pointer :int)) (order (:pointer sort-type)))
-  (set-sort-column-id :void (sortable (g-object tree-sortable)) (sort-column-id :int) (order sort-type))
-  (set-sort-func :void (sortable (g-object tree-sortable)) (sort-column-id :int) (func :pointer) (data :pointer) (destroy-notify :pointer))
-  (set-default-sort-func :void (sortable (g-object tree-sortable)) (func :pointer) (data :pointer) (destroy-notify :pointer))
-  (has-default-sort-func :boolean (sortable (g-object tree-sortable))))
-
-; TODO: GtkTreeSortable
+  (get-sort-column-id
+   (:boolean (sortable (g-object tree-sortable))
+             (sort-column-id (:pointer :int))
+             (order (:pointer sort-type)))
+   :impl-call ((sortable)
+               (multiple-value-bind (sorted-p r-sort-column-id r-order) (tree-sortable-get-sort-column-id-impl sortable)
+                 (unless (null-pointer-p sort-column-id)
+                   (setf (mem-ref sort-column-id :int) r-sort-column-id))
+                 (unless (null-pointer-p order)
+                   (setf (mem-ref order 'sort-type) r-order))
+                 sorted-p)))
+  (set-sort-column-id (:void (sortable (g-object tree-sortable)) (sort-column-id :int) (order sort-type)))
+  (set-sort-func (:void (sortable (g-object tree-sortable)) (sort-column-id :int) (func :pointer) (data :pointer) (destroy-notify :pointer)))
+  (set-default-sort-func (:void (sortable (g-object tree-sortable)) (func :pointer) (data :pointer) (destroy-notify :pointer)))
+  (has-default-sort-func (:boolean (sortable (g-object tree-sortable)))))
 
 ; TODO: GtkTreeModelSort
 
 ; TODO: GtkTreeModelFilter
-
 
 (defclass array-list-store (tree-model)
   ((items :initform (make-array 0 :adjustable t :fill-pointer t) :reader store-items)
@@ -150,12 +192,11 @@
 
 (export 'tree-model-item)
 
-(defmethod tree-model-get-value-impl ((model array-list-store) iter n value)
+(defmethod tree-model-get-value-impl ((model array-list-store) iter n)
   (let ((n-row (tree-iter-user-data iter)))
-    (set-g-value value
-                 (funcall (aref (store-getters model) n) 
-                          (aref (store-items model) n-row))
-                 (aref (store-types model) n))))
+    (values (funcall (aref (store-getters model) n) 
+                     (aref (store-items model) n-row))
+            (aref (store-types model) n))))
 
 (defcfun (tree-model-flags "gtk_tree_model_get_flags") tree-model-flags
   (tree-model g-object))
@@ -467,11 +508,12 @@
     (setf (tree-path-indices path) indices)
     path))
 
-(defmethod tree-model-get-value-impl ((store tree-lisp-store) iter n value)
+(defmethod tree-model-get-value-impl ((store tree-lisp-store) iter n)
   (let* ((node (get-node-by-iter store iter))
          (getter (aref (tree-lisp-store-getters store) n))
          (type (aref (tree-lisp-store-types store) n)))
-    (set-g-value value (funcall getter (tree-node-item node)) type)))
+    (values (funcall getter (tree-node-item node))
+            type)))
 
 (defmethod tree-model-iter-next-impl ((store tree-lisp-store) iter)
   (let* ((node (get-node-by-iter store iter))
