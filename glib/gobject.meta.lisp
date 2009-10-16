@@ -72,6 +72,8 @@
     (at-init (object) (initialize-gobject-class-g-type object))))
 
 (defmethod finalize-inheritance :after ((class gobject-class))
+  (iter (for superclass in (class-direct-superclasses class))
+        (unless (class-finalized-p superclass) (finalize-inheritance superclass)))
   (setf (gobject-class-g-type-name class)
         (or (gobject-class-direct-g-type-name class)
             (let ((gobject-superclass (iter (for superclass in (class-direct-superclasses class))
