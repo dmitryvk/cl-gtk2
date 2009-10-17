@@ -80,7 +80,57 @@
   (set-default-sort-func (:void (sortable (g-object tree-sortable)) (func :pointer) (data :pointer) (destroy-notify :pointer)))
   (has-default-sort-func (:boolean (sortable (g-object tree-sortable)))))
 
-; TODO: GtkTreeModelSort
+(defcfun (tree-model-sort-convert-child-path-to-path "gtk_tree_model_sort_convert_child_path_to_path") (g-boxed-foreign tree-path :return)
+  (tree-model-sort (g-object tree-model-sort))
+  (child-path (g-boxed-foreign tree-path)))
+
+(export 'tree-model-sort-conver-child-path-to-path)
+
+(defcfun gtk-tree-model-sort-convert-child-iter-to-iter :boolean
+  (tree-model-sort (g-object tree-model-sort))
+  (sort-iter (g-boxed-foreign tree-iter))
+  (child-iter (g-boxed-foreign tree-iter)))
+
+(defun tree-model-sort-convert-child-iter-to-iter (tree-model-sort child-iter)
+  (let ((sort-iter (make-tree-iter)))
+    (when (gtk-tree-model-sort-convert-child-iter-to-iter tree-model-sort sort-iter child-iter)
+      sort-iter)))
+
+(export 'tree-model-sort-convert-child-iter-to-iter)
+
+(defcfun (tree-model-sort-convert-path-to-child-path "gtk_tree_model_sort_convert_path_to_child_path") (g-boxed-foreign tree-path :return)
+  (tree-model-sort (g-object tree-model-sort))
+  (sort-path (g-boxed-foreign tree-path)))
+
+(export 'tree-model-sort-convert-path-to-child-path)
+
+(defcfun gtk-tree-model-sort-convert-iter-to-child-iter :void
+  (tree-model-sort (g-object tree-model-sort))
+  (child-iter (g-boxed-foreign tree-iter))
+  (sorted-iter (g-boxed-foreign tree-iter)))
+
+(defun tree-model-sort-convert-iter-to-child-iter (tree-model-sort sorted-iter)
+  (let ((child-iter (make-tree-iter)))
+    (gtk-tree-model-sort-convert-iter-to-child-iter tree-model-sort child-iter sorted-iter)
+    child-iter))
+
+(export 'tree-model-sort-convert-iter-to-child-iter)
+
+(defcfun (tree-model-sort-reset-default-sort-func "gtk_tree_model_sort_reset_default_sort_func") :void
+  (tree-model-sort (g-object tree-model-sort)))
+
+(export 'tree-model-sort-reset-default-sort-func)
+
+(defcfun (tree-model-sort-clear-cache "gtk_tree_model_sort_clear_cache") :void
+  (tree-model-sort (g-object tree-model-sort)))
+
+(export 'tree-model-sort-clear-cached)
+
+(defcfun (tree-model-sort-iter-is-valid "gtk_tree_model_sort_iter_is_valid") :boolean
+  (tree-model-sort (g-object tree-model-sort))
+  (iter (g-boxed-foreign tree-iter)))
+
+(export 'tree-model-sort-iter-is-valid)
 
 ; TODO: GtkTreeModelFilter
 
