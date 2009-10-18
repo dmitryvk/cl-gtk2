@@ -60,6 +60,7 @@
                (:file "gtk.dialog.example")
                
                (:file "gtk.demo")
+               (:file "gtk.timer")
                (:module "demo-files"
                         :pathname "demo"
                         :components ((:static-file "demo1.glade")
