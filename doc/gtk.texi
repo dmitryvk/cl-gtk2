@@ -296,18 +296,16 @@ The important parts of @code{Gtk+} are:
 @item @uref{http://common-lisp.net/project/closer/closer-mop.html,,Closer-MOP} (version >= 0.55)
 @end itemize
 
-At first, source code of @code{cl-gtk2} needs to be downloaded. There are two options to download the sources: use @uref{http://git-scm.org/,,Git} or download @code{tar.gz} archive.
+At first, source code should be downloded. Current version of CL-GTK2 can be downloaded from @uref{http://common-lisp.net/project/cl-gtk2/files/cl-gtk2-0.1.tar.gz}.
 
-To get sources with Git, clone @code{cl-gtk2} repository:
+Development tree of CL-GTK2 can be cloned with @uref{http://git-scm.org/,,Git}:
 @example
 git clone git://repo.or.cz/cl-gtk2.git
 @end example
-or the mirror:
+or, using the mirror:
 @example
 git clone git://github.com/dmitryvk/cl-gtk2.git
 @end example
-
-Or download and unpack the @code{tar.gz}-archived @uref{http://repo.or.cz/w/cl-gtk2.git?a=snapshot;h=HEAD;sf=tgz,,snapshot} of @code{cl-gtk2}.
 
 To be able to compile, load and use @code{cl-gtk2}, you should register the @code{ASDF} system definitions.
 
@@ -324,6 +322,14 @@ ln -s /path/to/cl-gtk2/glib/cl-gtk2-glib.asd .
 ln -s /path/to/cl-gtk2/gdk/cl-gtk2-gdk.asd .
 ln -s /path/to/cl-gtk2/gtk/cl-gtk2-gtk.asd .
 @end example
+
+In Gentoo Linux, it is possible to use layman (see @uref{http://www.gentoo.org/proj/en/overlays/userguide.xml,,Gentoo Overlays Users' Guide}) to add @code{lisp} and @code{cl-gtk2} overlays that contains neccessary ebuilds:
+@example
+layman -a lisp
+layman --overlays=http://github.com/dmitryvk/cl-gtk2-overlay/raw/master/layman-list.xml -a cl-gtk2
+emerge cl-gtk2
+@end example
+
 
 @node GLib Reference
 @chapter GLib Reference
