@@ -29,7 +29,8 @@
            #:test-assistant
            #:test-entry-completion
            #:test-ui-markup
-           #:test-list-store))
+           #:test-list-store
+           #:test-tree-store))
 
 (in-package :gtk-demo)
 
@@ -981,6 +982,54 @@
               (for n = (random 10000000))
               (for s = (format nil "~R" n))
               (list-store-insert-with-values l i n s))
+        (setf (tree-view-model tv) l)
+        (let ((column (make-instance 'tree-view-column :title "Number" :sort-column-id 0))
+              (renderer (make-instance 'cell-renderer-text :text "A text")))
+          (tree-view-column-pack-start column renderer)
+          (tree-view-column-add-attribute column renderer "text" 0)
+          (tree-view-append-column tv column))
+        (let ((column (make-instance 'tree-view-column :title "As string" :sort-column-id 1))
+              (renderer (make-instance 'cell-renderer-text :text "A text")))
+          (tree-view-column-pack-start column renderer)
+          (tree-view-column-add-attribute column renderer "text" 1)
+          (tree-view-append-column tv column))
+        (connect-signal tv "row-activated"
+                        (lambda (w path column)
+                          (declare (ignore w column))
+                          (let* ((iter (tree-model-iter-by-path l path))
+                                 (n (tree-model-value l iter 0))
+                                 (dialog (make-instance 'message-dialog
+                                                        :title "Clicked"
+                                                        :text (format nil "Number ~A was clicked" n)
+                                                        :buttons :ok)))
+                            (dialog-run dialog)
+                            (object-destroy dialog)))))
+      (widget-show w))))
+
+(defun test-tree-store ()
+  "Demonstrates usage of tree store"
+  (within-main-loop
+    (let-ui (gtk-window
+             :type :toplevel
+             :title "GtkListStore"
+             :default-width 600
+             :default-height 400
+             :var w
+             (v-box
+              (label :label "A GtkListStore") :expand nil
+              (scrolled-window
+               :hscrollbar-policy :automatic
+               :vscrollbar-policy :automatic
+               (tree-view :var tv))))
+      (let ((l (make-instance 'tree-store :column-types '("gint" "gchararray"))))
+        (iter (for i from 0 below 100)
+              (for n = (random 10000000))
+              (for s = (format nil "~R" n))
+              (for it = (tree-store-insert-with-values l nil i n s))
+              (iter (for j from 0 below 10)
+                    (for n2 = (random 10000000))
+                    (for s2 = (format nil "~R" n))
+                    (tree-store-insert-with-values l it j n2 s2)))
         (setf (tree-view-model tv) l)
         (let ((column (make-instance 'tree-view-column :title "Number" :sort-column-id 0))
               (renderer (make-instance 'cell-renderer-text :text "A text")))
