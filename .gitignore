@@ -11,3 +11,4 @@
 *.lib
 bugs/html/
 *.lx64fsl
+tmp
