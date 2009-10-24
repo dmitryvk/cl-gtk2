@@ -1,0 +1,18 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: Fix g-type-designator
+desc: Using g-type-designator requires passing and allocating strings and should be improved
+type: :task
+component: cl-gtk2
+release: 
+reporter: Kalyanov Dmitry <Kalyanov.Dmitry@gmail.com>
+status: :unstarted
+disposition: 
+creation_time: 2009-10-24 07:50:15.488820 Z
+references: []
+
+id: 6f97cba44fb67ffe961ebbef18c516d3b2441dd9
+log_events: 
+- - 2009-10-24 07:50:16.136784 Z
+  - Kalyanov Dmitry <Kalyanov.Dmitry@gmail.com>
+  - created
+  - ""
