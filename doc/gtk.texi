@@ -294,6 +294,8 @@ The important parts of @code{Gtk+} are:
 @item @uref{http://common-lisp.net/project/iterate/,,Iterate} (version >= 1.4.3)
 @item @uref{http://common-lisp.net/project/bordeaux-threads/,,Bordeaux-Threads} (version >= 0.6.0)
 @item @uref{http://common-lisp.net/project/closer/closer-mop.html,,Closer-MOP} (version >= 0.55)
+@item @uref{http://common-lisp.net/project/cl-opengl/,,cl-opengl} (if you intend to use <code>cl-gtk2-cairo</code>)
+@item @uref{http://common-lisp.net/project/cl-cairo2/,,cl-cairo2} (if you intend to use <code>cl-gtk2-gtkglext</code>)
 @end itemize
 
 At first, source code should be downloded. Current version of CL-GTK2 can be downloaded from @uref{http://common-lisp.net/project/cl-gtk2/files/cl-gtk2-0.1.tar.gz}.
@@ -312,15 +314,21 @@ To be able to compile, load and use @code{cl-gtk2}, you should register the @cod
 To do this, either add @code{glib}, @code{gdk} and @code{gtk} directories to @code{asdf:*central-registry*}:
 @lisp
 (push "/path/to/cl-gtk2/glib" asdf:*central-registry*)
+(push "/path/to/cl-gtk2/pango/" asdf:*central-registry*)
 (push "/path/to/cl-gtk2/gdk" asdf:*central-registry*)
 (push "/path/to/cl-gtk2/gtk" asdf:*central-registry*)
+(push "/path/to/cl-gtk2/gtk-glext/" asdf:*central-registry*)
+(push "/path/to/cl-gtk2/cairo/" asdf:*central-registry*)
 @end lisp
 or create symlinks to @code{cl-gtk2-glib.asd}, @code{cl-gtk2-gdk.asd} and @code{cl-gtk2-gtk.asd} files in a directory where @code{ASDF} systems are located (it might be @code{/usr/share/common-lisp/systems/} for system-wide installation in Gentoo Linux and Debian Linux, @code{~/.sbcl/systems/} for user installation for SBCL compiler):
 @example
 cd ~/.sbcl/systems           # depends on your system
 ln -s /path/to/cl-gtk2/glib/cl-gtk2-glib.asd .
+ln -s /path/to/cl-gtk2/pango/cl-gtk2-pango.asd .
 ln -s /path/to/cl-gtk2/gdk/cl-gtk2-gdk.asd .
 ln -s /path/to/cl-gtk2/gtk/cl-gtk2-gtk.asd .
+ln -s /path/to/cl-gtk2/gtkglext/cl-gtk2-gtkglext.asd .
+ln -s /path/to/cl-gtk2/cairo/cl-gtk2-cairo.asd .
 @end example
 
 In Gentoo Linux, it is possible to use layman (see @uref{http://www.gentoo.org/proj/en/overlays/userguide.xml,,Gentoo Overlays Users' Guide}) to add @code{lisp} and @code{cl-gtk2} overlays that contains neccessary ebuilds:
