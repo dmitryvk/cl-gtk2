@@ -1,5 +1,6 @@
 (defsystem :cl-gtk2-pango
   :name :cl-gtk2-pango
+  :version "0.1"
   :author "Kalyanov Dmitry <Kalyanov.Dmitry@gmail.com>"
   :license "LLGPL"
   :serial t

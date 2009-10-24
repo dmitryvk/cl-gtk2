@@ -1,5 +1,6 @@
 (defsystem :cl-gtk2-cairo
   :name :cl-gtk2-cairo
+  :version "0.1"
   :author "Kalyanov Dmitry <Kalyanov.Dmitry@gmail.com>"
   :license "LLGPL"
   :serial t

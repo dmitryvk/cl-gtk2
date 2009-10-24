@@ -1,5 +1,6 @@
 (defsystem :cl-gtk2-glib
   :name :cl-gtk2-glib
+  :version "0.1"
   :author "Kalyanov Dmitry <Kalyanov.Dmitry@gmail.com>"
   :license "LLGPL"
   :serial t

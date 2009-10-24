@@ -1,5 +1,6 @@
 (defsystem :cl-gtk2-gdk
   :name :cl-gtk2-gdk
+  :version "0.1"
   :author "Kalyanov Dmitry <Kalyanov.Dmitry@gmail.com>"
   :license "LLGPL"
   :serial t
