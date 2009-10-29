@@ -211,7 +211,7 @@
 
 (defmethod translate-from-foreign (pointer (type foreign-g-object-type))
   (let ((object (get-g-object-for-pointer pointer)))
-    (when (foreign-g-object-type-already-referenced type)
+    (when (and object (foreign-g-object-type-already-referenced type))
       (g-object-unref (pointer object)))
     object))
 
