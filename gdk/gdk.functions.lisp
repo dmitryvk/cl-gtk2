@@ -65,7 +65,7 @@
 
 (export 'drawable-size)
 
-(defcfun gdk-pixbuf-get-from-drawable (g-object pixbuf)
+(defcfun gdk-pixbuf-get-from-drawable (g-object pixbuf :already-referenced)
   (dest (g-object pixbuf))
   (src (g-object drawable))
   (colormap :pointer)
@@ -100,3 +100,13 @@
                     (null-pointer)))
 
 (export 'pixbuf-save)
+
+(defcfun gdk-pixbuf-new-from-file (g-object pixbuf :already-referenced)
+  (filename :string)
+  (error :pointer))
+
+(defun pixbuf-new-from-file (filename)
+  (glib:with-g-error (err)
+    (gdk-pixbuf-new-from-file filename err)))
+
+(export 'pixbuf-new-from-file)
