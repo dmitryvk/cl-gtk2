@@ -2,7 +2,7 @@
 
 (defclass g-object ()
   ((pointer
-    :type cffi:foreign-pointer
+    :type (or null cffi:foreign-pointer)
     :initarg :pointer
     :accessor pointer
     :initform nil)
