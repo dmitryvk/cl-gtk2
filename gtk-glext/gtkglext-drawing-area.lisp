@@ -10,7 +10,7 @@
 (defun resize (widget width height)
   (with-gl-context (widget)
     (if (gl-drawing-area-on-resize widget)
-        (funcall (gl-drawing-area-on-resize widget) widget width height))
+        (funcall (gl-drawing-area-on-resize widget) widget width height)
         (progn
           (gl:viewport 0 0 width height)
 
@@ -21,7 +21,7 @@
 
           ;; set modelview to identity
           (gl:matrix-mode :modelview)
-          (gl:load-identity))))
+          (gl:load-identity)))))
 
 (defun gl-drawing-area-configure (widget event)
   (declare (ignore event))
