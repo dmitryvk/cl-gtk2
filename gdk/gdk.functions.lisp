@@ -3,9 +3,6 @@
 (defcfun (default-screen "gdk_screen_get_default") (g-object gdk-screen))
 (export 'default-screen)
 
-(defcfun (default-display "gdk_display_get_default") (g-object display))
-(export 'default-display)
-
 (defcfun gdk-window-get-events event-mask
   (window (g-object gdk-window)))
 

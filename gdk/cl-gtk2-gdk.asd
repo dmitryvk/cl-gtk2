@@ -7,5 +7,6 @@
   :components ((:file "gdk.package")
                (:file "gdk.objects")
                (:file "gdk.functions")
-               (:file "gdk.general"))
+               (:file "gdk.general")
+               (:file "gdk.display"))
   :depends-on (:cl-gtk2-glib :cffi :cl-gtk2-pango))

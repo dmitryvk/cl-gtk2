@@ -14,7 +14,29 @@
    (:cffi n-screens display-n-screens :int
           "gdk_display_get_n_screens" nil)
    (:cffi default-screen display-default-screen (g-object screen)
-          "gdk_display_get_default_screen" nil)))
+          "gdk_display_get_default_screen" nil)
+   (:cffi devices display-devices (glib:glist g-object :free-from-foreign nil)
+          "gdk_display_list_devices" nil)
+   (:cffi supports-cursor-color display-supports-cursor-color :boolean
+          "gdk_display_supports_cursor_color" nil)
+   (:cffi supports-cursor-alpha display-supports-color-alpha :boolean
+          "gdk_display_supports_cursor_alpha" nil)
+   (:cffi default-cursor-size display-default-cursor-size :uint
+          "gdk_display_get_default_cursor_size" nil)
+   (:cffi default-group display-default-group (g-object gdk-window)
+          "gdk_display_get_default_group" nil)
+   (:cffi supports-selection-notification display-supports-selection-notification :boolean
+          "gdk_display_supports_selection_notification" nil)
+   (:cffi supports-clipboard-persistence display-supports-clipboard-persistence :boolean
+          "gdk_display_supports_clipboard_persistence" nil)
+   (:cffi supports-shapes display-supports-shapes :boolean
+          "gdk_display_supports_shapes" nil)
+   (:cffi supports-input-shapes display-supports-input-shapes :boolean
+          "gdk_display_supports_input_shapes" nil)
+   (:cffi supports-composite display-supports-composite :boolean
+          "gdk_display_supports_composite" nil)
+   (:cffi core-pointer display-core-pointer g-object
+          "gdk_display_get_core_pointer" nil)))
 
 ;gdk_display_get_screen
 
