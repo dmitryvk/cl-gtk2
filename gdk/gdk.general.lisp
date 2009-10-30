@@ -1,5 +1,12 @@
 (in-package :gdk)
 
+(defcfun gdk-set-locale (:string :free-from-foreign nil))
+(export 'gdk-set-locale)
+
+(defcfun (set-sm-client-id "gdk_set_sm_client_id") :void
+  (sm-client-id :string))
+(export 'set-sm-client-id)
+
 (defcfun gdk-notify-startup-complete :void)
 (defcfun gdk-notify-startup-complete-with-id :void
   (startup-id :string))
@@ -59,4 +66,6 @@
 
 (export 'gdk-beep)
 
-
+(defcfun gdk-error-trap-push :void)
+(defcfun gdk-error-trap-pop :int)
+(export '(gdk-error-trap-push gdk-error-trap-pop))
