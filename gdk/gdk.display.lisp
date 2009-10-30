@@ -141,3 +141,6 @@
          do (setf (mem-aref targets-ptr 'gdk-atom-as-string i) str))
       (gdk-display-store-clipboard display clipboard-window time targets-ptr n-targets))))
 (export 'display-store-clipboard)
+
+(defcfun (display-manager-get "gdk_display_manager_get") (g-object display-manager))
+(export 'display-manager-get)

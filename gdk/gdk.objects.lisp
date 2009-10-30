@@ -41,7 +41,9 @@
 ;gdk_display_get_screen
 
 (define-g-object-class "GdkDisplayManager" display-manager ()
-  ((default-display display-manager-default-display "default-display" "GdkDisplay" t t)))
+  ((default-display display-manager-default-display "default-display" "GdkDisplay" t t)
+   (:cffi displays display-manager-displays (glib:gslist (g-object display) :free-from-foreign t)
+          "gdk_display_manager_list_displays" nil)))
 
 (define-g-object-class "GdkVisual" visual () ())
 
