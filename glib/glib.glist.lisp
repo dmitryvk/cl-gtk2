@@ -62,6 +62,6 @@
   (prog1
       (iter (for c initially pointer then (g-slist-next c))
             (until (null-pointer-p c))
-            (collect (convert-from-foreign (foreign-slot-value c 'g-slist 'data) (glist-type-type type))))
+            (collect (convert-from-foreign (foreign-slot-value c 'g-slist 'data) (gslist-type-type type))))
     (when (gslist-type-free-from-foreign type)
       (g-slist-free pointer))))
