@@ -63,8 +63,8 @@
 (defmethod reinitialize-instance :around ((class gobject-class) &rest initargs &key (direct-superclasses nil d-s-p) &allow-other-keys)
   (declare (ignore direct-superclasses))
   (if d-s-p
-      (call-next-method)
-      (apply #'call-next-method class (compute-new-initargs-for-metaclass initargs 'g-object))))
+      (apply #'call-next-method class (compute-new-initargs-for-metaclass initargs 'g-object))
+      (call-next-method)))
 
 (defmethod initialize-instance :after ((object gobject-class) &key &allow-other-keys)
   (when (gobject-class-direct-g-type-name object)
