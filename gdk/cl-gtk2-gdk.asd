@@ -10,5 +10,6 @@
                (:file "gdk.general")
                (:file "gdk.display")
                (:file "gdk.screen")
-               (:file "gdk.region"))
+               (:file "gdk.region")
+               (:file "gdk.gc"))
   :depends-on (:cl-gtk2-glib :cffi :cl-gtk2-pango))

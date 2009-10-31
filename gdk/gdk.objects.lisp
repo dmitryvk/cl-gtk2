@@ -21,6 +21,84 @@
   (:out 1)
   (:part 2))
 
+(define-g-flags "GdkGCValuesMask"
+    gc-values-mask
+    (:export t :type-initializer "gdk_gc_values_mask_get_type")
+  (:foreground 1)
+  (:background 2)
+  (:font 4)
+  (:function 8)
+  (:fill 16)
+  (:tile 32)
+  (:stipple 64)
+  (:clip-mask 128)
+  (:subwindow 256)
+  (:ts-x-origin 512)
+  (:ts-y-origin 1024)
+  (:clip-x-origin 2048)
+  (:clip-y-origin 4096)
+  (:exposures 8192)
+  (:line-width 16384)
+  (:line-style 32768)
+  (:cap-style 65536)
+  (:join-style 131072))
+
+(define-g-enum "GdkFunction"
+    gdk-function
+    (:export t :type-initializer "gdk_function_get_type")
+  (:copy 0)
+  (:invert 1)
+  (:xor 2)
+  (:clear 3)
+  (:and 4)
+  (:and-reverse 5)
+  (:and-invert 6)
+  (:noop 7)
+  (:or 8)
+  (:equiv 9)
+  (:or-reverse 10)
+  (:copy-invert 11)
+  (:or-invert 12)
+  (:nand 13)
+  (:nor 14)
+  (:set 15))
+
+(define-g-enum "GdkFill"
+    gdk-fill
+    (:export t :type-initializer "gdk_fill_get_type")
+  (:solid 0)
+  (:tiled 1)
+  (:stippled 2)
+  (:opaque-stippled 3))
+
+(define-g-enum "GdkSubwindowMode"
+    subwindow-mode
+    (:export t :type-initializer "gdk_subwindow_mode_get_type")
+  (:clip-by-children 0)
+  (:include-inferiors 1))
+
+(define-g-enum "GdkLineStyle"
+    line-style
+    (:export t :type-initializer "gdk_line_style_get_type")
+  (:solid 0)
+  (:on-off-dash 1)
+  (:double-dash 2))
+
+(define-g-enum "GdkCapStyle"
+    cap-style
+    (:export t :type-initializer "gdk_cap_style_get_type")
+  (:not-last 0)
+  (:butt 1)
+  (:round 2)
+  (:projecting 3))
+
+(define-g-enum "GdkJoinStyle"
+    join-style
+    (:export t :type-initializer "gdk_join_style_get_type")
+  (:miter 0)
+  (:round 1)
+  (:bevel 2))
+
 (define-g-object-class "GdkDisplay" display ()
   ((:cffi name display-name (glib:g-string :free-from-foreign nil)
           "gdk_display_get_name" nil)
@@ -119,19 +197,51 @@
 (export (boxed-related-symbols 'region))
 
 (define-g-boxed-cstruct point nil
-  (x :int)
-  (y :int))
+  (x :int :initform 0)
+  (y :int :initform 0))
 
 (export (boxed-related-symbols 'point))
 
 (define-g-boxed-cstruct span nil
-  (x :int)
-  (y :int)
-  (width :int))
+  (x :int :initform 0)
+  (y :int :initform 0)
+  (width :int :initform 0))
 
 (export (boxed-related-symbols 'span))
 
-(define-g-object-class "GdkGC" graphics-context () ())
+(define-g-object-class "GdkGC" graphics-context ()
+  ((:cffi screen graphics-context-screen (g-object screen)
+          "gdk_gc_get_screen" nil)
+   (:cffi foreground graphics-context-foreground (g-boxed-foreign color)
+          nil "gdk_gc_set_foreground")
+   (:cffi background graphics-context-background (g-boxed-foreign color)
+          nil "gdk_gc_set_background")
+   (:cffi rgb-fg-color graphics-context-rgb-fg-color (g-boxed-foreign color)
+          nil "gdk_gc_set_rgb_fg_color")
+   (:cffi rgb-bg-color graphics-context-rgb-bg-color (g-boxed-foreign color)
+          nil "gdk_gc_set_rgb_bg_color")
+   (:cffi font graphics-context-font (g-boxed-foreign font)
+          nil "gdk_gc_set_font")
+   (:cffi function graphics-context-function gdk-function
+          nil "gdk_gc_set_function")
+   (:cffi fill graphics-context-fill gdk-fill
+          nil "gdk_gc_set_fill")
+   (:cffi tile graphics-context-tile (g-object pixmap)
+          nil "gdk_gc_set_tile")
+   (:cffi stipple graphics-context-stipple (g-object pixmap)
+          nil "gdk_gc_set_stipple")
+   (:cffi clip-mask graphics-context-clip-mask (g-object pixmap)
+          nil "gdk_gc_set_clip_mask")
+   (:cffi clip-rectangle graphics-context-clip-rectangle (g-boxed-foreign rectangle)
+          nil "gdk_gc_set_clip_rectangle")
+   (:cffi clip-region graphics-context-clip-region (g-boxed-foreign region)
+          nil "gdk_gc_set_clip_region")
+   (:cffi subwindow graphics-context-subwindow subwindow-mode
+          nil "gdk_gc_set_subwindow")
+   (:cffi exposures graphics-context-exposures :boolean
+          nil "gdk_gc_set_exposures")
+   (:cffi colormap graphics-context-colormap (g-object colormap)
+          "gdk_gc_get_colormap" "gdk_gc_set_colormap")))
 
 (define-g-object-class "GdkDrawable" drawable () ())
 
@@ -252,10 +362,8 @@
 
 (export (boxed-related-symbols 'rectangle))
 
-(define-g-boxed-cstruct font "GdkFont"
-  (type font-type :initform :font)
-  (ascent :int :initform 0)
-  (descent :int :initform 0))
+(define-g-boxed-opaque font "GdkFont"
+  :alloc (error "GDK:FONT objects may not be allocated directly"))
 
 (export (boxed-related-symbols 'font))
 
