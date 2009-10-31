@@ -42,10 +42,9 @@
   (length gssize)
   (error :pointer))
 
-; TODO: add handling of error
-
 (defun ui-manager-add-ui-from-string (ui-manager string)
-  (gtk-ui-manager-add-ui-from-string ui-manager string -1 (null-pointer)))
+  (with-g-error (err)
+    (gtk-ui-manager-add-ui-from-string ui-manager string -1 err)))
 
 (export 'ui-manager-add-ui-from-string)
 
@@ -55,7 +54,8 @@
   (error :pointer))
 
 (defun ui-manager-add-ui-from-file (ui-manager file-name)
-  (gtk-ui-manager-add-ui-from-file ui-manager file-name (null-pointer)))
+  (with-g-error (err)
+    (gtk-ui-manager-add-ui-from-file ui-manager file-name err)))
 
 (export 'ui-manager-add-ui-from-file)
 
