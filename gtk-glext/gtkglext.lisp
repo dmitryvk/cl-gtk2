@@ -453,7 +453,8 @@
              (,drawable (gtk-widget-gl-window ,w)))
          (if (and ,context ,drawable (gdk-gl-drawable-gl-begin ,drawable ,context))
              (unwind-protect
-                  ,@body
+                  (progn
+                    ,@body)
                (progn
                  (when ,swap-p
                    (when (gdk-gl-drawable-is-double-buffered ,drawable)
