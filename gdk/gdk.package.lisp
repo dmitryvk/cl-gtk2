@@ -1,14 +1,7 @@
 (defpackage :gdk
   (:use :cl :gobject :cffi :pango :iter)
   (:export #:gdk-window-events
-           #:gdk-gc-set-rgb-fg-color
-           #:gdk-drawable-get-size
-           #:gdk-draw-line
-           #:gdk-gc-new
-           #:drawable-get-size
-           #:gdk-draw-layout
-           #:gdk-atom-as-string
-           #:gdk-window-events))
+           #:gdk-atom-as-string))
 
 (in-package :gdk)
 

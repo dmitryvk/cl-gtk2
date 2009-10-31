@@ -99,6 +99,13 @@
   (:round 1)
   (:bevel 2))
 
+(define-g-enum "GdkRgbDither"
+    rgb-dither
+    (:export t :type-initializer "gdk_rgb_dither_get_type")
+  (:none 0)
+  (:normal 1)
+  (:max 2))
+
 (define-g-object-class "GdkDisplay" display ()
   ((:cffi name display-name (glib:g-string :free-from-foreign nil)
           "gdk_display_get_name" nil)
@@ -209,6 +216,24 @@
 
 (export (boxed-related-symbols 'span))
 
+(define-g-boxed-cstruct segment nil
+  (x1 :int :initform 0)
+  (y1 :int :initform 0)
+  (x2 :int :initform 0)
+  (y2 :int :initform 0))
+
+(export (boxed-related-symbols 'segment))
+
+(define-g-boxed-cstruct trapezoid nil
+  (y1 :double :initform 0d0)
+  (x11 :double :initform 0d0)
+  (x21 :double :initform 0d0)
+  (y2 :double :initform 0d0)
+  (x12 :double :initform 0d0)
+  (x22 :double :initform 0d0))
+
+(export (boxed-related-symbols 'trapezoid))
+
 (define-g-object-class "GdkGC" graphics-context ()
   ((:cffi screen graphics-context-screen (g-object screen)
           "gdk_gc_get_screen" nil)
@@ -243,7 +268,21 @@
    (:cffi colormap graphics-context-colormap (g-object colormap)
           "gdk_gc_get_colormap" "gdk_gc_set_colormap")))
 
-(define-g-object-class "GdkDrawable" drawable () ())
+(define-g-object-class "GdkDrawable" drawable ()
+  ((:cffi display drawable-display (g-object display)
+          "gdk_drawable_get_display" nil)
+   (:cffi screen drawable-screen (g-object screen)
+          "gdk_drawable_get_screen" nil)
+   (:cffi visual drawable-visual (g-object visual)
+          "gdk_drawable_get_visual" nil)
+   (:cffi colormap drawable-colormap (g-object colormap)
+          "gdk_drawable_get_colormap" "gdk_drawable_set_colormap")
+   (:cffi depth drawable-depth :int
+          "gdk_drawable_get_depth" nil)
+   (:cffi clip-region drawable-clip-region (g-boxed-foreign region :return)
+          "gdk_drawable_get_clip_region" nil)
+   (:cffi visible-region drawable-visible-region (g-boxed-foreign region :return)
+          "gdk_drawable_get_visible_region" nil)))
 
 (define-g-object-class "GdkPixmap" pixmap (:superclass drawable) ())
 
