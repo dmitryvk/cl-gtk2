@@ -60,8 +60,6 @@
   (name :string)
   (only-if-exists :boolean))
 
-(export 'drawable-size)
-
 (defcfun gdk-pixbuf-get-from-drawable (g-object pixbuf :already-referenced)
   (dest (g-object pixbuf))
   (src (g-object drawable))
