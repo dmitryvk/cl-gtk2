@@ -30,7 +30,8 @@
            #:test-entry-completion
            #:test-ui-markup
            #:test-list-store
-           #:test-tree-store))
+           #:test-tree-store
+           #:test-gdk))
 
 (in-package :gtk-demo)
 
@@ -1053,3 +1054,60 @@
                             (dialog-run dialog)
                             (object-destroy dialog)))))
       (widget-show w))))
+
+(defun test-gdk-expose (gdk-window)
+  (let* ((gc (gdk-gc-new gdk-window)))
+    (multiple-value-bind (w h) (drawable-get-size gdk-window)
+      (setf (graphics-context-rgb-bg-color gc) (make-color :red 0 :green 0 :blue 0))
+      (draw-polygon gdk-window gc t (list (make-point :x 0 :y 0)
+                                          (make-point :x (truncate w 2) :y 0)
+                                          (make-point :x w :y (truncate h 2))
+                                          (make-point :x w :y h)
+                                          (make-point :x (truncate w 2) :y h)
+                                          (make-point :x 0 :y (truncate h 2))))
+      (setf (graphics-context-rgb-fg-color gc) (make-color :red 65535 :green 0 :blue 0))
+      (draw-point gdk-window gc 20 10)
+      (setf (graphics-context-rgb-fg-color gc) (make-color :red 0 :green 65535 :blue 0))
+      (draw-points gdk-window gc (list (make-point :x 15 :y 20) (make-point :x 35 :y 40)))
+      (setf (graphics-context-rgb-fg-color gc) (make-color :red 0 :green 0 :blue 65535))
+      (draw-line gdk-window gc 60 30 40 50)
+      (setf (graphics-context-rgb-fg-color gc) (make-color :red 65535 :green 65535 :blue 0))
+      (draw-lines gdk-window gc (list (make-point :x 10 :y 30) (make-point :x 15 :y 40)
+                                      (make-point :x 15 :y 50) (make-point :x 10 :y 56)))
+      (setf (graphics-context-rgb-fg-color gc) (make-color :red 0 :green 65535 :blue 65535))
+      (draw-segments gdk-window gc (list (make-segment :x1 35 :y1 35 :x2 55 :y2 35)
+                                         (make-segment :x1 65 :y1 35 :x2 43 :y2 17)))
+      (setf (graphics-context-rgb-fg-color gc) (make-color :red 65535 :green 0 :blue 65535)
+            (graphics-context-rgb-bg-color gc) (make-color :red 32767 :green 0 :blue 32767))
+      (draw-arc gdk-window gc nil 70 30 75 50 (* 64 75) (* 64 200))
+      (draw-polygon gdk-window gc nil (list (make-point :x 20 :y 40)
+                                            (make-point :x 30 :y 50)
+                                            (make-point :x 40 :y 70)
+                                            (make-point :x 30 :y 80)
+                                            (make-point :x 10 :y 55)))
+      (setf (graphics-context-rgb-fg-color gc) (make-color :red 16384 :green 16384 :blue 65535))
+      (draw-trapezoids gdk-window gc (list (make-trapezoid :y1 50.0d0 :y2 70.0d0
+                                                           :x11 30.0d0 :x12 45.0d0
+                                                           :x21 70.0d0 :x22 50.0d0))))))
+
+(defun test-gdk ()
+  "Test various gdk primitives"
+  (within-main-loop
+    (let ((window (make-instance 'gtk-window :type :toplevel :app-paintable t))
+          x y)
+      (g-signal-connect window "destroy" (lambda (widget)
+                                           (declare (ignore widget))
+                                           (leave-gtk-main)))
+      (g-signal-connect window "destroy" (lambda (widget)
+                                           (declare (ignore widget))
+                                           (leave-gtk-main)))
+      (g-signal-connect window "expose-event"
+                        (lambda (widget event)
+                          (declare (ignore widget event))
+                          (test-gdk-expose (widget-window window))))
+      (g-signal-connect window "configure-event"
+                        (lambda (widget event)
+                          (declare (ignore widget event))
+                          (widget-queue-draw window)))
+      (widget-show window)
+      (push :pointer-motion-mask (gdk-window-events (widget-window window))))))
