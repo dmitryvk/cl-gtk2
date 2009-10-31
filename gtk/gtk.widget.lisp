@@ -465,9 +465,13 @@
 
 ; TODO: gtk_widget_class_list_style_properties
 
-; TODO: gtk_widget_region_intersect
+(defcfun (widget-region-intersect "gtk_widget_region_intersect") (g-boxed-foreign region :return)
+  (widget (g-object widget))
+  (region (g-boxed-foreign region)))
 
-; TODO: gtk_widget_send_expose
+(export 'widget-region-intersect)
+
+; ignored: gtk_widget_send_expose
 
 (defcfun gtk-widget-style-get-property :void
   (widget g-object)
