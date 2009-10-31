@@ -79,7 +79,7 @@
 
 (export 'region-get-rectangles)
 
-(defcfun (region-is-empty "gdk_region_is_empty") :boolean
+(defcfun (region-is-empty "gdk_region_empty") :boolean
   (region (g-boxed-foreign region)))
 
 (export 'region-is-empty)
