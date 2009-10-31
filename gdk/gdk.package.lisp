@@ -1,5 +1,5 @@
 (defpackage :gdk
-  (:use :cl :gobject :cffi :pango)
+  (:use :cl :gobject :cffi :pango :iter)
   (:export #:gdk-window-events
            #:gdk-gc-set-rgb-fg-color
            #:gdk-drawable-get-size

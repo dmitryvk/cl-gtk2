@@ -8,6 +8,19 @@
 (defcenum notify-type (:ancestor 0) :virtual :inferior :nonlinear :nonlinear-virtual :unknown)
 (export 'notify-type)
 
+(gobject:define-g-enum "GdkFillRule"
+    gdk-fill-rule
+    (:export t :type-initializer "gdk_fill_rule_get_type")
+  (:even-odd-rule 0)
+  (:winding-rule 1))
+
+(define-g-enum "GdkOverlapType"
+    overlap-type
+    (:export t :type-initializer "gdk_overlap_type_get_type")
+  (:in 0)
+  (:out 1)
+  (:part 2))
+
 (define-g-object-class "GdkDisplay" display ()
   ((:cffi name display-name (glib:g-string :free-from-foreign nil)
           "gdk_display_get_name" nil)
@@ -99,17 +112,24 @@
    (:cffi window-stack screen-window-stack (glib:glist (g-object gdk-window) :free-from-foreign t)
           "gdk_screen_get_window_stack" nil)))
 
-;gdk_screen_get_monitor_geometry
-;gdk_screen_get_monitor_at_point
-;gdk_screen_get_monitor_at_window
-;gdk_screen_get_monitor_height_mm
-;gdk_screen_get_monitor_width_mm
-;gdk_screen_get_monitor_plug_name
-;gdk_screen_broadcast_client_message
-;gdk_screen_get_setting
-;gdk_spawn_on_screen
-;gdk_spawn_on_screen_with_pipes
-;gdk_spawn_command_line_on_screen
+(defcfun gdk-region-new :pointer)
+
+(define-g-boxed-opaque region nil :alloc (gdk-region-new))
+
+(export (boxed-related-symbols 'region))
+
+(define-g-boxed-cstruct point nil
+  (x :int)
+  (y :int))
+
+(export (boxed-related-symbols 'point))
+
+(define-g-boxed-cstruct span nil
+  (x :int)
+  (y :int)
+  (width :int))
+
+(export (boxed-related-symbols 'span))
 
 (define-g-object-class "GdkGC" graphics-context () ())
 
