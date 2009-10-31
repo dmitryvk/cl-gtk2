@@ -54,12 +54,12 @@
                         (lambda (widget event)
                           (declare (ignore widget event))
                           (let* ((gdk-window (widget-window window))
-                                 (gc (gdk-gc-new gdk-window))
+                                 (gc (graphics-context-new gdk-window))
                                  (layout (widget-create-pango-layout window (format nil "X: ~F~%Y: ~F" x y))))
-                            (gdk-draw-layout gdk-window gc 0 0 layout)
-                            (gdk-gc-set-rgb-fg-color gc (make-color :red 65535 :green 0 :blue 0))
+                            (draw-layout gdk-window gc 0 0 layout)
+                            (setf (graphics-context-rgb-fg-color gc) (make-color :red 65535 :green 0 :blue 0))
                             (multiple-value-bind (x y) (drawable-get-size gdk-window)
-                              (gdk-draw-line gdk-window gc 0 0 x y)))))
+                              (draw-line gdk-window gc 0 0 x y)))))
       (g-signal-connect window "configure-event"
                         (lambda (widget event)
                           (declare (ignore widget event))
@@ -1056,7 +1056,7 @@
       (widget-show w))))
 
 (defun test-gdk-expose (gdk-window)
-  (let* ((gc (gdk-gc-new gdk-window)))
+  (let* ((gc (graphics-context-new gdk-window)))
     (multiple-value-bind (w h) (drawable-get-size gdk-window)
       (setf (graphics-context-rgb-bg-color gc) (make-color :red 0 :green 0 :blue 0))
       (draw-polygon gdk-window gc t (list (make-point :x 0 :y 0)
@@ -1093,8 +1093,7 @@
 (defun test-gdk ()
   "Test various gdk primitives"
   (within-main-loop
-    (let ((window (make-instance 'gtk-window :type :toplevel :app-paintable t))
-          x y)
+    (let ((window (make-instance 'gtk-window :type :toplevel :app-paintable t)))
       (g-signal-connect window "destroy" (lambda (widget)
                                            (declare (ignore widget))
                                            (leave-gtk-main)))
