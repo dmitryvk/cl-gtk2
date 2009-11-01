@@ -13,5 +13,6 @@
                (:file "gdk.region")
                (:file "gdk.gc")
                (:file "gdk.drawing-primitives")
-               (:file "gdk.bitmaps"))
+               (:file "gdk.bitmaps")
+               (:file "gdk.rgb"))
   :depends-on (:cl-gtk2-glib :cffi :cl-gtk2-pango))
