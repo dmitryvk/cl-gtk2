@@ -22,7 +22,7 @@
 (defun start-timer (timer)
   (unless (slot-value timer 'source-id)
     (setf (slot-value timer 'source-id)
-          (gtk-main-add-timeout (timer-interval-msec timer) (lambda () (funcall (timer-fn timer)))))))
+          (gtk-main-add-timeout (timer-interval-msec timer) (lambda () (funcall (timer-fn timer)) t)))))
 
 (defun stop-timer (timer)
   (when (slot-value timer 'source-id)
