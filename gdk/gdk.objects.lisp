@@ -234,6 +234,27 @@
 
 (export (boxed-related-symbols 'trapezoid))
 
+(define-g-boxed-cstruct rectangle "GdkRectangle"
+  (x :int :initform 0)
+  (y :int :initform 0)
+  (width :int :initform 0)
+  (height :int :initform 0))
+
+(export (boxed-related-symbols 'rectangle))
+
+(define-g-boxed-opaque font "GdkFont"
+  :alloc (error "GDK:FONT objects may not be allocated directly"))
+
+(export (boxed-related-symbols 'font))
+
+(define-g-boxed-cstruct color "GdkColor"
+  (pixel :uint32 :initform 0)
+  (red :uint16 :initform 0)
+  (green :uint16 :initform 0)
+  (blue :uint16 :initform 0))
+
+(export (boxed-related-symbols 'color))
+
 (define-g-object-class "GdkGC" graphics-context ()
   ((:cffi screen graphics-context-screen (g-object screen)
           "gdk_gc_get_screen" nil)
@@ -392,27 +413,6 @@
   :south
   :south-east
   :static)
-
-(define-g-boxed-cstruct rectangle "GdkRectangle"
-  (x :int :initform 0)
-  (y :int :initform 0)
-  (width :int :initform 0)
-  (height :int :initform 0))
-
-(export (boxed-related-symbols 'rectangle))
-
-(define-g-boxed-opaque font "GdkFont"
-  :alloc (error "GDK:FONT objects may not be allocated directly"))
-
-(export (boxed-related-symbols 'font))
-
-(define-g-boxed-cstruct color "GdkColor"
-  (pixel :uint32 :initform 0)
-  (red :uint16 :initform 0)
-  (green :uint16 :initform 0)
-  (blue :uint16 :initform 0))
-
-(export (boxed-related-symbols 'color))
 
 (define-g-boxed-cstruct geometry "GdkGeometry"
   (min-width :int :initform 0)
