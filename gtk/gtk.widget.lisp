@@ -94,6 +94,8 @@
       (gtk-widget-hide-all widget)
       (gtk-widget-hide widget)))
 
+(export 'widget-hide)
+
 (defcfun (widget-map "gtk_widget_map") :void
   (widget g-object))
 
