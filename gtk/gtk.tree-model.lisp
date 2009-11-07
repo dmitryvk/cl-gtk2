@@ -84,7 +84,7 @@
   (tree-model-sort (g-object tree-model-sort))
   (child-path (g-boxed-foreign tree-path)))
 
-(export 'tree-model-sort-conver-child-path-to-path)
+(export 'tree-model-sort-convert-child-path-to-path)
 
 (defcfun gtk-tree-model-sort-convert-child-iter-to-iter :boolean
   (tree-model-sort (g-object tree-model-sort))
@@ -375,11 +375,11 @@
 (defcfun gtk-tree-model-iter-parent :boolean
   (tree-model g-object)
   (iter (g-boxed-foreign tree-iter))
-  (parent (g-boxed-foreign tree-iter)))
+  (child (g-boxed-foreign tree-iter)))
 
 (defun tree-model-iter-parent (tree-model iter)
   (let ((parent (make-tree-iter)))
-    (if (gtk-tree-model-iter-parent tree-model iter parent)
+    (if (gtk-tree-model-iter-parent tree-model parent iter)
         parent
         nil)))
 
