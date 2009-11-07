@@ -671,3 +671,9 @@
   (:shared 1)
   (:fastest 2))
 
+(define-g-enum "GdkPixbufAlphaMode"
+    pixbuf-alpha-mode
+    (:export t :type-initializer "gdk_pixbuf_alpha_mode_get_type")
+  (:bilevel 0)
+  (:full 1))
+
