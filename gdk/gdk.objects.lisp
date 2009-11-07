@@ -661,4 +661,13 @@
   (:superclass g-object :export t :interfaces
                nil :type-initializer
                "gdk_image_get_type")
-  nil)
+  ((:cffi colormap gdk-image-colormap (g-object gdk-colormap)
+          "gdk_image_get_colormap" "gdk_image_set_colormap")))
+
+(define-g-enum "GdkImageType"
+    gdk-image-type
+    (:export t :type-initializer "gdk_image_type_get_type")
+  (:normal 0)
+  (:shared 1)
+  (:fastest 2))
+
