@@ -17,5 +17,7 @@
                (:file "gdk.rgb")
                (:file "gdk.images")
                (:file "gdk.pixbufs")
-               (:file "gdk.colors"))
+               (:file "gdk.colors")
+               (:file "gdk.visual")
+               (:file "gdk.cursor"))
   :depends-on (:cl-gtk2-glib :cffi :cl-gtk2-pango))
