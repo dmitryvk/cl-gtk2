@@ -1029,7 +1029,7 @@
               (for it = (tree-store-insert-with-values l nil i n s))
               (iter (for j from 0 below 10)
                     (for n2 = (random 10000000))
-                    (for s2 = (format nil "~R" n))
+                    (for s2 = (format nil "~R" n2))
                     (tree-store-insert-with-values l it j n2 s2)))
         (setf (tree-view-model tv) l)
         (let ((column (make-instance 'tree-view-column :title "Number" :sort-column-id 0))
