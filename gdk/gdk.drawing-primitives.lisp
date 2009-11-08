@@ -28,18 +28,8 @@
   (n :int))
 
 (defun draw-points (drawable gc points)
-  (let ((n (length points)))
-    (with-foreign-object (points-ptr 'point-cstruct n)
-      (let ((i 0))
-        (map nil
-             (lambda (pt)
-                 (gobject::copy-slots-to-native
-                  pt
-                  (inc-pointer points-ptr (* i (foreign-type-size 'point-cstruct)))
-                  (gobject::g-boxed-cstruct-wrapper-info-cstruct-description (gobject::get-g-boxed-foreign-info 'point)))
-                 (incf i))
-             points))
-      (gdk-draw-points drawable gc points-ptr n))))
+  (with-foreign-boxed-array (n points-ptr point points)
+    (gdk-draw-points drawable gc points-ptr n)))
 
 (export 'draw-points)
 
@@ -60,18 +50,8 @@
   (n :int))
 
 (defun draw-lines (drawable gc points)
-  (let ((n (length points)))
-    (with-foreign-object (points-ptr 'point-cstruct n)
-      (let ((i 0))
-        (map nil
-             (lambda (pt)
-                 (gobject::copy-slots-to-native
-                  pt
-                  (inc-pointer points-ptr (* i (foreign-type-size 'point-cstruct)))
-                  (gobject::g-boxed-cstruct-wrapper-info-cstruct-description (gobject::get-g-boxed-foreign-info 'point)))
-                 (incf i))
-             points))
-      (gdk-draw-lines drawable gc points-ptr n))))
+  (with-foreign-boxed-array (n points-ptr point points)
+    (gdk-draw-lines drawable gc points-ptr n)))
 
 (export 'draw-lines)
 
@@ -98,18 +78,8 @@
   (n-segments :int))
 
 (defun draw-segments (drawable gc segments)
-  (let ((n (length segments)))
-    (with-foreign-object (segments-ptr 'segment-cstruct n)
-      (let ((i 0))
-        (map nil
-             (lambda (segment)
-               (gobject::copy-slots-to-native
-                segment
-                (inc-pointer segments-ptr (* i (foreign-type-size 'segment-cstruct)))
-                (gobject::g-boxed-cstruct-wrapper-info-cstruct-description (gobject::get-g-boxed-foreign-info 'segment)))
-               (incf i))
-             segments))
-      (gdk-draw-segments drawable gc segments-ptr n))))
+  (with-foreign-boxed-array (n segments-ptr segment segments)
+    (gdk-draw-segments drawable gc segments-ptr n)))
 
 (export 'draw-segments)
 
@@ -143,18 +113,8 @@
   (n-points :int))
 
 (defun draw-polygon (drawable gc filled points)
-  (let ((n (length points)))
-    (with-foreign-object (points-ptr 'point-cstruct n)
-      (let ((i 0))
-        (map nil
-             (lambda (point)
-               (gobject::copy-slots-to-native
-                point
-                (inc-pointer points-ptr (* i (foreign-type-size 'point-cstruct)))
-                (gobject::g-boxed-cstruct-wrapper-info-cstruct-description (gobject::get-g-boxed-foreign-info 'point)))
-               (incf i))
-             points))
-      (gdk-draw-polygon drawable gc filled points-ptr n))))
+  (with-foreign-boxed-array (n points-ptr point points)
+    (gdk-draw-polygon drawable gc filled points-ptr n)))
 
 (export 'draw-polygon)
 
@@ -165,18 +125,8 @@
   (n :int))
 
 (defun draw-trapezoids (drawable gc trapezoids)
-  (let ((n (length trapezoids)))
-    (with-foreign-object (trapezoids-ptr 'trapezoid-cstruct n)
-      (let ((i 0))
-        (map nil
-             (lambda (trapezoid)
-               (gobject::copy-slots-to-native
-                trapezoid
-                (inc-pointer trapezoids-ptr (* i (foreign-type-size 'trapezoid-cstruct)))
-                (gobject::g-boxed-cstruct-wrapper-info-cstruct-description (gobject::get-g-boxed-foreign-info 'trapezoid)))
-               (incf i))
-             trapezoids))
-      (gdk-draw-trapezoids drawable gc trapezoids-ptr n))))
+  (with-foreign-boxed-array (n trapezoids-ptr trapezoid trapezoids)
+    (gdk-draw-trapezoids drawable gc trapezoids-ptr n)))
 
 (export 'draw-trapezoids)
 

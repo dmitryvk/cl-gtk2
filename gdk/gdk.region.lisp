@@ -30,17 +30,8 @@
   (fill-rule gdk-fill-rule))
 
 (defun region-from-polygon (points fill-rule)
-  (let ((n (length points)))
-    (with-foreign-object (pts 'point-cstruct n)
-      (let ((i 0))
-        (map nil (lambda (pt)
-                   (gobject::copy-slots-to-native
-                    pt
-                    (inc-pointer pts (* i (foreign-type-size 'point-cstruct)))
-                    (gobject::g-boxed-cstruct-wrapper-info-cstruct-description (gobject::get-g-boxed-foreign-info 'point)))
-                   (incf i))
-             points))
-      (gdk-region-polygon pts n fill-rule))))
+  (with-foreign-boxed-array (n pts point points)
+    (gdk-region-polygon pts n fill-rule)))
 
 (export 'region-from-polygon)
 
@@ -161,18 +152,8 @@
   (data :pointer))
 
 (defun region-spans-intersect-foreach (region spans sorted fn)
-  (let ((n (length spans)))
-    (with-stable-pointer (ptr fn)
-      (with-foreign-object (spans-ptr 'span-cstruct n)
-        (let ((i 0))
-          (map nil
-               (lambda (span)
-                 (gobject::copy-slots-to-native
-                  span
-                  (inc-pointer spans-ptr (* i (foreign-type-size 'span-cstruct)))
-                  (gobject::g-boxed-cstruct-wrapper-info-cstruct-description (gobject::get-g-boxed-foreign-info 'span)))
-                 (incf i))
-               spans))
-        (gdk-region-spans-intersect-foreach region spans-ptr n sorted (callback gdk-region-spans-intersect-foreach) ptr)))))
+  (with-stable-pointer (ptr fn)
+    (with-foreign-boxed-array (n spans-ptr span spans)
+      (gdk-region-spans-intersect-foreach region spans-ptr n sorted (callback gdk-region-spans-intersect-foreach) ptr))))
 
 (export 'region-spans-intersect-foreach)
