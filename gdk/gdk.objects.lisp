@@ -149,7 +149,10 @@
   (:superclass g-object :export t :interfaces
                nil :type-initializer
                "gdk_colormap_get_type")
-  nil)
+  ((:cffi visual colormap-visual (g-object visual)
+          "gdk_colormap_get_visual" nil)
+   (:cffi screen colormap-screen (g-object screen)
+          "gdk_colormap_get_screeen" nil)))
 
 (define-g-object-class "GdkScreen" screen ()
   ((font-options screen-font-options "font-options" "gpointer" t t)

@@ -16,5 +16,6 @@
                (:file "gdk.bitmaps")
                (:file "gdk.rgb")
                (:file "gdk.images")
-               (:file "gdk.pixbufs"))
+               (:file "gdk.pixbufs")
+               (:file "gdk.colors"))
   :depends-on (:cl-gtk2-glib :cffi :cl-gtk2-pango))
