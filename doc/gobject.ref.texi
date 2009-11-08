@@ -1782,6 +1782,8 @@ Example:
 * define-boxed-opaque-accessor::
 * boxed-related-symbols::
 * GBoxed foreign type::
+* copy-boxed-slots-to-foreign::
+* with-boxed-foreign-array::
 @end menu
 
 GObject manual defines this type in the following way:
@@ -2136,6 +2138,65 @@ Examples of usage:
   (match-start (g-boxed-foreign text-iter))
   (match-end (g-boxed-foreign text-iter))
   (limit (g-boxed-foreign text-iter)))
+@end lisp
+
+
+@node copy-boxed-slots-to-foreign
+@section copy-boxed-slots-to-foreign
+
+@Function copy-boxed-slots-to-foreign
+@lisp
+(copy-boxed-slots-to-foreign structure native-ptr &optional (type (and structure (type-of structure))))
+@end lisp
+
+@table @var
+@item @var{structure}
+A Lisp structure corresponding to some GBoxed type
+@item @var{native-ptr}
+A foreign pointer
+@item @code{type}
+Name of the GBoxed type. It is optional but may be included for optimization purposes
+@end table
+
+Copies the contents of @var{structure} to C structure pointed to by @var{native-ptr}. @var{type} is used to determine which slots and which cstruct definition should be used.
+
+Examples:
+@lisp
+(cffi:with-foreign-object (point-ptr 'gdk::point-cstruct)
+  (gobject:copy-boxed-slots-to-foreign (gdk:make-point :x 10 :y 10) point-ptr 'gdk:point))
+@end lisp
+
+@node with-boxed-foreign-array
+@section with-boxed-foreign-array
+
+@Macro with-boxed-foreign-array
+@lisp
+(with-foreign-boxed-array (n-var array-var type values-seq) &body body)
+@end lisp
+
+@table @var
+@item @var{n-var}
+A variable that will contain the count of items in @var{values-seq}
+@item @var{array-var}
+A variable that will contain the pointer to array of C structures
+@item @var{type}
+A symbol that specifies the type of GBoxed structure
+@item @var{values-seq}
+An expression that returns the sequence of structures (list or array)
+@end table
+
+Evaluates the @var{body} within the scope and extent of foreign array that contains copies of structures that are returned by @var{values-seq}. Binds @var{n-var} to the length of @var{values-seq}, @var{array-var} to the pointer to array of structures.
+
+Examples:
+@lisp
+(defcfun gdk-region-polygon (g-boxed-foreign region :return)
+  (points :pointer)
+  (n-points :int)
+  (fill-rule gdk-fill-rule))
+
+(defun region-from-polygon (points fill-rule)
+  (with-foreign-boxed-array (n pts point points)
+    (gdk-region-polygon pts n fill-rule)))
 @end lisp
 
 @node Generating type definitions by introspection

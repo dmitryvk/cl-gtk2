@@ -193,7 +193,9 @@
            #:delete-handler-from-object
            #:disconnect-signal
            #:define-cb-methods
-           #:create-fn-ref)
+           #:create-fn-ref
+           #:copy-boxed-slots-to-foreign
+           #:with-foreign-boxed-array)
   (:documentation
    "CL-GTK2-GOBJECT is a binding to GObject type system.
 For information on GObject, see its @a[http://library.gnome.org/devel/gobject/stable/]{documentation}.

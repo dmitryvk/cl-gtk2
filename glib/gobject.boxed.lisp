@@ -599,3 +599,46 @@
                                        (funcall ,reader ,n-var ,var)))
                             (string `(defun (setf ,accessor-name) (,n-var ,var)
                                        (foreign-funcall ,writer (g-boxed-foreign ,boxed-name) ,var ,type ,n-var :void)))))))))
+
+(defun copy-boxed-slots-to-foreign (structure native-ptr &optional (type (and structure (type-of structure))))
+  (when structure
+    (copy-slots-to-native
+     structure
+     native-ptr
+     (g-boxed-cstruct-wrapper-info-cstruct-description (get-g-boxed-foreign-info type)))))
+
+(define-compiler-macro copy-boxed-slots-to-foreign (&whole whole structure native-ptr &optional type)
+  (if (and type
+           (constantp type))
+      (let* ((type-r (eval type))
+             (f-i (get-g-boxed-foreign-info type-r)))
+        (unless f-i
+          (warn "Unknown foreign GBoxed type ~S" type-r)
+          (return-from copy-boxed-slots-to-foreign whole))
+        (unless (typep f-i 'g-boxed-cstruct-wrapper-info)
+          (warn "Foreign GBoxed type ~S is not a C structure wrapper" type-r)
+          (return-from copy-boxed-slots-to-foreign whole))
+        `(when ,structure
+           (copy-slots-to-native
+            ,structure
+            ,native-ptr
+            (load-time-value (g-boxed-cstruct-wrapper-info-cstruct-description (get-g-boxed-foreign-info ',type-r))))))
+      whole))
+
+(defmacro with-foreign-boxed-array ((n-var array-var type values-seq) &body body)
+  (let ((values-seq-1 (gensym "VALUES-SEQ-"))
+        (cstruct (generated-cstruct-name type))
+        (x (gensym "X-"))
+        (i (gensym "I-")))
+    `(let* ((,values-seq-1 ,values-seq)
+            (,n-var (length ,values-seq-1)))
+       (with-foreign-object (,array-var ',cstruct ,n-var)
+         (let ((,i 0))
+           (map nil (lambda (,x)
+                      (copy-boxed-slots-to-foreign
+                       ,x
+                       (inc-pointer ,array-var (* ,i (foreign-type-size ',cstruct)))
+                       ',type)
+                      (incf ,i))
+                ,values-seq-1))
+         ,@body))))
