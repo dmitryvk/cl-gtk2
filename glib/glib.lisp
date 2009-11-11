@@ -94,21 +94,20 @@ In this example, for every @code{class}, @code{(initialize-gobject-class-g-type 
 (defmacro at-finalize ((&rest keys) &body body)
   `(register-finalizer (list ,@keys ',body) (lambda () ,@body)))
 
-(eval-when (:compile-toplevel :load-toplevel :execute)
-  (define-foreign-library glib
-    (:unix (:or "libglib-2.0.so.0" "libglib-2.0.so"))
-    (:windows "libglib-2.0-0.dll")
-    (t (:default "libglib-2.0"))))
+(at-init ()
+  (eval-when (:compile-toplevel :load-toplevel :execute)
+    (define-foreign-library glib
+      (:unix (:or "libglib-2.0.so.0" "libglib-2.0.so"))
+      (:windows "libglib-2.0-0.dll")
+      (t (:default "libglib-2.0"))))
+  (eval-when (:compile-toplevel :load-toplevel :execute)
+    (define-foreign-library gthread
+      (:unix (:or "libgthread-2.0.so.0"  "libgthread-2.0.so"))
+      (:windows "libgthread-2.0-0.dll")
+      (t "libgthread-2.0")))
 
-(use-foreign-library glib)
-
-(eval-when (:compile-toplevel :load-toplevel :execute)
-  (define-foreign-library gthread
-    (:unix (:or "libgthread-2.0.so.0"  "libgthread-2.0.so"))
-    (:windows "libgthread-2.0-0.dll")
-    (t "libgthread-2.0")))
-
-(use-foreign-library gthread)
+  (use-foreign-library glib)
+  (use-foreign-library gthread))
 
 ;;
 ;; Glib Fundamentals
