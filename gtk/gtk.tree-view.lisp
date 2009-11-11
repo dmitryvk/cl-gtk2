@@ -324,9 +324,30 @@
 
 (export 'tree-view-convert-widget-to-tree-coords)
 
-; TODO: gtk_tree_view_enable_model_drag_dest
+(defcfun gtk-tree-view-enable-model-drag-dest :void
+  (tree-view g-object)
+  (targets :pointer)
+  (n-targets :int)
+  (actions gdk:drag-action))
 
-; TODO: gtk_tree_view_enable_model_drag_source
+(defun tree-view-enable-model-drag-dest (tree-view targets actions)
+  (with-foreign-boxed-array (n-targets targets-ptr target-entry targets)
+    (gtk-tree-view-enable-model-drag-dest tree-view targets-ptr n-targets actions)))
+
+(export 'tree-view-enable-model-drag-dest)
+
+(defcfun gtk-tree-view-enable-model-drag-source :void
+  (tree-view g-object)
+  (start-button-mask gdk:modifier-type)
+  (targets :pointer)
+  (n-targets :int)
+  (actions gdk:drag-action))
+
+(defun tree-view-enable-model-drag-source (tree-view start-button-mask targets actions)
+  (with-foreign-boxed-array (n-targets targets-ptr target-entry targets)
+    (gtk-tree-view-enable-model-drag-source tree-view start-button-mask targets-ptr n-targets actions)))
+
+(export 'tree-view-enable-model-drag-source)
 
 ; TODO: gtk_tree_view_unset_rows_drag_source
 
@@ -336,7 +357,20 @@
 
 ; TOOD: gtk_tree_view_get_drag_dest_row
 
-; TOOD: gtk_tree_view_get_dest_row_at_pos
+(defcfun gtk-tree-view-get-dest-row-at-pos :boolean
+  (tree_view g-object)
+  (drag-x :int)
+  (drag-y :int)
+  (path :pointer)
+  (pos :pointer))
+
+(defun tree-view-get-dest-row-at-pos (tree-view x y)
+  (with-foreign-objects ((path :pointer) (pos :int))
+    (when (gtk-tree-view-get-dest-row-at-pos tree-view x y path pos)
+      (values (mem-ref path '(g-boxed-foreign tree-path :return))
+              (mem-ref pos 'tree-view-drop-position)))))
+
+(export 'tree-view-get-dest-row-at-pos)
 
 ; TOOD: gtk_tree_view_create_drag_icon
 

@@ -14,7 +14,28 @@
 
 ; TODO: gtk_cell_renderer_stop_editing
 
-; TODO: gtk_cell_renderer_get_fixed_size
+(defcfun gtk-cell-renderer-get-fixed-size :void
+  (cell g-object)
+  (width :pointer)
+  (height :pointer))
+
+(defun cell-renderer-get-fixed-size (cell)
+  (with-foreign-objects ((width :int) (height :int))
+    (gtk-cell-renderer-get-fixed-size cell width height)
+    (values (mem-ref width :int)
+            (mem-ref height :int))))
+
+(export 'cell-renderer-get-fixed-size)
+
+(defcfun gtk-cell-renderer-set-fixed-size :void
+  (cell g-object)
+  (width :int)
+  (height :int))
+
+(defun cell-renderer-set-fixed-size (cell width height)
+  (gtk-cell-renderer-set-fixed-size cell width height))
+
+(export 'cell-renderer-set-fixed-size)
 
 ; TODO: GtkCellRendererAccel
 
