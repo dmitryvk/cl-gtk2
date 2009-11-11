@@ -3,7 +3,8 @@
 (defclass gl-drawing-area (drawing-area)
   ((on-expose :initarg :on-expose :initform nil :accessor gl-drawing-area-on-expose)
    (on-init :initarg :on-init :initform nil :accessor gl-drawing-area-on-init)
-   (on-resize :initarg :on-resize :initform nil :accessor gl-drawing-area-on-resize))
+   (on-resize :initarg :on-resize :initform nil :accessor gl-drawing-area-on-resize)
+   (realized-p :initform nil :accessor gl-drawing-area-realized-p))
   (:metaclass gobject-class)
   (:g-type-name . "GtkGLDrawingArea"))
 
@@ -28,7 +29,7 @@
   (multiple-value-bind (width height)
       (gdk:drawable-get-size (widget-window widget))
     #+nil(format t "configure ~Dx~D~%" width height)
-    (when (widget-realized-p widget)
+    (when (gl-drawing-area-realized-p widget)
       (resize widget width height))))
 
 (defun gl-drawing-area-realize (widget)
@@ -36,9 +37,14 @@
   (bwhen (init-fn (gl-drawing-area-on-init widget))
     (with-gl-context (widget)
       (funcall init-fn widget)))
+  (setf (gl-drawing-area-realized-p widget) t)  
   (multiple-value-bind (width height)
       (gdk:drawable-get-size (widget-window widget))
     (resize widget width height))
+  nil)
+
+(defun gl-drawing-area-unrealize (widget)
+  (setf (gl-drawing-area-realized-p widget) nil)
   nil)
 
 (defun gl-drawing-area-exposed (widget event)
@@ -60,6 +66,7 @@
 
 (defmethod initialize-instance :after ((widget gl-drawing-area) &key &allow-other-keys)
   (connect-signal widget "realize" #'gl-drawing-area-realize)
+  (connect-signal widget "unrealize" #'gl-drawing-area-unrealize)
   (connect-signal widget "expose-event" #'gl-drawing-area-exposed)
   (connect-signal widget "configure-event" #'gl-drawing-area-configure)
   (connect-signal widget "parent-set" #'gl-drawing-area-parent-set))
