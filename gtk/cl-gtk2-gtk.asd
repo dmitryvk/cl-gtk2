@@ -23,6 +23,8 @@
                (:file "gtk.scale-button")
                (:file "gtk.entry")
                (:file "gtk.spin-button")
+               (:file "gtk.selections")
+               (:file "gtk.dnd")
                (:file "gtk.text")
                (:file "gtk.tree-model")
                (:file "gtk.tree-view-column")

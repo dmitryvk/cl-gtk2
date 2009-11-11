@@ -2,6 +2,17 @@
 
 ; TODO: GtkWidget
 
+(define-g-boxed-cstruct selection-data "GtkSelectionData"
+  (selection :pointer) ; GdkAtom
+  (target :pointer) ; GdkAtom
+  (type :pointer) ; GdkAtom
+  (format :int)
+  (data :pointer :initform 0)
+  (length :int)
+  (display g-object))
+
+(export (boxed-related-symbols 'selection-data))
+
 (defun widget-flags (widget)
   (convert-from-foreign (gtk-object-flags-as-integer widget) 'widget-flags))
 

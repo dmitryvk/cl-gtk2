@@ -435,6 +435,15 @@
   (:bilevel 0)
   (:full 1))
 
+(define-g-flags "GdkDragAction" drag-action
+    (:export t :type-initializer "gdk_drag_action_get_type")
+  (:default 1)
+  (:copy 2)
+  (:move 4)
+  (:link 8)
+  (:private 16)
+  (:ask 32))
+
 (define-g-enum "GdkColorspace" colorspace ()
   :rgb)
 
