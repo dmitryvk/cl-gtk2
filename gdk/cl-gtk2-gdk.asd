@@ -9,6 +9,7 @@
                (:file "gdk.objects")
                (:file "gdk.functions")
                (:file "gdk.general")
+               (:file "gdk.dnd")
                (:file "gdk.display")
                (:file "gdk.screen")
                (:file "gdk.region")
