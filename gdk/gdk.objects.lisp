@@ -8,7 +8,7 @@
 (defcenum notify-type (:ancestor 0) :virtual :inferior :nonlinear :nonlinear-virtual :unknown)
 (export 'notify-type)
 
-(gobject:define-g-enum "GdkFillRule"
+(define-g-enum "GdkFillRule"
     gdk-fill-rule
     (:export t :type-initializer "gdk_fill_rule_get_type")
   (:even-odd-rule 0)
@@ -206,228 +206,18 @@
   (:blank-cursor -2)
   (:cursor-is-pixmap -1))
 
-(define-g-object-class "GdkDisplay" display ()
-  ((:cffi name display-name (glib:g-string :free-from-foreign nil)
-          "gdk_display_get_name" nil)
-   (:cffi n-screens display-n-screens :int
-          "gdk_display_get_n_screens" nil)
-   (:cffi default-screen display-default-screen (g-object screen)
-          "gdk_display_get_default_screen" nil)
-   (:cffi devices display-devices (glib:glist g-object :free-from-foreign nil)
-          "gdk_display_list_devices" nil)
-   (:cffi supports-cursor-color display-supports-cursor-color :boolean
-          "gdk_display_supports_cursor_color" nil)
-   (:cffi supports-cursor-alpha display-supports-color-alpha :boolean
-          "gdk_display_supports_cursor_alpha" nil)
-   (:cffi default-cursor-size display-default-cursor-size :uint
-          "gdk_display_get_default_cursor_size" nil)
-   (:cffi default-group display-default-group (g-object gdk-window)
-          "gdk_display_get_default_group" nil)
-   (:cffi supports-selection-notification display-supports-selection-notification :boolean
-          "gdk_display_supports_selection_notification" nil)
-   (:cffi supports-clipboard-persistence display-supports-clipboard-persistence :boolean
-          "gdk_display_supports_clipboard_persistence" nil)
-   (:cffi supports-shapes display-supports-shapes :boolean
-          "gdk_display_supports_shapes" nil)
-   (:cffi supports-input-shapes display-supports-input-shapes :boolean
-          "gdk_display_supports_input_shapes" nil)
-   (:cffi supports-composite display-supports-composite :boolean
-          "gdk_display_supports_composite" nil)
-   (:cffi core-pointer display-core-pointer g-object
-          "gdk_display_get_core_pointer" nil)))
+(define-g-flags "GdkWindowState"
+    gdk-window-state
+    (:export t :type-initializer "gdk_window_state_get_type")
+  (:withdrawn 1)
+  (:iconified 2)
+  (:maximized 4)
+  (:sticky 8)
+  (:fullscreen 16)
+  (:above 32)
+  (:below 64))
 
 ;gdk_display_get_screen
-
-(define-g-object-class "GdkDisplayManager" display-manager ()
-  ((default-display display-manager-default-display "default-display" "GdkDisplay" t t)
-   (:cffi displays display-manager-displays (glib:gslist (g-object display) :free-from-foreign t)
-          "gdk_display_manager_list_displays" nil)))
-
-(define-g-object-class "GdkVisual" visual ()
-  ((:cffi screen visual-screen (g-object screen) "gdk_visual_get_screen" nil)
-   (:cffi visual-type visual-visual-type visual-type gdk-visual-get-visual-type nil)
-   (:cffi depth visual-depth :int gdk-visual-get-depth nil)
-   (:cffi byte-order visual-byte-order byte-order gdk-visual-get-byte-order nil)
-   (:cffi colormap-size visual-colormap-size :int gdk-visual-get-colormap-size nil)
-   (:cffi bits-per-rgb visual-bits-per-rgb :int gdk-visual-get-bits-per-rgb nil)
-   (:cffi red-mask visual-red-mask :uint32 gdk-visual-get-red-mask nil)
-   (:cffi red-shift visual-red-shift :int gdk-visual-get-red-shift nil)
-   (:cffi red-prec visual-red-prec :int gdk-visual-get-red-prec nil)
-   (:cffi green-mask visual-green-mask :uint32 gdk-visual-get-green-mask nil)
-   (:cffi green-shift visual-green-shift :int gdk-visual-get-green-shift nil)
-   (:cffi green-prec visual-green-prec :int gdk-visual-get-green-prec nil)
-   (:cffi blue-mask visual-blue-mask :uint32 gdk-visual-get-blue-mask nil)
-   (:cffi blue-shift visual-blue-shift :int gdk-visual-get-blue-shift nil)
-   (:cffi blue-prec visual-blue-prec :int gdk-visual-get-blue-prec nil)))
-
-(define-g-object-class "GdkColormap" gdk-colormap
-  (:superclass g-object :export t :interfaces
-               nil :type-initializer
-               "gdk_colormap_get_type")
-  ((:cffi visual colormap-visual (g-object visual)
-          "gdk_colormap_get_visual" nil)
-   (:cffi screen colormap-screen (g-object screen)
-          "gdk_colormap_get_screeen" nil)))
-
-(define-g-object-class "GdkScreen" screen ()
-  ((font-options screen-font-options "font-options" "gpointer" t t)
-   (resolution screen-resolution "resolution" "gdouble" t t)
-   (:cffi default-colormap screen-default-colormap (g-object colormap)
-          "gdk_screen_get_default_colormap" "gdk_screen_set_default_colormap")
-   (:cffi system-colormap screen-system-colormap (g-object colormap)
-          "gdk_screen_get_system_colormap" nil)
-   (:cffi system-visual screen-system-visual (g-object visual)
-          "gdk_screen_get_system_visual" nil)
-   (:cffi rgb-colormap screen-rgb-colormap (g-object colormap)
-          "gdk_screen_get_rgb_colormap" nil)
-   (:cffi rgb-visual screen-visual (g-object visual)
-          "gdk_screen_get_rgb_visual" nil)
-   (:cffi rgba-colormap screen-rgba-colormap (g-object colormap)
-          "gdk_screen_get_rgba_colormap" nil)
-   (:cffi rgba-visual screen-rgba-visual (g-object visual)
-          "gdk_screen_get_rgba_visual" nil)
-   (:cffi composited-p screen-composited-p :boolean
-          "gdk_screen_is_composited" nil)
-   (:cffi root-window screen-root-window (g-object gdk-window)
-          "gdk_screen_get_root_window" nil)
-   (:cffi display screen-display (g-object display)
-          "gdk_screen_get_display" nil)
-   (:cffi number screen-number :int
-          "gdk_screen_get_number" nil)
-   (:cffi width screen-widget :int
-          "gdk_screen_get_width" nil)
-   (:cffi height screen-height :int
-          "gdk_screen_get_height" nil)
-   (:cffi width-mm screen-width-mm :int
-          "gdk_screen_get_width_mm" nil)
-   (:cffi height-mm screen-height-mm :int
-          "gdk_screen_get_height_mm" nil)
-   (:cffi visuals screen-visuals (glib:glist (g-object visual) :free-from-foreign t)
-          "gdk_screen_list_visuals" nil)
-   (:cffi toplevel-windows screen-toplevel-windows (glib:glist (g-object gdk-window) :free-from-foreign t)
-          "gdk_screen_get_toplevel_windows" nil)
-   (:cffi display-name screen-display-name (glib:g-string :free-from-foreign t)
-          "gdk_screen_make_display_name" nil)
-   (:cffi n-monitors screen-n-monitors :int
-          "gdk_screen_get_n_monitors" nil)
-   (:cffi active-window screen-active-window (g-object gdk-window)
-          "gdk_screen_get_active_window" nil)
-   (:cffi window-stack screen-window-stack (glib:glist (g-object gdk-window) :free-from-foreign t)
-          "gdk_screen_get_window_stack" nil)))
-
-(defcfun gdk-region-new :pointer)
-
-(define-g-boxed-opaque region nil :alloc (gdk-region-new))
-
-(export (boxed-related-symbols 'region))
-
-(define-g-boxed-cstruct point nil
-  (x :int :initform 0)
-  (y :int :initform 0))
-
-(export (boxed-related-symbols 'point))
-
-(define-g-boxed-cstruct span nil
-  (x :int :initform 0)
-  (y :int :initform 0)
-  (width :int :initform 0))
-
-(export (boxed-related-symbols 'span))
-
-(define-g-boxed-cstruct segment nil
-  (x1 :int :initform 0)
-  (y1 :int :initform 0)
-  (x2 :int :initform 0)
-  (y2 :int :initform 0))
-
-(export (boxed-related-symbols 'segment))
-
-(define-g-boxed-cstruct trapezoid nil
-  (y1 :double :initform 0d0)
-  (x11 :double :initform 0d0)
-  (x21 :double :initform 0d0)
-  (y2 :double :initform 0d0)
-  (x12 :double :initform 0d0)
-  (x22 :double :initform 0d0))
-
-(export (boxed-related-symbols 'trapezoid))
-
-(define-g-boxed-cstruct rectangle "GdkRectangle"
-  (x :int :initform 0)
-  (y :int :initform 0)
-  (width :int :initform 0)
-  (height :int :initform 0))
-
-(export (boxed-related-symbols 'rectangle))
-
-(define-g-boxed-opaque font "GdkFont"
-  :alloc (error "GDK:FONT objects may not be allocated directly"))
-
-(export (boxed-related-symbols 'font))
-
-(define-g-boxed-cstruct color "GdkColor"
-  (pixel :uint32 :initform 0)
-  (red :uint16 :initform 0)
-  (green :uint16 :initform 0)
-  (blue :uint16 :initform 0))
-
-(export (boxed-related-symbols 'color))
-
-(define-g-object-class "GdkGC" graphics-context ()
-  ((:cffi screen graphics-context-screen (g-object screen)
-          "gdk_gc_get_screen" nil)
-   (:cffi foreground graphics-context-foreground (g-boxed-foreign color)
-          nil "gdk_gc_set_foreground")
-   (:cffi background graphics-context-background (g-boxed-foreign color)
-          nil "gdk_gc_set_background")
-   (:cffi rgb-fg-color graphics-context-rgb-fg-color (g-boxed-foreign color)
-          nil "gdk_gc_set_rgb_fg_color")
-   (:cffi rgb-bg-color graphics-context-rgb-bg-color (g-boxed-foreign color)
-          nil "gdk_gc_set_rgb_bg_color")
-   (:cffi font graphics-context-font (g-boxed-foreign font)
-          nil "gdk_gc_set_font")
-   (:cffi function graphics-context-function gdk-function
-          nil "gdk_gc_set_function")
-   (:cffi fill graphics-context-fill gdk-fill
-          nil "gdk_gc_set_fill")
-   (:cffi tile graphics-context-tile (g-object pixmap)
-          nil "gdk_gc_set_tile")
-   (:cffi stipple graphics-context-stipple (g-object pixmap)
-          nil "gdk_gc_set_stipple")
-   (:cffi clip-mask graphics-context-clip-mask (g-object pixmap)
-          nil "gdk_gc_set_clip_mask")
-   (:cffi clip-rectangle graphics-context-clip-rectangle (g-boxed-foreign rectangle)
-          nil "gdk_gc_set_clip_rectangle")
-   (:cffi clip-region graphics-context-clip-region (g-boxed-foreign region)
-          nil "gdk_gc_set_clip_region")
-   (:cffi subwindow graphics-context-subwindow subwindow-mode
-          nil "gdk_gc_set_subwindow")
-   (:cffi exposures graphics-context-exposures :boolean
-          nil "gdk_gc_set_exposures")
-   (:cffi colormap graphics-context-colormap (g-object colormap)
-          "gdk_gc_get_colormap" "gdk_gc_set_colormap")))
-
-(define-g-object-class "GdkDrawable" drawable ()
-  ((:cffi display drawable-display (g-object display)
-          "gdk_drawable_get_display" nil)
-   (:cffi screen drawable-screen (g-object screen)
-          "gdk_drawable_get_screen" nil)
-   (:cffi visual drawable-visual (g-object visual)
-          "gdk_drawable_get_visual" nil)
-   (:cffi colormap drawable-colormap (g-object colormap)
-          "gdk_drawable_get_colormap" "gdk_drawable_set_colormap")
-   (:cffi depth drawable-depth :int
-          "gdk_drawable_get_depth" nil)
-   (:cffi clip-region drawable-clip-region (g-boxed-foreign region :return)
-          "gdk_drawable_get_clip_region" nil)
-   (:cffi visible-region drawable-visible-region (g-boxed-foreign region :return)
-          "gdk_drawable_get_visible_region" nil)))
-
-(define-g-object-class "GdkPixmap" pixmap (:superclass drawable) ())
-
-(define-g-object-class "GdkWindow" gdk-window (:superclass drawable) ())
-
-(define-g-object-class "GdkKeymap" keymap () ())
 
 (define-g-enum "GdkEventType" event-type ()
   (:nothing -1) (:delete 0)
@@ -445,21 +235,7 @@
   (:window-state 32) (:setting 33) (:owner-change 34)
   (:grab-broken 35) (:damage 36)) 
 
-(define-g-flags "GdkEventMask" gdk-event-mask (:export t :type-initializer "gdk_event_mask_get_type")
-  (:exposure-mask 2) (:pointer-motion-mask 4)
-  (:pointer-motion-hint-mask 8) (:button-motion-mask 16)
-  (:button1-motion-mask 32) (:button2-motion-mask 64)
-  (:button3-motion-mask 128) (:button-press-mask 256)
-  (:button-release-mask 512) (:key-press-mask 1024)
-  (:key-release-mask 2048) (:enter-notify-mask 4096)
-  (:leave-notify-mask 8192) (:focus-change-mask 16384)
-  (:structure-mask 32768) (:property-change-mask 65536)
-  (:visibility-notify-mask 131072)
-  (:proximity-in-mask 262144) (:proximity-out-mask 524288)
-  (:substructure-mask 1048576) (:scroll-mask 2097152)
-  (:all-events-mask 4194302))
-
-(define-g-enum "GdkExtensionMode" gdk-extension-mode (:export t :type-initializer "gdk_extension_mode_get_type")
+(define-g-enum "GdkExtensionMode" extension-mode (:export t :type-initializer "gdk_extension_mode_get_type")
   (:none 0) (:all 1) (:cursor 2))
 
 (define-g-enum "GdkWindowTypeHint" gdk-window-type-hint (:export t :type-initializer "gdk_window_type_hint_get_type")
@@ -532,22 +308,110 @@
   :south-east
   :static)
 
-(define-g-boxed-cstruct geometry "GdkGeometry"
-  (min-width :int :initform 0)
-  (min-height :int :initform 0)
-  (max-width :int :initform 0)
-  (max-height :int :initform 0)
-  (base-width :int :initform 0)
-  (base-height :int :initform 0)
-  (width-increment :int :initform 0)
-  (height-increment :int :initform 0)
-  (min-aspect :double :initform 0.0d0)
-  (max-aspect :double :initform 0.0d0)
-  (gravity gravity :initform :north-west))
+(define-g-enum "GdkWindowType"
+    gdk-window-type
+    (:export t :type-initializer "gdk_window_type_get_type")
+  (:root 0)
+  (:toplevel 1)
+  (:child 2)
+  (:dialog 3)
+  (:temp 4)
+  (:foreign 5)
+  (:offscreen 6))
 
-(export (boxed-related-symbols 'geometry))
+(define-g-enum "GdkWindowClass"
+    gdk-window-class
+    (:export t :type-initializer "gdk_window_class_get_type")
+  (:input-output 0)
+  (:input-only 1))
 
-(glib:at-init () (foreign-funcall-pointer (foreign-symbol-pointer "gdk_cursor_get_type") () :int))
+(define-g-flags "GdkWindowHints"
+    gdk-window-hints
+    (:export t :type-initializer "gdk_window_hints_get_type")
+  (:pos 1)
+  (:min-size 2)
+  (:max-size 4)
+  (:base-size 8)
+  (:aspect 16)
+  (:resize-inc 32)
+  (:win-gravity 64)
+  (:user-pos 128)
+  (:user-size 256))
+
+(define-g-enum "GdkWindowEdge"
+    gdk-window-edge
+    (:export t :type-initializer "gdk_window_edge_get_type")
+  (:north-west 0)
+  (:north 1)
+  (:north-east 2)
+  (:west 3)
+  (:east 4)
+  (:south-west 5)
+  (:south 6)
+  (:south-east 7))
+
+(define-g-flags "GdkWindowAttributesType"
+    gdk-window-attributes-type
+    (:export t :type-initializer "gdk_window_attributes_type_get_type")
+  (:title 2)
+  (:x 4)
+  (:y 8)
+  (:cursor 16)
+  (:colormap 32)
+  (:visual 64)
+  (:wmclass 128)
+  (:noredir 256)
+  (:type-hint 512))
+
+(define-g-enum "GdkFilterReturn"
+    gdk-filter-return
+    (:export t :type-initializer "gdk_filter_return_get_type")
+  (:continue 0)
+  (:translate 1)
+  (:remove 2))
+
+(define-g-flags "GdkModifierType"
+    gdk-modifier-type
+    (:export t :type-initializer "gdk_modifier_type_get_type")
+  (:shift-mask 1)
+  (:lock-mask 2)
+  (:control-mask 4)
+  (:mod1-mask 8)
+  (:mod2-mask 16)
+  (:mod3-mask 32)
+  (:mod4-mask 64)
+  (:mod5-mask 128)
+  (:button1-mask 256)
+  (:button2-mask 512)
+  (:button3-mask 1024)
+  (:button4-mask 2048)
+  (:button5-mask 4096)
+  (:super-mask 67108864)
+  (:hyper-mask 134217728)
+  (:meta-mask 268435456)
+  (:release-mask 1073741824)
+  (:modifier-mask 1543512063))
+
+(define-g-flags "GdkWMDecoration"
+    gdk-w-m-decoration
+    (:export t :type-initializer "gdk_wm_decoration_get_type")
+  (:all 1)
+  (:border 2)
+  (:resizeh 4)
+  (:title 8)
+  (:menu 16)
+  (:minimize 32)
+  (:maximize 64))
+
+(define-g-flags "GdkWMFunction"
+    gdk-w-m-function
+    (:export t :type-initializer "gdk_wm_function_get_type")
+  (:all 1)
+  (:resize 2)
+  (:move 4)
+  (:minimize 8)
+  (:maximize 16)
+  (:close 32))
 
 (define-g-enum "GdkCursorType" cursor-type (:export t :type-initializer "gdk_cursor_type_get_type")
   (:x-cursor 0) (:arrow 2) (:based-arrow-down 4)
@@ -580,7 +444,40 @@
   (:watch 150) (:xterm 152) (:last-cursor 153)
   (:blank-cursor -2) (:cursor-is-pixmap -1))
 
+(define-g-enum "GdkImageType"
+    gdk-image-type
+    (:export t :type-initializer "gdk_image_type_get_type")
+  (:normal 0)
+  (:shared 1)
+  (:fastest 2))
+
+(define-g-enum "GdkPixbufAlphaMode"
+    pixbuf-alpha-mode
+    (:export t :type-initializer "gdk_pixbuf_alpha_mode_get_type")
+  (:bilevel 0)
+  (:full 1))
+
+(define-g-enum "GdkColorspace" colorspace ()
+  :rgb)
+
 (export 'cursor-type)
+
+(define-g-boxed-cstruct geometry nil
+  (min-width :int :initform 0)
+  (min-height :int :initform 0)
+  (max-width :int :initform 0)
+  (max-height :int :initform 0)
+  (base-width :int :initform 0)
+  (base-height :int :initform 0)
+  (width-increment :int :initform 0)
+  (height-increment :int :initform 0)
+  (min-aspect :double :initform 0.0d0)
+  (max-aspect :double :initform 0.0d0)
+  (gravity gravity :initform :north-west))
+
+(export (boxed-related-symbols 'geometry))
+
+(glib:at-init () (foreign-funcall-pointer (foreign-symbol-pointer "gdk_cursor_get_type") () :int))
 
 (define-g-boxed-opaque cursor "GdkCursor" :alloc (error "GdkCursor can not be created from Lisp side"))
 
@@ -598,6 +495,73 @@
 
 (defmethod translate-to-foreign (value (type gdk-atom-as-string-type))
   (gdk-atom-intern value nil))
+
+(define-g-object-class "GdkWindow" gdk-window (:superclass drawable)
+   ((:cffi window-type gdk-window-window-type gdk-window-type
+           "gdk_window_get_window_type" nil)
+    (:cffi is-destroyed gdk-window-is-destroyed :boolean
+           "gdk_window_is_destroyed" nil)
+    (:cffi is-visible gdk-window-is-visible :boolean
+           "gdk_window_is_visible" nil)
+    (:cffi is-viewable gdk-window-is-viewable :boolean
+           "gdk_window_is_viewable" nil)
+    (:cffi state gdk-window-state gdk-window-state 
+           "gdk_window_get_state" nil)
+    (:cffi keep-above gdk-window-keep-above :boolean 
+           nil "gdk_window_set_keep_above")
+    (:cffi keep-below gdk-window-keep-below :boolean 
+           nil "gdk_window_set_keep_below" )
+    (:cffi opacity gdk-window-opacity :double
+           nil "gdk_window_set_opacity")
+    (:cffi composited gdk-window-composited :boolean 
+           nil "gdk_window_set_composited")
+    (:cffi user-data gdk-window-user-data :pointer
+           "gdk_window_get_user_data" "gdk_window_set_user_data")
+    (:cffi override-redirect gdk-window-override-redirect :boolean
+           nil "gdk_window_set_override_redirect")
+    (:cffi accept-focus gdk-window-accept-focus :boolean
+           nil "gdk_window_set_accept_focus")
+    (:cffi focus-on-map gdk-window-focus-on-map :boolean
+           nil "gdk_window_set_focus_on_map")
+    (:cffi title gdk-window-title :string
+           nil "gdk_window_set_title")
+    (:cffi background gdk-window-background (g-boxed-foreign color)
+           nil "gdk_window_set_background")
+    (:cffi icon-list gdk-window-icon-list (glib:glist (g-object pixbuf))
+           nil "gdk_window_set_icon_list")
+    (:cffi modal-hint gdk-window-modal-hint :boolean
+           nil "gdk_window_set_modal_hint")
+    (:cffi type-hint gdk-window-type-hint gdk-window-type-hint
+           "gdk_window_get_type_hint" "gdk_window_set_type_hint")
+    (:cffi skip-taskbar-hint gdk-window-skip-taskbar-hint :boolean
+           nil "gdk_window_set_skip_taskbar_hint")
+    (:cffi skip-pager-hint gdk-window-skip-pager-hint :boolean
+           nil "gdk_window_set_skip_pager_hint")
+    (:cffi urgency-hint gdk-window-urgency-hint :boolean
+           nil "gdk_window_set_urgency_hint")
+    (:cffi parent gdk-window-parent (g-object gdk-window)
+           "gdk_window_get_parent" nil)
+    (:cffi toplevel gdk-window-get-toplevel (g-object gdk-window)
+           "gdk_window_get_toplevel" nil)
+    (:cffi children gdk-window-children (glib:glist (g-object gdk-window) :free-from-foreign nil)
+           "gdk_window_peek_children" nil)
+    (:cffi events gdk-window-events event-mask
+           "gdk_window_get_events" "gdk_window_set_events")
+    (:cffi icon-name gdk-window-icon-name :string
+           nil "gdk_window_set_icon_name")
+    (:cffi transient-for gdk-window-transient-for (g-object gdk-window)
+           nil "gdk_window_set_transient_for")
+    (:cffi role gdk-window-role :string
+           nil "gdk_window_set_role")
+    (:cffi startup-id gdk-window-startup-id :string
+           nil "gdk_window_set_startup_id")
+    (:cffi group gdk-window-group (g-object gdk-window)
+           "gdk_window_get_group" "gdk_window_set_group")
+    (:cffi decorations gdk-window-decorations gdk-w-m-decoration
+           gdk-window-get-decorations "gdk_window_set_decorations")
+    (:cffi functions gdk-window-functions gdk-w-m-function
+           nil "gdk_window_set_functions")))
+
 
 ;;;FIXME: Check correct type
 (defctype native-window :uint32)
@@ -620,6 +584,14 @@
          for i from 0 below (fixed-array-array-size type)
          do (setf (aref result i) (mem-aref ptr el-type i)))
       result)))
+
+(define-g-boxed-cstruct rectangle "GdkRectangle"
+  (x :int :initform 0)
+  (y :int :initform 0)
+  (width :int :initform 0)
+  (height :int :initform 0))
+
+(export (boxed-related-symbols 'rectangle))
 
 (define-g-boxed-variant-cstruct event "GdkEvent"
   (type event-type)
@@ -750,17 +722,6 @@
 
 (define-g-object-class "GdkDragContext" drag-context () ())
 
-(define-g-flags "GdkWindowHints" window-hints ()
-  :pos :min-size :max-size :base-size :aspect
-  :resize-inc :win-gravity :user-pos :user-size)
-
-(define-g-enum "GdkWindowEdge" window-edge ()
-  (:north-west 0) (:north 1) (:north-east 2) (:west 3)
-  (:east 4) (:south-west 5) (:south 6) (:south-east 7))
-
-(define-g-enum "GdkColorspace" colorspace ()
-  :rgb)
-
 (define-g-object-class "GdkPixbuf" pixbuf ()
     ((colorspace pixbuf-colorspace "colorspace" "GdkColorspace" t nil)
      (n-channels pixbuf-n-channels "n-channels" "gint" t nil)
@@ -781,16 +742,233 @@
   ((:cffi colormap gdk-image-colormap (g-object gdk-colormap)
           "gdk_image_get_colormap" "gdk_image_set_colormap")))
 
-(define-g-enum "GdkImageType"
-    gdk-image-type
-    (:export t :type-initializer "gdk_image_type_get_type")
-  (:normal 0)
-  (:shared 1)
-  (:fastest 2))
+(define-g-object-class "GdkDisplay" display ()
+  ((:cffi name display-name (glib:g-string :free-from-foreign nil)
+          "gdk_display_get_name" nil)
+   (:cffi n-screens display-n-screens :int
+          "gdk_display_get_n_screens" nil)
+   (:cffi default-screen display-default-screen (g-object screen)
+          "gdk_display_get_default_screen" nil)
+   (:cffi devices display-devices (glib:glist g-object :free-from-foreign nil)
+          "gdk_display_list_devices" nil)
+   (:cffi supports-cursor-color display-supports-cursor-color :boolean
+          "gdk_display_supports_cursor_color" nil)
+   (:cffi supports-cursor-alpha display-supports-color-alpha :boolean
+          "gdk_display_supports_cursor_alpha" nil)
+   (:cffi default-cursor-size display-default-cursor-size :uint
+          "gdk_display_get_default_cursor_size" nil)
+   (:cffi default-group display-default-group (g-object gdk-window)
+          "gdk_display_get_default_group" nil)
+   (:cffi supports-selection-notification display-supports-selection-notification :boolean
+          "gdk_display_supports_selection_notification" nil)
+   (:cffi supports-clipboard-persistence display-supports-clipboard-persistence :boolean
+          "gdk_display_supports_clipboard_persistence" nil)
+   (:cffi supports-shapes display-supports-shapes :boolean
+          "gdk_display_supports_shapes" nil)
+   (:cffi supports-input-shapes display-supports-input-shapes :boolean
+          "gdk_display_supports_input_shapes" nil)
+   (:cffi supports-composite display-supports-composite :boolean
+          "gdk_display_supports_composite" nil)
+   (:cffi core-pointer display-core-pointer g-object
+          "gdk_display_get_core_pointer" nil)))
 
-(define-g-enum "GdkPixbufAlphaMode"
-    pixbuf-alpha-mode
-    (:export t :type-initializer "gdk_pixbuf_alpha_mode_get_type")
-  (:bilevel 0)
-  (:full 1))
+(define-g-object-class "GdkDisplayManager" display-manager ()
+  ((default-display display-manager-default-display "default-display" "GdkDisplay" t t)
+   (:cffi displays display-manager-displays (glib:gslist (g-object display) :free-from-foreign t)
+          "gdk_display_manager_list_displays" nil)))
+
+(define-g-object-class "GdkVisual" visual ()
+  ((:cffi screen visual-screen (g-object screen) "gdk_visual_get_screen" nil)
+   (:cffi visual-type visual-visual-type visual-type gdk-visual-get-visual-type nil)
+   (:cffi depth visual-depth :int gdk-visual-get-depth nil)
+   (:cffi byte-order visual-byte-order byte-order gdk-visual-get-byte-order nil)
+   (:cffi colormap-size visual-colormap-size :int gdk-visual-get-colormap-size nil)
+   (:cffi bits-per-rgb visual-bits-per-rgb :int gdk-visual-get-bits-per-rgb nil)
+   (:cffi red-mask visual-red-mask :uint32 gdk-visual-get-red-mask nil)
+   (:cffi red-shift visual-red-shift :int gdk-visual-get-red-shift nil)
+   (:cffi red-prec visual-red-prec :int gdk-visual-get-red-prec nil)
+   (:cffi green-mask visual-green-mask :uint32 gdk-visual-get-green-mask nil)
+   (:cffi green-shift visual-green-shift :int gdk-visual-get-green-shift nil)
+   (:cffi green-prec visual-green-prec :int gdk-visual-get-green-prec nil)
+   (:cffi blue-mask visual-blue-mask :uint32 gdk-visual-get-blue-mask nil)
+   (:cffi blue-shift visual-blue-shift :int gdk-visual-get-blue-shift nil)
+   (:cffi blue-prec visual-blue-prec :int gdk-visual-get-blue-prec nil)))
+
+(define-g-object-class "GdkColormap" gdk-colormap
+  (:superclass g-object :export t :interfaces
+               nil :type-initializer
+               "gdk_colormap_get_type")
+  ((:cffi visual colormap-visual (g-object visual)
+          "gdk_colormap_get_visual" nil)
+   (:cffi screen colormap-screen (g-object screen)
+          "gdk_colormap_get_screeen" nil)))
+
+(define-g-object-class "GdkScreen" screen ()
+  ((font-options screen-font-options "font-options" "gpointer" t t)
+   (resolution screen-resolution "resolution" "gdouble" t t)
+   (:cffi default-colormap screen-default-colormap (g-object colormap)
+          "gdk_screen_get_default_colormap" "gdk_screen_set_default_colormap")
+   (:cffi system-colormap screen-system-colormap (g-object colormap)
+          "gdk_screen_get_system_colormap" nil)
+   (:cffi system-visual screen-system-visual (g-object visual)
+          "gdk_screen_get_system_visual" nil)
+   (:cffi rgb-colormap screen-rgb-colormap (g-object colormap)
+          "gdk_screen_get_rgb_colormap" nil)
+   (:cffi rgb-visual screen-visual (g-object visual)
+          "gdk_screen_get_rgb_visual" nil)
+   (:cffi rgba-colormap screen-rgba-colormap (g-object colormap)
+          "gdk_screen_get_rgba_colormap" nil)
+   (:cffi rgba-visual screen-rgba-visual (g-object visual)
+          "gdk_screen_get_rgba_visual" nil)
+   (:cffi composited-p screen-composited-p :boolean
+          "gdk_screen_is_composited" nil)
+   (:cffi root-window screen-root-window (g-object gdk-window)
+          "gdk_screen_get_root_window" nil)
+   (:cffi display screen-display (g-object display)
+          "gdk_screen_get_display" nil)
+   (:cffi number screen-number :int
+          "gdk_screen_get_number" nil)
+   (:cffi width screen-widget :int
+          "gdk_screen_get_width" nil)
+   (:cffi height screen-height :int
+          "gdk_screen_get_height" nil)
+   (:cffi width-mm screen-width-mm :int
+          "gdk_screen_get_width_mm" nil)
+   (:cffi height-mm screen-height-mm :int
+          "gdk_screen_get_height_mm" nil)
+   (:cffi visuals screen-visuals (glib:glist (g-object visual) :free-from-foreign t)
+          "gdk_screen_list_visuals" nil)
+   (:cffi toplevel-windows screen-toplevel-windows (glib:glist (g-object gdk-window) :free-from-foreign t)
+          "gdk_screen_get_toplevel_windows" nil)
+   (:cffi display-name screen-display-name (glib:g-string :free-from-foreign t)
+          "gdk_screen_make_display_name" nil)
+   (:cffi n-monitors screen-n-monitors :int
+          "gdk_screen_get_n_monitors" nil)
+   (:cffi active-window screen-active-window (g-object gdk-window)
+          "gdk_screen_get_active_window" nil)
+   (:cffi window-stack screen-window-stack (glib:glist (g-object gdk-window) :free-from-foreign t)
+          "gdk_screen_get_window_stack" nil)))
+
+(defcfun gdk-region-new :pointer)
+
+(define-g-boxed-opaque region nil :alloc (gdk-region-new))
+
+(export (boxed-related-symbols 'region))
+
+(define-g-boxed-cstruct point nil
+  (x :int :initform 0)
+  (y :int :initform 0))
+
+(export (boxed-related-symbols 'point))
+
+(define-g-boxed-cstruct span nil
+  (x :int :initform 0)
+  (y :int :initform 0)
+  (width :int :initform 0))
+
+(export (boxed-related-symbols 'span))
+
+(define-g-boxed-cstruct segment nil
+  (x1 :int :initform 0)
+  (y1 :int :initform 0)
+  (x2 :int :initform 0)
+  (y2 :int :initform 0))
+
+(export (boxed-related-symbols 'segment))
+
+(define-g-boxed-cstruct trapezoid nil
+  (y1 :double :initform 0d0)
+  (x11 :double :initform 0d0)
+  (x21 :double :initform 0d0)
+  (y2 :double :initform 0d0)
+  (x12 :double :initform 0d0)
+  (x22 :double :initform 0d0))
+
+(export (boxed-related-symbols 'trapezoid))
+
+(define-g-boxed-opaque font "GdkFont"
+  :alloc (error "GDK:FONT objects may not be allocated directly"))
+
+(export (boxed-related-symbols 'font))
+
+(define-g-boxed-cstruct color "GdkColor"
+  (pixel :uint32 :initform 0)
+  (red :uint16 :initform 0)
+  (green :uint16 :initform 0)
+  (blue :uint16 :initform 0))
+
+(export (boxed-related-symbols 'color))
+
+(define-g-object-class "GdkGC" graphics-context ()
+  ((:cffi screen graphics-context-screen (g-object screen)
+          "gdk_gc_get_screen" nil)
+   (:cffi foreground graphics-context-foreground (g-boxed-foreign color)
+          nil "gdk_gc_set_foreground")
+   (:cffi background graphics-context-background (g-boxed-foreign color)
+          nil "gdk_gc_set_background")
+   (:cffi rgb-fg-color graphics-context-rgb-fg-color (g-boxed-foreign color)
+          nil "gdk_gc_set_rgb_fg_color")
+   (:cffi rgb-bg-color graphics-context-rgb-bg-color (g-boxed-foreign color)
+          nil "gdk_gc_set_rgb_bg_color")
+   (:cffi font graphics-context-font (g-boxed-foreign font)
+          nil "gdk_gc_set_font")
+   (:cffi function graphics-context-function gdk-function
+          nil "gdk_gc_set_function")
+   (:cffi fill graphics-context-fill gdk-fill
+          nil "gdk_gc_set_fill")
+   (:cffi tile graphics-context-tile (g-object pixmap)
+          nil "gdk_gc_set_tile")
+   (:cffi stipple graphics-context-stipple (g-object pixmap)
+          nil "gdk_gc_set_stipple")
+   (:cffi clip-mask graphics-context-clip-mask (g-object pixmap)
+          nil "gdk_gc_set_clip_mask")
+   (:cffi clip-rectangle graphics-context-clip-rectangle (g-boxed-foreign rectangle)
+          nil "gdk_gc_set_clip_rectangle")
+   (:cffi clip-region graphics-context-clip-region (g-boxed-foreign region)
+          nil "gdk_gc_set_clip_region")
+   (:cffi subwindow graphics-context-subwindow subwindow-mode
+          nil "gdk_gc_set_subwindow")
+   (:cffi exposures graphics-context-exposures :boolean
+          nil "gdk_gc_set_exposures")
+   (:cffi colormap graphics-context-colormap (g-object colormap)
+          "gdk_gc_get_colormap" "gdk_gc_set_colormap")))
+
+(define-g-object-class "GdkDrawable" drawable ()
+  ((:cffi display drawable-display (g-object display)
+          "gdk_drawable_get_display" nil)
+   (:cffi screen drawable-screen (g-object screen)
+          "gdk_drawable_get_screen" nil)
+   (:cffi visual drawable-visual (g-object visual)
+          "gdk_drawable_get_visual" nil)
+   (:cffi colormap drawable-colormap (g-object colormap)
+          "gdk_drawable_get_colormap" "gdk_drawable_set_colormap")
+   (:cffi depth drawable-depth :int
+          "gdk_drawable_get_depth" nil)
+   (:cffi clip-region drawable-clip-region (g-boxed-foreign region :return)
+          "gdk_drawable_get_clip_region" nil)
+   (:cffi visible-region drawable-visible-region (g-boxed-foreign region :return)
+          "gdk_drawable_get_visible_region" nil)))
+
+(define-g-object-class "GdkPixmap" pixmap (:superclass drawable) ())
+
+(define-g-object-class "GdkKeymap" keymap () ())
+
+(define-g-boxed-cstruct gdk-window-attr nil
+  (title (:string :free-from-foreign nil) :initform nil)
+  (event-mask event-mask :initform nil)
+  (x :int :initform 0)
+  (y :int :initform 0)
+  (width :int :initform 0)
+  (height :int :initform 0)
+  (window-class gdk-window-class :initform :input-output)
+  (visual (g-object visual) :initform nil)
+  (colormap (g-object colormap) :initform nil)
+  (window-type gdk-window-type :initform :toplevel)
+  (cursor (g-object cursor) :initform nil)
+  (wmclass-name (:string :free-from-foreign nil) :initform nil)
+  (wmclass-class (:string :free-from-foreign nil) :initform nil)
+  (override-redirect :boolean :initform nil)
+  (type-hint gdk-window-type-hint :initform :normal))
+
+(export (boxed-related-symbols 'gdk-window-attr))
 

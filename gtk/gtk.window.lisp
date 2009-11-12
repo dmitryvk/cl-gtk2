@@ -26,7 +26,7 @@
   (window (g-object gtk-window))
   (geometry-widget (g-object widget))
   (geometry (g-boxed-foreign geometry))
-  (geometry-mask window-hints))
+  (geometry-mask gdk-window-hints))
 
 (export 'gtk-window-set-geometry-hints)
 
@@ -120,7 +120,7 @@
 
 (defcfun (gtk-window-begin-resize-drag "gtk_window_begin_resize_drag") :void
   (window (g-object gtk-window))
-  (edge window-edge)
+  (edge gdk-window-edge)
   (button :int)
   (root-x :int)
   (root-y :int)
