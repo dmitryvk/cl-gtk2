@@ -26,3 +26,14 @@
   (:error 4))
 
 (export 'pango-underline)
+
+(define-g-enum "PangoDirection"
+    pango-direction
+    (:export t :type-initializer "pango_direction_get_type")
+  (:ltr 0)
+  (:rtl 1)
+  (:ttb-ltr 2)
+  (:ttb-rtl 3)
+  (:weak-ltr 4)
+  (:weak-rtl 5)
+  (:neutral 6))
