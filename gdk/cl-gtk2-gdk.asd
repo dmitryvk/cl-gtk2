@@ -21,5 +21,6 @@
                (:file "gdk.visual")
                (:file "gdk.cursor")
                (:file "gdk.windows")
-               (:file "gdk.events"))
+               (:file "gdk.events")
+               (:file "gdk.key-values"))
   :depends-on (:cl-gtk2-glib :cffi :cl-gtk2-pango))

@@ -941,7 +941,20 @@
 
 (define-g-object-class "GdkPixmap" pixmap (:superclass drawable) ())
 
-(define-g-object-class "GdkKeymap" keymap () ())
+(define-g-object-class "GdkKeymap" keymap
+  (:superclass g-object :export t :interfaces
+               nil :type-initializer "gdk_keymap_get_type")
+  ((:cffi direction keymap-direction pango:pango-direction
+          "gdk_keymap_get_direction" nil)
+   (:cffi has-bidi-layouts keymap-has-bidi-layouts :boolean
+          "gdk_keymap_have_bidi_layouts" nil)
+   (:cffi caps-lock-state keymap-caps-lock-state :boolean
+          "gdk_keymap_get_caps_lock_state" nil)))
+
+(define-g-boxed-cstruct keymap-key nil
+  (keycode :uint :initform 0)
+  (group :int :initform 0)
+  (level :int :initform 0))
 
 (define-g-boxed-cstruct gdk-window-attr nil
   (title (:string :free-from-foreign nil) :initform nil)
