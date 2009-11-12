@@ -370,28 +370,6 @@
   (:translate 1)
   (:remove 2))
 
-(define-g-flags "GdkModifierType"
-    gdk-modifier-type
-    (:export t :type-initializer "gdk_modifier_type_get_type")
-  (:shift-mask 1)
-  (:lock-mask 2)
-  (:control-mask 4)
-  (:mod1-mask 8)
-  (:mod2-mask 16)
-  (:mod3-mask 32)
-  (:mod4-mask 64)
-  (:mod5-mask 128)
-  (:button1-mask 256)
-  (:button2-mask 512)
-  (:button3-mask 1024)
-  (:button4-mask 2048)
-  (:button5-mask 4096)
-  (:super-mask 67108864)
-  (:hyper-mask 134217728)
-  (:meta-mask 268435456)
-  (:release-mask 1073741824)
-  (:modifier-mask 1543512063))
-
 (define-g-flags "GdkWMDecoration"
     gdk-w-m-decoration
     (:export t :type-initializer "gdk_wm_decoration_get_type")
@@ -459,6 +437,18 @@
 
 (define-g-enum "GdkColorspace" colorspace ()
   :rgb)
+
+(define-g-enum "GdkAxisUse"
+    axis-use
+    (:export t :type-initializer "gdk_axis_use_get_type")
+  (:ignore 0)
+  (:x 1)
+  (:y 2)
+  (:pressure 3)
+  (:xtilt 4)
+  (:ytilt 5)
+  (:wheel 6)
+  (:last 7))
 
 (export 'cursor-type)
 

@@ -19,5 +19,7 @@
                (:file "gdk.pixbufs")
                (:file "gdk.colors")
                (:file "gdk.visual")
-               (:file "gdk.cursor"))
+               (:file "gdk.cursor")
+               (:file "gdk.windows")
+               (:file "gdk.events"))
   :depends-on (:cl-gtk2-glib :cffi :cl-gtk2-pango))

@@ -499,15 +499,15 @@
   (window (g-object gdk-window))
   (x (:pointer :int))
   (y (:pointer :int))
-  (mask (:pointer gdk-modifier-type)))
+  (mask (:pointer modifier-type)))
 
 (defun gdk-window-get-pointer (window)
-  (with-foreign-objects ((x :int) (y :int) (mask 'gdk-modifier-type))
+  (with-foreign-objects ((x :int) (y :int) (mask 'modifier-type))
     (let ((w (gdk_window_get_pointer window x y mask)))
       (values w
               (mem-ref x :int)
               (mem-ref y :int)
-              (mem-ref mask 'gdk-modifier-type)))))
+              (mem-ref mask 'modifier-type)))))
 
 (export 'gdk-window-get-pointer)
 
