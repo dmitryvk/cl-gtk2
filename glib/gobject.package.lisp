@@ -195,7 +195,8 @@
            #:define-cb-methods
            #:create-fn-ref
            #:copy-boxed-slots-to-foreign
-           #:with-foreign-boxed-array)
+           #:with-foreign-boxed-array
+           #:get-g-type-definition)
   (:documentation
    "CL-GTK2-GOBJECT is a binding to GObject type system.
 For information on GObject, see its @a[http://library.gnome.org/devel/gobject/stable/]{documentation}.

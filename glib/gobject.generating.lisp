@@ -453,6 +453,23 @@ If non-@code{NIL}, specifies the function that initializes the type: string spec
                                 probable-type-initializer)))
        ,@(mapcar #'flags-value->definition items))))
 
+(defun maybe-call-type-init (type)
+  (when (and (stringp type) (zerop (g-type-numeric type)))
+    (let ((type-init-name (probable-type-init-name type)))
+      (when (foreign-symbol-pointer type-init-name)
+        (foreign-funcall-pointer (foreign-symbol-pointer type-init-name) () :int)))))
+
+(defun get-g-type-definition (type &optional lisp-name-package)
+  (maybe-call-type-init type)
+  (cond
+    ((g-type-is-a type +g-type-enum+) (get-g-enum-definition type lisp-name-package))
+    ((g-type-is-a type +g-type-flags+) (get-g-flags-definition type lisp-name-package))
+    ((g-type-is-a type +g-type-interface+) (get-g-interface-definition type lisp-name-package))
+    ((g-type-is-a type +g-type-object+) (get-g-class-definition type lisp-name-package))
+    (t (error "Do not know how to automatically generate type definition for ~A type ~A"
+              (g-type-string (g-type-fundamental type))
+              (or (g-type-string type) type)))))
+
 (defun generate-types-hierarchy-to-file (file root-type &key include-referenced prefix package exceptions prologue interfaces enums flags objects exclusions additional-properties)
   (if (not (streamp file))
       (with-open-file (stream file :direction :output :if-exists :supersede)

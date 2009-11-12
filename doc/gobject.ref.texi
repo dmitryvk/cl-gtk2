@@ -2210,6 +2210,7 @@ Examples:
 * get-g-flags-definition::
 * get-g-interface-definition::
 * get-g-class-definition::
+* get-g-type-definition::
 * Specifying additional properties for CLOS classes::
 * Generating names for CLOS classes and accessors::
 * generate-types-hierarchy-to-file::
@@ -2575,6 +2576,25 @@ Example:
                         (IMAGE-POSITION GTK-BUTTON-IMAGE-POSITION
                          "image-position" "GtkPositionType" T T)))
 @end lisp
+
+@node get-g-type-definition
+@section get-g-type-definition
+
+@Function get-g-type-definition
+@lisp
+(get-g-class-definition type &optional lisp-name-package) @result{} definition
+@end lisp
+
+@table @var
+@item @var{type}
+A string naming the GEnum, GFlags, GInterface or GObject type
+@item @var{lisp-name-package}
+A package that will be used as a package for generated symbols (type name, accessor names). If not specified, symbols are interned in @code{*package*}
+@item @var{definition}
+A Lisp form that when evaluated defines the corresponding Lisp type.
+@end table
+
+Depending on a kind of @var{type}, calls @ref{get-g-enum-definition} or @ref{get-g-flags-definition} or @ref{get-g-interface-definition} or @ref{get-g-class-definition}.
 
 @node Specifying additional properties for CLOS classes
 @section Specifying additional properties for CLOS classes
