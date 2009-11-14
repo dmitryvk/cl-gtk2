@@ -5,6 +5,7 @@
   :license "LLGPL"
   :serial t
   :components ((:file "gdk.package")
+               (:file "gdk.threads")
                (:file "gdk.objects")
                (:file "gdk.functions")
                (:file "gdk.general")
