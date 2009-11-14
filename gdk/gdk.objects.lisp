@@ -1060,3 +1060,20 @@
    (:cffi n-keys gdk-device-n-keys nil
           %gdk-device-n-keys nil)))
 
+(define-g-object-class "GdkAppLaunchContext"
+    gdk-app-launch-context
+  (:superclass g-object :export t
+               :interfaces nil :type-initializer
+               "gdk_app_launch_context_get_type")
+  ((:cffi display gdk-app-launch-context-display (g-object display)
+          nil "gdk_app_launch_context_set_display")
+   (:cffi screen gdk-app-launch-context-screen (g-object screen)
+          nil "gdk_app_launch_context_set_screen")
+   (:cffi desktop gdk-app-launch-context-desktop :int
+          nil "gdk_app_launch_context_set_desktop")
+   (:cffi timestamp gdk-app-launch-context-timestamp :uin32
+          nil "gdk_app_launch_context_set_timestamp")
+   (:cffi icon gdk-app-launch-context-icon g-object
+          nil "gdk_app_launch_context_set_icon")
+   (:cffi icon-name gdk-app-launch-context-icon-name :string
+          nil "gdk_app_launch_context_set_icon_name"))) ;; TODO: GIcon
