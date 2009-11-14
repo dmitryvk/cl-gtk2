@@ -28,3 +28,37 @@ to the expose event handler."
        (cl-cairo2::with-context-pointer (,context ,context-pointer)
          ,@body)
        (cl-cairo2:destroy ,context))))
+
+(defcfun gdk_cairo_set_source_pixbuf :void
+  (cr :pointer)
+  (pixbuf (g-object pixbuf))
+  (pixbuf-x :int)
+  (pixbuf-y :int))
+
+(defun gdk-cairo-set-source-pixbuf (pixbuf pixbuf-x pixbuf-y &optional (context cl-cairo2:*context*))
+  (gdk_cairo_set_source_pixbuf (slot-value context 'cl-cairo2:pointer)
+                               pixbuf pixbuf-x pixbuf-y))
+
+(defcfun gdk_cairo_set_source_pixmap :void
+  (cr :pointer)
+  (pixmap (g-object pixmap))
+  (pixmap-x :double)
+  (pixmap-y :double))
+
+(defun gdk-cairo-set-source-pixmap (pixmap pixmap-x pixmap-y &optional (context cl-cairo2:*context*))
+  (gdk_cairo_set_source_pixmap (slot-value context 'cl-cairo2:pointer)
+                               pixmap pixmap-x pixmap-y))
+
+(defcfun gdk_cairo_region :void
+  (cr :pointer)
+  (region (g-boxed-foreign region)))
+
+(defun gdk-cairo-region (region &optional (context cl-cairo2:*context*))
+  (gdk_cairo_region (slot-value context 'cl-cairo2:pointer) region))
+
+(defcfun gdk_cairo_reset_clip :void
+  (cr :pointer)
+  (drawable (g-object drawable)))
+
+(defun gdk-cairo-reset-clip (drawable &optional (context cl-cairo2:*context*))
+  (gdk_cairo_reset_clip (slot-value context 'cl-cairo2:pointer) drawable))
