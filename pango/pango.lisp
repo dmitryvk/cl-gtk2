@@ -70,3 +70,31 @@
   (:background 1)
   (:underline 2)
   (:strikethrough 3))
+
+(defcfun pango_glyph_string_new :pointer)
+
+(define-g-boxed-opaque pango-glyph-string "PangoGlyphString"
+  :alloc (pango_glyph_string_new))
+
+(export (boxed-related-symbols 'pango-glyph-string))
+
+(define-g-object-class "PangoFont" pango-font
+  (:superclass g-object :export t :interfaces
+               nil :type-initializer
+               "pango_font_get_type")
+  nil)
+
+(define-g-boxed-cstruct pango-matrix "PangoMatrix"
+  (xx :double :initform 0.0)
+  (xy :double :initform 0.0)
+  (yx :double :initform 0.0)
+  (yy :double :initform 0.0)
+  (x0 :double :initform 0.0)
+  (y0 :double :initform 0.0))
+
+(export (boxed-related-symbols 'pango-matrix))
+
+(define-g-boxed-opaque pango-layout-line "PangoLayoutLine"
+  :alloc (error "You do not create PangoLayoutLine yourself"))
+
+(export (boxed-related-symbols 'pango-layout-line))

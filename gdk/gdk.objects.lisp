@@ -1071,7 +1071,7 @@
           nil "gdk_app_launch_context_set_screen")
    (:cffi desktop gdk-app-launch-context-desktop :int
           nil "gdk_app_launch_context_set_desktop")
-   (:cffi timestamp gdk-app-launch-context-timestamp :uin32
+   (:cffi timestamp gdk-app-launch-context-timestamp :uint32
           nil "gdk_app_launch_context_set_timestamp")
    (:cffi icon gdk-app-launch-context-icon g-object
           nil "gdk_app_launch_context_set_icon")

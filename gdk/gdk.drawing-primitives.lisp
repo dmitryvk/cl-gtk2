@@ -130,32 +130,45 @@
 
 (export 'draw-trapezoids)
 
-;; TODO
-;; void                gdk_draw_glyphs                     (GdkDrawable *drawable,
-;;                                                          GdkGC *gc,
-;;                                                          PangoFont *font,
-;;                                                          gint x,
-;;                                                          gint y,
-;;                                                          PangoGlyphString *glyphs);
-;; void                gdk_draw_glyphs_transformed         (GdkDrawable *drawable,
-;;                                                          GdkGC *gc,
-;;                                                          const PangoMatrix *matrix,
-;;                                                          PangoFont *font,
-;;                                                          gint x,
-;;                                                          gint y,
-;;                                                          PangoGlyphString *glyphs);
-;; void                gdk_draw_layout_line                (GdkDrawable *drawable,
-;;                                                          GdkGC *gc,
-;;                                                          gint x,
-;;                                                          gint y,
-;;                                                          PangoLayoutLine *line);
-;; void                gdk_draw_layout_line_with_colors    (GdkDrawable *drawable,
-;;                                                          GdkGC *gc,
-;;                                                          gint x,
-;;                                                          gint y,
-;;                                                          PangoLayoutLine *line,
-;;                                                          const GdkColor *foreground,
-;;                                                          const GdkColor *background);
+(defcfun (draw-glyphs "gdk_draw_glyphs") :void
+  (drawable (g-object drawable))
+  (gc (g-object graphics-context))
+  (font (g-object pango-font))
+  (x :int)
+  (y :int)
+  (glyphs (g-boxed-foreign pango-glyph-string)))
+
+(export 'draw-glyphs)
+
+(defcfun (draw-glyphs-transformed "gdk_draw_glyphs_transformed") :void
+  (drawable (g-object drawable))
+  (gc (g-object graphics-context))
+  (matrix (g-boxed-foreign pango-matrix))
+  (font (g-object pango-font))
+  (x :int)
+  (y :int))
+
+(export 'draw-glyphs-transformed)
+
+(defcfun (draw-layout-line "gdk_draw_layout_line") :void
+  (drawable (g-object drawable))
+  (gc (g-object graphics-context))
+  (x :int)
+  (y :int)
+  (line (g-boxed-foreign pango-layout-line)))
+
+(export 'draw-layout-line)
+
+(defcfun (draw-layout-line-with-colors "gdk_draw_layout_line_with_colors") :void
+  (drawable (g-object drawable))
+  (gc (g-object graphics-context))
+  (x :int)
+  (y :int)
+  (line (g-boxed-foreign pango-layout-line))
+  (foreground (g-boxed-foreign color))
+  (background (g-boxed-foreign color)))
+
+(export 'draw-layout-line-with-colors)
 
 (defcfun (draw-layout "gdk_draw_layout") :void
   (drawable (g-object drawable))
