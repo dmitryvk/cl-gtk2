@@ -23,5 +23,6 @@
                (:file "gdk.windows")
                (:file "gdk.events")
                (:file "gdk.key-values")
-               (:file "gdk.selections"))
+               (:file "gdk.selections")
+               (:file "gdk.drag-and-drop"))
   :depends-on (:cl-gtk2-glib :cffi :cl-gtk2-pango))

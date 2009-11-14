@@ -450,6 +450,27 @@
   (:wheel 6)
   (:last 7))
 
+(define-g-enum "GdkDragProtocol"
+    gdk-drag-protocol
+    (:export t :type-initializer "gdk_drag_protocol_get_type")
+  (:motif 0)
+  (:xdnd 1)
+  (:rootwin 2)
+  (:none 3)
+  (:win32-dropfiles 4)
+  (:ole2 5)
+  (:local 6))
+
+(define-g-flags "GdkDragAction"
+    gdk-drag-action
+    (:export t :type-initializer "gdk_drag_action_get_type")
+  (:default 1)
+  (:copy 2)
+  (:move 4)
+  (:link 8)
+  (:private 16)
+  (:ask 32))
+
 (export 'cursor-type)
 
 (define-g-boxed-cstruct geometry nil
@@ -675,7 +696,7 @@
               :drag-status
               :drop-start
               :drop-finished) event-dnd
-             (drag-context :pointer)
+             (drag-context (g-object drag-context))
              (time :uint32)
              (x-root :short)
              (y-root :short))
@@ -713,7 +734,25 @@
 
 (export (boxed-related-symbols 'event))
 
-(define-g-object-class "GdkDragContext" drag-context () ())
+(define-g-object-class "GdkDragContext" drag-context ()
+  ((:cffi protocol drag-context-protocol gdk-drag-protocol
+          %gdk-drag-context-get-protocol nil)
+   (:cffi is-source drag-context-is-source :boolean
+          %gdk-drag-context-get-is-source nil)
+   (:cffi source-window drag-context-source-window (g-object gdk-window)
+          %gdk-drag-context-get-source-window nil)
+   (:cffi dest-window drag-context-dest-window (g-object gdk-window)
+          %gdk-drag-context-get-dest-window nil)
+   (:cffi targets drag-context-targets (glib:glist gdk-atom-as-string :free-from-foreign nil)
+          %gdk-drag-context-get-targets nil)
+   (:cffi actions drag-context-actions gdk-drag-action
+          %gdk-drag-context-get-actions nil)
+   (:cffi suggested-action drag-context-suggested-action gdk-drag-action
+          %gdk-drag-context-get-suggested-action nil)
+   (:cffi action drag-context-action gdk-drag-action
+          %gdk-drag-context-get-action nil)
+   (:cffi start-time drag-context-start-time :uint32
+          %gdk-drag-context-get-start-time nil)))
 
 (define-g-object-class "GdkPixbuf" pixbuf ()
     ((colorspace pixbuf-colorspace "colorspace" "GdkColorspace" t nil)
