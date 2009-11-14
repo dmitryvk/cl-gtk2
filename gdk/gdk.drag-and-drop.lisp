@@ -1,7 +1,7 @@
 (in-package :gdk)
 
 (defcstruct %gdk-drag-context
-  (parent-instance :pointer)
+  (parent-instance gobject.ffi::%g-object)
   (protocol gdk-drag-protocol)
   (is-source :boolean)
   (source-window (g-object gdk-window))
