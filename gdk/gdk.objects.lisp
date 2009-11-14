@@ -554,6 +554,9 @@
 
 
 ;;;FIXME: Check correct type
+#+ windows
+(defctype native-window :pointer)
+#- windows
 (defctype native-window :uint32)
 
 (define-foreign-type fixed-array ()
