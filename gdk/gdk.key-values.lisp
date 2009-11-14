@@ -48,9 +48,12 @@
             (n-keys (mem-ref n-keys :int)))
         (prog1
             (iter (for i from 0 below n-keys)
-                  (for keymap-key = (mem-aref keys '(g-boxed-foreign keymap-key) i))
+                  (for keymap-key = (convert-from-foreign (inc-pointer keys (* i (foreign-type-size 'keymap-key-cstruct)))
+                                                          '(g-boxed-foreign keymap-key)))
                   (collect keymap-key))
           (glib:g-free keys))))))
+
+(export 'keymap-get-entries-for-keyval)
 
 (defcfun gdk_keymap_get_entries_for_keycode :boolean
   (keymap (g-object keymap))
@@ -67,9 +70,10 @@
             (n-keys (mem-ref n-keys :int)))
         (prog1
             (iter (for i from 0 below n-keys)
-                  (for keymap-key = (mem-aref keys '(g-boxed-foreign keymap-key) i))
-                  (collect keymap-key into r-keys)
                   (for keyval = (mem-aref keyvals :uint))
+                  (for keymap-key = (convert-from-foreign (inc-pointer keys (* i (foreign-type-size 'keymap-key-cstruct)))
+                                                          '(g-boxed-foreign keymap-key)))
+                  (collect keymap-key into r-keys)
                   (collect keyval into r-keyvals)
                   (finally (return (values r-keys r-keyvals))))
           (glib:g-free keys)
