@@ -26,5 +26,6 @@
                (:file "gdk.key-values")
                (:file "gdk.selections")
                (:file "gdk.drag-and-drop")
-               (:file "gdk.input-devices"))
+               (:file "gdk.input-devices")
+               (:file "gdk.pango"))
   :depends-on (:cl-gtk2-glib :cffi :cl-gtk2-pango))

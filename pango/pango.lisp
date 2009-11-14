@@ -37,3 +37,36 @@
   (:weak-ltr 4)
   (:weak-rtl 5)
   (:neutral 6))
+
+(define-g-object-class "PangoRenderer" pango-renderer
+  (:superclass g-object :export t :interfaces
+               nil :type-initializer
+               "pango_renderer_get_type")
+  nil)
+
+(define-g-object-class "PangoContext" pango-context
+  (:superclass g-object :export t :interfaces
+               nil :type-initializer
+               "pango_context_get_type")
+  nil)
+
+(define-g-enum "PangoRenderPart"
+    pango-render-part
+    (:export t :type-initializer "pango_render_part_get_type")
+  (:foreground 0)
+  (:background 1)
+  (:underline 2)
+  (:strikethrough 3))
+
+(define-g-boxed-opaque pango-layout-line "PangoLayoutLine"
+  :alloc (error "Use Pango to create PANGO-LAYOUT-LINEs"))
+
+(export (boxed-related-symbols 'pango-layout-line))
+
+(define-g-enum "PangoRenderPart"
+    pango-render-part
+    (:export t :type-initializer "pango_render_part_get_type")
+  (:foreground 0)
+  (:background 1)
+  (:underline 2)
+  (:strikethrough 3))
