@@ -471,6 +471,28 @@
   (:private 16)
   (:ask 32))
 
+(define-g-enum "GdkInputSource"
+    gdk-input-source
+    (:export t :type-initializer "gdk_input_source_get_type")
+  (:mouse 0)
+  (:pen 1)
+  (:eraser 2)
+  (:cursor 3))
+
+(define-g-enum "GdkInputMode"
+    gdk-input-mode
+    (:export t :type-initializer "gdk_input_mode_get_type")
+  (:disabled 0)
+  (:screen 1)
+  (:window 2))
+
+(define-g-enum "GdkExtensionMode"
+    gdk-extension-mode
+    (:export t :type-initializer "gdk_extension_mode_get_type")
+  (:none 0)
+  (:all 1)
+  (:cursor 2))
+
 (export 'cursor-type)
 
 (define-g-boxed-cstruct geometry nil
@@ -1016,4 +1038,25 @@
   (type-hint gdk-window-type-hint :initform :normal))
 
 (export (boxed-related-symbols 'gdk-window-attr))
+
+(define-g-object-class "GdkDevice" gdk-device
+  (:superclass g-object :export t :interfaces
+               nil :type-initializer
+               "gdk_device_get_type")
+  ((:cffi name gdk-device-name :string
+          %gdk-device-name nil)
+   (:cffi source gdk-device-source gdk-input-source
+          %gdk-device-source "gdk_device_set_source")
+   (:cffi mode gdk-device-mode gdk-input-mode
+          %gdk-device-mode gdk_device_set_mode)
+   (:cffi has-cursor gdk-device-has-cursor :boolean
+          %gdk-device-has-cursor nil)
+   (:cffi n-axes gdk-device-n-axes :int
+          %gdk-device-n-axes nil)
+   (:cffi axes gdk-device-axes nil
+          %gdk-device-axes nil)
+   (:cffi keys gdk-device-keys nil
+          %gdk-device-keys nil)
+   (:cffi n-keys gdk-device-n-keys nil
+          %gdk-device-n-keys nil)))
 
