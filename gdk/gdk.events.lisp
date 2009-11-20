@@ -119,9 +119,22 @@
 
 (export 'event-send-client-message-to-all)
 
-;; void                gdk_add_client_message_filter       (GdkAtom message_type,
-;;                                                          GdkFilterFunc func,
-;;                                                          gpointer data);
+(defcallback gdk-client-message-filter-func gdk-filter-return
+    ((xevent :pointer) (event :pointer) (data :pointer))
+  (multiple-value-bind (return-value translated-event) (funcall (stable-pointer-value data) xevent)
+    (when (eq return-value :translate)
+      (gobject:copy-boxed-slots-to-foreign translated-event event))
+    return-value))
+
+(defcfun gdk_add_client_message_filter :void
+  (message-type gdk-atom-as-string)
+  (func :pointer)
+  (data :pointer))
+
+(defun gdk-add-client-message-filter (message-type fn)
+  (gdk_add_client_message_filter message-type (callback gdk-client-message-filter-func) (allocate-stable-pointer fn)))
+
+(export 'gdk-add-client-message-filter)
 
 (defcfun gdk-get-show-events :boolean)
 
