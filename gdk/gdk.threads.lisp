@@ -9,6 +9,7 @@
 (defcfun gdk-threads-leave :void)
 (export 'gdk-threads-leave)
 
+;; ignored:
 ;; void                gdk_threads_set_lock_functions      (GCallback enter_fn,
 ;;                                                          GCallback leave_fn);
 

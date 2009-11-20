@@ -32,7 +32,8 @@
            #:g-error-condition
            #:g-error-condition-domain
            #:g-error-condition-code
-           #:g-error-condition-message)
+           #:g-error-condition-message
+           #:g-spawn-flags)
   (:documentation
    "Cl-gtk2-glib is wrapper for @a[http://library.gnome.org/devel/glib/]{GLib}."))
 
@@ -512,5 +513,9 @@ Allocates a new string that is equal to @code{str}. Use @fun{g-free} to free it.
   (str (:string :free-to-foreign t)))
 
 ;omitted all GLib Utilites
-;TODO: omitted Date and Time Functions
 
+(defbitfield g-spawn-flags
+  :leave-descriptors-open :do-not-reap-child :search-path :stdout-to-dev-null :stderr-to-dev-null
+  :child-inherits-stdin :file-and-argv-zero)
+
+;TODO: omitted Date and Time Functions

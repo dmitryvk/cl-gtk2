@@ -55,11 +55,16 @@
   (event (g-boxed-foreign event)))
 (export 'display-put-event)
 
-;void                gdk_display_add_client_message_filter
-;                                                        (GdkDisplay *display,
-;                                                         GdkAtom message_type,
-;                                                         GdkFilterFunc func,
-;                                                         gpointer data);
+(defcfun gdk_display_add_client_message_filter :void
+  (display (g-object display))
+  (message-type gdk-atom-as-string)
+  (func :pointer)
+  (data :pointer))
+
+(defun dispaly-add-client-message-filter (display message-type fn)
+  (gdk_display_add_client_message_filter display message-type (callback gdk-client-message-filter-func) (allocate-stable-pointer fn)))
+
+(export 'display-add-client-message-filter)
 
 (defcfun (display-set-double-click-time "gdk_display_set_double_click_time") :void
   (display (g-object display))
@@ -99,6 +104,7 @@
 
 (export 'display-get-window-at-pointer)
 
+; ignored:
 ;GdkDisplayPointerHooks * gdk_display_set_pointer_hooks  (GdkDisplay *display,
 ;                                                         const GdkDisplayPointerHooks *new_hooks);
 
