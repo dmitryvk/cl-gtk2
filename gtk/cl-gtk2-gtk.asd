@@ -15,6 +15,7 @@
                (:file "gtk.dialog")
                (:file "gtk.window")
                (:file "gtk.window-group")
+               (:file "gtk.icon-factory")
                (:file "gtk.image")
                (:file "gtk.label")
                (:file "gtk.progress-bar")
