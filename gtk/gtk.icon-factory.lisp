@@ -133,8 +133,17 @@ const gchar*        gtk_icon_size_get_name              (GtkIconSize size);
 
 (export 'icon-factory-lookup)
 
-#|
-GtkIconSet*         gtk_icon_factory_lookup_default     (const gchar *stock_id);
-void                gtk_icon_factory_remove_default     (GtkIconFactory *factory);
-|#
+(defcfun gtk-icon-factory-lookup-default (g-boxed-foreign icon-set :return)
+  (stock-id :string))
+
+(defun icon-factory-lookup-default (stock-id)
+  (gtk-icon-factory-lookup-default stock-id))
+
+(export 'icon-factory-lookup-default)
+
+(defcfun gtk-icon-factory-remove-default :void
+  (factory (g-object icon-factory)))
+
+(defun icon-factory-remove-default (factory)
+  (gtk-icon-factory-remove-default factory))
 
