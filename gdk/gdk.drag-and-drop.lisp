@@ -48,7 +48,7 @@
   (context (g-object drag-context))
   (time :uint32))
 
-(export 'gdk-drag-abord)
+(export 'gdk-drag-abort)
 
 (defcfun gdk-drop-reply :void
   (context (g-object drag-context))
