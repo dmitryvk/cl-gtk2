@@ -14,6 +14,8 @@
 (defmethod translate-to-foreign (value (type unichar))
   (char-code value))
 
+(at-init () (foreign-funcall "gtk_text_iter_get_type" :int))
+
 (define-g-boxed-opaque text-iter "GtkTextIter"
   :alloc (gtk-text-iter-alloc))
 
