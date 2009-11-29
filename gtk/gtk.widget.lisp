@@ -15,8 +15,8 @@
 (defcstruct %gtk-widget
   (:object %gtk-object)
   (:private-flags :uint16)
-  (:state state-type)
-  (:saved-state state-type)
+  (:state :uint8)
+  (:saved-state :uint8)
   (:name (:pointer :char))
   (:style :pointer)
   (:requisition requisition-cstruct)
@@ -25,12 +25,12 @@
   (:parent :pointer))
 
 (defun widget-state (widget)
-  (foreign-slot-value (pointer widget) '%gtk-widget :state))
+  (convert-from-foreign (foreign-slot-value (pointer widget) '%gtk-widget :state) 'state-type))
 
 (export 'widget-state)
 
 (defun widget-saved-state (widget)
-  (foreign-slot-value (pointer widget) '%gtk-widget :saved-state))
+  (convert-from-foreign (foreign-slot-value (pointer widget) '%gtk-widget :saved-state) 'state-type))
 
 (export 'widget-saved-state)
 
