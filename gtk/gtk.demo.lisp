@@ -128,12 +128,12 @@
 (defun test-pixbuf ()
   "(not completed)"
   (within-main-loop
-    (let* ((window (make-instance 'gtk-window :title "Test pixbuf" :request-width 600 :request-height 240))
+    (let* ((window (make-instance 'gtk-window :title "Test pixbuf" :width-request 600 :height-request 240))
           (vbox (make-instance 'v-box))
           (eventbox (make-instance 'event-box))
           (vbox-1 (make-instance 'v-box)))
      (container-add window vbox)
-     (box-pack-start vbox (make-instance 'label :text "Placing bg image" :font "Times New Roman Italic 10" :color "#00f" :request-height 40))
+     (box-pack-start vbox (make-instance 'label :text "Placing bg image" :font "Times New Roman Italic 10" :color "#00f" :height-request 40))
      (g-signal-connect window "destroy" (lambda (w) (declare (ignore w)) (leave-gtk-main)))
      (box-pack-start vbox eventbox)
      (container-add eventbox vbox-1)
