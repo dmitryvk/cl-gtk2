@@ -1,6 +1,5 @@
 (defpackage :gobject
-  (:use :cl :glib :cffi :tg :bordeaux-threads :iter :closer-mop :gobject.ffi)
-  #+(or clozure-common-lisp openmcl) (:shadowing-import-from :closer-mop #:defgeneric #:ensure-generic-function #:standard-generic-function)
+  (:use :c2cl :glib :cffi :tg :bordeaux-threads :iter :closer-mop :gobject.ffi)
   (:export #:g-type
            #:g-type-string
            #:g-type-numeric
