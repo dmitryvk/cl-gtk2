@@ -10,6 +10,7 @@
                (:file "glib.string")
                (:file "glib.quark")
                (:file "glib.gerror")
+               (:file "glib.utils")
 
                (:file "gobject.init")
                (:file "gobject.ffi.package")
