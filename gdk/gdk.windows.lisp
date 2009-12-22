@@ -163,12 +163,14 @@
 
 (export 'gdk-window-lower)
 
+#|
 (defcfun gdk-window-restack :void
   (window (g-object gdk-window))
   (sibling (g-object gdk-window))
   (above :boolean))
 
 (export 'gdk-window-restack)
+|#
 
 (defcfun gdk-window-focus :void
   (window (g-object gdk-window))
@@ -483,6 +485,7 @@
 ;;                                                          gint *x,
 ;;                                                          gint *y);
 
+#|
 (defcfun gdk_window_get_root_coords :void
   (window (g-object gdk-window))
   (x :int)
@@ -494,6 +497,7 @@
   (with-foreign-objects ((root-x :int) (root-y :int))
     (gdk_window_get_root_coords window x y root-x root-y)
     (values (mem-ref root-x :int) (mem-ref root-y :int))))
+|#
 
 (defcfun gdk_window_get_pointer (g-object gdk-window)
   (window (g-object gdk-window))
@@ -539,6 +543,7 @@
 ;;                     GdkPointerHooks;
 ;; GdkPointerHooks *   gdk_set_pointer_hooks               (const GdkPointerHooks *new_hooks);
 
+#|
 (defcfun gdk-offscreen-window-get-pixmap (g-object pixmap)
   (window (g-object gdk-window)))
 
@@ -560,6 +565,7 @@
   (window (g-object gdk-window)))
 
 (export 'gdk-window-geometry-changed)
+|#
 
 (defcfun gdk-window-redirect-to-drawable :void
   (window (g-object gdk-window))
