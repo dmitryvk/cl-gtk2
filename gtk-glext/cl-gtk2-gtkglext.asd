@@ -1,6 +1,6 @@
 (defsystem :cl-gtk2-gtkglext
   :name :cl-gtk2-gtkglext
-  :version "0.1"
+  :version "0.1.1"
   :author "Vitaly Mayatskikh <v.mayatskih@gmail.com>"
   :license "LLGPL"
   :serial t
