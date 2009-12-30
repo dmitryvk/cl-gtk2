@@ -19,7 +19,15 @@
 
 (at-init () (gtk-init))
 
-(defcfun gtk-main :void)
+(defcfun (%gtk-main "gtk_main") :void)
+
+#+thread-support
+(defun gtk-main ()
+  (with-gdk-threads-lock (%gtk-main)))
+
+#-thread-support
+(defun gtk-main ()
+  (%gtk-main))
 
 #+thread-support
 (defvar *main-thread* nil)
