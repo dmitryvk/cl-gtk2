@@ -64,6 +64,7 @@
                (:file "gtk.link-button")
                (:file "gtk.list-store")
                (:file "gtk.tree-store")
+               (:file "gtk.clipboard")
                
                (:file "gtk.main-loop-events")
                
