@@ -1,3 +1,14 @@
+(defpackage #:cl-gtk2-gtk-system
+  (:use #:cl #:asdf))
+
+(in-package #:cl-gtk2-gtk-system)
+
+(defclass plain-file (static-file)
+  ((type :initarg :type :reader plain-file-type :initform nil)))
+
+(defmethod source-file-type ((c plain-file) (s module))
+  (plain-file-type c))
+
 (defsystem :cl-gtk2-gtk
   :name :cl-gtk2-gtk
   :version "0.1.1"
@@ -65,9 +76,7 @@
                (:file "gtk.demo")
                (:file "gtk.timer")
                (:module "demo-files"
-                        :pathname "demo"
-                        :components ((:static-file "demo1.glade")
-                                     (:static-file "demo1.ui")
-                                     (:static-file "text-editor.glade")
-                                     (:static-file "text-editor.ui"))))
+                        :pathname "demo/"
+                        :components ((:plain-file "demo1" :type "ui")
+                                     (:plain-file "text-editor" :type "ui"))))
   :depends-on (:cl-gtk2-glib :cffi :cl-gtk2-gdk :bordeaux-threads :iterate :cl-gtk2-pango))
