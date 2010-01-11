@@ -27,7 +27,7 @@
 
 (defun container-call-get-property (container child property-name type)
   (with-foreign-object (gvalue 'g-value)
-    (g-value-unset gvalue)
+    (g-value-zero gvalue)
     (g-value-init gvalue (ensure-g-type type))
     (gtk-container-child-get-property container child property-name gvalue)
     (prog1 (parse-g-value gvalue)
