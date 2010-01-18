@@ -233,10 +233,12 @@
   (make-instance 'boxed-opaque-foreign-type :info info :return-p return-p))
 
 (defmethod translate-to-foreign (proxy (type boxed-opaque-foreign-type))
-  (prog1 (g-boxed-opaque-pointer proxy)
-    (when (g-boxed-foreign-return-p type)
-      (tg:cancel-finalization proxy)
-      (setf (g-boxed-opaque-pointer proxy) nil))))
+  (if (null proxy)
+      (null-pointer)
+      (prog1 (g-boxed-opaque-pointer proxy)
+        (when (g-boxed-foreign-return-p type)
+          (tg:cancel-finalization proxy)
+          (setf (g-boxed-opaque-pointer proxy) nil)))))
 
 (defmethod free-translated-object (native (type boxed-opaque-foreign-type) param)
   (declare (ignore native type param)))
