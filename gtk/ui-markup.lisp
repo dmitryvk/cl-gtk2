@@ -64,11 +64,15 @@
 (def-ui-child-packer box (b d child)
   (let ((expand-prop (find :expand (ui-child-props d) :key #'ui-prop-name))
         (fill-prop (find :fill (ui-child-props d) :key #'ui-prop-name))
-        (padding-prop (find :padding (ui-child-props d) :key #'ui-prop-name)))
-    `(box-pack-start ,b ,child
-                     ,@(when expand-prop (list :expand (ui-prop-value expand-prop)))
-                     ,@(when fill-prop (list :fill (ui-prop-value fill-prop)))
-                     ,@(when padding-prop (list :padding (ui-prop-value padding-prop))))))
+        (padding-prop (find :padding (ui-child-props d) :key #'ui-prop-name))
+        (pack-type-prop (find :pack-type (ui-child-props d) :key #'ui-prop-name)))
+    `(progn
+       (box-pack-start ,b ,child
+                       ,@(when expand-prop (list :expand (ui-prop-value expand-prop)))
+                       ,@(when fill-prop (list :fill (ui-prop-value fill-prop)))
+                       ,@(when padding-prop (list :padding (ui-prop-value padding-prop))))
+       ,@(when pack-type-prop
+               (list `(setf (box-child-pack-type ,b ,child) ,(ui-prop-value pack-type-prop)))))))
 
 (def-ui-child-packer paned (p d child)
   (let ((resize-prop (find :resize (ui-child-props d) :key #'ui-prop-name))

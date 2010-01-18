@@ -529,6 +529,72 @@
 (defmethod translate-to-foreign (value (type gdk-atom-as-string-type))
   (gdk-atom-intern value nil))
 
+(defcfun gdk-region-new :pointer)
+
+(define-g-boxed-opaque region nil :alloc (gdk-region-new))
+
+(export (boxed-related-symbols 'region))
+
+(define-g-boxed-cstruct point nil
+  (x :int :initform 0)
+  (y :int :initform 0))
+
+(export (boxed-related-symbols 'point))
+
+(define-g-boxed-cstruct span nil
+  (x :int :initform 0)
+  (y :int :initform 0)
+  (width :int :initform 0))
+
+(export (boxed-related-symbols 'span))
+
+(define-g-boxed-cstruct segment nil
+  (x1 :int :initform 0)
+  (y1 :int :initform 0)
+  (x2 :int :initform 0)
+  (y2 :int :initform 0))
+
+(export (boxed-related-symbols 'segment))
+
+(define-g-boxed-cstruct trapezoid nil
+  (y1 :double :initform 0d0)
+  (x11 :double :initform 0d0)
+  (x21 :double :initform 0d0)
+  (y2 :double :initform 0d0)
+  (x12 :double :initform 0d0)
+  (x22 :double :initform 0d0))
+
+(export (boxed-related-symbols 'trapezoid))
+
+(define-g-boxed-opaque font "GdkFont"
+  :alloc (error "GDK:FONT objects may not be allocated directly"))
+
+(export (boxed-related-symbols 'font))
+
+(define-g-boxed-cstruct color "GdkColor"
+  (pixel :uint32 :initform 0)
+  (red :uint16 :initform 0)
+  (green :uint16 :initform 0)
+  (blue :uint16 :initform 0))
+
+(export (boxed-related-symbols 'color))
+
+(define-g-object-class "GdkDrawable" drawable ()
+  ((:cffi display drawable-display (g-object display)
+          "gdk_drawable_get_display" nil)
+   (:cffi screen drawable-screen (g-object screen)
+          "gdk_drawable_get_screen" nil)
+   (:cffi visual drawable-visual (g-object visual)
+          "gdk_drawable_get_visual" nil)
+   (:cffi colormap drawable-colormap (g-object colormap)
+          "gdk_drawable_get_colormap" "gdk_drawable_set_colormap")
+   (:cffi depth drawable-depth :int
+          "gdk_drawable_get_depth" nil)
+   (:cffi clip-region drawable-clip-region (g-boxed-foreign region :return)
+          "gdk_drawable_get_clip_region" nil)
+   (:cffi visible-region drawable-visible-region (g-boxed-foreign region :return)
+          "gdk_drawable_get_visible_region" nil)))
+
 (define-g-object-class "GdkWindow" gdk-window (:superclass drawable)
    ((:cffi window-type gdk-window-window-type gdk-window-type
            "gdk_window_get_window_type" nil)
@@ -903,56 +969,6 @@
    (:cffi window-stack screen-window-stack (glib:glist (g-object gdk-window) :free-from-foreign t)
           "gdk_screen_get_window_stack" nil)))
 
-(defcfun gdk-region-new :pointer)
-
-(define-g-boxed-opaque region nil :alloc (gdk-region-new))
-
-(export (boxed-related-symbols 'region))
-
-(define-g-boxed-cstruct point nil
-  (x :int :initform 0)
-  (y :int :initform 0))
-
-(export (boxed-related-symbols 'point))
-
-(define-g-boxed-cstruct span nil
-  (x :int :initform 0)
-  (y :int :initform 0)
-  (width :int :initform 0))
-
-(export (boxed-related-symbols 'span))
-
-(define-g-boxed-cstruct segment nil
-  (x1 :int :initform 0)
-  (y1 :int :initform 0)
-  (x2 :int :initform 0)
-  (y2 :int :initform 0))
-
-(export (boxed-related-symbols 'segment))
-
-(define-g-boxed-cstruct trapezoid nil
-  (y1 :double :initform 0d0)
-  (x11 :double :initform 0d0)
-  (x21 :double :initform 0d0)
-  (y2 :double :initform 0d0)
-  (x12 :double :initform 0d0)
-  (x22 :double :initform 0d0))
-
-(export (boxed-related-symbols 'trapezoid))
-
-(define-g-boxed-opaque font "GdkFont"
-  :alloc (error "GDK:FONT objects may not be allocated directly"))
-
-(export (boxed-related-symbols 'font))
-
-(define-g-boxed-cstruct color "GdkColor"
-  (pixel :uint32 :initform 0)
-  (red :uint16 :initform 0)
-  (green :uint16 :initform 0)
-  (blue :uint16 :initform 0))
-
-(export (boxed-related-symbols 'color))
-
 (define-g-object-class "GdkGC" graphics-context ()
   ((:cffi screen graphics-context-screen (g-object screen)
           "gdk_gc_get_screen" nil)
@@ -986,22 +1002,6 @@
           nil "gdk_gc_set_exposures")
    (:cffi colormap graphics-context-colormap (g-object colormap)
           "gdk_gc_get_colormap" "gdk_gc_set_colormap")))
-
-(define-g-object-class "GdkDrawable" drawable ()
-  ((:cffi display drawable-display (g-object display)
-          "gdk_drawable_get_display" nil)
-   (:cffi screen drawable-screen (g-object screen)
-          "gdk_drawable_get_screen" nil)
-   (:cffi visual drawable-visual (g-object visual)
-          "gdk_drawable_get_visual" nil)
-   (:cffi colormap drawable-colormap (g-object colormap)
-          "gdk_drawable_get_colormap" "gdk_drawable_set_colormap")
-   (:cffi depth drawable-depth :int
-          "gdk_drawable_get_depth" nil)
-   (:cffi clip-region drawable-clip-region (g-boxed-foreign region :return)
-          "gdk_drawable_get_clip_region" nil)
-   (:cffi visible-region drawable-visible-region (g-boxed-foreign region :return)
-          "gdk_drawable_get_visible_region" nil)))
 
 (define-g-object-class "GdkPixmap" pixmap (:superclass drawable) ())
 

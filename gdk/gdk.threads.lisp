@@ -9,6 +9,14 @@
 (defcfun gdk-threads-leave :void)
 (export 'gdk-threads-leave)
 
+(defmacro with-gdk-threads-lock (&body body)
+  `(progn
+     (gdk-threads-enter)
+     (unwind-protect
+          (progn ,@body)
+       (gdk-threads-leave))))
+(export 'with-gdk-threads-lock)
+
 ;; ignored:
 ;; void                gdk_threads_set_lock_functions      (GCallback enter_fn,
 ;;                                                          GCallback leave_fn);
