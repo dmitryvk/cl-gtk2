@@ -3,13 +3,13 @@
 ; TODO: GtkWidget
 
 (define-g-boxed-cstruct selection-data "GtkSelectionData"
-  (selection :pointer) ; GdkAtom
-  (target :pointer) ; GdkAtom
-  (type :pointer) ; GdkAtom
-  (format :int)
-  (data :pointer :initform 0)
-  (length :int)
-  (display g-object))
+  (selection gdk-atom-as-string :initform nil)
+  (target gdk-atom-as-string :initform nil)
+  (type gdk-atom-as-string :initform nil)
+  (format :int :initform 0)
+  (data :pointer :initform (null-pointer))
+  (length :int :initform 0)
+  (display (g-object display) :initform nil))
 
 (export (boxed-related-symbols 'selection-data))
 
