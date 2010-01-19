@@ -1,41 +1,190 @@
 (defpackage :gtk-demo
   (:use :cl :gtk :gdk :gobject :iter)
-  (:export #:demo-all
-           #:test
-           #:test-entry
-           #:table-packing
-           #:test-pixbuf
-           #:test-image
-           #:test-progress-bar
-           #:test-statusbar
-           #:test-scale-button
-           #:test-text-view
-           #:demo-code-editor
-           #:test-treeview-list
-           #:test-combo-box
-           #:test-ui-manager
-           #:test-color-button
-           #:test-color-selection
-           #:test-file-chooser
-           #:test-font-chooser
-           #:test-notebook
-           #:test-calendar
-           #:test-box-child-property
-           #:test-builder
-           #:demo-text-editor
-           #:demo-class-browser
-           #:demo-treeview-tree
-           #:test-custom-window
-           #:test-assistant
-           #:test-entry-completion
-           #:test-ui-markup
-           #:test-list-store
-           #:test-tree-store
-           #:test-gdk))
+  (:export #:demo))
 
 (in-package :gtk-demo)
 
 (defparameter *src-location* (asdf:component-pathname (asdf:find-system :cl-gtk2-gtk)))
+
+(defun make-link-fn-tag (buffer fn)
+  (let ((tag (make-instance 'text-tag :foreground "blue" :underline :single)))
+    (text-tag-table-add (text-buffer-tag-table buffer) tag)
+    (g-signal-connect tag "event"
+                      (lambda (tag object event it)
+                        (declare (ignore tag object it))
+                        (when (and (eq (event-type event) :button-release)
+                                   (eq (event-button-button event) 1))
+                          (when fn
+                            (funcall fn)))))
+    tag))
+
+(defun get-page (name)
+  (or (get name 'demo-page)
+      (get 'page-404 'demo-page)))
+
+(defun (setf get-page) (page name)
+  (setf (get name 'demo-page) page))
+
+(defmacro def-demo-page ((name &key (index 'index)) &body body)
+  `(setf (get-page ',name)
+         '(,@(when index (list `(:p (:link "To main" ,index))))
+           ,@body)))
+
+(def-demo-page (page-404)
+  (:p "Non-existent page"))
+
+(def-demo-page (index :index nil)
+  (:p (:b "cl-gtk2 demonstration"))
+  (:p "")
+  (:p "This demo application is a demonstration of what cl-gtk2 can do. You can click on any of blue underlined links to invoke the demonstration.")
+  (:p "")
+  (:p "You may try these demos:")
+  (:ol (:fn "Demonstrates usage of tree store" test-tree-store)
+       (:fn "Simple test of packing widgets into GtkTable"
+            table-packing)
+       (:fn "Test of GtkStatusbar" test-statusbar)
+       (:fn "Not working example of GtkEntryCompletion"
+            test-entry-completion)
+       (:fn "Simple test of non-GObject subclass of GtkWindow"
+            test-custom-window)
+       (:fn "Testing progress-bar" test-progress-bar)
+       (:fn "Simple test of GtkAssistant wizard" test-assistant)
+       (:fn "Using GtkImage with stock icon" test-image)
+       (:fn "Test of GtkCalendar" test-calendar)
+       (:fn "Test of GtkBuilder" test-builder)
+       (:fn "Test of GtkColorButton" test-color-button)
+       (:fn "Test of UI Markup" test-ui-markup)
+       (:fn "Test of scale button with icons" test-scale-button)
+       (:fn "Testing GtkComboBox" test-combo-box)
+       (:fn "Advanced demo: show s-expression tree structure"
+            demo-treeview-tree)
+       (:fn "Test of child-property usage" test-box-child-property)
+       (:fn "Demonstrates usage of list store" test-list-store)
+       (:fn "Test various gdk primitives" test-gdk)
+       (:fn "Test GtkNotebook" test-notebook)
+       (:fn "More advanced example: text editor with ability to evaluate lisp expressions"
+            demo-text-editor)
+       (:fn "(not completed)" test-pixbuf)
+       (:fn "Testing GtkTextEntry" test-entry)
+       (:fn "Test of treeview with CL-GTK2-GTK:ARRAY-LIST-STORE"
+            test-treeview-list)
+       (:fn "Test of GtkFileChooser" test-file-chooser)
+       (:fn "Test of GtkColorSelection" test-color-selection)
+       (:fn "Test of GtkTextView" test-text-view)
+       (:fn "A simple test of 'on-expose' event" test)
+       (:fn "Show slots of a given class" demo-class-browser)
+       (:fn "Testing GtkUIManager" test-ui-manager)
+       (:fn "GtkFontChooser" test-font-chooser)))
+
+(defun fill-demo-text-buffer (buffer text-view &optional (page 'index))
+  (declare (ignorable text-view))
+  (setf (text-buffer-tag-table buffer) (make-instance 'text-tag-table))
+  (setf (text-buffer-text buffer) "")
+  (text-tag-table-add (text-buffer-tag-table buffer) (make-instance 'text-tag :name "bold" :weight 700))
+  (labels ((insert-text (text)
+             (text-buffer-insert buffer text))
+           (insert-link (text fn)
+             (let ((offset (text-iter-offset (text-buffer-get-end-iter buffer))))
+               (text-buffer-insert buffer text)
+               (text-buffer-apply-tag buffer (make-link-fn-tag buffer fn)
+                                      (text-buffer-get-iter-at-offset buffer offset)
+                                      (text-buffer-get-end-iter buffer))))
+           (insert-newline ()
+             (text-buffer-insert buffer (format nil "~%")))
+           (process-paragraph (node)
+             (map nil #'process (rest node))
+             (insert-newline))
+           (process-link (node)
+             (insert-link (second node) (lambda () (fill-demo-text-buffer buffer text-view (third node)))))
+           (process-fn (node)
+             (insert-link (second node) (third node)))
+           (process-ul (node)
+             (iter (for n in (rest node))
+                   (for i from 1)
+                   (insert-text "* ")
+                   (process n)
+                   (insert-newline)))
+           (process-ol (node)
+             (iter (for n in (rest node))
+                   (for i from 1)
+                   (insert-text (format nil "~A. " i))
+                   (process n)
+                   (insert-newline)))
+           (process-bold (node)
+             (let ((offset (text-iter-offset (text-buffer-get-end-iter buffer))))
+               (map nil #'process (rest node))
+               (text-buffer-apply-tag buffer "bold" (text-buffer-get-iter-at-offset buffer offset) (text-buffer-get-end-iter buffer))))
+           (process (node)
+             (cond
+               ((stringp node) (insert-text node))
+               ((and (listp node) (eq (car node) :p)) (process-paragraph node))
+               ((and (listp node) (eq (car node) :link)) (process-link node))
+               ((and (listp node) (eq (car node) :fn)) (process-fn node))
+               ((and (listp node) (eq (car node) :ul)) (process-ul node))
+               ((and (listp node) (eq (car node) :ol)) (process-ol node))
+               ((and (listp node) (eq (car node) :b)) (process-bold node))
+               ((listp node) (map nil #'process node))
+               (t (error "Do not know how to proceed")))))
+    (process (get-page page))))
+
+(defun make-demo-text-buffer (text-view)
+  (let ((buffer (make-instance 'text-buffer)))
+    (fill-demo-text-buffer buffer text-view)
+    buffer))
+
+(defvar *active-tag* nil)
+
+(defun tv-motion-notify (tv event)
+  (multiple-value-bind (x y)
+      (text-view-window-to-buffer-coords tv :text
+                                         (round (event-motion-x event)) (round (event-motion-y event)))
+    (let ((it (text-view-get-iter-at-location tv x y)))
+      (if it
+          (let ((tags (text-iter-tags it)))
+            (if tags
+                (loop
+                   for tag in tags
+                   do (progn
+                        (when *active-tag*
+                          (setf (text-tag-foreground *active-tag*) "blue"
+                                *active-tag* nil))
+                        (setf (gdk-window-cursor (text-view-get-window tv :text))
+                              (cursor-new-for-display (drawable-display (text-view-get-window tv :text))
+                                                      :hand2)
+                              *active-tag* tag
+                              (text-tag-foreground *active-tag*) "red")))
+                (progn
+                  (setf (gdk-window-cursor (text-view-get-window tv :text)) nil)
+                  (when *active-tag*
+                    (setf (text-tag-foreground *active-tag*) "blue"
+                          *active-tag* nil)))))
+          (progn
+                  (setf (gdk-window-cursor (text-view-get-window tv :text)) nil)
+                  (when *active-tag*
+                    (setf (text-tag-foreground *active-tag*) "blue"
+                          *active-tag* nil)))))))
+
+(defun make-demo-text-view ()
+  (let ((tv (make-instance 'text-view :editable nil :cursor-visible nil :wrap-mode :word :pixels-below-lines 1 :left-margin 5 :right-margin 5)))
+    (setf (text-view-buffer tv)
+          (make-demo-text-buffer tv))
+    (connect-signal tv "motion-notify-event" #'tv-motion-notify)
+    tv))
+
+(defun demo ()
+  (within-main-loop
+    (let-ui
+        (gtk-window
+         :var w
+         :title "Gtk+ demo for Lisp"
+         :window-position :center
+         :default-width 500
+         :default-height 500
+         (scrolled-window
+          :hscrollbar-policy :automatic
+          :vscrollbar-policy :automatic
+          (:expr (make-demo-text-view))))
+      (widget-show w))))
 
 (defun test ()
   "A simple test of 'on-expose' event"
@@ -891,41 +1040,6 @@
         (setf (entry-completion-text-column completion) 0)
         (container-add w e))
       (widget-show w))))
-
-(defun demo-all ()
-  (within-main-loop
-    (let* ((window (make-instance 'gtk-window
-                                  :title "cl-gtk2-gtk demo"
-                                  :window-position :center
-                                  :default-width 500
-                                  :default-height 500))
-           (scrolled (make-instance 'scrolled-window
-                                    :hscrollbar-policy :automatic
-                                    :vscrollbar-policy :automatic))
-           (viewport (make-instance 'viewport))
-           (v-box-buttons (make-instance 'v-box))
-           (v-box-top (make-instance 'v-box)))
-      (container-add window v-box-top)
-      (box-pack-start v-box-top (make-instance 'label :label "These are the demos of cl-gtk2-gtk:") :expand nil)
-      (box-pack-start v-box-top scrolled)
-      (container-add scrolled viewport)
-      (container-add viewport v-box-buttons)
-      (iter (for s in-package :gtk-demo :external-only t)
-            (for fn = (fdefinition s))
-            (unless fn (next-iteration))
-            (when (eq s 'gtk-demo:demo-all) (next-iteration))
-            (for docstring = (documentation fn t))
-            (for description = (format nil "~A~@[~%~A~]" (string-downcase (symbol-name s)) docstring))
-            (for label = (make-instance 'label :label description :justify :center))
-            (for button = (make-instance 'button))
-            (container-add button label)
-            (connect-signal button "clicked"
-                            (let ((fn fn))
-                              (lambda (b)
-                                (declare (ignore b))
-                                (funcall fn))))
-            (box-pack-start v-box-buttons button :expand nil))
-      (widget-show window))))
 
 (defun test-ui-markup ()
   (within-main-loop
