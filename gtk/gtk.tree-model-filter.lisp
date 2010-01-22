@@ -70,7 +70,7 @@ GtkTreePath  *gtk_tree_model_filter_convert_path_to_child_path (GtkTreeModelFilt
 ;; extras
 
 (defcfun gtk-tree-model-filter-refilter :void
-  (filter (g-object gtk-tree-model-filter)))
+  (filter (g-object tree-model-filter)))
 
 (defun tree-model-filter-refilter (filter)
   (gtk-tree-model-filter-refilter filter))
@@ -78,7 +78,7 @@ GtkTreePath  *gtk_tree_model_filter_convert_path_to_child_path (GtkTreeModelFilt
 (export 'tree-model-filter-refilter)
 
 (defcfun gtk-tree-model-filter-clear-cache :void
-  (filter (g-object gtk-tree-model-filter)))
+  (filter (g-object tree-model-filter)))
 
 (defun tree-model-filter-clear-cache (filter)
   (gtk-tree-model-filter-clear-cache filter))
