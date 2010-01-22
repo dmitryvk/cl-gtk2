@@ -3,10 +3,13 @@
 (defcallback gtk-tree-model-filter-visible-func-callback :boolean
   ((tree-model g-object) (iter (g-boxed-foreign tree-iter)) (data :pointer))
   (let ((fn (get-stable-pointer-value data)))
-    (funcall fn tree-model iter)))
+    (restart-case
+        (funcall fn tree-model iter)
+      (return-true () t)
+      (return-false () nil))))
 
 (defcfun gtk-tree-model-filter-set-visible-func :void
-  (filter g-object)
+  (filter (g-object tree-model-filter))
   (func :pointer)
   (data :pointer)
   (destroy-notify :pointer))
@@ -45,7 +48,7 @@ gboolean      gtk_tree_model_filter_convert_child_iter_to_iter (GtkTreeModelFilt
 |#
 
 (defcfun gtk-tree-model-filter-convert-iter-to-child-iter :void
-  (filter g-object)
+  (filter (g-object tree-model-filter))
   (child-iter (g-boxed-foreign tree-iter))
   (filter-iter (g-boxed-foreign tree-iter)))
 
@@ -67,7 +70,7 @@ GtkTreePath  *gtk_tree_model_filter_convert_path_to_child_path (GtkTreeModelFilt
 ;; extras
 
 (defcfun gtk-tree-model-filter-refilter :void
-  (filter g-object))
+  (filter (g-object gtk-tree-model-filter)))
 
 (defun tree-model-filter-refilter (filter)
   (gtk-tree-model-filter-refilter filter))
@@ -75,10 +78,9 @@ GtkTreePath  *gtk_tree_model_filter_convert_path_to_child_path (GtkTreeModelFilt
 (export 'tree-model-filter-refilter)
 
 (defcfun gtk-tree-model-filter-clear-cache :void
-  (filter g-object))
+  (filter (g-object gtk-tree-model-filter)))
 
 (defun tree-model-filter-clear-cache (filter)
   (gtk-tree-model-filter-clear-cache filter))
 
 (export 'tree-model-filter-clear-cache)
-
