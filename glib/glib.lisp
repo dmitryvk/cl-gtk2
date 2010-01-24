@@ -33,7 +33,10 @@
            #:g-error-condition-domain
            #:g-error-condition-code
            #:g-error-condition-message
-           #:g-spawn-flags)
+           #:g-spawn-flags
+           #:push-library-version-features
+           #:foreign-library-minimum-version-mismatch
+           #:require-library-version)
   (:documentation
    "Cl-gtk2-glib is wrapper for @a[http://library.gnome.org/devel/glib/]{GLib}."))
 
@@ -110,6 +113,35 @@ In this example, for every @code{class}, @code{(initialize-gobject-class-g-type 
   (use-foreign-library glib)
   (use-foreign-library gthread))
 
+(defmacro push-library-version-features (library-name major-version-var minor-version-var &body versions)
+  `(eval-when (:load-toplevel :execute)
+     ,@(iter (for (major minor) on versions by #'cddr)
+             (collect
+                 `(when (or (and (= ,major-version-var ,major) (>= ,minor-version-var ,minor))
+                            (> ,major-version-var ,major))
+                    (pushnew ,(intern (format nil "~A-~A.~A" (string library-name) major minor) (find-package :keyword)) *features*))))))
+
+(define-condition foreign-library-minimum-version-mismatch (error)
+  ((library :initarg :library :reader .library)
+   (minimum-version :initarg :minimum-version :reader .minimum-version)
+   (actual-version :initarg :actual-version :reader .actual-version))
+  (:report (lambda (c s)
+             (format s "Library ~A has too old version: it is ~A but required to be at least ~A"
+                     (.library c)
+                     (.actual-version c)
+                     (.minimum-version c)))))
+
+(defun require-library-version (library min-major-version min-minor-version major-version minor-version)
+  (unless (or (> major-version min-major-version)
+              (and (= major-version min-major-version)
+                   (>= minor-version min-minor-version)))
+    (restart-case
+        (error 'foreign-library-minimum-version-mismatch
+               :library library
+               :minimum-version (format nil "~A.~A" min-major-version min-minor-version)
+               :actual-version (format nil "~A.~A" major-version minor-version))
+      (ignore () :report "Ignore version requirement" nil))))
+
 ;;
 ;; Glib Fundamentals
 ;;
@@ -140,6 +172,21 @@ In this example, for every @code{class}, @code{(initialize-gobject-class-g-type 
 (defcvar (*glib-micro-version* "glib_micro_version" :read-only t :library glib) :uint)
 (defcvar (*glib-binary-age* "glib_binary_age" :read-only t :library glib) :uint)
 (defcvar (*glib-interface-age* "glib_interface_age" :read-only t :library glib) :uint)
+
+(push-library-version-features glib *glib-major-version* *glib-micro-version*
+  2 2
+  2 4
+  2 6
+  2 8
+  2 10
+  2 12
+  2 14
+  2 16
+  2 18
+  2 20
+  2 22)
+
+(require-library-version "Glib" 2 20 *glib-major-version* *glib-minor-version*)
 
 ;;
 ;; Omitted:

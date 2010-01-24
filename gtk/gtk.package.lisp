@@ -32,15 +32,6 @@
 
 (in-package :gtk)
 
-(at-init ()
-  (eval-when (:compile-toplevel :load-toplevel :execute)
-    (define-foreign-library gtk
-      (:unix (:or "libgtk-x11-2.0.so.0" "libgtk-x11-2.0.so"))
-      (:windows (:or "libgtk-2.0-0.dll" "libgtk-win32-2.0-0.dll"))
-      (t "libgtk-2.0")))
-
-  (use-foreign-library gtk))
-
 #+sbcl (when (and (find-package "SB-EXT")
                   (find-symbol "SET-FLOATING-POINT-MODES" (find-package "SB-EXT")))
          (funcall (find-symbol "SET-FLOATING-POINT-MODES" (find-package "SB-EXT")) :traps nil))
