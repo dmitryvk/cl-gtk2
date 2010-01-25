@@ -118,9 +118,14 @@
 
 (export 'gdk-window-move-region)
 
-;; TODO: (because of >= 2.18)
-;; void                gdk_window_flush                    (GdkWindow *window);
-;; gboolean            gdk_window_ensure_native            (GdkWindow *window);
+#+gtk-2.18
+(progn
+  (defcfun gdk-window-flush :void
+    (window (g-object gdk-window)))
+  (export 'gdk-window-flush)
+  (defcfun gdk-window-ensure-native :void
+    (window (g-object gdk-window)))
+  (export 'gdk-window-ensure-native))
 
 (defcfun gdk-window-reparent :void
   (window (g-object gdk-window))
@@ -163,14 +168,14 @@
 
 (export 'gdk-window-lower)
 
-#|
+#+gtk-2.18
 (defcfun gdk-window-restack :void
   (window (g-object gdk-window))
   (sibling (g-object gdk-window))
   (above :boolean))
 
+#+gtk-2.18
 (export 'gdk-window-restack)
-|#
 
 (defcfun gdk-window-focus :void
   (window (g-object gdk-window))
@@ -485,19 +490,21 @@
 ;;                                                          gint *x,
 ;;                                                          gint *y);
 
-#|
-(defcfun gdk_window_get_root_coords :void
-  (window (g-object gdk-window))
-  (x :int)
-  (y :int)
-  (root-x :int)
-  (root-y :int))
+#+gtk-2.18
+(progn
+  (defcfun gdk_window_get_root_coords :void
+    (window (g-object gdk-window))
+    (x :int)
+    (y :int)
+    (root-x :int)
+    (root-y :int))
 
-(defun gdk-window-get-root-coords (window x y)
-  (with-foreign-objects ((root-x :int) (root-y :int))
-    (gdk_window_get_root_coords window x y root-x root-y)
-    (values (mem-ref root-x :int) (mem-ref root-y :int))))
-|#
+  (defun gdk-window-get-root-coords (window x y)
+    (with-foreign-objects ((root-x :int) (root-y :int))
+      (gdk_window_get_root_coords window x y root-x root-y)
+      (values (mem-ref root-x :int) (mem-ref root-y :int))))
+  
+  (export 'gdk-window-get-root-coords))
 
 (defcfun gdk_window_get_pointer (g-object gdk-window)
   (window (g-object gdk-window))
@@ -543,29 +550,29 @@
 ;;                     GdkPointerHooks;
 ;; GdkPointerHooks *   gdk_set_pointer_hooks               (const GdkPointerHooks *new_hooks);
 
-#|
-(defcfun gdk-offscreen-window-get-pixmap (g-object pixmap)
-  (window (g-object gdk-window)))
+#+gtk-2.18
+(progn
+  (defcfun gdk-offscreen-window-get-pixmap (g-object pixmap)
+    (window (g-object gdk-window)))
 
-(export 'gdk-offscreen-window-get-pixmap)
+  (export 'gdk-offscreen-window-get-pixmap)
 
-(defcfun (gdk-offscreen-window-embedder "gdk_offscreen_window_get_embedder") (g-object gdk-window)
-  (window (g-object gdk-window)))
+  (defcfun (gdk-offscreen-window-embedder "gdk_offscreen_window_get_embedder") (g-object gdk-window)
+    (window (g-object gdk-window)))
 
-(defcfun gdk_offscreen_window_set_embedder :void
-  (window (g-object gdk-window))
-  (embedder (g-object gdk-window)))
+  (defcfun gdk_offscreen_window_set_embedder :void
+    (window (g-object gdk-window))
+    (embedder (g-object gdk-window)))
 
-(defun (setf gdk-offscreen-window-embedder) (new-value window)
-  (gdk_offscreen_window_set_embedder window new-value))
+  (defun (setf gdk-offscreen-window-embedder) (new-value window)
+    (gdk_offscreen_window_set_embedder window new-value))
 
-(export 'gdk-offscreen-window-embedder)
+  (export 'gdk-offscreen-window-embedder)
 
-(defcfun gdk-window-geometry-changed :void
-  (window (g-object gdk-window)))
+  (defcfun gdk-window-geometry-changed :void
+    (window (g-object gdk-window)))
 
-(export 'gdk-window-geometry-changed)
-|#
+  (export 'gdk-window-geometry-changed))
 
 (defcfun gdk-window-redirect-to-drawable :void
   (window (g-object gdk-window))
