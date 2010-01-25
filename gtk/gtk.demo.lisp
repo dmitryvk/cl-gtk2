@@ -80,9 +80,17 @@
        (:fn "Testing GtkUIManager" test-ui-manager)
        (:fn "GtkFontChooser" test-font-chooser)))
 
+(defun clear-text-tag-table (table)
+  (let (tags)
+    (text-tag-table-foreach table
+                            (lambda (tag)
+                              (push tag tags)))
+    (iter (for tag in tags)
+          (text-tag-table-remove table tag))))
+
 (defun fill-demo-text-buffer (buffer text-view &optional (page 'index))
   (declare (ignorable text-view))
-  (setf (text-buffer-tag-table buffer) (make-instance 'text-tag-table))
+  (clear-text-tag-table (text-buffer-tag-table buffer))
   (setf (text-buffer-text buffer) "")
   (text-tag-table-add (text-buffer-tag-table buffer) (make-instance 'text-tag :name "bold" :weight 700))
   (labels ((insert-text (text)
