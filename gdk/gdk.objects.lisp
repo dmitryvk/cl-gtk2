@@ -596,8 +596,12 @@
           "gdk_drawable_get_visible_region" nil)))
 
 (define-g-object-class "GdkWindow" gdk-window (:superclass drawable)
-   ((cursor gdk-window-cursor "cursor"
+   (#+gtk-2.18
+    (cursor gdk-window-cursor "cursor"
             "GdkCursor" t t)
+    #-gtk-2.18
+    (:cffi cursor gdk-window-cursor (g-boxed-foreign cursor :return)
+           "gdk_window_get_cursor" "gdk_window_set_cursor")
     (:cffi window-type gdk-window-window-type gdk-window-type
            "gdk_window_get_window_type" nil)
     (:cffi is-destroyed gdk-window-is-destroyed :boolean
