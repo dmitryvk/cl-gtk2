@@ -500,7 +500,7 @@
                                                                                             0)))))
       (connect-signal tv "row-activated" (lambda (tv path column)
                                            (declare (ignore tv column))
-                                           (format t "You clicked on row ~A~%" (tree-path-indices path))))
+                                           (show-message (format nil "You clicked on row ~A" (tree-path-indices path)))))
       (container-add window v-box)
       (box-pack-start v-box h-box :expand nil)
       (box-pack-start h-box title-entry :expand nil)
@@ -553,7 +553,7 @@
                                                                                             0)))))
       (connect-signal combo-box "changed" (lambda (c)
                                             (declare (ignore c))
-                                            (format t "You clicked on row ~A~%" (combo-box-active combo-box))))
+                                            (show-message (format nil "You clicked on row ~A~%" (combo-box-active combo-box)))))
       (container-add window v-box)
       (box-pack-start v-box h-box :expand nil)
       (box-pack-start h-box title-entry :expand nil)
@@ -614,7 +614,7 @@
       (connect-signal window "destroy" (lambda (w) (declare (ignore w)) (leave-gtk-main)))
       (connect-signal button "color-set" (lambda (b)
                                            (declare (ignore b))
-                                           (format t "Chose color ~A~%" (color-button-color button))))
+                                           (show-message (format nil "Chose color ~A" (color-button-color button)))))
       (container-add window button)
       (widget-show window))))
 
@@ -863,7 +863,7 @@
 (defun demo-class-browser ()
   "Show slots of a given class"
   (let ((output *standard-output*))
-    (with-main-loop
+    (within-main-loop
       (let* ((window (make-instance 'gtk-window
                                     :window-position :center
                                     :title "Class Browser"
@@ -908,6 +908,7 @@
                             (class (find-class class-name)))
                        (display-class-slots class)))))
           (connect-signal search-button "clicked" #'on-search-clicked))
+        (connect-signal window "destroy" (lambda (w) (declare (ignore w)) (leave-gtk-main)))
         (widget-show window)))))
 
 (defun make-tree-from-sexp (l)
@@ -940,7 +941,7 @@
             (tree-view-tooltip-column tree-view) 0)
       (connect-signal tree-view "row-activated" (lambda (tv path column)
                                                   (declare (ignore tv column))
-                                                  (format t "You clicked on row ~A~%" (tree-path-indices path))))
+                                                  (show-message (format nil "You clicked on row ~A" (tree-path-indices path)))))
       (connect-signal button "clicked" (lambda (b)
                                          (declare (ignore b))
                                          (let ((object (read-from-string (entry-text entry))))
@@ -968,6 +969,7 @@
         (tree-view-append-column tree-view column)
         (print (tree-view-column-tree-view column))
         (print (tree-view-column-cell-renderers column)))
+      (connect-signal window "destroy" (lambda (w) (declare (ignore w)) (leave-gtk-main)))
       (widget-show window))))
 
 (defclass custom-window (gtk-window)
@@ -999,6 +1001,7 @@
   "Simple test of non-GObject subclass of GtkWindow"
   (within-main-loop
     (let ((w (make-instance 'custom-window)))
+      (connect-signal w "destroy" (lambda (w) (declare (ignore w)) (leave-gtk-main)))
       (widget-show w))))
 
 (defun test-assistant ()
@@ -1031,14 +1034,15 @@
         (let ((w (make-instance 'label :label "A label in action area")))
           (widget-show w)
           (assistant-add-action-widget d w))
+        (connect-signal d "destroy" (lambda (w) (declare (ignore w)) (leave-gtk-main)))
         (connect-signal d "cancel" (lambda (assistant)
                                      (declare (ignore assistant))
                                      (object-destroy d)
-                                     (format output "Canceled~%")))
+                                     (show-message "Canceled")))
         (connect-signal d "close" (lambda (assistant)
                                     (declare (ignore assistant))
                                     (object-destroy d)
-                                    (format output "Thank you, ~A~%" (entry-text entry))))
+                                    (show-message (format nil "Thank you, ~A!" (entry-text entry)))))
         (connect-signal d "prepare" (lambda (assistant page-widget)
                                       (declare (ignore assistant page-widget))
                                       (format output "Assistant ~A has ~A pages and is on ~Ath page~%"
@@ -1062,6 +1066,7 @@
              (e (make-instance 'entry :completion completion)))
         (setf (entry-completion-text-column completion) 0)
         (container-add w e))
+      (connect-signal w "destroy" (lambda (w) (declare (ignore w)) (leave-gtk-main)))
       (widget-show w))))
 
 (defun test-ui-markup ()
@@ -1093,6 +1098,7 @@
                             (label :label "2 x 1") :left 0 :right 2 :top 0 :bottom 1
                             (label :label "1 x 1") :left 0 :right 1 :top 1 :bottom 2
                             (label :label "1 x 1") :left 1 :right 2 :top 1 :bottom 2)))
+        (connect-signal w "destroy" (lambda (w) (declare (ignore w)) (leave-gtk-main)))
         (connect-signal btn "clicked"
                         (lambda (b)
                           (declare (ignore b))
@@ -1142,6 +1148,7 @@
                                                         :buttons :ok)))
                             (dialog-run dialog)
                             (object-destroy dialog)))))
+      (connect-signal w "destroy" (lambda (w) (declare (ignore w)) (leave-gtk-main)))
       (widget-show w))))
 
 (defun test-tree-store ()
@@ -1190,6 +1197,7 @@
                                                         :buttons :ok)))
                             (dialog-run dialog)
                             (object-destroy dialog)))))
+      (connect-signal w "destroy" (lambda (w) (declare (ignore w)) (leave-gtk-main)))
       (widget-show w))))
 
 (defun test-gdk-expose (gdk-window)
@@ -1231,9 +1239,6 @@
   "Test various gdk primitives"
   (within-main-loop
     (let ((window (make-instance 'gtk-window :type :toplevel :app-paintable t)))
-      (connect-signal window "destroy" (lambda (widget)
-                                         (declare (ignore widget))
-                                         (leave-gtk-main)))
       (connect-signal window "destroy" (lambda (widget)
                                          (declare (ignore widget))
                                          (leave-gtk-main)))
