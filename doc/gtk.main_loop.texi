@@ -24,13 +24,28 @@ This function causes the main loop to terminate and causes @ref{gtk-main} to ret
 @lisp
 (ensure-gtk-main)
 @end lisp
-This function ensures that the Gtk+ main loop is started in background thread. If the loop has not been started or if had been terminated, restarts the background thread.
+This function ensures that the Gtk+ main loop is started.
 
-@RFunction join-main-thread
+If your Lisp supports multithreading, it starts the main loop in background thread (if it had not been started) and immediately returns. If your Lisp does not support multithreading, the main loop is started and waits for it to complete.
+
+Calls to @ref{ensure-gtk-main} must be paired by calls to @ref{leave-gtk-main}. When the @ref{leave-gtk-main} is called the same number of time as @ref{ensure-gtk-main} is called then the main loop quits (e.g., main loops are nested).
+
+It is also useful to call @ref{join-gtk-main} after @ref{ensure-gtk-main} to wait for main loop to quit.
+
+@RFunction leave-gtk-main
 @lisp
-(join-main-thread)
+(leave-gtk-main)
 @end lisp
-This function waits for the background thread that runs the Gtk+ main loop to quit.
+This function terminates the gtk main loop.
+
+Calls to @ref{ensure-gtk-main} must be paired by calls to @ref{leave-gtk-main}. When the @ref{leave-gtk-main} is called the same number of time as @ref{ensure-gtk-main} is called then the main loop quits (e.g., main loops are nested).
+
+
+@RFunction join-gtk-main
+@lisp
+(join-gtk-thread)
+@end lisp
+This function waits for the background thread that runs the Gtk+ main loop to quit. See @ref{ensure-gtk-main}.
 
 @RFunction gtk-main-iteration
 @lisp
