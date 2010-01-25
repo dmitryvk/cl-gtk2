@@ -197,6 +197,10 @@
           :hscrollbar-policy :automatic
           :vscrollbar-policy :automatic
           (:expr (make-demo-text-view))))
+      (connect-signal w "destroy"
+                      (lambda (w)
+                        (declare (ignore w))
+                        (leave-gtk-main)))
       (widget-show w))))
 
 (defun test ()
