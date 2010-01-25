@@ -243,13 +243,38 @@
 (defmethod free-translated-object (native (type boxed-opaque-foreign-type) param)
   (declare (ignore native type param)))
 
+(defvar *gboxed-gc-hooks-lock* (make-recursive-lock "gboxed-gc-hooks-lock"))
+(defvar *gboxed-gc-hooks* nil);;pointers to objects to be freed
+
+(defun activate-gboxed-gc-hooks ()
+  (with-recursive-lock-held (*gboxed-gc-hooks-lock*)
+    (when *gboxed-gc-hooks*
+      (log-for :gc "activating gc hooks for boxeds: ~A~%" *gboxed-gc-hooks*)
+      (loop
+         for (pointer type) in *gboxed-gc-hooks*
+         do (boxed-free-fn type pointer))
+      (setf *gboxed-gc-hooks* nil))))
+
+(defcallback gboxed-idle-gc-hook :boolean ((data :pointer))
+  (declare (ignore data))
+  (activate-gboxed-gc-hooks)
+  nil)
+
+(defun register-gboxed-for-gc (type pointer)
+  (with-recursive-lock-held (*gboxed-gc-hooks-lock*)
+    (let ((locks-were-present (not (null *gboxed-gc-hooks*))))
+      (push (list pointer type) *gboxed-gc-hooks*)
+      (unless locks-were-present
+        (log-for :gc "adding gboxed idle-gc-hook to main loop~%")
+        (g-idle-add (callback gboxed-idle-gc-hook) (null-pointer))))))
+
 (defun make-boxed-free-finalizer (type pointer)
-  (lambda () (boxed-free-fn type pointer)))
+  (lambda () (register-gboxed-for-gc type pointer)))
 
 (defmethod translate-from-foreign (native (foreign-type boxed-opaque-foreign-type))
   (let* ((type (g-boxed-foreign-info foreign-type))
          (proxy (make-instance (g-boxed-info-name type) :pointer native)))
-    (tg:finalize proxy (make-boxed-free-finalizer type native))))
+    proxy))
 
 (defmethod cleanup-translated-object-for-callback ((type boxed-opaque-foreign-type) proxy native)
   (declare (ignore native))
