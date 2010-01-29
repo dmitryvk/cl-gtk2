@@ -75,12 +75,20 @@
             (gethash n *id-to-gtype*) gtype)
       n)))
 
-(defun gtype (thing)
+(defun %gtype (thing)
   (etypecase thing
     (null nil)
     (gtype thing)
     (string (gtype-from-name thing))
     (integer (gtype-from-id thing))))
+
+(defun gtype (thing)
+  (%gtype thing))
+
+(define-compiler-macro gtype (&whole whole thing)
+  (if (constantp thing)
+      `(load-time-value (%gtype ,thing))
+      whole))
 
 (define-foreign-type g-type-designator ()
   ((mangled-p :initarg :mangled-p
