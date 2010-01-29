@@ -23,6 +23,7 @@
   (type g-type))
 
 (defun gtype-from-name (name)
+  (declare (optimize (safety 0) (speed 3)))
   (when (null name) (return-from gtype-from-name nil))
   (bt:with-lock-held (*gtype-lock*)
     (let ((type (gethash name *name-to-gtype*)))
@@ -45,6 +46,7 @@
         (return-from gtype-from-name type)))))
 
 (defun gtype-from-id (id)
+  (declare (optimize (safety 0) (speed 3)))
   (when (zerop id) (return-from gtype-from-id nil))
   (bt:with-lock-held (*gtype-lock*)
     (let ((type (gethash id *id-to-gtype*)))
