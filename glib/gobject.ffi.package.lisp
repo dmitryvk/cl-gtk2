@@ -1,5 +1,5 @@
 (defpackage :gobject.ffi
-  (:use :cl :cffi :glib :trivial-garbage)
+  (:use :cl :cffi :glib :trivial-garbage :iter)
   (:export #:g-type
            #:g-type-designator
            #:g-type-name
