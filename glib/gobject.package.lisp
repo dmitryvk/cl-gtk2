@@ -1,8 +1,9 @@
 (defpackage :gobject
   (:use :c2cl :glib :cffi :tg :bordeaux-threads :iter :closer-mop :gobject.ffi)
   (:export #:g-type
-           #:g-type-string
-           #:g-type-numeric
+           #:gtype
+           #:gtype-name
+           #:gtype-id
            #:g-type-children
            #:g-type-parent
            #:g-type-designator
@@ -71,8 +72,6 @@
            #:g-object
            #:pointer
            #:g-type-from-object
-           #:g-type-name
-           #:g-type-from-name
            #:g-signal-connect
            #:define-g-object-class
            #:g-initially-unowned
@@ -125,7 +124,6 @@
            #:g-type-interfaces
            #:g-type-interface-prerequisites
            #:g-type-name
-           #:g-type-from-name
            #:g-type
            #:g-type-children
            #:g-type-parent

@@ -8,13 +8,13 @@
   (g-type-from-instance object-ptr))
 
 (defun g-type-from-class (g-class)
-  (g-type-name (foreign-slot-value g-class 'g-type-class :type)))
+  (foreign-slot-value g-class 'g-type-class :type))
 
 (defun g-type-from-instance (type-instance)
   (g-type-from-class (foreign-slot-value type-instance 'g-type-instance :class)))
 
 (defun g-type-from-interface (type-interface)
-  (g-type-name (foreign-slot-value type-interface 'g-type-interface :type)))
+  (foreign-slot-value type-interface 'g-type-interface :type))
 
 (define-condition property-access-error (error)
   ((property-name :initarg :property-name :reader property-access-error-property-name)
@@ -40,11 +40,11 @@
     (when (and assert-readable (not (g-class-property-definition-readable property)))
       (error 'property-unreadable-error
              :property-name property-name
-             :class-name (g-type-string object-type)))
+             :class-name (gtype-name (gtype object-type))))
     (when (and assert-writable (not (g-class-property-definition-writable property)))
       (error 'property-unwritable-error
              :property-name property-name
-             :class-name (g-type-string object-type)))
+             :class-name (gtype-name (gtype object-type))))
     (g-class-property-definition-type property)))
 
 (defun g-object-property-type (object-ptr property-name &key assert-readable assert-writable)

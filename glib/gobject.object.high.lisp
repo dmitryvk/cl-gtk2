@@ -160,19 +160,19 @@
 (defun registered-object-type-by-name (name)
   (gethash name *registered-object-types*))
 (defun get-g-object-lisp-type (g-type)
-  (setf g-type (ensure-g-type g-type))
+  (setf g-type (gtype g-type))
   (loop
-     while (not (zerop g-type))
-     for lisp-type = (gethash (g-type-name g-type) *registered-object-types*)
+     while (not (null g-type))
+     for lisp-type = (gethash (gtype-name g-type) *registered-object-types*)
      when lisp-type do (return lisp-type)
-     do (setf g-type (ensure-g-type (g-type-parent g-type)))))
+     do (setf g-type (g-type-parent g-type))))
 
 (defun make-g-object-from-pointer (pointer)
   (let* ((g-type (g-type-from-instance pointer))
          (lisp-type (get-g-object-lisp-type g-type)))
     (unless lisp-type
       (error "Type ~A is not registered with REGISTER-OBJECT-TYPE"
-             (g-type-name g-type)))
+             (gtype-name g-type)))
     (let ((*current-object-from-pointer* pointer))
       (make-instance lisp-type :pointer pointer))))
 
@@ -217,15 +217,6 @@
 
 (register-object-type "GObject" 'g-object)
 
-(defun ensure-g-type (type)
-  "Returns the GType value for a given type. If type is an integer, it is returned. If type is a string, GType corresponding to this type name is looked up and returned.
-@arg[type]{a string or and integer}
-@return{integer equal to GType of @code{type}}"
-  (etypecase type
-    (integer type)
-    (string (or (g-type-from-name type)
-                (error "Type ~A is invalid" type)))))
-
 (defun ensure-object-pointer (object)
   (if (pointerp object)
       object
@@ -238,16 +229,16 @@
 (defun set-gvalue-object (gvalue value)
   (g-value-set-object gvalue (if value (pointer value) (null-pointer))))
 
-(defmethod parse-g-value-for-type (gvalue-ptr (type-numeric (eql +g-type-object+)) parse-kind)
+(defmethod parse-g-value-for-type (gvalue-ptr (type (eql (gtype +g-type-object+))) parse-kind)
   (declare (ignore parse-kind))
   (parse-g-value-object gvalue-ptr))
 
-(defmethod parse-g-value-for-type (gvalue-ptr (type-numeric (eql +g-type-interface+)) parse-kind)
+(defmethod parse-g-value-for-type (gvalue-ptr (type (eql (gtype +g-type-interface+))) parse-kind)
   (declare (ignore parse-kind))
   (parse-g-value-object gvalue-ptr))
 
-(defmethod set-gvalue-for-type (gvalue-ptr (type-numeric (eql +g-type-object+)) value)
+(defmethod set-gvalue-for-type (gvalue-ptr (type (eql (gtype +g-type-object+))) value)
   (set-gvalue-object gvalue-ptr value))
 
-(defmethod set-gvalue-for-type (gvalue-ptr (type-numeric (eql +g-type-interface+)) value)
+(defmethod set-gvalue-for-type (gvalue-ptr (type (eql (gtype +g-type-interface+))) value)
   (set-gvalue-object gvalue-ptr value))

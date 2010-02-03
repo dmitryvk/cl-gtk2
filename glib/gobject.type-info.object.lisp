@@ -28,7 +28,7 @@ See accessor functions:
       (print-unreadable-object (instance stream)
         (format stream
                 "PROPERTY ~A ~A.~A (flags:~@[~* readable~]~@[~* writable~]~@[~* constructor~]~@[~* constructor-only~])"
-                (g-class-property-definition-type instance)
+                (gtype-name (g-class-property-definition-type instance))
                 (g-class-property-definition-owner-type instance)
                 (g-class-property-definition-name instance)
                 (g-class-property-definition-readable instance)
