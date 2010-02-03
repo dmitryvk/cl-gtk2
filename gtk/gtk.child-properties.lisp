@@ -28,14 +28,14 @@
 (defun container-call-get-property (container child property-name type)
   (with-foreign-object (gvalue 'g-value)
     (g-value-zero gvalue)
-    (g-value-init gvalue (ensure-g-type type))
+    (g-value-init gvalue (gtype type))
     (gtk-container-child-get-property container child property-name gvalue)
     (prog1 (parse-g-value gvalue)
       (g-value-unset gvalue))))
 
 (defun container-call-set-property (container child property-name new-value type)
   (with-foreign-object (gvalue 'g-value)
-    (set-g-value gvalue new-value (ensure-g-type type) :zero-g-value t)
+    (set-g-value gvalue new-value (gtype type) :zero-g-value t)
     (gtk-container-child-set-property container child property-name gvalue)
     (g-value-unset gvalue)
     (values)))
@@ -61,7 +61,7 @@
   (n-properties (:pointer :int)))
 
 (defun container-class-child-properties (g-type)
-  (setf g-type (ensure-g-type g-type))
+  (setf g-type (gtype g-type))
   (let ((g-class (g-type-class-ref g-type)))
     (unwind-protect
          (with-foreign-object (n-properties :uint)
@@ -78,15 +78,15 @@
   (intern (format nil "~A-CHILD-~A" (symbol-name (registered-object-type-by-name type-name)) (string-upcase property-name)) (find-package package-name)))
 
 (defun generate-child-properties (&optional (type-root "GtkContainer") (package-name "GTK"))
-  (setf type-root (ensure-g-type type-root))
+  (setf type-root (gtype type-root))
   (append (loop
              for property in (container-class-child-properties type-root)
              collect
                `(define-child-property
-                    ,(g-type-name type-root)
-                    ,(child-property-name (g-type-name type-root) (g-class-property-definition-name property) package-name)
+                    ,(gtype-name type-root)
+                    ,(child-property-name (gtype-name type-root) (g-class-property-definition-name property) package-name)
                   ,(g-class-property-definition-name property)
-                  ,(g-type-name (g-class-property-definition-type property))
+                  ,(gtype-name (g-class-property-definition-type property))
                   ,(g-class-property-definition-readable property)
                   ,(g-class-property-definition-writable property)
                   t))

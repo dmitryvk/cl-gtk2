@@ -21,8 +21,8 @@
 (defvar *g-type-name->g-boxed-foreign-info* (make-hash-table :test 'equal))
 
 (defun get-g-boxed-foreign-info-for-gtype (g-type-designator)
-  (or (gethash (g-type-string g-type-designator) *g-type-name->g-boxed-foreign-info*)
-      (error "Unknown GBoxed type '~A'" (g-type-string g-type-designator))))
+  (or (gethash (gtype-name (gtype g-type-designator)) *g-type-name->g-boxed-foreign-info*)
+      (error "Unknown GBoxed type '~A'" (gtype-name (gtype g-type-designator)))))
 
 (defgeneric make-foreign-type (info &key return-p))
 
@@ -555,14 +555,14 @@
 
 (defgeneric boxed-set-g-value (gvalue-ptr info proxy))
 
-(defmethod parse-g-value-for-type (gvalue-ptr (type-numeric (eql +g-type-boxed+)) parse-kind)
+(defmethod parse-g-value-for-type (gvalue-ptr (type-numeric (eql (gtype +g-type-boxed+))) parse-kind)
   (declare (ignore parse-kind))
   (if (g-type= (g-value-type gvalue-ptr) (g-strv-get-type))
       (convert-from-foreign (g-value-get-boxed gvalue-ptr) '(glib:gstrv :free-from-foreign nil))
       (let ((boxed-type (get-g-boxed-foreign-info-for-gtype (g-value-type gvalue-ptr))))
         (boxed-parse-g-value gvalue-ptr boxed-type))))
 
-(defmethod set-gvalue-for-type (gvalue-ptr (type-numeric (eql +g-type-boxed+)) value)
+(defmethod set-gvalue-for-type (gvalue-ptr (type-numeric (eql (gtype +g-type-boxed+))) value)
   (if (g-type= (g-value-type gvalue-ptr) (g-strv-get-type))
       (g-value-set-boxed gvalue-ptr (convert-to-foreign value '(glib:gstrv :free-from-foreign nil)))
       (let ((boxed-type (get-g-boxed-foreign-info-for-gtype (g-value-type gvalue-ptr))))

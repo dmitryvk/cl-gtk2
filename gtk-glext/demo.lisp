@@ -71,7 +71,9 @@
                                  :default-height 500))
           (area (make-instance 'gl-drawing-area :on-expose #'planet-draw :on-resize #'planet-resize)))
       (container-add window area)
-      (pushnew :key-press-mask (gdk:gdk-window-events (widget-window window)))
+      (connect-signal window "realize"
+                      (lambda (w)
+                        (pushnew :key-press-mask (gdk:gdk-window-events (widget-window window)))))
       (connect-signal window "key-press-event"
                       (lambda (w e)
                         (declare (ignore w))

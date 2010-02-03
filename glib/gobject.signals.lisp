@@ -119,7 +119,7 @@ If @code{after} is true, then the function will be called after the default hand
               (for type in (signal-info-param-types signal-info))
               (set-g-value (mem-aref params 'g-value (1+ i)) arg type :zero-g-value t))
         (prog1
-            (if (g-type= (signal-info-return-type signal-info) +g-type-void+)
+            (if (eq (signal-info-return-type signal-info) (gtype +g-type-void+))
                 (g-signal-emitv params (signal-info-id signal-info) signal-name (null-pointer))
                 (with-foreign-object (return-value 'g-value)
                   (g-value-zero return-value)

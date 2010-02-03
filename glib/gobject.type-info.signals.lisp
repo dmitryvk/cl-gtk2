@@ -16,11 +16,11 @@
         (format stream
                 "Signal [#~A] ~A ~A.~A~@[::~A~](~{~A~^, ~})~@[ [~{~A~^, ~}]~]"
                 (signal-info-id instance)
-                (g-type-string (signal-info-return-type instance))
-                (g-type-string (signal-info-owner-type instance))
+                (gtype-name (signal-info-return-type instance))
+                (gtype-name (signal-info-owner-type instance))
                 (signal-info-name instance)
                 (signal-info-detail instance)
-                (mapcar #'g-type-string (signal-info-param-types instance))
+                (mapcar #'gtype-name (signal-info-param-types instance))
                 (signal-info-flags instance)))))
 
 (defun query-signal-info (signal-id)
