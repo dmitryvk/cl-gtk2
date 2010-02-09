@@ -22,6 +22,9 @@
 (defcfun (%g-type-name "g_type_name") (:string :free-from-foreign nil)
   (type g-type))
 
+(defun warn-unknown-gtype (name)
+  (warn "GType ~A is not known to GObject" name))
+
 (defun gtype-from-name (name)
   (declare (optimize (safety 0) (speed 3)))
   (when (null name) (return-from gtype-from-name nil))
@@ -31,14 +34,14 @@
         (when (null (gtype-%id type))
           (let ((n (%g-type-from-name name)))
             (if (zerop n)
-                (warn "GType ~A is not known to GObject" name)
+                (warn-unknown-gtype name)
                 (progn
                   (setf (gtype-%id type) n
                         (gethash n *id-to-gtype*) type)))))
         (return-from gtype-from-name type)))
     (let ((n (%g-type-from-name name)))
       (when (zerop n)
-        (warn "GType ~A is not known to GObject" name)
+        (warn-unknown-gtype name)
         (setf n nil))
       (let ((type (make-gtype :name (copy-seq name) :%id n)))
         (setf (gethash n *id-to-gtype*) type
@@ -54,7 +57,7 @@
         (return-from gtype-from-id type)))
     (let ((name (%g-type-name id)))
       (unless name
-        (error "GType with ~A is not known to GObject" id))
+        (warn-unknown-gtype id))
       (let ((type (gethash name *name-to-gtype*)))
         (when type
           (setf (gtype-%id type) id
@@ -71,7 +74,7 @@
   (bt:with-lock-held (*gtype-lock*)
     (let ((n (%g-type-from-name (gtype-name gtype))))
       (when (zerop n)
-        (warn "GType ~A is not known to GObject" (gtype-name gtype))
+        (warn-unknown-gtype (gtype-name gtype))
         (return-from gtype-id 0))
       (setf (gtype-%id gtype) n
             (gethash n *id-to-gtype*) gtype)
