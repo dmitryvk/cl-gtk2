@@ -3252,7 +3252,8 @@
                        nil)
 
 (define-g-object-class "GtkIMContext" i-m-context
-                       (:superclass g-object :export t :interfaces nil) nil)
+                       (:superclass g-object :export t :interfaces nil
+                        :type-initializer "gtk_im_context_get_type") nil)
 
 (define-g-object-class "GtkListStore" list-store
                        (:superclass g-object :export t :interfaces
