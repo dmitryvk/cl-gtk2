@@ -33,7 +33,7 @@
                       (gobject-class-direct-g-type-name class)
                       (class-name class)
                       (gtype-name type))))))
-      (unless (gtype (gobject-class-direct-g-type-name class))
+      (when (zerop (gtype-id (gtype (gobject-class-direct-g-type-name class))))
         (warn "Declared GType name '~A' for class '~A' is invalid (g_type_name returned 0)"
               (gobject-class-direct-g-type-name class) (class-name class)))))
 
