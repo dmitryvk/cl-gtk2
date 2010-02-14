@@ -37,15 +37,18 @@ Naturally, users of CL-GTK2-GObject should use the high-level GObject integratio
 @chapter GType designator
 
 @menu
-* g-type-string::
-* g-type-numeric::
-* g-type=::
-* g-type/=::
+* gtype-id::
+* gtype-name::
+* gtype::
 @end menu
 
-GObject is an object system based on GType type system. Types in it are identified by an integer value of type @code{GType}. In @code{cl-gtk2-gobject}, types are identified by GType designators. GType designator is an integer (equal to corresponding GType identifier) or a string (equal to the name of corresponding type). The important difference between GType and GType designator is that GType values may change between program runs (all GTypes except fundamental GTypes will change values), but string GType designators do not change (because names of types do not change). As such, if ever GType must be saved in a code, string GType designator should be preferred.
+GObject is an object system based on GType type system. Types in it are identified by an integer value of type @code{GType}. In @code{cl-gtk2-gobject}, types are identified by GType designator structures. GType designator is a structure identifying a particular GType; it contains its name and integer value.
 
-An example of GType designator is a string @code{"GObject"} and the numeric value 80 that corresponds to it.
+GType designators are singleton structures meaning that for every GType, there may be only one GType designator structure for it; this means that two GType designators are equal (with respect to the @code{COMMON-LISP:EQ} function) if and only if their corresponding GTypes are the same.
+
+GType designators remain the same (with respect to the @code{COMMON-LISP:EQ} function) even after dumping and restarting Lisp memory image.
+
+GType designators are obtained with @ref{gtype} function, and corresponding numeric and string values are accessed via @ref{gtype-id} and @ref{gtype-name} functions (you must not access @code{gtype} structure directly). If an attempt is made to obtain an invalid GType, then a warning is signalled but GType designator is still returned (which may become valid at some later time due to e.g. library being initialized).
 
 Some of the types are fundamental and have constant integer values. They are identified by constants (strings in parentheses are corresponding type names):
 @itemize
@@ -72,24 +75,19 @@ Some of the types are fundamental and have constant integer values. They are ide
 @item @code{+g-type-object+} ("GObject"). The fundamental type for GObject.
 @end itemize
 
-Functions @ref{g-type-string} and @ref{g-type-numeric} return the numeric and string representations of GType designators (given any of them). Functions @ref{g-type=} and @ref{g-type/=} check types for equality.
-
-Invalid type (the GType that does not exist) is identified as a 0 or @code{NIL}.
-
 @lisp
-(g-type-numeric "GObject") @result{} 80
-(g-type-numeric 80) @result{} 80
-(g-type-string "GObject") @result{} "GObject"
-(g-type-string 80) @result{} "GObject"
-(g-type-numeric "GtkWidget") @result{} 6905648 ;;Will be different on each run
+(gtype "GObject") @result{} #S(GTYPE :NAME "GObject" :%ID 80)
+(gtype-id (gtype "GObject")) @result{} 80
+(gtype-name (gtype "GObject")) @result{} "GObject"
+(gtype "GtkWidget") @result{} #S(GTYPE :NAME "GtkWidget" :%ID 6963568)
 @end lisp
 
-@node g-type-string
-@section g-type-string
+@node gtype-name
+@section gtype-name
 
-@Function g-type-string
+@Function gtype-name
 @lisp
-(g-type-string g-type-designator) @result{} name
+(gtype-name gtype) @result{} name
 @end lisp
 
 @table @var
@@ -99,14 +97,18 @@ The GType designator for the GType
 The name of GType
 @end table
 
-Returns the name of GType.
+Returns the name of GType. If the GType is invalid, signals warning and may return @code{NIL}.
 
-@node g-type-numeric
-@section g-type-numeric
-
-@Function g-type-numeric
 @lisp
-(g-type-numeric g-type-designator) @result{} GType
+(gtype-name (gtype "gint")) @result{} "gint"
+@end lisp
+
+@node gtype-id
+@section gtype-id
+
+@Function gtype-id
+@lisp
+(gtype-id gtype) @result{} GType
 @end lisp
 
 @table @var
@@ -116,41 +118,22 @@ The GType designator for the GType.
 The numeric identifier of GType
 @end table
 
-Returns the numeric identifier of GType
+Returns the numeric identifier of GType. If the GType designator is invalid, signals warning and returns 0.
 
-@node g-type=
-@section g-type=
+@node gtype
+@section gtype
 
-@Function g-type=
+@Function gtype
 @lisp
-(g-type= type-1 type-2) @result{} eq
+(gtype thing) @result GType designator
 @end lisp
 
-@table @var
-@item @var{type-1}
-A GType designator
-@item @var{type-2}
-A GType designator
-@item @var{eq}
-A boolean that is true if @code{type-1} and @code{type-2} designate the same type.
-@end table
-
-@node g-type/=
-@section g-type/=
-
-@Function g-type/=
-@lisp
-(g-type/= type-1 type-2) @result{} eq
-@end lisp
-
-@table @var
-@item @var{type-1}
-A GType designator
-@item @var{type-2}
-A GType designator
-@item @var{eq}
-A boolean that is true if @code{type-1} and @code{type-2} designate different types.
-@end table
+Returns the GType designator for @var{thing}. @var{thing} may be:
+@itemize
+@item A string. @code{gtype} treats this as a GType name. If no GType with name is registered in GObject then warning is signalled and invalid GType designator is returned (which will become valid once GType will be registered).
+@item An integer. @code{gtype} treats this as a GType numeric value. If no GType with this valud is registered in GObject then warning is signalled and invalid GType designator is returned (which will become valid once GType will be registered).
+@item A GType designator. @var{thing} is returned.
+@end itemize
 
 @node Type hierarchy and type relations
 @chapter Type hierarchy and type relations
