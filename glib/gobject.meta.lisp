@@ -245,6 +245,7 @@
 
 (defmethod make-instance ((class gobject-class) &rest initargs &key pointer)
   (log-for :subclass "(make-instance ~A ~{~A~^ ~})~%" class initargs)
+  (ensure-finalized class)
   (let ((*currently-making-object-p* t))
     (if pointer
         (progn
