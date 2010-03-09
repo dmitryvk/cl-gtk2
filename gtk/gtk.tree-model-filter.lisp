@@ -37,15 +37,30 @@ void          gtk_tree_model_filter_set_modify_func            (GtkTreeModelFilt
                                                                 GtkTreeModelFilterModifyFunc  func,
                                                                 gpointer                      data,
                                                                 GDestroyNotify                destroy);
-
-void          gtk_tree_model_filter_set_visible_column         (GtkTreeModelFilter           *filter,
-                                                                gint                          column);
-
-/* conversion */
-gboolean      gtk_tree_model_filter_convert_child_iter_to_iter (GtkTreeModelFilter           *filter,
-                                                                GtkTreeIter                  *filter_iter,
-                                                                GtkTreeIter                  *child_iter);
 |#
+
+(defcfun gtk-tree-model-filter-set-visible-column :void
+  (filter (g-object tree-model-filter))
+  (column :int))
+
+(defun tree-model-filter-set-visible-column (filter column)
+  (gtk-tree-model-filter-set-visible-column filter column))
+
+(export 'tree-model-filter-set-visible-column)
+
+;; conversion
+
+(defcfun gtk-tree-model-filter-convert-child-iter-to-iter :boolean
+  (filter (g-object tree-model-filter))
+  (filter-iter (g-boxed-foreign tree-iter))
+  (child-iter (g-boxed-foreign tree-iter)))
+
+(defun tree-model-filter-convert-child-iter-to-iter (filter iter)
+  (let ((filter-iter (make-instance 'tree-iter)))
+    (when (gtk-tree-model-filter-convert-child-iter-to-iter filter filter-iter iter)
+      filter-iter)))
+
+(export 'tree-model-filter-convert-child-iter-to-iter)
 
 (defcfun gtk-tree-model-filter-convert-iter-to-child-iter :void
   (filter (g-object tree-model-filter))
@@ -59,13 +74,23 @@ gboolean      gtk_tree_model_filter_convert_child_iter_to_iter (GtkTreeModelFilt
 
 (export 'tree-model-filter-convert-iter-to-child-iter)
 
-#|
-GtkTreePath  *gtk_tree_model_filter_convert_child_path_to_path (GtkTreeModelFilter           *filter,
-                                                                GtkTreePath                  *child_path);
+(defcfun gtk-tree-model-filter-convert-child-path-to-path (g-boxed-foreign tree-path :return)
+  (filter (g-object tree-model-sort))
+  (child-path (g-boxed-foreign tree-path)))
 
-GtkTreePath  *gtk_tree_model_filter_convert_path_to_child_path (GtkTreeModelFilter           *filter,
-                                                                GtkTreePath                  *filter_path);
-|#
+(defun tree-model-filter-convert-child-path-to-path (filter child-path)
+  (gtk-tree-model-filter-convert-child-path-to-path))
+
+(export 'tree-model-filter-convert-child-path-to-path)
+
+(defcfun gtk-tree-model-filter-convert-path-to-child-path (g-boxed-foreign tree-path :return)
+  (filter (g-object tree-model-sort))
+  (filter-path (g-boxed-foreign tree-path)))
+
+(defun tree-model-filter-convert-path-to-child-path (filter child-path)
+  (gtk-tree-model-filter-convert-path-to-child-path))
+
+(export 'tree-model-filter-convert-path-to-child-path)
 
 ;; extras
 

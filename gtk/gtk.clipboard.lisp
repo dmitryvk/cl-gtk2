@@ -10,3 +10,11 @@
 
 (export 'clipboard-set-text)
 
+(defcfun gtk-clipboard-clear :void
+  (clipboard g-object))
+
+(defun clipboard-clear (clipboard)
+  (gtk-clipboard-clear clipboard))
+
+(export 'clipboard-clear)
+

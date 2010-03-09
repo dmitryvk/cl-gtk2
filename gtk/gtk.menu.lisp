@@ -44,7 +44,7 @@
         (gtk-menu-popup menu parent-menu-shell parent-menu-item
                         (callback gtk-menu-position-func-callback)
                         ptr button activate-time))
-      (gtk-menu-popup menu parent-menu-shell parent-menu-item (callback gtk-menu-position-func-callback) (null-pointer) (null-pointer) activate-time)))
+      (gtk-menu-popup menu parent-menu-shell parent-menu-item (null-pointer) (null-pointer) button activate-time)))
 
 (export 'menu-popup)
 
