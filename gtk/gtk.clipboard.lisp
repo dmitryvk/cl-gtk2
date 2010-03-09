@@ -1,7 +1,7 @@
 (in-package :gtk)
 
 (defcfun gtk-clipboard-set-text :void
-  (clipboard g-object)
+  (clipboard (g-object clipboard))
   (text :string)
   (len :int))
 
@@ -10,11 +10,8 @@
 
 (export 'clipboard-set-text)
 
-(defcfun gtk-clipboard-clear :void
-  (clipboard g-object))
-
-(defun clipboard-clear (clipboard)
-  (gtk-clipboard-clear clipboard))
+(defcfun (clipboard-clear "gtk_clipboard_clear") :void
+  (clipboard (g-object clipboard)))
 
 (export 'clipboard-clear)
 

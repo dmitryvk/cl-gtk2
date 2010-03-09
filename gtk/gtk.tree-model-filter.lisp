@@ -39,12 +39,9 @@ void          gtk_tree_model_filter_set_modify_func            (GtkTreeModelFilt
                                                                 GDestroyNotify                destroy);
 |#
 
-(defcfun gtk-tree-model-filter-set-visible-column :void
+(defcfun (tree-model-filter-set-visible-column "gtk_tree_model_filter_set_visible_column") :void
   (filter (g-object tree-model-filter))
   (column :int))
-
-(defun tree-model-filter-set-visible-column (filter column)
-  (gtk-tree-model-filter-set-visible-column filter column))
 
 (export 'tree-model-filter-set-visible-column)
 
@@ -74,38 +71,26 @@ void          gtk_tree_model_filter_set_modify_func            (GtkTreeModelFilt
 
 (export 'tree-model-filter-convert-iter-to-child-iter)
 
-(defcfun gtk-tree-model-filter-convert-child-path-to-path (g-boxed-foreign tree-path :return)
+(defcfun (tree-model-filter-convert-child-path-to-path "gtk_tree_model_filter_convert_child_path_to_path") (g-boxed-foreign tree-path :return)
   (filter (g-object tree-model-sort))
   (child-path (g-boxed-foreign tree-path)))
 
-(defun tree-model-filter-convert-child-path-to-path (filter child-path)
-  (gtk-tree-model-filter-convert-child-path-to-path))
-
 (export 'tree-model-filter-convert-child-path-to-path)
 
-(defcfun gtk-tree-model-filter-convert-path-to-child-path (g-boxed-foreign tree-path :return)
+(defcfun (tree-model-filter-convert-path-to-child-path "gtk_tree_model_filter_convert_path_to_child_path") (g-boxed-foreign tree-path :return)
   (filter (g-object tree-model-sort))
   (filter-path (g-boxed-foreign tree-path)))
-
-(defun tree-model-filter-convert-path-to-child-path (filter child-path)
-  (gtk-tree-model-filter-convert-path-to-child-path))
 
 (export 'tree-model-filter-convert-path-to-child-path)
 
 ;; extras
 
-(defcfun gtk-tree-model-filter-refilter :void
+(defcfun (tree-model-filter-refilter "gtk_tree_model_filter_refilter") :void
   (filter (g-object tree-model-filter)))
-
-(defun tree-model-filter-refilter (filter)
-  (gtk-tree-model-filter-refilter filter))
 
 (export 'tree-model-filter-refilter)
 
-(defcfun gtk-tree-model-filter-clear-cache :void
+(defcfun (tree-model-filter-clear-cache "gtk_tree_model_filter_clear_cache") :void
   (filter (g-object tree-model-filter)))
-
-(defun tree-model-filter-clear-cache (filter)
-  (gtk-tree-model-filter-clear-cache filter))
 
 (export 'tree-model-filter-clear-cache)
