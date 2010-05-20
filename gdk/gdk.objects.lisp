@@ -927,7 +927,7 @@
   ((:cffi visual colormap-visual (g-object visual)
           "gdk_colormap_get_visual" nil)
    (:cffi screen colormap-screen (g-object screen)
-          "gdk_colormap_get_screeen" nil)))
+          "gdk_colormap_get_screen" nil)))
 
 (define-g-object-class "GdkScreen" screen (:type-initializer "gdk_screen_get_type")
   ((font-options screen-font-options "font-options" "gpointer" t t)
