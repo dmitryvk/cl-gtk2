@@ -104,6 +104,22 @@
                         (when y-padding
                           (list :y-padding y-padding)))))
 
+(def-ui-child-packer tree-view (w d child)
+  (declare (ignore d))
+  `(tree-view-append-column ,w ,child))
+
+(def-ui-child-packer tree-view-column (w d child)
+  (declare (ignore d))
+  (let ((expand-prop (find :expand (ui-child-props d) :key #'ui-prop-name)))
+    `(progn
+       (tree-view-column-pack-start ,w ,child
+				    ,@(when expand-prop (list :expand (ui-prop-value expand-prop))))
+       ,@(iter (for prop in (ui-child-props d))
+	       (when (eql (ui-prop-name prop) :attribute)
+		 (collect `(tree-view-column-add-attribute ,w ,child
+							   ,(first (ui-prop-value prop))
+							   ,(second (ui-prop-value prop)))))))))
+
 (defun get-child-packer-fn (d)
   (iter (for class first (find-class (ui-d-class d)) then (first (c2mop:class-direct-superclasses class)))
         (while class)
