@@ -156,6 +156,8 @@ In this example, for every @code{class}, @code{(initialize-gobject-class-g-type 
   (cond
     ((cffi-features:cffi-feature-p :x86-64) (defctype gsize :uint64))
     ((cffi-features:cffi-feature-p :x86) (defctype gsize :ulong))
+    ((cffi-features:cffi-feature-p :ppc32) (defctype gsize :uint32))
+    ((cffi-features:cffi-feature-p :ppc64) (defctype gsize :uint64))
     (t (error "Can not define 'gsize', unknown CPU architecture (known are x86 and x86-64)"))))
 
 (defctype gssize :long)
