@@ -24,6 +24,7 @@
                (:file "gtk.functions")
                (:file "gtk.base-classes")
                (:file "gtk.dialog")
+               (:file "gtk.about-dialog")
                (:file "gtk.window")
                (:file "gtk.window-group")
                (:file "gtk.icon-factory")
