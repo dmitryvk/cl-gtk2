@@ -120,6 +120,16 @@
 							   ,(first (ui-prop-value prop))
 							   ,(second (ui-prop-value prop)))))))))
 
+(def-ui-child-packer toolbar (b d child)
+  (let ((expand-prop (find :expand (ui-child-props d) :key #'ui-prop-name))
+        (homogeneous-prop (find :homogeneous (ui-child-props d) :key #'ui-prop-name)))
+    `(progn
+       (toolbar-insert ,b ,child -1)
+       ,(when expand-prop
+          `(container-call-set-property ,b ,child "expand" ,(ui-prop-value expand-prop) +g-type-boolean+))
+       ,(when homogeneous-prop
+          `(container-call-set-property ,b ,child "homogeneous" ,(ui-prop-value homogeneous-prop) +g-type-boolean+)))))
+
 (defun get-child-packer-fn (d)
   (iter (for class first (find-class (ui-d-class d)) then (first (c2mop:class-direct-superclasses class)))
         (while class)
