@@ -1696,8 +1696,10 @@
                        (:superclass check-button :export t :interfaces
                         ("AtkImplementorIface" "GtkActivatable" "GtkBuildable")
                         :type-initializer "gtk_radio_button_get_type")
-                       ((group radio-button-group "group" "GtkRadioButton" nil
-                         t)))
+                       ((:cffi group radio-button-group
+                         (gslist g-object :free-from-foreign nil
+                          :free-to-foreign nil)
+                         "gtk_radio_button_get_group" "gtk_radio_button_set_group")))
 
 (define-g-object-class "GtkComboBox" combo-box
                        (:superclass bin :export t :interfaces

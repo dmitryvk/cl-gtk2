@@ -191,6 +191,9 @@
          nil "gtk_menu_tool_button_set_arrow_tooltip_text")
         (:cffi gtk::arrow-tooltip-markup gtk::menu-tool-button-arrow-tooltip-markup :string
          nil "gtk_menu_tool_button_set_arrow_tooltip_markup"))
+       ("GtkRadioButton"
+        (:cffi gtk::group gtk::radio-button-group (gslist gtk::radio-button :free-from-foreign nil :free-to-foreign nil)
+         nil "gtk_radio_button_set_group"))
        ("GtkUIManager"
         (:cffi gtk::accel-group gtk::ui-manager-accel-group g-object
          "gtk_ui_manager_get_accel_group" nil))
