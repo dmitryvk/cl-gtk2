@@ -745,7 +745,7 @@
              (axes (fixed-array :double 2))
              (state modifier-type)
              (is-hint :int16)
-             (device (g-object device))
+             (device (g-object gdk-device))
              (x-root :double)
              (y-root :double))
             ((:expose) event-expose
@@ -797,7 +797,7 @@
             ((:proximity-in
               :proximity-out) event-proximity
              (time :uint32)
-             (device (g-object device)))
+             (device (g-object gdk-device)))
             ((:client-event) event-client
              (message-time gdk-atom)
              (data-format :ushort)
