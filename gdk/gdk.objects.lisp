@@ -693,6 +693,16 @@
          do (setf (aref result i) (mem-aref ptr el-type i)))
       result)))
 
+(defmethod translate-to-foreign (value (type fixed-array))
+  (if (null value)
+      (null-pointer)
+      (foreign-alloc (fixed-array-element-type type) :count (length value) :initial-contents value)))
+
+(defmethod free-translated-object (value (type fixed-array) param)
+  (declare (ignore param))
+  (unless (null-pointer-p value)
+    (foreign-free value)))
+
 (define-g-boxed-cstruct rectangle "GdkRectangle"
   (x :int :initform 0)
   (y :int :initform 0)
