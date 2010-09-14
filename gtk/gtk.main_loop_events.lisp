@@ -7,6 +7,8 @@
 (defun gtk-init ()
   (gtk-init-check (foreign-alloc :int :initial-element 0)
                   (foreign-alloc :string :initial-contents '("/usr/bin/sbcl")))
+  #+sbcl
+  (sb-unix::enable-interrupt sb-unix:sigpipe #'sb-unix::sigpipe-handler)
   #+nil(with-foreign-objects ((argc :int)
                          (argv '(:pointer :string) 1))
     (setf (mem-ref argc :int) 0
