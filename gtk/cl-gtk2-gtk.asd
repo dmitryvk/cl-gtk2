@@ -80,6 +80,7 @@
                
                (:file "gtk.demo")
                (:file "gtk.timer")
+               (:file "gtk.finalize-classes")
                (:module "demo-files"
                         :pathname "demo/"
                         :components ((:plain-file "demo1" :type "ui")
