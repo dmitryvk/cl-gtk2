@@ -60,6 +60,7 @@
                (:file "gtk.paned")
                (:file "gtk.child-properties")
                (:file "gtk.widget")
+               (:file "gtk.tree-view-dnd")
                (:file "gtk.builder")
                (:file "gtk.assistant")
                (:file "gtk.link-button")
