@@ -68,6 +68,7 @@
                (:file "gtk.clipboard")
                (:file "gtk.info-bar")
 	       (:file "gtk.spinner")
+	       (:file "gtk.markup")
 
                (:file "gtk.main-loop-events")
 
