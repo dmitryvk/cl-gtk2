@@ -70,7 +70,7 @@
                 "GtkTextTagTable" "GtkTreeModelFilter" "GtkTreeModelSort"
                 "GtkTreeSelection" "GtkTreeStore" "GtkUIManager" "GtkWindowGroup"
                 "GtkToggleAction" "GtkRecentAction" "GtkRadioAction" "GtkItemFactory"
-		"GtkPageSetupUnixDialog" "GtkPrintUnixDialog" "GtkInfoBar")
+		"GtkPageSetupUnixDialog" "GtkPrintUnixDialog" "GtkInfoBar" "GtkSpinner")
      :flags '("GtkTextSearchFlags" "GtkAccelFlags" "GtkArgFlags" "GtkAttachOptions"
               "GtkButtonAction" "GtkCalendarDisplayOptions" "GtkCellRendererState"
               "GtkDebugFlag" "GtkDestDefaults" "GtkDialogFlags" "GtkFileFilterFlags"

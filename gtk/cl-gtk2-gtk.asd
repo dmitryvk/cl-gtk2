@@ -67,6 +67,7 @@
                (:file "gtk.tree-model-filter")
                (:file "gtk.clipboard")
                (:file "gtk.info-bar")
+	       (:file "gtk.spinner")
 
                (:file "gtk.main-loop-events")
 
