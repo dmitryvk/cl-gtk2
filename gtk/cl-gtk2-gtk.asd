@@ -20,7 +20,7 @@
                (:file "gtk.main_loop_events")
                (:file "gtk.object")
                (:file "gtk.objects")
-               (:file "gtk.generated-classes")               
+               (:file "gtk.generated-classes")
                (:file "gtk.functions")
                (:file "gtk.base-classes")
                (:file "gtk.dialog")
@@ -66,18 +66,19 @@
                (:file "gtk.tree-store")
                (:file "gtk.tree-model-filter")
                (:file "gtk.clipboard")
-               
+               (:file "gtk.info-bar")
+
                (:file "gtk.main-loop-events")
-               
+
 
                (:file "gtk.generated-child-properties")
-               
+
                (:file "gtk.high-level")
 
                (:file "ui-markup")
 
                (:file "gtk.dialog.example")
-               
+
                (:file "gtk.demo")
                (:file "gtk.timer")
                (:file "gtk.finalize-classes")
