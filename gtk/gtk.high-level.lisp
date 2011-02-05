@@ -155,3 +155,221 @@
       (object-destroy dialog))))
 
 (export 'show-message)
+
+
+;;; Condition Handling with `info-bar's
+;;
+
+(defun make-condition-info-bar (context condition &rest actions)
+  "Make a `gtk:info-bar' that displays CONDITIONS and contains buttons
+according to the specification in ACTIONS. Each element of actions is
+of the form
+ACTION ::= (TITLE &optional THUNK DESCRIPTION)"
+  (bind (((:flet format-escape (thing))
+	  (gtk:markup-escape-text (format nil "~A" thing)))
+	 ((:flet make-message (context condition))
+	  (format nil "<b>~A ~A</b>:~%~A: <i>~A</i>"
+		  (%condition->message condition)
+		  (format-escape context)
+		  (format-escape (type-of condition))
+		  (format-escape condition)))
+	 (icon  (make-instance
+		 'gtk:image
+		 :stock     (%condition->stock-id condition)
+		 :icon-size 6))
+	 (label (make-instance
+		 'gtk:label
+		 :use-markup t
+		 :xalign     0.0
+		 :label      (make-message context condition)))
+	 (box   (make-instance 'gtk:h-box))
+	 (bar   (make-instance
+		 'gtk:info-bar
+		 :message-type (%condition->message-type condition)))
+	 response-map
+	 ((:flet make-button (response action))
+	  (bind (((title &optional thunk description) action)
+		 (button (make-instance 'gtk:button))
+		 (label  (make-instance
+			  'gtk:label
+			  :use-markup t
+			  :xalign     (if description 0 .5)
+			  :label      (format
+				       nil "<b>~@(~A~)</b>~:[~;~:*
+<span size='x-small' font='italic'>~A</span>~]"
+				       (gtk:markup-escape-text title)
+				       (when description
+					 (gtk:markup-escape-text description))))))
+	    (gtk:container-add button label)
+	    (gtk:info-bar-add-action-widget bar button response)
+	    (when action
+	      (push `(,response . ,thunk) response-map)))))
+    ;; Add icon and label to content area.
+    (gtk:box-pack-start box icon  :expand nil :fill t)
+    (gtk:box-pack-start box label :expand t   :fill t)
+    (gtk:container-add (gtk:info-bar-content-area bar) box)
+
+    ;; Add buttons.
+    (map nil #'make-button (iota (1+ (length actions)))
+	 (or actions `(("Close" ,(lambda ())))))
+
+    ;; Connect response handler.
+    (gobject:connect-signal
+     bar "response"
+     #'(lambda (bar id)
+	 ;; First remove BAR from its parent widget.
+	 (gtk:container-remove (gtk:widget-parent bar) bar)
+	 ;; Then run the selected reponse, if we can find it.
+	 (let ((func (cdr (assoc id response-map))))
+	   (when func (funcall func)))))
+
+    bar))
+
+(defun show-condition-info-bar (container context condition
+				&rest actions)
+  "Make a `gtk:info-bar' and show it in CONTAINER.
+CONTEXT, CONDITION and ACTIONS are as described for
+`make-condition-info-bar'."
+  (gtk:within-main-loop
+    (gtk:box-pack-end
+     container
+     (apply #'make-condition-info-bar context condition actions)
+     :expand nil :fill t)
+    (gtk:widget-show container :all t)))
+
+(defun do-condition-info-bar-blocking (container context condition
+				       &rest actions)
+  "Show a `gtk:info-bar' using CONTAINER, CONTEXT CONDITION and
+ACTIONS as described for `show-condition-info-bar'. However, do not
+return immediately, but block until an action has been selected. If
+the selection action has a thunk, the value returned by that thunk is
+returned."
+  (bind (choice
+	 (choice-lock      (bt:make-lock "choice-lock"))
+	 (choice-condition (bt:make-condition-variable
+			    :name "choice-condition"))
+	 ((:flet make-proxy-action (action))
+	  (bind (((title &optional thunk description) action))
+	    `(,title
+	      ,(lambda ()
+		       (bt:with-lock-held (choice-lock)
+			 (setf choice (or thunk (lambda ())))
+			 (bt:condition-notify choice-condition)))
+	      ,@(when description
+		      `(,description)))))
+	 (proxy-actions (mapcar #'make-proxy-action actions)))
+
+    (apply #'show-condition-info-bar container context condition proxy-actions)
+    (bt:with-lock-held (choice-lock)
+      (iter (until choice)
+	    (bt:condition-wait choice-condition choice-lock)))
+    (funcall choice)))
+
+(defun do-condition-info-bar-non-blocking (container context condition
+					   &rest actions)
+  "Show a `gtk:info-bar' using CONTAINER, CONTEXT, CONDITION and
+ACTIONS as described for `show-condition-info-bar'. Return immediately
+without any values."
+  (apply #'show-condition-info-bar container context condition actions))
+
+(defun do-condition-info-bar (container context condition block?
+			      &rest actions)
+  "Show a `gtk:info-bar' using CONTAINER, CONTEXT, CONDITION and
+ACTIONS as described for `show-condition-info-bar'. Depending on
+BLOCK?, either use `do-condition-info-bar-blocking' or
+`do-condition-info-bar-non-blocking'."
+  (apply
+   (if block?
+       #'do-condition-info-bar-blocking
+       #'do-condition-info-bar-non-blocking)
+   container context condition actions))
+
+(defun handle-condition-with-info-bar (container context condition)
+  "Show a `gtk:info-bar' using CONTAINER, CONTEXT and CONDITION.
+The info bar contains one action button for each restart applicable to
+CONDITION. Pressing a button invokes the associated restart. This
+function blocks until a restart has been invoked."
+  (apply #'do-condition-info-bar-blocking
+   container context condition
+   (map 'list #'%restart->action (compute-restarts condition))))
+
+(defun %restart->action (restart)
+  "Return an action specification that contains a description of
+RESTART and a thunk invoking RESTART."
+  `(,(string (restart-name restart))
+    ,(lambda ()
+       (invoke-restart restart))
+    ,(format nil "~A" restart)))
+
+(defmacro with-errors-to-info-bar ((container context) &body body)
+  "Execute BODY with a handler installed that handles all conditions
+using an `gtk:info-bar' with `handle-condition-with-info-bar'. For the
+meaning of CONTAINER and CONTEXT, see
+`handle-condition-with-info-bar'."
+  `(handler-case
+       (progn ,@body)
+     (error (condition)
+       (handle-condition-with-info-bar
+	,container ,context condition))))
+
+(export 'make-condition-info-bar)
+(export 'show-condition-info-bar)
+(export 'do-condition-info-bar)
+(export 'handle-condition-with-info-bar)
+(export 'with-errors-to-info-bar)
+
+
+;;; Utility Functions
+;;
+
+(defun %condition->message (condition)
+  "Return appropriate message text for CONDITION. "
+  (etypecase condition
+    (error   "Error in")
+    (warning "Warning in")
+    (t       "Info from")))
+
+(defun %condition->stock-id (condition)
+  "Return appropriate stock id for CONDITION."
+  (etypecase condition
+    (error   "gtk-dialog-error")
+    (warning "gtk-dialog-warning")
+    (t       "gtk-dialog-info")))
+
+(defun %condition->message-type (condition)
+  "Return appropriate message type for CONDITION."
+  (etypecase condition
+    (error   :error)
+    (warning :warning)
+    (t       :info)))
+
+
+;;; Example
+;;
+
+#+example
+(gtk:within-main-loop
+  (let ((w (make-instance 'gtk:gtk-window))
+	(b (make-condition-info-bar
+	    :bla (make-instance 'simple-error
+				:format-control "Something went wrong")
+	    '("FIX-IT" ,(lambda () (format t "fixing it~%")) "Try fixing the problem by foobling to nooble")
+	    '("IGNORE" nil "Ignore the problem"))))
+    (gobject:connect-signal w "unmap" #'(lambda (widget) (gtk:gtk-main-quit)))
+    (gtk:container-add w b)
+    (gtk:widget-show w :all t)))
+
+#+example
+(progn
+  (let ((b))
+    (gtk:within-main-loop-and-wait
+      (let ((w (make-instance 'gtk:gtk-window)))
+	(setf b (make-instance 'gtk:v-box))
+	(gobject:connect-signal w "unmap" #'(lambda (widget) (gtk:gtk-main-quit)))
+	(gtk:container-add w b)
+	(gtk:widget-show w :all t)))
+    (handle-condition-with-info-bar-blocking
+     b :bla (make-instance 'simple-error
+			   :format-control "Something went wrong")
+     `("FIX-IT" ,(lambda () (format t "fixing it~%")) "Try fixing the problem by foobling to nooble")
+     '("IGNORE" nil "Ingore the problem"))))

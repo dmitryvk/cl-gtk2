@@ -88,4 +88,4 @@
                         :pathname "demo/"
                         :components ((:plain-file "demo1" :type "ui")
                                      (:plain-file "text-editor" :type "ui"))))
-  :depends-on (:cl-gtk2-glib :cffi :cl-gtk2-gdk :bordeaux-threads :iterate :cl-gtk2-pango))
+  :depends-on (:cl-gtk2-glib :cffi :cl-gtk2-gdk :bordeaux-threads :iterate :metabang-bind :alexandria :cl-gtk2-pango))
