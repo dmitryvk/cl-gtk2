@@ -373,7 +373,7 @@
        ("GtkInfoBar"
 	(:cffi gtk::action-area gtk::info-bar-action-area (g-object gtk::widget)
 	 "gtk_info_bar_get_action_area" nil)
-	(:cffi gtk::context-area gtk::info-bar-content-area (g-object gtk::widget)
+	(:cffi gtk::content-area gtk::info-bar-content-area (g-object gtk::widget)
 	 "gtk_info_bar_get_content_area" nil))))))
 
 (defun gtk-generate-child-properties (filename)
