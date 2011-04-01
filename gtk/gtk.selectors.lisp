@@ -43,13 +43,15 @@
 
 ; TODO: gtk_color_selection_set_change_palette_with_screen_hook
 
-(defcfun (file-chooser-select-filename "gtk_file_chooser_select_filename") :boolean
+(defcfun (file-chooser-select-filename #+win32 "gtk_file_chooser_select_filename_utf8"
+                                       #-win32 "gtk_file_chooser_select_filename") :boolean
   (file-chooser g-object)
   (filename :string))
 
 (export 'file-chooser-select-filename)
 
-(defcfun (file-chooser-unselect-filename "gtk_file_chooser_unselect_filename") :void
+(defcfun (file-chooser-unselect-filename #+win32 "gtk_file_chooser_unselect_filename_utf8"
+                                         #-win32 "gtk_file_chooser_unselect_filename") :void
   (file-chooser g-object)
   (filename :string))
 
@@ -65,7 +67,8 @@
 
 (export 'file-chooser-unselect-all)
 
-(defcfun (file-chooser-filenames "gtk_file_chooser_get_filenames") (gslist (g-string :free-from-foreign t))
+(defcfun (file-chooser-filenames #+win32 "gtk_file_chooser_get_filenames_utf8"
+                                 #-win32 "gtk_file_chooser_get_filenames") (gslist (g-string :free-from-foreign t))
   (file-chooser g-object))
 
 (export 'file-chooser-filenames)
@@ -104,7 +107,8 @@
 
 (export 'file-chooser-filters)
 
-(defcfun gtk-file-chooser-add-shortcut-folder :boolean
+(defcfun (gtk-file-chooser-add-shortcut-folder #+win32 "gtk_file_chooser_add_shortcut_folder_utf8"
+                                               #-win32 "gtk_file_chooser_add_shortcut_folder") :boolean
   (file-chooser g-object)
   (folder :string)
   (error :pointer))
@@ -114,7 +118,8 @@
 
 (export 'file-chooser-add-shortcut-folder)
 
-(defcfun gtk-file-chooser-remove-shortcut-folder :boolean
+(defcfun (gtk-file-chooser-remove-shortcut-folder #+win32 "gtk_file_chooser_remove_shortcut_folder_utf8"
+                                                  #-win32 "gtk_file_chooser_remove_shortcut_folder") :boolean
   (file-chooser g-object)
   (folder :string)
   (error :pointer))
@@ -124,7 +129,8 @@
 
 (export 'file-chooser-remove-shortcut-folder)
 
-(defcfun (file-chooser-shortcut-folders "gtk_file_chooser_list_shortcut_folders") (gslist (g-string :free-from-foreign t))
+(defcfun (file-chooser-shortcut-folders #+win32 "gtk_file_chooser_list_shortcut_folders_utf8"
+                                        #-win32 "gtk_file_chooser_list_shortcut_folders") (gslist (g-string :free-from-foreign t))
   (file-chooser g-object))
 
 (export 'file-chooser-shortcut-folders)
