@@ -240,6 +240,12 @@
           (write-char (char-downcase c) stream))
     (write-string "_get_type" stream)))
 
+(defclass print-readtime-condition ()
+  ((condition :initarg :condition)))
+
+(defmethod print-object ((o print-readtime-condition) stream)
+  (format stream "#~A" (slot-value o 'condition)))
+
 (defun get-g-class-definition (type &optional lisp-name-package)
   (when (and (stringp type) (null (ignore-errors (gtype type))))
     (let ((type-init-name (probable-type-init-name type)))
@@ -269,7 +275,11 @@
        (,@(mapcar (lambda (property)
                     (property->property-definition name property))
                   own-properties)
-          ,@(cdr (find g-name *additional-properties* :key 'car :test 'string=))))))
+          ,@(mapcan (lambda (property-definition)
+                      (if (eq :cond (car property-definition))
+                          (list (make-instance 'print-readtime-condition :condition (cadr property-definition)) (cddr property-definition))
+                          (list property-definition)))
+                    (cdr (find g-name *additional-properties* :key 'car :test 'string=)))))))
 
 (defun get-g-interface-definition (interface &optional lisp-name-package)
   (when (and (stringp interface) (null (ignore-errors (gtype interface))))
@@ -292,7 +302,11 @@
        ,@(append (mapcar (lambda (property)
                            (property->property-definition name property))
                          properties)
-                 (cdr (find g-name *additional-properties* :key 'car :test 'string=))))))
+                 (mapcan (lambda (property-definition)
+                           (if (eq :cond (car property-definition))
+                               (list (make-instance 'print-readtime-condition :condition (cadr property-definition)) (cddr property-definition))
+                               (list property-definition)))
+                         (cdr (find g-name *additional-properties* :key 'car :test 'string=)))))))
 
 (defun get-g-class-definitions-for-root-1 (type)
   (unless (member (gtype type) *generation-exclusions* :test 'g-type=)

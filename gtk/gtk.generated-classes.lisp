@@ -1084,9 +1084,20 @@
   (:cffi current-name file-chooser-current-name
    (:string :free-to-foreign t :encoding :utf-8) nil
    "gtk_file_chooser_set_current_name")
+  #+win32
+  (:cffi filename file-chooser-filename
+   (g-string :free-from-foreign t :free-to-foreign t)
+   "gtk_file_chooser_get_filename_utf8" "gtk_file_chooser_set_filename_utf8")
+  #-win32
   (:cffi filename file-chooser-filename
    (g-string :free-from-foreign t :free-to-foreign t)
    "gtk_file_chooser_get_filename" "gtk_file_chooser_set_filename")
+  #+win32
+  (:cffi current-folder file-chooser-current-folder
+   (g-string :free-from-foreign t :free-to-foreign t)
+   "gtk_file_chooser_get_current_folder_utf8"
+   "gtk_file_chooser_set_current_folder_utf8")
+  #-win32
   (:cffi current-folder file-chooser-current-folder
    (g-string :free-from-foreign t :free-to-foreign t)
    "gtk_file_chooser_get_current_folder" "gtk_file_chooser_set_current_folder")
@@ -1097,6 +1108,11 @@
    (g-string :free-from-foreign t :free-to-foreign t)
    "gtk_file_chooser_get_current_folder_uri"
    "gtk_file_chooser_set_current_folder_uri")
+  #+win32
+  (:cffi preview-filename file-chooser-preview-filename
+   (g-string :free-from-foreign t :free-to-foreign t)
+   "gtk_file_chooser_get_preview_filename_utf8" nil)
+  #-win32
   (:cffi preview-filename file-chooser-preview-filename
    (g-string :free-from-foreign t :free-to-foreign t)
    "gtk_file_chooser_get_preview_filename" nil)
@@ -1696,8 +1712,10 @@
                        (:superclass check-button :export t :interfaces
                         ("AtkImplementorIface" "GtkActivatable" "GtkBuildable")
                         :type-initializer "gtk_radio_button_get_type")
-                       ((group radio-button-group "group" "GtkRadioButton" nil
-                         t)))
+                       ((:cffi group radio-button-group
+                         (gslist g-object :free-from-foreign nil
+                          :free-to-foreign nil)
+                         "gtk_radio_button_get_group" "gtk_radio_button_set_group")))
 
 (define-g-object-class "GtkComboBox" combo-box
                        (:superclass bin :export t :interfaces

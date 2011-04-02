@@ -547,10 +547,11 @@
   (gethash id (tree-lisp-store-id-map tree)))
 
 (defmethod tree-model-get-iter-impl ((store tree-lisp-store) iter path)
-  (let* ((node (get-node-by-path store path))
-         (node-idx (get-assigned-id store node)))
-    (setf (tree-iter-stamp iter) 0
-          (tree-iter-user-data iter) node-idx)))
+  (ignore-errors
+    (let* ((node (get-node-by-path store path))
+	   (node-idx (get-assigned-id store node)))
+      (setf (tree-iter-stamp iter) 0
+	    (tree-iter-user-data iter) node-idx))))
 
 (defun get-node-by-iter (tree iter)
   (get-node-by-id tree (tree-iter-user-data iter)))

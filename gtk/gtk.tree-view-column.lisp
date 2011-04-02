@@ -48,7 +48,7 @@
   (free-stable-pointer data))
 
 (defcfun gtk-tree-view-column-set-cell-data-func :void
-  (tree-column (g-object tree-column))
+  (tree-column (g-object tree-view-column))
   (cell-renderer (g-object cell-renderer))
   (func :pointer)
   (func-data :pointer)
@@ -61,6 +61,8 @@
    (callback gtk-tree-cell-data-func-cb)
    (allocate-stable-pointer function)
    (callback gtk-tree-cell-data-func-destroy-cb)))
+
+(export 'tree-view-column-set-cell-data-function)
 
 (defcfun (tree-view-column-clear-attributes "gtk_tree_view_column_clear_attributes") :void
   (tree-column (g-object tree-column))

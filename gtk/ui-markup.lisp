@@ -45,88 +45,75 @@
                           (unless (eq (ui-prop-name prop) :var)
                             (appending (list (ui-prop-name prop) (ui-prop-value prop)))))))
 
-(defvar *ui-child-packers* (make-hash-table))
+(defgeneric pack-child (container child &key))
 
-(defmacro def-ui-child-packer (class (var child-def child) &body body)
-  `(setf (gethash ',class *ui-child-packers*)
-         (lambda (,var ,child-def ,child) ,@body)))
+(defmethod pack-child ((w container) child &key)
+  (container-add w child))
 
-(def-ui-child-packer container (w d child)
-  (declare (ignore d))
-  `(container-add ,w ,child))
+(defmethod pack-child ((b box) child &key (expand t) (fill t) (padding 0) pack-type position)
+  (box-pack-start b child
+		  :expand expand
+		  :fill fill
+		  :padding padding)
+  (when pack-type
+    (setf (box-child-pack-type b child) pack-type))
+  (when position
+    (setf (box-child-position b child) position)))
 
-(defun get-ui-child-prop-value (d name required-p context)
-  (let ((prop (find name (ui-child-props d) :key #'ui-prop-name)))
-    (if (and required-p (null prop))
-        (error "~A is a mandatory child property for ~A" name context)
-        (when prop (ui-prop-value prop)))))
+(defmethod pack-child ((p paned) child &key (resize 'default) (shrink t))
+  (if (null (paned-child-1 p))
+      (paned-pack-1 p child
+		    :resize (if (eq resize 'default) nil resize)
+		    :shrink shrink)
+      (paned-pack-2 p child
+		    :resize (if (eq resize 'default) t resize)
+		    :shrink shrink)))
 
-(def-ui-child-packer box (b d child)
-  (let ((expand-prop (find :expand (ui-child-props d) :key #'ui-prop-name))
-        (fill-prop (find :fill (ui-child-props d) :key #'ui-prop-name))
-        (padding-prop (find :padding (ui-child-props d) :key #'ui-prop-name))
-        (pack-type-prop (find :pack-type (ui-child-props d) :key #'ui-prop-name)))
-    `(progn
-       (box-pack-start ,b ,child
-                       ,@(when expand-prop (list :expand (ui-prop-value expand-prop)))
-                       ,@(when fill-prop (list :fill (ui-prop-value fill-prop)))
-                       ,@(when padding-prop (list :padding (ui-prop-value padding-prop))))
-       ,@(when pack-type-prop
-               (list `(setf (box-child-pack-type ,b ,child) ,(ui-prop-value pack-type-prop)))))))
+(defmethod pack-child ((table table) child &key
+		       left right top bottom
+		       (x-options '(:expand :fill)) (y-options '(:expand :fill)) (x-padding 0) (y-padding 0))
 
-(def-ui-child-packer paned (p d child)
-  (let ((resize-prop (find :resize (ui-child-props d) :key #'ui-prop-name))
-        (shrink-prop (find :shrink (ui-child-props d) :key #'ui-prop-name)))
-    `(if (null (paned-child-1 ,p))
-         (paned-pack-1 ,p ,child
-                       ,@(when resize-prop (list :resize (ui-prop-value resize-prop)))
-                       ,@(when shrink-prop (list :shrink (ui-prop-value shrink-prop))))
-         (paned-pack-2 ,p ,child
-                       ,@(when resize-prop (list :resize (ui-prop-value resize-prop)))
-                       ,@(when shrink-prop (list :shrink (ui-prop-value shrink-prop)))))))
+  (unless left
+    (error "left is a mandatory child property for table packing"))
+  (unless right
+    (error "right is a mandatory child property for table packing"))
+  (unless top
+    (error "top is a mandatory child property for table packing"))
+  (unless bottom
+    (error "bottom is a mandatory child property for table packing"))
 
-(def-ui-child-packer table (table d child)
-  `(table-attach ,table ,child
-                 ,(get-ui-child-prop-value d :left t "table packing")
-                 ,(get-ui-child-prop-value d :right t "table packing")
-                 ,(get-ui-child-prop-value d :top t "table packing")
-                 ,(get-ui-child-prop-value d :bottom t "table packing")
-                 ,@(let ((x-options (get-ui-child-prop-value d :x-options nil nil)))
-                        (when x-options
-                          (list :x-options x-options)))
-                 ,@(let ((y-options (get-ui-child-prop-value d :y-options nil nil)))
-                        (when y-options
-                          (list :y-options y-options)))
-                 ,@(let ((x-padding (get-ui-child-prop-value d :x-padding nil nil)))
-                        (when x-padding
-                          (list :x-padding x-padding)))
-                 ,@(let ((y-padding (get-ui-child-prop-value d :y-padding nil nil)))
-                        (when y-padding
-                          (list :y-padding y-padding)))))
+  (table-attach table child
+		:left left
+		:right right
+		:top top
+		:bottom bottom
+		:x-options x-options
+		:y-options y-options
+		:x-padding x-padding
+		:y-padding y-padding))
 
-(defun get-child-packer-fn (d)
-  (iter (for class first (find-class (ui-d-class d)) then (first (c2mop:class-direct-superclasses class)))
-        (while class)
-        (for packer = (gethash (class-name class) *ui-child-packers*))
-        (when packer (return packer))))
+(defmethod pack-child ((w tree-view) child &key)
+  (tree-view-append-column w child))
 
-(defun get-child-packer (d var)
-  (let ((fn (get-child-packer-fn d)))
-    (when fn
-      (let ((forms (iter (for child in (ui-d-children d))
-                         (for child-var = (ui-d-var (ui-child-v child)))
-                         (collect (funcall fn var child child-var)))))
-        (when forms (cons 'progn forms))))))
+(defmethod pack-child ((w tree-view-column) child &key (expand t) attributes)
+  (tree-view-column-pack-start w child :expand expand)
+  (iter (for a on attributes by #'cddr)
+	(tree-view-column-add-attribute w child
+					(first a)
+					(second a))))
 
-(defun get-ui-d-initializer (d var)
-  (get-child-packer d var))
+(defmethod pack-child ((b toolbar) child &key (expand 'default) (homogeneous 'default))
+  (toolbar-insert b child -1)
+  (unless (eq expand 'default)
+    (container-call-set-property b child "expand" expand +g-type-boolean+))
+  (unless (eq homogeneous 'default)
+    (container-call-set-property b child "homogeneous" homogeneous +g-type-boolean+)))
 
 (defun set-ui-expansion-1 (d)
   (when (ui-d-class d)
     ;; only direct-vars do not have class
     (setf (ui-d-var d) (get-ui-d-var d)
-          (ui-d-initform d) (get-ui-d-initform d))
-    (setf (ui-d-initializer d) (get-ui-d-initializer d (ui-d-var d)))))
+          (ui-d-initform d) (get-ui-d-initform d))))
 
 (defun set-ui-expansion (description)
   (iter (for child in (ui-d-children description))
@@ -143,10 +130,16 @@
   (let* ((description (parse-ui-description ui-description))
          (items (flattened-ui-descriptions description)))
     (set-ui-expansion description)
-    `(let (,@(iter (for i in items)
-                   (collect (list (ui-d-var i)
-                                  (ui-d-initform i)))))
-       ,@(iter (for i in items)
-               (when (ui-d-initializer i)
-                 (collect (ui-d-initializer i))))
+    `(let (,@(iter (for item in items)
+                   (collect (list (ui-d-var item)
+                                  (ui-d-initform item)))))
+       ,@(iter (for item in items)
+	       (appending (iter (for child in (ui-d-children item))
+				(for child-var = (ui-d-var (ui-child-v child)))
+				(let ((props
+				       (iter (for p in (ui-child-props child))
+					     (appending (list (ui-prop-name p) (ui-prop-value p))))))
+				  (collect (list* 'pack-child (ui-d-var item) child-var props))))))
+       
        ,@body)))
+

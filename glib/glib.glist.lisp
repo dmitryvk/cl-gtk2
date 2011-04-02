@@ -51,6 +51,8 @@
   (data :pointer)
   (next :pointer))
 
+(defcfun g-slist-alloc (:pointer g-slist))
+
 (defcfun g-slist-free :void (list (:pointer g-slist)))
 
 (defun g-slist-next (list)
@@ -65,3 +67,18 @@
             (collect (convert-from-foreign (foreign-slot-value c 'g-slist 'data) (gslist-type-type type))))
     (when (gslist-type-free-from-foreign type)
       (g-slist-free pointer))))
+
+(defmethod translate-to-foreign (list (type gslist-type))
+  (let ((result (null-pointer)) last)
+    (iter (for item in list)
+          (for n = (g-slist-alloc))
+          (for ptr = (convert-to-foreign item (gslist-type-type type)))
+          (setf (foreign-slot-value n 'g-slist 'data) ptr)
+          (setf (foreign-slot-value n 'g-slist 'next) (null-pointer))
+          (when last
+            (setf (foreign-slot-value last 'g-slist 'next) n))
+          (setf last n)
+          (when (first-iteration-p)
+            (setf result n)))
+    result))
+

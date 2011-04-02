@@ -11,6 +11,7 @@
                (:file "glib.quark")
                (:file "glib.gerror")
                (:file "glib.utils")
+               (:file "glib.rand")
 
                (:file "gobject.init")
                (:file "gobject.ffi.package")

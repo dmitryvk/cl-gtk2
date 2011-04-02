@@ -101,12 +101,14 @@ In this example, for every @code{class}, @code{(initialize-gobject-class-g-type 
 (at-init ()
   (eval-when (:compile-toplevel :load-toplevel :execute)
     (define-foreign-library glib
-      (:unix (:or "libglib-2.0.so.0" "libglib-2.0.so"))
+      ((:and :unix (:not :darwin)) (:or "libglib-2.0.so.0" "libglib-2.0.so"))
+      (:darwin (:or "libglib-2.0.0.dylib" "libglib-2.0.dylib"))
       (:windows "libglib-2.0-0.dll")
       (t (:default "libglib-2.0"))))
   (eval-when (:compile-toplevel :load-toplevel :execute)
     (define-foreign-library gthread
-      (:unix (:or "libgthread-2.0.so.0"  "libgthread-2.0.so"))
+      ((:and :unix (:not :darwin))  (:or "libgthread-2.0.so.0"  "libgthread-2.0.so"))
+      (:darwin (:or "libgthread-2.0.0.dylib"  "libgthread-2.0.dylib"))
       (:windows "libgthread-2.0-0.dll")
       (t "libgthread-2.0")))
 

@@ -6,7 +6,8 @@
 (at-init ()
  (eval-when (:compile-toplevel :load-toplevel :execute)
    (cffi:define-foreign-library gobject
-     (:unix (:or "libgobject-2.0.so.0" "libgobject-2.0.so"))
+     ((:and :unix (:not :darwin)) (:or "libgobject-2.0.so.0" "libgobject-2.0.so"))
+     (:darwin (:or "libgobject-2.0.0.dylib" "libgobject-2.0.dylib"))
      (:windows "libgobject-2.0-0.dll")
      (t "libgobject-2.0")))
 
