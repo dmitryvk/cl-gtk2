@@ -161,11 +161,11 @@
   (gethash name *registered-object-types*))
 (defun get-g-object-lisp-type (g-type)
   (setf g-type (gtype g-type))
-  (loop
-     while (not (null g-type))
-     for lisp-type = (gethash (gtype-name g-type) *registered-object-types*)
-     when lisp-type do (return lisp-type)
-     do (setf g-type (g-type-parent g-type))))
+  (iter (while (not (null g-type)))
+        (for lisp-type = (gethash (gtype-name g-type) *registered-object-types*))
+        (when lisp-type
+          (return lisp-type))
+        (setf g-type (g-type-parent g-type))))
 
 (defun make-g-object-from-pointer (pointer)
   (let* ((g-type (g-type-from-instance pointer))
