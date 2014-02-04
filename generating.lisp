@@ -70,7 +70,7 @@
                 "GtkTextTagTable" "GtkTreeModelFilter" "GtkTreeModelSort"
                 "GtkTreeSelection" "GtkTreeStore" "GtkUIManager" "GtkWindowGroup"
                 "GtkToggleAction" "GtkRecentAction" "GtkRadioAction" "GtkItemFactory"
-		"GtkPageSetupUnixDialog" "GtkPrintUnixDialog")
+		"GtkPageSetupUnixDialog" "GtkPrintUnixDialog" "GtkInfoBar" "GtkSpinner")
      :flags '("GtkTextSearchFlags" "GtkAccelFlags" "GtkArgFlags" "GtkAttachOptions"
               "GtkButtonAction" "GtkCalendarDisplayOptions" "GtkCellRendererState"
               "GtkDebugFlag" "GtkDestDefaults" "GtkDialogFlags" "GtkFileFilterFlags"
@@ -384,7 +384,12 @@
          "gtk_bin_get_child" nil))
        ("GtkTextChildAnchor"
         (:cffi gtk::deleted-p gtk::text-child-anchor-deleted-p :boolean
-         "gtk_text_child_anchor_get_deleted" nil))))))
+         "gtk_text_child_anchor_get_deleted" nil))
+       ("GtkInfoBar"
+	(:cffi gtk::action-area gtk::info-bar-action-area (g-object gtk::widget)
+	 "gtk_info_bar_get_action_area" nil)
+	(:cffi gtk::content-area gtk::info-bar-content-area (g-object gtk::widget)
+	 "gtk_info_bar_get_content_area" nil))))))
 
 (defun gtk-generate-child-properties (filename)
   (with-open-file (stream filename :direction :output :if-exists :supersede)
