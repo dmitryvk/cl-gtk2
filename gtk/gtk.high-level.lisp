@@ -155,3 +155,16 @@
       (object-destroy dialog))))
 
 (export 'show-message)
+
+(defmacro with-builder-objects ((builder &rest bindings) &body body)
+  (let* ((bindings (loop for i in bindings collect 
+                       (if (listp i) i (list i (nsubstitute #\_ #\- 
+                                                           (nstring-downcase (princ-to-string i)))))))
+        (builder-var (gensym))
+        (vars (loop for i in bindings collect 
+                          `(,(car i) (builder-get-object ,builder-var ,(second i))))))
+    `(let* ((,builder-var ,builder)
+            ,@vars)
+       ,@body)))
+
+(export 'with-builder-objects)
