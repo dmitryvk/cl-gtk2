@@ -171,7 +171,7 @@
         (cond
           ((cstruct-slot-description-count slot)
            (setf (slot-value proxy slot-name) (make-array (list (cstruct-slot-description-count slot))))
-           (iter (with ptr = (foreign-slot-pointer native cstruct-type slot-name))
+           (iter (with ptr = (foreign-slot-pointer native (list :struct cstruct-type) slot-name))
                  (with array = (slot-value proxy slot-name))
                  (for i from 0 below (cstruct-slot-description-count slot))
                  (setf (aref array i)
