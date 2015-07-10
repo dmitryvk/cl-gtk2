@@ -83,7 +83,7 @@
                     (g-object-type-property-type object-type name))
                   args-names)))
   (let ((args-count (length args-names)))
-    (with-foreign-object (parameters 'g-parameter args-count)
+    (with-foreign-object (parameters '(:struct g-parameter) args-count)
       (loop
          for i from 0 below args-count
          for arg-name in args-names
