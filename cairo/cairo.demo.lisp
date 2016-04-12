@@ -39,7 +39,9 @@
   (iter (for symbol in-package '#:cl-gtk2-cairo-demo)
         (when (and (fboundp symbol)
                    (starts-with (symbol-name symbol) "DRAW-"))
-          (for doc = (or (documentation (fdefinition symbol) t) (let ((*print-case* :downcase)) (format nil "~A" symbol))))
+          (for doc = (or (documentation (fdefinition symbol) t)
+			 (let ((*print-case* :downcase))
+			   (format nil "~A" symbol))))
           (collect (make-cairo-fn :name doc :fn symbol)))))
 
 (defun demo ()
@@ -69,6 +71,7 @@
                                             (cairo-fn-fn (tree-model-item cb-list iter)))))))
         (setf (combo-box-active-iter combo) (tree-model-iter-first cb-list))
         (widget-show w)))))
+
 
 (defun draw-clock-face (w h)
   "Draw a clock face"
