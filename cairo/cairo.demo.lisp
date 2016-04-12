@@ -128,7 +128,7 @@
   (declare (ignore w h))
   (move-to 0 100)
   (set-font-size 50)
-  (show-text "foo. Привет мир!"))
+  (show-text "hello world" )) ;; "foo. Привет мир!"))
 
 (defparameter *lis-a* 9)
 (defparameter *lis-b* 8)
