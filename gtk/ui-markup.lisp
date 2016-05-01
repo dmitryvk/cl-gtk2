@@ -82,11 +82,7 @@
   (unless bottom
     (error "bottom is a mandatory child property for table packing"))
 
-  (table-attach table child
-		:left left
-		:right right
-		:top top
-		:bottom bottom
+  (table-attach table child left right top bottom
 		:x-options x-options
 		:y-options y-options
 		:x-padding x-padding

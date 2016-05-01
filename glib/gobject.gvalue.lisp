@@ -5,7 +5,7 @@
 
 @arg[g-value]{a C pointer to the GValue structure}"
   (loop
-     for i from 0 below (foreign-type-size 'g-value)
+     for i from 0 below (foreign-type-size '(:struct g-value))
      do (setf (mem-ref g-value :uchar i) 0)))
 
 (defun g-value-type (gvalue)

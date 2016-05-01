@@ -2063,7 +2063,11 @@
                         (:cffi keep-above gtk-window-keep-above :boolean nil
                          "gtk_window_set_keep_above")
                         (:cffi keep-below gtk-window-keep-below :boolean nil
-                         "gtk_window_set_keep_below")))
+			       "gtk_window_set_keep_below")))
+
+(defmethod print-object ((self gtk-window) stream)
+  (print-unreadable-object (self stream :type t :identity t)
+    nil))
 
 (define-g-object-class "GtkAssistant" assistant
                        (:superclass gtk-window :export t :interfaces
@@ -2288,6 +2292,13 @@
                         ("AtkImplementorIface" "GtkBuildable" "GtkOrientable")
                         :type-initializer "gtk_vbox_get_type")
                        nil)
+
+(defmethod print-object ((self v-box) stream)
+  (print-unreadable-object (self stream :type t :identity t)
+    nil))
+
+
+
 
 (define-g-object-class "GtkColorSelection" color-selection
                        (:superclass v-box :export t :interfaces
